@@ -78,5 +78,4 @@ void SimpleBlockRender::render(const Block *const block, glm::mat4 projectionMat
 SimpleBlockRender::~SimpleBlockRender() {
     glDeleteBuffers(2, this->vbo);
     glDeleteVertexArrays(1, &this->vao);
-    this->shaderProgram.deleteProgram();
 }

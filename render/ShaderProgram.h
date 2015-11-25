@@ -13,8 +13,8 @@ using namespace glm;
 class ShaderProgram {
 public:
     ShaderProgram();
+    ~ShaderProgram();
     void createProgram();
-    void deleteProgram();
     bool addShaderToProgram(Shader *shader);
     bool linkProgram();
     void useProgram();

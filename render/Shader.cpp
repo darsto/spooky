@@ -7,12 +7,9 @@
 
 using namespace std;
 
-Shader::Shader() {
-    loaded = false;
-}
-
 Shader::~Shader() {
     if (!this->isLoaded()) return;
+    this->loaded = false;
     glDeleteShader(id);
 }
 
@@ -20,40 +17,34 @@ bool Shader::load(string file, int type) {
     FILE *fp = fopen(file.c_str(), "rt");
     if (!fp) return false;
 
-    vector<string> sLines;
+    this->type = type;
+    vector<string> program_vec;
     char sLine[255];
-    while (fgets(sLine, 255, fp))sLines.push_back(sLine);
+    while (fgets(sLine, 255, fp))program_vec.push_back(sLine);
     fclose(fp);
-
-    const char **sProgram = new const char *[sLines.size()];
-    for (int i = 0; i < sLines.size(); i++)
-        sProgram[i] = sLines.at(i).c_str();
+    const char **program_str = new const char *[program_vec.size()];
+    for (int i = 0; i < program_vec.size(); i++)
+        program_str[i] = program_vec.at(i).c_str();
 
     id = glCreateShader(this->type);
-
-    glShaderSource(id, sLines.size(), sProgram, NULL);
+    glShaderSource(id, program_vec.size(), program_str, NULL);
     glCompileShader(id);
 
-    delete[] sProgram;
+    delete[] program_str;
 
     int compilationStatus;
     glGetShaderiv(id, GL_COMPILE_STATUS, &compilationStatus);
-
     if (compilationStatus == GL_FALSE) return false;
-    this->type = type;
     this->loaded = true;
 
-    return 1;
-}
-
-bool Shader::isLoaded() {
     return this->loaded;
 }
 
-GLuint Shader::getID() const {
-    return this->id;
+bool Shader::isLoaded() {
+    return loaded;
 }
 
-int Shader::getType() const {
-    return this->type;
+GLuint Shader::getID() {
+    return id;
 }
+
