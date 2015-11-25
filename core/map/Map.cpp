@@ -5,15 +5,14 @@
 #include "Map.h"
 
 Map::~Map() {
-    for (int i = 0; i < this->blocks.size(); i++) {
-        delete this->blocks.at(i);
+    for (Block *block : this->blocks) {
+        delete block;
     }
     this->blocks.clear();
 }
 
 Block *Map::getBlock(int x, int y) {
-    for (int i = 0; i < this->blocks.size(); i++) {
-        Block *b = this->blocks.at(i);
+    for (Block *b : this->blocks) {
         if (b->getX() == x && b->getY() == y) return b;
     }
     return nullptr;

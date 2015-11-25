@@ -152,8 +152,8 @@ void render() {
 
     tGold.bindTexture(10);
 
-    for (int i = 0; i < core->getMap()->getBlocks().size(); i++) {
-        getBlockRender(core->getMap()->getBlocks().at(i))->render(core->getMap()->getBlocks().at(i), ProjectionMatrix, ViewMatrix);
+    for (Block *block : core->getMap()->getBlocks()) {
+        getBlockRender(block)->render(block, ProjectionMatrix, ViewMatrix);
     }
 
 }
