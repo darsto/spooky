@@ -24,6 +24,7 @@ enum ETextureFiltering
 class Texture
 {
 public:
+    ~Texture();
     void createFromData(unsigned char* bData, int a_iWidth, int a_iHeight, int a_iBPP, GLenum format, bool bGenerateMipMaps = false);
     bool loadTexture2D(string a_sPath, bool bGenerateMipMaps = false);
     void bindTexture(int iTextureUnit = 0);
@@ -38,8 +39,6 @@ public:
     int getWidth();
     int getHeight();
     int getBPP();
-
-    void releaseTexture();
 
     Texture();
 private:

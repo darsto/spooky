@@ -121,21 +121,6 @@ void Texture::bindTexture(int iTextureUnit) {
     glBindSampler(iTextureUnit, uiSampler);
 }
 
-/*-----------------------------------------------
-
-Name:		releaseTexture
-
-Params:	none
-
-Result:	Frees all memory used by texture.
-
-/*---------------------------------------------*/
-
-void Texture::releaseTexture() {
-    glDeleteSamplers(1, &uiSampler);
-    glDeleteTextures(1, &uiTexture);
-}
-
 int Texture::getMinificationFilter() {
     return tfMinification;
 }
@@ -154,4 +139,9 @@ int Texture::getHeight() {
 
 int Texture::getBPP() {
     return iBPP;
+}
+
+Texture::~Texture() {
+    glDeleteSamplers(1, &uiSampler);
+    glDeleteTextures(1, &uiTexture);
 }
