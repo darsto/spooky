@@ -5,9 +5,12 @@
 #include "Fbo.h"
 #include "core/block/Block.h"
 #include "render/Render.h"
+#include "core/map/Map.h"
+#include "core/map/StringMapLoader.h"
 #include <vector>
 
 #define GLM_FORCE_RADIANS
+
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -32,6 +35,9 @@ void initScene();
 void initBlockSp();
 SDL_Window *gWindow = NULL;
 SDL_GLContext gContext;
+
+Map *bmap;
+
 bool initW() {
     //Initialization flag
     bool success = true;
@@ -81,25 +87,16 @@ bool initW() {
 
 Texture tGold;
 
-vector<Block *> blocks;
-
-char map_bl[] = {'X', 'X', ' ', ' ', 'X', 'X',
-                 'X', ' ', 'X', ' ', ' ', ' ',
-                 ' ', ' ', ' ', ' ', 'X', ' ',
-                 ' ', 'X', 'X', 'X', 'X', ' ',
-                 'X', ' ', ' ', ' ', ' ', ' '
-};
-
-int h = 5, w = 6;
-
-
 void initScene() {
-    for (int y = 0; y < h; y++) {
-        for (int x = 0; x < w; x++) {
-            if (map_bl[y * w + x] == ' ') continue;
-            blocks.push_back(new SimpleBlock(x, y));
-        }
-    }
+    char map_bl[] = {'X', 'X', ' ', ' ', 'X', 'X',
+                     'X', ' ', 'X', ' ', ' ', ' ',
+                     ' ', ' ', ' ', ' ', 'X', ' ',
+                     ' ', 'X', 'X', 'X', 'X', ' ',
+                     'X', ' ', ' ', ' ', ' ', ' '
+    };
+    int h = 5, w = 6;
+    MapLoader *mapLoader = new StringMapLoader(map_bl, w, h);
+    bmap = mapLoader->loadMap();
     tGold.loadTexture2D("rgba.png", true);
     tGold.setFiltering(TEXTURE_FILTER_MAG_BILINEAR, TEXTURE_FILTER_MIN_BILINEAR_MIPMAP);
 
@@ -153,8 +150,8 @@ void render() {
 
     tGold.bindTexture(10);
 
-    for (int i = 0; i < blocks.size(); i++) {
-        getBlockRender(blocks.at(i))->render(blocks.at(i), ProjectionMatrix, ViewMatrix);
+    for (int i = 0; i < bmap->getBlocks().size(); i++) {
+        getBlockRender(bmap->getBlocks().at(i))->render(bmap->getBlocks().at(i), ProjectionMatrix, ViewMatrix);
     }
 
 }
@@ -162,10 +159,7 @@ void render() {
 Fbo *fbo;
 
 void close() {
-    for (int i = 0; i < blocks.size(); i++) {
-        delete blocks.at(i);
-    }
-    blocks.clear();
+    delete bmap;
     delete fbo;
     tGold.releaseTexture();
     SDL_DestroyWindow(gWindow);
@@ -186,7 +180,7 @@ int main(int argc, char *args[]) {
     else {
         staticInit();
         fbo = new Fbo();
-        fbo->init(5, SCREEN_WIDTH, SCREEN_HEIGHT, new float[4] {0.8f, 0.8f, 0.8f, 1.0f}, "fboshader");
+        fbo->init(5, SCREEN_WIDTH, SCREEN_HEIGHT, new float[4]{0.8f, 0.8f, 0.8f, 1.0f}, "fboshader");
         SDL_Event e;
 
         SDL_StartTextInput();
