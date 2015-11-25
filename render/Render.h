@@ -13,7 +13,7 @@
 #include "block/BlockRender.h"
 #include "block/SimpleBlockRender.h"
 
-static std::map<const char*, BlockRender*> blockRenders;
+static std::map<const char *, BlockRender *> blockRenders;
 
 BlockRender *getBlockRender(Block *b) {
     return blockRenders[typeid(*b).name()];
