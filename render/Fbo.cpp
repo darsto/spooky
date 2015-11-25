@@ -10,7 +10,6 @@ Fbo::~Fbo() {
     glDeleteBuffers(1, &texture_vertices);
     glDeleteVertexArrays(1, &vaoId);
     glDeleteFramebuffers(1, &this->id);
-    this->shader_program.deleteProgram();
 }
 
 unsigned char Fbo::initShader() {
