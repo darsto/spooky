@@ -3,7 +3,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.3)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/bin")
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-SET(SOURCE_FILES main.cpp Shader.cpp Shader.h ShaderProgram.cpp ShaderProgram.h Texture.cpp Texture.h Fbo.cpp Fbo.h)
+SET(SOURCE_FILES main.cpp Shader.cpp Shader.h ShaderProgram.cpp ShaderProgram.h Texture.cpp Texture.h Fbo.cpp Fbo.h core/block/Block.h render/block/BlockRender.h render/Render.h render/block/SimpleBlockRender.cpp render/block/SimpleBlockRender.h core/block/SimpleBlock.h)
 
 ADD_EXECUTABLE(${PROJECT_NAME} ${SOURCE_FILES})
 
