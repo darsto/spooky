@@ -2,13 +2,13 @@
 #include <GLES3/gl3.h>
 #include "ShaderProgram.h"
 #include "Texture.h"
+#include "Fbo.h"
 #include <glm/glm.hpp>
 
 #define GLM_FORCE_RADIANS
 
 #include <glm/gtc/matrix_transform.hpp>
 
-//Screen dimension constants
 const int SCREEN_WIDTH = 500;
 const int SCREEN_HEIGHT = 500;
 //Main loop flag
@@ -16,31 +16,20 @@ bool quit = false;
 
 //Starts up SDL, creates window, and initializes OpenGL
 bool init();
-
-//Initializes matrices and clear color
 bool initGL();
-
 //Input handler
 void handleKeys(unsigned char key, int x, int y);
 
 //Per frame update
 void update();
 
-//Renders quad to the screen
 void render();
 
-//Frees media and shuts down SDL
 void close();
-
 void initScene();
-
-//The window we'll be rendering to
+void initBlockSp();
 SDL_Window *gWindow = NULL;
-//OpenGL context
 SDL_GLContext gContext;
-//Render flag
-bool gRenderQuad = true;
-
 bool init() {
     //Initialization flag
     bool success = true;
@@ -95,73 +84,11 @@ GLuint uiVAO;
 
 Shader shVertex, shFragment;
 ShaderProgram spMain;
-Shader shFBOVertex, shFBOFragment;
-ShaderProgram spFBO;
+
 
 Texture tGold;
 
-const int fboPasses = 1;
-
-GLuint fbo[fboPasses], fbo_texture[fboPasses], rbo_depth[fboPasses];
-GLuint vbo_fbo_vertices[fboPasses], fboVAO[fboPasses];
-GLint attribute_v_coord_postproc, uniform_fbo_texture;
-
 void initScene() {
-    shFBOVertex.load("fboshader.vert", GL_VERTEX_SHADER);
-    shFBOFragment.load("fboshader.frag", GL_FRAGMENT_SHADER);
-    spFBO.createProgram();
-    spFBO.addShaderToProgram(&shFBOVertex);
-    spFBO.addShaderToProgram(&shFBOFragment);
-
-    spFBO.linkProgram();
-    spFBO.useProgram();
-
-    attribute_v_coord_postproc = glGetAttribLocation(spFBO.getProgramID(), "v_coord");
-    uniform_fbo_texture = glGetUniformLocation(spFBO.getProgramID(), "fbo_texture");
-
-
-    for (int i = 0; i < fboPasses; i++) {
-        glActiveTexture(GL_TEXTURE0);
-        glGenTextures(1, &fbo_texture[i]);
-        glBindTexture(GL_TEXTURE_2D, fbo_texture[i]);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, SCREEN_WIDTH, SCREEN_HEIGHT, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
-        glBindTexture(GL_TEXTURE_2D, 0);
-
-        /* Framebuffer to link everything together */
-        glGenFramebuffers(1, &fbo[i]);
-        glBindFramebuffer(GL_FRAMEBUFFER, fbo[i]);
-        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fbo_texture[i], 0);
-        GLenum status;
-        if ((status = glCheckFramebufferStatus(GL_FRAMEBUFFER)) != GL_FRAMEBUFFER_COMPLETE) {
-            fprintf(stderr, "glCheckFramebufferStatus: error %p", status);
-            close();
-        }
-
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
-        glGenVertexArrays(1, &fboVAO[i]); // Generate two VAOs, one for triangle and one for quad
-        glGenBuffers(1, &vbo_fbo_vertices[i]);
-
-        GLfloat fbo_vertices[] = {
-                -1.0f, 1.0f,
-                -1.0f, -1.0f,
-                1.0f, 1.0f,
-                1.0f, -1.0f,
-        };
-
-        glBindVertexArray(fboVAO[i]);
-        glBindBuffer(GL_ARRAY_BUFFER, vbo_fbo_vertices[i]);
-        glBufferData(GL_ARRAY_BUFFER, 4 * 2 * sizeof(float), fbo_vertices, GL_STATIC_DRAW);
-        glEnableVertexAttribArray((GLuint) attribute_v_coord_postproc);
-        glVertexAttribPointer((GLuint) attribute_v_coord_postproc, 2, GL_FLOAT, GL_FALSE, 0, 0);
-        glBindVertexArray(0);
-    }
-
-
     // Setup quad vertices
 
     fQuad[0] = 0.0f;
@@ -204,6 +131,18 @@ void initScene() {
 
     glBindVertexArray(0);
 
+    initBlockSp();
+
+    tGold.loadTexture2D("rgba.png", true);
+    tGold.setFiltering(TEXTURE_FILTER_MAG_BILINEAR, TEXTURE_FILTER_MIN_BILINEAR_MIPMAP);
+
+    glEnable(GL_TEXTURE_2D);
+    glDisable(GL_DEPTH_TEST);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+}
+
+void initBlockSp() {
     shVertex.load("shader.vert", GL_VERTEX_SHADER);
     shFragment.load("shader.frag", GL_FRAGMENT_SHADER);
 
@@ -213,14 +152,6 @@ void initScene() {
 
     spMain.linkProgram();
     spMain.useProgram();
-
-    tGold.loadTexture2D("rgba.png", true);
-    tGold.setFiltering(TEXTURE_FILTER_MAG_BILINEAR, TEXTURE_FILTER_MIN_BILINEAR_MIPMAP);
-
-    glEnable(GL_TEXTURE_2D);
-    glDisable(GL_DEPTH_TEST);
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 bool initGL() {
@@ -298,17 +229,12 @@ void render() {
     }
 }
 
+Fbo *fbo;
+
 void close() {
     glDeleteBuffers(2, uiVBO);
     glDeleteVertexArrays(1, &uiVAO);
-    for (int i = 0; i < fboPasses; i++) {
-        glDeleteBuffers(1, &vbo_fbo_vertices[i]);
-        glDeleteVertexArrays(1, &fboVAO[i]);
-        glDeleteRenderbuffers(1, &rbo_depth[i]);
-        glDeleteTextures(1, &fbo_texture[i]);
-        glDeleteFramebuffers(1, &fbo[i]);
-        spFBO.deleteProgram();
-    }
+    delete fbo;
     tGold.releaseTexture();
     spMain.deleteProgram();
     SDL_DestroyWindow(gWindow);
@@ -317,67 +243,40 @@ void close() {
     SDL_Quit();
 }
 
+//TODO move
+static void staticInit() {
+    initTexData();
+}
+
 int main(int argc, char *args[]) {
-    //Start up SDL and create window
     if (!init()) {
         printf("Failed to initialize!\n");
     }
     else {
-
-        //Event handler
+        staticInit();
+        fbo = new Fbo();
+        fbo->init(5, SCREEN_WIDTH, SCREEN_HEIGHT, new float[4] {0.8f, 0.8f, 0.8f, 1.0f}, "fboshader");
         SDL_Event e;
 
-        //Enable text input
         SDL_StartTextInput();
 
-        //While application is running
         while (!quit) {
-            //Handle events on queue
             while (SDL_PollEvent(&e) != 0) {
-                //User requests quit
                 if (e.type == SDL_QUIT) {
                     quit = true;
                 }
             }
-
             handleKeys();
-
-            glBindFramebuffer(GL_FRAMEBUFFER, fbo[0]);
-
-            //Render quad
+            fbo->bind();
             render();
-
-            for (int i = 0; i < fboPasses; i++) {
-                glBindFramebuffer(GL_FRAMEBUFFER, i == fboPasses - 1 ? 0 : fbo[i + 1]);
-                //glClearColor(0.5f, 0.8f, 1.0f, 1.0f);
-                //glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
-                glClearColor(0.8f, 0.8f, 0.8f, 1.0f);
-                glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-                spFBO.useProgram();
-                spFBO.setUniform("vertical", i == 1);
-                spFBO.setUniform("uResolution", glm::vec2(SCREEN_WIDTH, SCREEN_HEIGHT));
-                glActiveTexture(GL_TEXTURE0 + i);
-                glBindTexture(GL_TEXTURE_2D, fbo_texture[i]);
-                glUniform1i(uniform_fbo_texture, /*GL_TEXTURE*/i);
-                glBindVertexArray(fboVAO[i]);
-                glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-                glBindBuffer(GL_ARRAY_BUFFER, 0);
-                glBindTexture(GL_TEXTURE_2D, 0);
-            }
-
-
-
-
-            //Update screen
+            fbo->unbind();
+            fbo->render(0);
             SDL_GL_SwapWindow(gWindow);
         }
 
-        //Disable text input
         SDL_StopTextInput();
     }
 
-    //Free resources and close SDL
     close();
 
     return 0;

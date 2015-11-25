@@ -1,6 +1,8 @@
+#version 330
+
 uniform sampler2D fbo_texture;
 uniform float offset;
-varying vec2 f_texcoord;
+in vec2 f_texcoord;
 varying vec2 v_blurTexCoords[14];
 
 uniform vec2 uResolution;
