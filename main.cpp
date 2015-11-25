@@ -144,7 +144,7 @@ void update() {
 
 void render() {
     //Clear color buffer
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT);
 
 
     glm::mat4 ProjectionMatrix = glm::ortho(0.0f, float(SCREEN_WIDTH), 0.0f, float(SCREEN_HEIGHT));
