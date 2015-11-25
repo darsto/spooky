@@ -15,11 +15,11 @@
 
 static std::map<const char *, BlockRender *> blockRenders;
 
-BlockRender *getBlockRender(Block *b) {
+inline BlockRender *getBlockRender(Block *b) {
     return blockRenders[typeid(*b).name()];
 }
 
-void init() {
+inline void initRenderers() {
     blockRenders.insert(std::make_pair(typeid(SimpleBlock).name(), new SimpleBlockRender()));
 }
 
