@@ -7,59 +7,53 @@
 
 using namespace std;
 
-Shader::Shader()
-{
-    bLoaded = false;
+Shader::Shader() {
+    loaded = false;
 }
 
-bool Shader::load(string sFile, int a_iType)
-{
+Shader::~Shader() {
+    if (!this->isLoaded()) return;
+    glDeleteShader(id);
+}
 
-    FILE* fp = fopen(sFile.c_str(), "rt");
-    if(!fp)return false;
-
-    // Get all lines from a file
+bool Shader::load(string file, int type) {
+    FILE *fp = fopen(file.c_str(), "rt");
+    if (!fp) return false;
 
     vector<string> sLines;
     char sLine[255];
-    while(fgets(sLine, 255, fp))sLines.push_back(sLine);
+    while (fgets(sLine, 255, fp))sLines.push_back(sLine);
     fclose(fp);
 
-    const char** sProgram = new const char*[sLines.size()];
+    const char **sProgram = new const char *[sLines.size()];
     for (int i = 0; i < sLines.size(); i++)
         sProgram[i] = sLines.at(i).c_str();
 
-    uiShader = glCreateShader(a_iType);
+    id = glCreateShader(this->type);
 
-    glShaderSource(uiShader, sLines.size(), sProgram, NULL);
-    glCompileShader(uiShader);
+    glShaderSource(id, sLines.size(), sProgram, NULL);
+    glCompileShader(id);
 
     delete[] sProgram;
 
-    int iCompilationStatus;
-    glGetShaderiv(uiShader, GL_COMPILE_STATUS, &iCompilationStatus);
+    int compilationStatus;
+    glGetShaderiv(id, GL_COMPILE_STATUS, &compilationStatus);
 
-    if(iCompilationStatus == GL_FALSE)return false;
-    iType = a_iType;
-    bLoaded = true;
+    if (compilationStatus == GL_FALSE) return false;
+    this->type = type;
+    this->loaded = true;
 
     return 1;
 }
 
-bool Shader::isLoaded()
-{
-    return bLoaded;
+bool Shader::isLoaded() {
+    return this->loaded;
 }
 
-GLuint Shader::getID()
-{
-    return uiShader;
+GLuint Shader::getID() const {
+    return this->id;
 }
 
-void Shader::remove()
-{
-    if(!isLoaded())return;
-    bLoaded = false;
-    glDeleteShader(uiShader);
+int Shader::getType() const {
+    return this->type;
 }
-

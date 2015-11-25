@@ -13,55 +13,35 @@ using namespace glm;
 class ShaderProgram {
 public:
     ShaderProgram();
-
     void createProgram();
-
     void deleteProgram();
-
-    bool addShaderToProgram(Shader *shShader);
-
+    bool addShaderToProgram(Shader *shader);
     bool linkProgram();
-
     void useProgram();
-
     GLuint getProgramID();
-
     // Setting vectors
-    void setUniform(string sName, glm::vec2 *vVectors, int iCount = 1);
-
-    void setUniform(string sName, const glm::vec2 vVector);
-
-    void setUniform(string sName, glm::vec3 *vVectors, int iCount = 1);
-
-    void setUniform(string sName, const glm::vec3 vVector);
-
-    void setUniform(string sName, glm::vec4 *vVectors, int iCount = 1);
-
-    void setUniform(string sName, const glm::vec4 vVector);
-
+    void setUniform(string name, glm::vec2 *vectors, int count = 1);
+    void setUniform(string name, const glm::vec2 vector);
+    void setUniform(string name, glm::vec3 *vectors, int count = 1);
+    void setUniform(string name, const glm::vec3 vector);
+    void setUniform(string name, glm::vec4 *vectors, int count = 1);
+    void setUniform(string name, const glm::vec4 vector);
     // Setting floats
-    void setUniform(string sName, float *fValues, int iCount = 1);
-
-    void setUniform(string sName, const float fValue);
-
+    void setUniform(string name, float *values, int count = 1);
+    void setUniform(string name, const float value);
     // Setting 3x3 matrices
-    void setUniform(string sName, glm::mat3 *mMatrices, int iCount = 1);
-
-    void setUniform(string sName, const glm::mat3 mMatrix);
-
+    void setUniform(string name, glm::mat3 *matrices, int count = 1);
+    void setUniform(string name, const glm::mat3 matrix);
     // Setting 4x4 matrices
-    void setUniform(string sName, glm::mat4 *mMatrices, int iCount = 1);
-
-    void setUniform(string sName, const glm::mat4 mMatrix);
-
+    void setUniform(string name, glm::mat4 *matrices, int count = 1);
+    void setUniform(string name, const glm::mat4 matrix);
     // Setting integers
-    void setUniform(string sName, int *iValues, int iCount = 1);
-
-    void setUniform(string sName, const int iValue);
+    void setUniform(string name, int *iValues, int count = 1);
+    void setUniform(string name, const int iValue);
 
 private:
-    GLuint uiProgram; // ID of program
-    bool bLinked; // Whether program was linked and is ready to use
+    GLuint uiProgram;
+    bool linked;
 };
 
 
