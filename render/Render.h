@@ -9,7 +9,7 @@
 #include <map>
 #include <string>
 #include <memory>
-#include "../core/block/SimpleBlock.h"
+#include "../core/map/block/SimpleBlock.h"
 #include "block/BlockRender.h"
 #include "block/SimpleBlockRender.h"
 

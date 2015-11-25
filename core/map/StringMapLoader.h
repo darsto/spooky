@@ -6,7 +6,7 @@
 #define C003_STRINGMAPLOADER_H
 
 #include "Map.h"
-#include "../block/SimpleBlock.h"
+#include "../map/block/SimpleBlock.h"
 
 class StringMapLoader : public MapLoader {
 

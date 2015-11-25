@@ -7,9 +7,8 @@
 
 
 #include "BlockRender.h"
-#include "../../Shader.h"
-#include "../../ShaderProgram.h"
-#include "../../core/block/Block.h"
+#include "../Shader.h"
+#include "../ShaderProgram.h"
 
 class SimpleBlockRender : public BlockRender {
 

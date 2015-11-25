@@ -1,13 +1,12 @@
 #include <SDL.h>
 #include <GLES3/gl3.h>
-#include "ShaderProgram.h"
-#include "Texture.h"
-#include "Fbo.h"
-#include "core/block/Block.h"
 #include "render/Render.h"
 #include "core/map/Map.h"
 #include "core/map/StringMapLoader.h"
-#include "Core.h"
+#include "core/Core.h"
+#include "render/Texture.h"
+#include "render/Fbo.h"
+#include "core/map/block/Block.h"
 #include <vector>
 
 #define GLM_FORCE_RADIANS

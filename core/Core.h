@@ -6,7 +6,7 @@
 #define C003_CORE_H
 
 
-#include "core/map/Map.h"
+#include "map/Map.h"
 
 class Core {
 
