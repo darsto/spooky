@@ -7,6 +7,7 @@
 #include "render/Render.h"
 #include "core/map/Map.h"
 #include "core/map/StringMapLoader.h"
+#include "Core.h"
 #include <vector>
 
 #define GLM_FORCE_RADIANS
@@ -36,7 +37,7 @@ void initBlockSp();
 SDL_Window *gWindow = NULL;
 SDL_GLContext gContext;
 
-Map *bmap;
+Core *core;
 
 bool initW() {
     //Initialization flag
@@ -96,7 +97,8 @@ void initScene() {
     };
     int h = 5, w = 6;
     MapLoader *mapLoader = new StringMapLoader(map_bl, w, h);
-    bmap = mapLoader->loadMap();
+    Map *bmap = mapLoader->loadMap();
+    core = new Core(bmap);
     tGold.loadTexture2D("rgba.png", true);
     tGold.setFiltering(TEXTURE_FILTER_MAG_BILINEAR, TEXTURE_FILTER_MIN_BILINEAR_MIPMAP);
 
@@ -150,8 +152,8 @@ void render() {
 
     tGold.bindTexture(10);
 
-    for (int i = 0; i < bmap->getBlocks().size(); i++) {
-        getBlockRender(bmap->getBlocks().at(i))->render(bmap->getBlocks().at(i), ProjectionMatrix, ViewMatrix);
+    for (int i = 0; i < core->getMap()->getBlocks().size(); i++) {
+        getBlockRender(core->getMap()->getBlocks().at(i))->render(core->getMap()->getBlocks().at(i), ProjectionMatrix, ViewMatrix);
     }
 
 }
@@ -159,7 +161,7 @@ void render() {
 Fbo *fbo;
 
 void close() {
-    delete bmap;
+    delete core;
     delete fbo;
     tGold.releaseTexture();
     SDL_DestroyWindow(gWindow);
