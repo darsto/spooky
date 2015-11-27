@@ -54,7 +54,7 @@ int Fbo::init(int texId, unsigned int width, unsigned int height, float bgColor[
     glGenFramebuffers(1, &this->id);
     glBindFramebuffer(GL_FRAMEBUFFER, this->id);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, this->fbo_texture, 0);
-    GLenum status = (GLenum) (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE);
+    GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
