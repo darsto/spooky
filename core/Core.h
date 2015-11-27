@@ -11,7 +11,11 @@
 class Core {
 
 public:
-    Core(Map *map) : map(*map) { }
+    Core() { }
+
+    void setMap(Map *map) {
+        Core::map = *map;
+    }
 
     const Map *getMap() const {
         return &map;
