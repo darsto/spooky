@@ -14,10 +14,14 @@ void Game::run() {
     double deltaTime = timer.GetDelta();
     while (this->core->isRunning()) {
         this->renderer.run();
-        this->handleKeyboard();
+        this->update(deltaTime);
     }
     SDL_StopTextInput();
 
+}
+
+void Game::update(double deltaTime) {
+    handleKeyboard();
 }
 
 void Game::handleKeyboard() {
