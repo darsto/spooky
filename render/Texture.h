@@ -42,9 +42,9 @@ public:
 
     Texture();
 private:
-    int iWidth, iHeight, iBPP; // Texture width, height, and bytes per pixel
-    GLuint uiTexture; // Texture name
-    GLuint uiSampler; // Sampler name
+    int iWidth, iHeight, iBPP;
+    GLuint uiTexture;
+    GLuint uiSampler;
     bool bMipMapsGenerated;
 
     int tfMinification, tfMagnification;
