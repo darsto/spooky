@@ -1,7 +1,6 @@
 #include "core/map/Map.h"
 #include "core/map/StringMapLoader.h"
 #include "core/Core.h"
-#include "render/Fbo.h"
 #include "Game.h"
 
 Core *core;
