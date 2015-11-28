@@ -10,12 +10,16 @@
 class SimpleBlock : public Block {
 
 public:
-    SimpleBlock(int x, int y) : Block(x, y) { };
+    SimpleBlock(int texPos, int x, int y) : Block(x, y), texPos(texPos) { };
 
     virtual void update() override { };
 
+    int getTexPos() const {
+        return texPos;
+    }
+
 private:
-    int x, y;
+    int texPos;
 };
 
 #endif //C003_SIMPLEBLOCK_H

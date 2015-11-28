@@ -26,7 +26,7 @@ StringMapLoader::StringMapLoader(char *mapData, int width, int height) {
     for (int y = 0; y < height; y++) {
         for (int x = 0; x < width; x++) {
             if (mapData[y * width + x] != ' ')
-                this->map->addBlock(new SimpleBlock(x, y));
+                this->map->addBlock(new SimpleBlock((x + y) % 3 != 1, x, y));
         }
     }
 }
