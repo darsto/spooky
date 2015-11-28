@@ -12,8 +12,6 @@ class SimpleBlock : public Block {
 public:
     SimpleBlock(int texPos, int x, int y) : Block(x, y), texPos(texPos) { };
 
-    virtual void update() override { };
-
     int getTexPos() const {
         return texPos;
     }

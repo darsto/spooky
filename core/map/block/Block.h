@@ -32,7 +32,9 @@ public:
         this->y = y;
     }
 
-    virtual void update() = 0;
+    void update() { }
+
+    virtual ~Block() {}
 
 private:
     int x, y;
