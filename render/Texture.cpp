@@ -65,6 +65,7 @@ void Texture::setFiltering(int a_tfMagnification, int a_tfMinification) {
 }
 
 void Texture::bindTexture(int iTextureUnit) {
+    this->boundId = iTextureUnit;
     glActiveTexture(GL_TEXTURE0 + iTextureUnit);
     glBindTexture(GL_TEXTURE_2D, uiTexture);
     glBindSampler(iTextureUnit, uiSampler);
@@ -88,6 +89,10 @@ int Texture::getHeight() {
 
 int Texture::getBPP() {
     return iBPP;
+}
+
+int Texture::getBoundId() const {
+    return boundId;
 }
 
 Texture::~Texture() {

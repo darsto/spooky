@@ -41,12 +41,15 @@ public:
     int getBPP();
 
     Texture();
+
+    int getBoundId() const;
+
 private:
     int iWidth, iHeight, iBPP;
     GLuint uiTexture;
     GLuint uiSampler;
     bool bMipMapsGenerated;
-
+    int boundId = -1;
     int tfMinification, tfMagnification;
 
     string sPath;

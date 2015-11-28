@@ -15,8 +15,8 @@
 
 static std::map<const char *, BlockRender *> blockRenders;
 
-inline BlockRender *getBlockRender(Block *b) {
-    return blockRenders[typeid(*b).name()];
+inline BlockRender *getBlockRender(const Block *const block) {
+    return blockRenders[typeid(*block).name()];
 }
 
 inline void initRenderers() {

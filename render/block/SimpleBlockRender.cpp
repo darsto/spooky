@@ -9,6 +9,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "SimpleBlockRender.h"
 #include "../../core/map/block/SimpleBlock.h"
+#include "../Render.h"
 
 SimpleBlockRender::SimpleBlockRender() {
     /* initializing square's vertices */
@@ -60,12 +61,14 @@ SimpleBlockRender::SimpleBlockRender() {
 
     this->shaderProgram.linkProgram();
     this->shaderProgram.useProgram();
-    this->shaderProgram.setUniform("gSampler", 10); //todo hardcoded variable
 }
 
-void SimpleBlockRender::render(const Block *const block, glm::mat4 projectionMatrix, glm::mat4 viewMatrix) {
+void SimpleBlockRender::render(const Block *const block, int texId, glm::mat4 projectionMatrix, glm::mat4 viewMatrix) {
     this->shaderProgram.useProgram();
     this->shaderProgram.setUniform("projectionMatrix", projectionMatrix);
+    this->shaderProgram.setUniform("gSampler", texId);
+
+
     this->tmpModelMatrix = glm::translate(this->modelMatrix, glm::vec3(0.0f - block->getX() * blockSize * generalScale, 0.0f - block->getY() * blockSize * generalScale, 0.0f));
     this->tmpModelMatrix = glm::scale(this->tmpModelMatrix, glm::vec3(blockSize * generalScale, blockSize * generalScale, 1.0f));
     this->tmpModelMatrix = glm::rotate(this->tmpModelMatrix, 0.0f, glm::vec3(1.0f, 0.0f, 0.0f)); // Just a variation of first rotating

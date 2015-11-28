@@ -15,7 +15,7 @@ class SimpleBlockRender : public BlockRender {
 public:
     SimpleBlockRender();
     ~SimpleBlockRender();
-    virtual void render(const Block *const block, glm::mat4 projectionMatrix, glm::mat4 viewMatrix) override;
+    virtual void render(const Block *const block, int texId, glm::mat4 projectionMatrix, glm::mat4 viewMatrix) override;
 private:
     const unsigned int atlasSize = 8;
     float vertices[12];

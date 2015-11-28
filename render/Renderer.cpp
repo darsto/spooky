@@ -69,9 +69,9 @@ bool Renderer::initGL() {
 
 bool Renderer::initTextures() {
     bool ret = true;
-    if (!textureAtlas.loadTexture2D("terrain.png", false)) ret = false;
+    if (!textureAtlas.loadTexture2D("terrain.png", true)) ret = false;
     textureAtlas.setFiltering(TEXTURE_FILTER_MAG_BILINEAR, TEXTURE_FILTER_MIN_BILINEAR_MIPMAP);
-    textureAtlas.bindTexture(10);
+    textureAtlas.bindTexture(1);
     return ret;
 }
 
@@ -79,7 +79,7 @@ void Renderer::tick() {
     fbo.bind();
     glClear(GL_COLOR_BUFFER_BIT);
     for (Block *block : core->getMap()->getBlocks()) {
-        getBlockRender(block)->render(block, projectionMatrix, glm::translate(viewMatrix, glm::vec3(-(signed) windowWidth / 2.0f - this->core->getCamX(), (signed) windowHeight / 2.0f - this->core->getCamY(), 0.0f)));
+        getBlockRender(block)->render(block, textureAtlas.getBoundId(), projectionMatrix, glm::translate(viewMatrix, glm::vec3(-(signed) windowWidth / 2.0f - this->core->getCamX(), (signed) windowHeight / 2.0f - this->core->getCamY(), 0.0f)));
     }
     fbo.unbind();
     fbo.render(0);
