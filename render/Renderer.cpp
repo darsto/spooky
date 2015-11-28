@@ -16,7 +16,7 @@ bool Renderer::init() {
     } else {
         initRenderers();
         initTexData();
-        fbo.init(5, windowWidth, windowHeight, new float[4]{0.8f, 0.8f, 0.8f, 1.0f}, "fboshader");
+        fbo.init(0, windowWidth, windowHeight, new float[4]{0.8f, 0.8f, 0.8f, 1.0f}, "fboshader");
         return true;
     }
     return false;
