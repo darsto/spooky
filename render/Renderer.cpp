@@ -78,9 +78,11 @@ bool Renderer::initTextures() {
 void Renderer::tick() {
     fbo.bind();
     glClear(GL_COLOR_BUFFER_BIT);
+    textureAtlas.bindTexture(1);
     for (Block *block : core->getMap()->getBlocks()) {
         getBlockRender(block)->render(block, textureAtlas.getBoundId(), projectionMatrix, glm::translate(viewMatrix, glm::vec3(-(signed) windowWidth / 2.0f - this->core->getCamX(), (signed) windowHeight / 2.0f - this->core->getCamY(), 0.0f)));
     }
+    getEntityRender(this->core->getPlayer())->render(this->core->getPlayer(), projectionMatrix, glm::translate(viewMatrix, glm::vec3(-(signed) windowWidth / 2.0f - this->core->getCamX(), (signed) windowHeight / 2.0f - this->core->getCamY(), 0.0f)));
     fbo.unbind();
     fbo.render(0);
 }

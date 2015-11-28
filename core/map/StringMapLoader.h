@@ -7,6 +7,7 @@
 
 #include "Map.h"
 #include "../map/block/SimpleBlock.h"
+#include "../entity/Player.h"
 
 class StringMapLoader : public MapLoader {
 

@@ -12,15 +12,24 @@
 #include "../core/map/block/SimpleBlock.h"
 #include "block/BlockRender.h"
 #include "block/SimpleBlockRender.h"
+#include "entity/EntityRender.h"
+#include "../core/entity/Player.h"
+#include "entity/PlayerRender.h"
 
 static std::map<const char *, BlockRender *> blockRenders;
+static std::map<const char *, EntityRender *> entityRenders;
 
 inline BlockRender *getBlockRender(const Block *const block) {
     return blockRenders[typeid(*block).name()];
 }
 
+inline EntityRender *getEntityRender(const Entity *const entity) {
+    return entityRenders[typeid(*entity).name()];
+}
+
 inline void initRenderers() {
     blockRenders.insert(std::make_pair(typeid(SimpleBlock).name(), new SimpleBlockRender()));
+    entityRenders.insert(std::make_pair(typeid(Player).name(), new PlayerRender()));
 }
 
 #endif //C003_RENDER_H

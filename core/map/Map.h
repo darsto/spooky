@@ -8,6 +8,7 @@
 
 #include <vector>
 #include "block/Block.h"
+#include "../entity/Entity.h"
 
 class Map {
 
@@ -15,6 +16,7 @@ public:
     Map() { };
     ~Map();
     Block *getBlock(int x, int y);
+    Entity *getEntity(int id) { /* TODO */ };
 
     const std::vector<Block *> &getBlocks() const {
         return blocks;
@@ -24,8 +26,17 @@ public:
         this->blocks.push_back(block);
     }
 
+    const std::vector<Entity *> &getEntities() const {
+        return entities;
+    }
+
+    void addEntity(Entity *entity) {
+        this->entities.push_back(entity);
+    }
+
 private:
     std::vector<Block *> blocks;
+    std::vector<Entity *> entities;
 
 };
 

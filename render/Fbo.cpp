@@ -41,7 +41,7 @@ int Fbo::init(int texId, unsigned int width, unsigned int height, float bgColor[
         return shaderRet;
     }
 
-    glActiveTexture(GL_TEXTURE0);
+    glActiveTexture(GL_TEXTURE0 + this->texId);
     glGenTextures(1, &this->fbo_texture);
     glBindTexture(GL_TEXTURE_2D, this->fbo_texture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);

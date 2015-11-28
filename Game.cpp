@@ -17,27 +17,28 @@ void Game::run() {
         this->update(deltaTime);
     }
     SDL_StopTextInput();
-
 }
 
 void Game::update(double deltaTime) {
     handleKeyboard();
+    this->core->setCamX(-this->core->getPlayer()->getX() * blockSize * generalScale);
+    this->core->setCamY(-this->core->getPlayer()->getY() * blockSize * generalScale);
 }
 
 void Game::handleKeyboard() {
-    float SPEED = -2.5f;
+    float SPEED = 0.05f;
     const Uint8 *keystate = SDL_GetKeyboardState(NULL);
     if (keystate[SDL_SCANCODE_W]) {
-        this->core->setCamY(this->core->getCamY() - SPEED);
+        this->core->getPlayer()->setY(this->core->getPlayer()->getY() - SPEED);
     }
     if (keystate[SDL_SCANCODE_S]) {
-        this->core->setCamY(this->core->getCamY() + SPEED);
+        this->core->getPlayer()->setY(this->core->getPlayer()->getY() + SPEED);
     }
     if (keystate[SDL_SCANCODE_A]) {
-        this->core->setCamX(this->core->getCamX() - SPEED);
+        this->core->getPlayer()->setX(this->core->getPlayer()->getX() - SPEED);
     }
     if (keystate[SDL_SCANCODE_D]) {
-        this->core->setCamX(this->core->getCamX() + SPEED);
+        this->core->getPlayer()->setX(this->core->getPlayer()->getX() + SPEED);
     }
     if (keystate[SDL_SCANCODE_Q]) {
         this->core->stop();

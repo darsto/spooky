@@ -7,6 +7,7 @@
 
 
 #include "map/Map.h"
+#include "entity/Player.h"
 
 class Core {
 
@@ -21,20 +22,20 @@ public:
         return &map;
     }
 
-    float getCamX() const {
+    double getCamX() const {
         return camX;
     }
 
-    void setCamX(float camX) {
-        this->camX = camX;
+    void setCamX(double camX) {
+        Core::camX = camX;
     }
 
-    float getCamY() const {
+    double getCamY() const {
         return camY;
     }
 
-    void setCamY(float camY) {
-        this->camY = camY;
+    void setCamY(double camY) {
+        Core::camY = camY;
     }
 
     bool isRunning() {
@@ -46,10 +47,19 @@ public:
         this->running = false;
     }
 
+    void setPlayer(Player *player) {
+        Core::player = player;
+    }
+
+    Player *getPlayer() const {
+        return player;
+    }
+
 private:
     bool running = true;
     Map map;
-    float camX = 0, camY = 0;
+    Player *player = nullptr;
+    double camX = 0, camY = 0;
 };
 
 
