@@ -16,7 +16,7 @@ bool Renderer::init() {
     } else {
         initRenderers();
         initTexData();
-        fbo.init(0, windowWidth, windowHeight, new float[4]{0.8f, 0.8f, 0.8f, 1.0f}, "fboshader");
+        fbo.init(3, windowWidth, windowHeight, new float[4]{0.8f, 0.8f, 0.8f, 1.0f}, "fboshader");
         return true;
     }
     return false;
@@ -71,14 +71,13 @@ bool Renderer::initTextures() {
     bool ret = true;
     if (!textureAtlas.loadTexture2D("terrain.png", true)) ret = false;
     textureAtlas.setFiltering(TEXTURE_FILTER_MAG_BILINEAR, TEXTURE_FILTER_MIN_BILINEAR_MIPMAP);
-    textureAtlas.bindTexture(1);
     return ret;
 }
 
 void Renderer::tick() {
     fbo.bind();
     glClear(GL_COLOR_BUFFER_BIT);
-    textureAtlas.bindTexture(1);
+    textureAtlas.bindTexture(0);
     for (Block *block : core->getMap()->getBlocks()) {
         getBlockRender(block)->render(block, textureAtlas.getBoundId(), projectionMatrix, glm::translate(viewMatrix, glm::vec3(-(signed) windowWidth / 2.0f - this->core->getCamX(), (signed) windowHeight / 2.0f - this->core->getCamY(), 0.0f)));
     }

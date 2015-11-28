@@ -21,11 +21,6 @@ unsigned char Fbo::initShader() {
     if (!this->shader_program.addShaderToProgram(&frag_shader)) errCode |= 1 << 3;
 
     if (!this->shader_program.linkProgram()) errCode |= 1 << 4;
-    this->shader_program.useProgram();
-
-    GLint tmp_uniform_location = glGetUniformLocation(shader_program.getProgramID(), "fbo_texture");
-    if (tmp_uniform_location < 0) errCode |= 1 << 5;
-    this->shader_tex_uniform = (GLuint) glGetUniformLocation(shader_program.getProgramID(), "fbo_texture");
     return errCode;
 }
 
@@ -88,7 +83,7 @@ void Fbo::render(GLuint renderTo) {
     shader_program.setUniform("uResolution", glm::vec2(this->width, this->height));
     glActiveTexture(GL_TEXTURE0 + this->texId);
     glBindTexture(GL_TEXTURE_2D, this->fbo_texture);
-    glUniform1i(this->shader_tex_uniform, /*GL_TEXTURE*/ this->texId);
+    shader_program.setUniform("fbo_texture", this->texId);
     glBindVertexArray(vaoId);
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     glBindBuffer(GL_ARRAY_BUFFER, 0);

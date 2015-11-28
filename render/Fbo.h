@@ -40,7 +40,6 @@ private:
     string shaderName;
     Shader vert_shader, frag_shader;
     ShaderProgram shader_program;
-    GLuint shader_tex_uniform;
 
     /*
      * Loads and initializes shaders, creates shader program

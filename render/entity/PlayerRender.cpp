@@ -34,7 +34,6 @@ PlayerRender::PlayerRender() {
 
     texture.loadTexture2D("player.png", true);
     texture.setFiltering(TEXTURE_FILTER_MAG_BILINEAR, TEXTURE_FILTER_MIN_BILINEAR_MIPMAP);
-    texture.bindTexture(1);
 
     float tCoords[] = {
             1.0f / atlasSize, 0.0f,
@@ -62,7 +61,7 @@ PlayerRender::PlayerRender() {
 }
 
 void PlayerRender::render(const Entity *const entity, glm::mat4 projectionMatrix, glm::mat4 viewMatrix) {
-    this->texture.bindTexture(1);
+    this->texture.bindTexture(0);
     this->shaderProgram.useProgram();
     this->shaderProgram.setUniform("projectionMatrix", projectionMatrix);
     this->shaderProgram.setUniform("gSampler", texture.getBoundId());
