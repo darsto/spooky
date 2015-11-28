@@ -12,14 +12,13 @@
 class Core {
 
 public:
-    Core() { }
-
-    void setMap(Map *map) {
-        this->map = *map;
+    Core(Map *map) : map(map) {
+        this->player = new Player(map);
+        this->map->addEntity(player);
     }
 
     const Map *getMap() const {
-        return &map;
+        return map;
     }
 
     double getCamX() const {
@@ -47,17 +46,13 @@ public:
         this->running = false;
     }
 
-    void setPlayer(Player *player) {
-        Core::player = player;
-    }
-
     Player *getPlayer() const {
         return player;
     }
 
 private:
     bool running = true;
-    Map map;
+    Map *map;
     Player *player = nullptr;
     double camX = 0, camY = 0;
 };

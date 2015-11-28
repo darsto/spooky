@@ -16,12 +16,7 @@ int main(int argc, char *args[]) {
     MapLoader *mapLoader = new StringMapLoader(map_bl, w, h);
     Map *bmap = mapLoader->loadMap();
 
-    Player *player = new Player(bmap);
-    bmap->addEntity(player);
-
-    core = new Core();
-    core->setMap(bmap);
-    core->setPlayer(player);
+    core = new Core(bmap);
     Game game = Game(core);
     game.run();
 
