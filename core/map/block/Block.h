@@ -36,7 +36,7 @@ public:
 
     virtual ~Block() {}
 
-private:
+protected:
     int x, y;
 };
 
