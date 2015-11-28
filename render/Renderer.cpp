@@ -69,7 +69,7 @@ bool Renderer::initGL() {
 
 bool Renderer::initTextures() {
     bool ret = true;
-    if (!textureAtlas.loadTexture2D("rgba.png", true)) ret = false;
+    if (!textureAtlas.loadTexture2D("terrain.png", true)) ret = false;
     textureAtlas.setFiltering(TEXTURE_FILTER_MAG_BILINEAR, TEXTURE_FILTER_MIN_BILINEAR_MIPMAP);
     textureAtlas.bindTexture(10);
     return ret;
