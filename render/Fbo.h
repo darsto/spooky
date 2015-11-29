@@ -4,7 +4,7 @@
 
 #ifndef C003_FBO_H
 #define C003_FBO_H
-
+#pragma once
 
 #include "Shader.h"
 #include "ShaderProgram.h"

@@ -4,7 +4,7 @@
 
 #ifndef C003_BLOCKRENDER_H
 #define C003_BLOCKRENDER_H
-
+#pragma once
 
 #include <glm/detail/type_mat.hpp>
 #include <glm/detail/type_mat4x4.hpp>

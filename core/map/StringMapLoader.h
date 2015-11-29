@@ -4,6 +4,7 @@
 
 #ifndef C003_STRINGMAPLOADER_H
 #define C003_STRINGMAPLOADER_H
+#pragma once
 
 #include "Map.h"
 #include "../map/block/SimpleBlock.h"

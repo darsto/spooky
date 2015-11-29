@@ -4,6 +4,7 @@
 
 #ifndef C003_PLAYER_H
 #define C003_PLAYER_H
+#pragma once
 
 #include "Entity.h"
 #include "EntityMoving.h"

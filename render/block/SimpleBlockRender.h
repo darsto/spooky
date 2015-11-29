@@ -4,7 +4,7 @@
 
 #ifndef C003_SIMPLEBLOCKRENDER_H
 #define C003_SIMPLEBLOCKRENDER_H
-
+#pragma once
 
 #include "BlockRender.h"
 #include "../Shader.h"

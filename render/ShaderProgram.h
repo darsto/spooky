@@ -4,6 +4,7 @@
 
 #ifndef C003_CSHADERPROGRAM_H
 #define C003_CSHADERPROGRAM_H
+#pragma once
 
 #include "Shader.h"
 

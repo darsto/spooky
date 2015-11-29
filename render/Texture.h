@@ -4,6 +4,7 @@
 
 #ifndef C003_TEXTURE_H
 #define C003_TEXTURE_H
+#pragma once
 
 #include <string>
 #include <GLES2/gl2.h>

@@ -4,6 +4,7 @@
 
 #ifndef C003_RENDERER_H
 #define C003_RENDERER_H
+#pragma once
 
 #define GLM_FORCE_RADIANS
 

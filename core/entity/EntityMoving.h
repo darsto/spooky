@@ -4,6 +4,7 @@
 
 #ifndef C003_ENTITYMOVING_H
 #define C003_ENTITYMOVING_H
+#pragma once
 
 #include <stdlib.h>
 #include <cmath>

@@ -4,7 +4,7 @@
 
 #ifndef C003_GAME_H
 #define C003_GAME_H
-
+#pragma once
 
 #include "core/Core.h"
 #include "render/Renderer.h"

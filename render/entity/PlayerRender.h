@@ -4,6 +4,7 @@
 
 #ifndef C003_PLAYERRENDER_H
 #define C003_PLAYERRENDER_H
+#pragma once
 
 #define GLM_FORCE_RADIANS
 

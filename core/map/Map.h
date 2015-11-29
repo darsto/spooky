@@ -4,6 +4,7 @@
 
 #ifndef C003_MAP_H
 #define C003_MAP_H
+#pragma once
 
 #include <vector>
 #include "block/Block.h"

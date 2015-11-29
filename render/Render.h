@@ -4,6 +4,7 @@
 
 #ifndef C003_RENDER_H
 #define C003_RENDER_H
+#pragma once
 
 #include <typeinfo>
 #include <map>

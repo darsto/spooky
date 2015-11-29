@@ -4,7 +4,7 @@
 
 #ifndef C003_CSHADER_H
 #define C003_CSHADER_H
-
+#pragma once
 
 #include <GLES2/gl2.h>
 #include <string>

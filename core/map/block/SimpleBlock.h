@@ -4,6 +4,7 @@
 
 #ifndef C003_SIMPLEBLOCK_H
 #define C003_SIMPLEBLOCK_H
+#pragma once
 
 #include "Block.h"
 

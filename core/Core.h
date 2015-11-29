@@ -4,7 +4,7 @@
 
 #ifndef C003_CORE_H
 #define C003_CORE_H
-
+#pragma once
 
 #include "map/Map.h"
 #include "entity/Player.h"

@@ -4,6 +4,7 @@
 
 #ifndef C003_ENTITY_H
 #define C003_ENTITY_H
+#pragma once
 
 #include <Box2D/Box2D.h>
 

@@ -4,6 +4,7 @@
 
 #ifndef C003_RENDERENTITY_H
 #define C003_RENDERENTITY_H
+#pragma once
 
 #include <glm/detail/type_mat.hpp>
 #include <glm/detail/type_mat4x4.hpp>
