@@ -27,14 +27,6 @@ public:
         Entity::y = y;
     }
 
-    double getRotation() const {
-        return rotation;
-    }
-
-    void setRotation(double rotation) {
-        Entity::rotation = rotation;
-    }
-
     virtual void update() { }
 
     virtual ~Entity() { }
@@ -42,7 +34,6 @@ public:
 protected:
     Map *map;
     double x = 0, y = 0;
-    double rotation; //angle in radians
 };
 
 #endif //C003_ENTITY_H
