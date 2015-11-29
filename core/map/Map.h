@@ -5,17 +5,21 @@
 #ifndef C003_MAP_H
 #define C003_MAP_H
 
-
 #include <vector>
 #include "block/Block.h"
 #include "../entity/Entity.h"
+#include <Box2D/Box2D.h>
 
 class Map {
 
 public:
-    Map() { };
+    Map() {
+        world = new b2World(b2Vec2(0.0, 0.0));
+    };
+
     ~Map();
     Block *getBlock(int x, int y);
+
     Entity *getEntity(int id) { /* TODO */ };
 
     const std::vector<Block *> &getBlocks() const {
@@ -32,9 +36,17 @@ public:
 
     void addEntity(Entity *entity) {
         this->entities.push_back(entity);
+
+    }
+
+    void update();
+
+    b2World *getWorld() const {
+        return world;
     }
 
 private:
+    b2World *world;
     std::vector<Block *> blocks;
     std::vector<Entity *> entities;
 
@@ -44,6 +56,5 @@ class MapLoader {
 public:
     virtual Map *loadMap() = 0;
 };
-
 
 #endif //C003_MAP_H

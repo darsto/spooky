@@ -18,7 +18,7 @@ public:
         this->map->addEntity(player);
     }
 
-    const Map *getMap() const {
+    Map *getMap() const {
         return map;
     }
 

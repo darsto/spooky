@@ -5,19 +5,17 @@
 #include "EntityMoving.h"
 #include "../map/Map.h"
 
+EntityMoving::EntityMoving(Map *map, double width, double height) : Entity(map, width, height) {
+    body->SetType(b2_dynamicBody);
+}
+
 double EntityMoving::getSpeed() {
-    return 0.1;
+    return 1.5;
 }
 
-void EntityMoving::move() {
-    if (this->canMove()) {
-        this->x += this->velX * this->getSpeed();
-        this->y += this->velY * this->getSpeed();
-        this->velX *= 0.5;
-        this->velY *= 0.5;
-    }
-}
-
-bool EntityMoving::canMove() {
-    return true;
+void EntityMoving::update() {
+    body->SetLinearVelocity(b2Vec2(this->velX * this->getSpeed(), this->velY * this->getSpeed()));
+    Entity::update();
+    this->velX *= 0.5;
+    this->velY *= 0.5;
 }

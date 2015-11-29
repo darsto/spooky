@@ -3,15 +3,9 @@
 //
 
 #include "Player.h"
-#include "EntityMoving.h"
 
-Player::Player(Map *map) : EntityMoving(map, width, height) {
+Player::Player(Map *map) : EntityMoving(map, 0.45, 0.45) {
 
-}
-
-void Player::update() {
-    Entity::update();
-    this->move();
 }
 
 

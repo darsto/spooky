@@ -10,7 +10,7 @@
 class SimpleBlock : public Block {
 
 public:
-    SimpleBlock(int texPos, int x, int y) : Block(x, y), texPos(texPos) { };
+    SimpleBlock(Map *map, int texPos, int x, int y) : Block(map, x, y), texPos(texPos) { };
 
     int getTexPos() const {
         return texPos;
