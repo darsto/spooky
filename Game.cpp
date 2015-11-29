@@ -4,7 +4,6 @@
 
 #include "Game.h"
 
-
 Game::Game(Core *core) : core(core), renderer(core) {
 }
 
@@ -12,33 +11,43 @@ void Game::run() {
     this->renderer.init();
     SDL_StartTextInput();
     double deltaTime = timer.GetDelta();
+    double accumulator = 0.;
+    const double TIME_STEP = 0.03;
     while (this->core->isRunning()) {
+        deltaTime = timer.GetDelta();
+        accumulator += deltaTime;
+        while (accumulator > TIME_STEP) {
+            this->update();
+            accumulator -= TIME_STEP;
+        }
         this->renderer.run();
-        this->update(deltaTime);
     }
     SDL_StopTextInput();
 }
 
-void Game::update(double deltaTime) {
+void Game::update() {
     handleKeyboard();
+    for (Entity *entity : this->core->getMap()->getEntities()) {
+        entity->update();
+    }
     this->core->setCamX(-this->core->getPlayer()->getX() * blockSize * generalScale);
     this->core->setCamY(-this->core->getPlayer()->getY() * blockSize * generalScale);
 }
 
 void Game::handleKeyboard() {
-    float SPEED = 0.05f;
+    float SPEED = 1.0f;
     const Uint8 *keystate = SDL_GetKeyboardState(NULL);
     if (keystate[SDL_SCANCODE_W]) {
-        this->core->getPlayer()->setY(this->core->getPlayer()->getY() - SPEED);
+        this->core->getPlayer()->setVelY(-SPEED);
     }
     if (keystate[SDL_SCANCODE_S]) {
-        this->core->getPlayer()->setY(this->core->getPlayer()->getY() + SPEED);
+        this->core->getPlayer()->setVelY(SPEED);
     }
     if (keystate[SDL_SCANCODE_A]) {
-        this->core->getPlayer()->setX(this->core->getPlayer()->getX() - SPEED);
+        this->core->getPlayer()->setVelX(-SPEED);
     }
     if (keystate[SDL_SCANCODE_D]) {
-        this->core->getPlayer()->setX(this->core->getPlayer()->getX() + SPEED);
+        this->core->getPlayer()->setVelX(SPEED);
     }
     if (keystate[SDL_SCANCODE_Q]) {
         this->core->stop();

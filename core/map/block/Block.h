@@ -34,11 +34,12 @@ public:
 
     void update() { }
 
-    virtual ~Block() {}
+    bool isCollidable() { return true; };
+
+    virtual ~Block() { }
 
 protected:
     int x, y;
 };
-
 
 #endif //C003_BLOCK_H

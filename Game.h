@@ -20,7 +20,7 @@ private:
     Core *core;
     Renderer renderer;
     Timer timer;
-    void update(double deltaTime);
+    void update();
     void handleKeyboard();
 
 };
