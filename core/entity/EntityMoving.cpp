@@ -10,12 +10,12 @@ EntityMoving::EntityMoving(Map *map, double width, double height) : Entity(map, 
 }
 
 double EntityMoving::getSpeed() {
-    return 1.5;
+    return 2.0;
 }
 
 void EntityMoving::update() {
     body->SetLinearVelocity(b2Vec2(this->velX * this->getSpeed(), this->velY * this->getSpeed()));
     Entity::update();
-    this->velX *= 0.5;
-    this->velY *= 0.5;
+    this->velX *= 0.7;
+    this->velY *= 0.7;
 }
