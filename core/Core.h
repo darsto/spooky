@@ -14,7 +14,8 @@ class Core {
 public:
     Core(Map *map) : map(map) {
         this->player = new Player(map);
-        this->player->setX(2);
+        this->player->setX(9);
+        this->player->setY(9);
         this->map->addEntity(player);
     }
 
