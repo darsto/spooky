@@ -12,7 +12,6 @@ void Game::run() {
     SDL_StartTextInput();
     double deltaTime = timer.GetDelta();
     double accumulator = 0.0;
-    const double TIME_STEP = 0.03;
     while (this->core->isRunning()) {
         deltaTime = timer.GetDelta();
         accumulator += deltaTime;
@@ -28,7 +27,7 @@ void Game::run() {
 void Game::update() {
     handleKeyboard();
     this->core->getMap()->update();
-    this->core->getMap()->getWorld()->Step(0.03, 8, 3);
+    this->core->getMap()->getWorld()->Step(TIME_STEP, 8, 3);
     this->core->setCamX(-this->core->getPlayer()->getX() * blockSize * generalScale);
     this->core->setCamY(-this->core->getPlayer()->getY() * blockSize * generalScale);
 }

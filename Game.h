@@ -20,6 +20,7 @@ private:
     Core *core;
     Renderer renderer;
     Timer timer;
+    const double TIME_STEP = 0.01;
     void update();
     void handleKeyboard();
 
