@@ -79,6 +79,10 @@ void Renderer::tick() {
     glClear(GL_COLOR_BUFFER_BIT);
     textureAtlas.bindTexture(0);
     for (Block *block : core->getMap()->getBlocks()) {
+        if (block->getX() * generalScale * blockSize > -(signed) windowWidth / 2.0f - this->core->getCamX() &&
+            (block->getX() - 1) * generalScale * blockSize < -(signed) windowWidth / 2.0f - this->core->getCamX() + (signed) windowWidth &&
+            block->getY() * generalScale * blockSize > -(signed) windowHeight / 2.0f - this->core->getCamY() &&
+            (block->getY() - 1) * generalScale * blockSize < -(signed) windowHeight / 2.0f - this->core->getCamY() + (signed) windowHeight)
         getBlockRender(block)->render(block, textureAtlas.getBoundId(), projectionMatrix, glm::translate(viewMatrix, glm::vec3((int)(-(signed) windowWidth / 2.0f - this->core->getCamX()), (int)((signed) windowHeight / 2.0f - this->core->getCamY()), 0.0f)));
     }
     for (Entity *entity : core->getMap()->getEntities()) {
