@@ -12,7 +12,7 @@
 
 class EntityRender {
 public:
-    virtual void render(const Entity *const entity, glm::mat4 projectionMatrix, glm::mat4 viewMatrix) = 0;
+    virtual void render(const Entity *const entity, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, double scale) = 0;
 };
 
 #endif //C003_RENDERENTITY_H

@@ -18,7 +18,7 @@ class PlayerRender : public EntityRender {
 public:
     PlayerRender();
     ~PlayerRender();
-    virtual void render(const Entity *const entity, glm::mat4 projectionMatrix, glm::mat4 viewMatrix) override;
+    virtual void render(const Entity *const entity, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, double scale) override;
 
 private:
     const unsigned int atlasSize = 8;

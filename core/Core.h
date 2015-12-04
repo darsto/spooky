@@ -43,7 +43,6 @@ public:
         return this->running;
     }
 
-
     void stop() {
         this->running = false;
     }
@@ -52,12 +51,29 @@ public:
         return player;
     }
 
+    double getGeneralScale() const {
+        return generalScale;
+    }
+
+    void setGeneralScale(double generalScale) {
+        Core::generalScale = generalScale;
+    }
+
+    double getBlockSize() const {
+        return blockSize;
+    }
+
+    void setBlockSize(double blockSize) {
+        Core::blockSize = blockSize;
+    }
+
 private:
     bool running = true;
     Map *map;
     Player *player = nullptr;
     double camX = 0, camY = 0;
+    double generalScale = 1.0;
+    double blockSize = 50.0;
 };
-
 
 #endif //C003_CORE_H

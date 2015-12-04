@@ -79,14 +79,20 @@ void Renderer::tick() {
     glClear(GL_COLOR_BUFFER_BIT);
     textureAtlas.bindTexture(0);
     for (Block *block : core->getMap()->getBlocks()) {
-        if (block->getX() * generalScale * blockSize > -(signed) windowWidth / 2.0f - this->core->getCamX() &&
-            (block->getX() - 1) * generalScale * blockSize < -(signed) windowWidth / 2.0f - this->core->getCamX() + (signed) windowWidth &&
-            block->getY() * generalScale * blockSize > -(signed) windowHeight / 2.0f - this->core->getCamY() &&
-            (block->getY() - 1) * generalScale * blockSize < -(signed) windowHeight / 2.0f - this->core->getCamY() + (signed) windowHeight)
-        getBlockRender(block)->render(block, textureAtlas.getBoundId(), projectionMatrix, glm::translate(viewMatrix, glm::vec3((int)(-(signed) windowWidth / 2.0f - this->core->getCamX()), (int)((signed) windowHeight / 2.0f - this->core->getCamY()), 0.0f)));
+        if (block->getX() * this->core->getGeneralScale() * this->core->getBlockSize() > -(signed) windowWidth / 2.0f - this->core->getCamX() &&
+            (block->getX() - 1) * this->core->getGeneralScale() * this->core->getBlockSize() < -(signed) windowWidth / 2.0f - this->core->getCamX() + (signed) windowWidth &&
+            block->getY() * this->core->getGeneralScale() * this->core->getBlockSize() > -(signed) windowHeight / 2.0f - this->core->getCamY() &&
+            (block->getY() - 1) * this->core->getGeneralScale() * this->core->getBlockSize() < -(signed) windowHeight / 2.0f - this->core->getCamY() + (signed) windowHeight)
+            getBlockRender(block)->render(block, textureAtlas.getBoundId(), projectionMatrix, glm::translate(viewMatrix, glm::vec3(
+                (int) (-(signed) windowWidth / 2.0f - this->core->getCamX()),
+                (int) ((signed) windowHeight / 2.0f - this->core->getCamY()), 0.0f
+            )), this->core->getBlockSize() * this->core->getGeneralScale());
     }
     for (Entity *entity : core->getMap()->getEntities()) {
-        getEntityRender(entity)->render(entity, projectionMatrix, glm::translate(viewMatrix, glm::vec3((int)(-(signed) windowWidth / 2.0f - this->core->getCamX()), (int)((signed) windowHeight / 2.0f - this->core->getCamY()), 0.0f)));
+        getEntityRender(entity)->render(entity, projectionMatrix, glm::translate(viewMatrix, glm::vec3(
+            (int) (-(signed) windowWidth / 2.0f - this->core->getCamX()),
+            (int) ((signed) windowHeight / 2.0f - this->core->getCamY()),
+            0.0f)), this->core->getBlockSize() * this->core->getGeneralScale());
     }
     fbo.unbind();
     fbo.render(0);

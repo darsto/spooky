@@ -8,9 +8,6 @@
 
 #include <Box2D/Box2D.h>
 
-#define generalScale 1
-#define blockSize 50.0f
-
 class Map;
 
 class Block {

@@ -28,8 +28,8 @@ void Game::update() {
     handleKeyboard();
     this->core->getMap()->update();
     this->core->getMap()->getWorld()->Step(TIME_STEP, 8, 3);
-    this->core->setCamX(-this->core->getPlayer()->getX() * blockSize * generalScale);
-    this->core->setCamY(-this->core->getPlayer()->getY() * blockSize * generalScale);
+    this->core->setCamX(-this->core->getPlayer()->getX() * this->core->getBlockSize() * this->core->getGeneralScale());
+    this->core->setCamY(-this->core->getPlayer()->getY() * this->core->getBlockSize() * this->core->getGeneralScale());
 }
 
 void Game::handleKeyboard() {
@@ -49,6 +49,12 @@ void Game::handleKeyboard() {
     }
     if (keystate[SDL_SCANCODE_Q]) {
         this->core->stop();
+    }
+    if (keystate[SDL_SCANCODE_MINUS]) {
+        this->core->setBlockSize(this->core->getBlockSize() - 0.15);
+    }
+    if (keystate[SDL_SCANCODE_EQUALS]) {
+        this->core->setBlockSize(this->core->getBlockSize() + 0.15);
     }
 }
 
