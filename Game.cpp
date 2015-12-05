@@ -39,7 +39,8 @@ void Game::update() {
                 break;
             case SDL_KEYDOWN:
             case SDL_KEYUP:
-                handleKeypress(e);
+                if (e.key.repeat == 0)
+                    handleKeypress(e);
                 break;
         }
     }
