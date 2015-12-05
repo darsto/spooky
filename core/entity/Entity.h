@@ -35,7 +35,6 @@ protected:
     double x = 0, y = 0;
     b2Body *body;
     b2BodyDef bodyDef;
-    b2CircleShape shape;
     b2FixtureDef fixDef;
 };
 

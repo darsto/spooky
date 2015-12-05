@@ -9,8 +9,8 @@ Entity::Entity(Map *map, double width, double height) : map(map) {
     bodyDef.type = b2_staticBody;
     bodyDef.position.Set(this->getX(), this->getY());
     body = map->getWorld()->CreateBody(&bodyDef);
-    shape.m_p.Set(0, 0);
-    shape.m_radius = 0.25;
+    b2PolygonShape shape;
+    shape.SetAsBox(width / 2, height / 2);
     fixDef.shape = &shape;
     fixDef.density = 1.0f;
     fixDef.friction = 0.3f;
