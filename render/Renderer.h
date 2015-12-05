@@ -26,6 +26,7 @@ public:
     ~Renderer();
     bool init();
     void run();
+    void resize(unsigned int width, unsigned int height);
 
 private:
     SDL_Window *gWindow = NULL;
@@ -42,7 +43,6 @@ private:
     bool initGL();
     bool initTextures();
     void tick();
-    void resize(unsigned int width, unsigned int height);
 };
 
 #endif //C003_RENDERER_H

@@ -27,9 +27,11 @@ public:
 
     void render(GLuint renderTo);
 
-    const ShaderProgram &getShaderProgram() const {
-        return shader_program;
+    ShaderProgram *getShaderProgram() {
+        return &shader_program;
     }
+
+    const int MAX_LIGHT_SRCS = 50; //also hardcoded in fragment shader
 
 private:
     GLuint id;

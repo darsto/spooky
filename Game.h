@@ -23,6 +23,7 @@ private:
     const double TIME_STEP = 0.01;
     void update();
     void handleKeyboard();
+    void handleKeypress(SDL_Event event);
 
 };
 

@@ -89,27 +89,32 @@ void Renderer::tick() {
                 (int) ((signed) windowHeight / 2.0f - this->core->getCamY()), 0.0f
             )), this->core->getBlockSize() * this->core->getGeneralScale());
     }
+    int entitiesNum = 0;
     for (Entity *entity : core->getMap()->getEntities()) {
-        getEntityRender(entity)->render(entity, projectionMatrix, glm::translate(viewMatrix, glm::vec3(
-            (int) (-(signed) windowWidth / 2.0f - this->core->getCamX()),
-            (int) ((signed) windowHeight / 2.0f - this->core->getCamY()),
-            0.0f)), this->core->getBlockSize() * this->core->getGeneralScale());
+        if (entity->getX() * this->core->getGeneralScale() * this->core->getBlockSize() > -(signed) windowWidth / 2.0f - this->core->getCamX() &&
+            (entity->getX() - 1) * this->core->getGeneralScale() * this->core->getBlockSize() < -(signed) windowWidth / 2.0f - this->core->getCamX() + (signed) windowWidth &&
+            entity->getY() * this->core->getGeneralScale() * this->core->getBlockSize() > -(signed) windowHeight / 2.0f - this->core->getCamY() &&
+            (entity->getY() - 1) * this->core->getGeneralScale() * this->core->getBlockSize() < -(signed) windowHeight / 2.0f - this->core->getCamY() + (signed) windowHeight) {
+            getEntityRender(entity)->render(entity, projectionMatrix, glm::translate(viewMatrix, glm::vec3(
+                (int) (-(signed) windowWidth / 2.0f - this->core->getCamX()),
+                (int) ((signed) windowHeight / 2.0f - this->core->getCamY()),
+                0.0f)), this->core->getBlockSize() * this->core->getGeneralScale());
+            fbo.getShaderProgram()->useProgram();
+            if (entitiesNum < fbo.MAX_LIGHT_SRCS) {
+                fbo.getShaderProgram()->setUniform("lightPoints[" + to_string(entitiesNum) + "]",
+                                                   glm::vec2(this->core->getCamX() + entity->getX() * this->core->getBlockSize() * this->core->getGeneralScale() + (double) this->windowWidth / 2,
+                                                             -this->core->getCamY() - entity->getY() * this->core->getBlockSize() * this->core->getGeneralScale() + (double) this->windowHeight / 2));
+                entitiesNum++;
+            }
+        }
     }
     fbo.unbind();
+    fbo.getShaderProgram()->useProgram();
+    fbo.getShaderProgram()->setUniform("lightPointsNum", entitiesNum);
     fbo.render(0);
 }
 
 void Renderer::run() {
-    SDL_Event e;
-    while (SDL_PollEvent(&e) != 0) {
-        if (e.type == SDL_QUIT) {
-            this->core->stop();
-        } else if (e.type == SDL_WINDOWEVENT) {
-            if (e.window.event == SDL_WINDOWEVENT_RESIZED || e.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
-                this->resize((unsigned int) e.window.data1, (unsigned int) e.window.data2);
-            }
-        }
-    }
     this->tick();
     SDL_GL_SwapWindow(gWindow);
 }

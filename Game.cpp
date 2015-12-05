@@ -26,6 +26,23 @@ void Game::run() {
 
 void Game::update() {
     handleKeyboard();
+    SDL_Event e;
+    while (SDL_PollEvent(&e) != 0) {
+        switch (e.type) {
+            case SDL_QUIT:
+                this->core->stop();
+                break;
+            case SDL_WINDOWEVENT:
+                if (e.window.event == SDL_WINDOWEVENT_RESIZED || e.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
+                    this->renderer.resize((unsigned int) e.window.data1, (unsigned int) e.window.data2);
+                }
+                break;
+            case SDL_KEYDOWN:
+            case SDL_KEYUP:
+                handleKeypress(e);
+                break;
+        }
+    }
     this->core->getMap()->update();
     this->core->getMap()->getWorld()->Step(TIME_STEP, 8, 3);
     this->core->setCamX(-this->core->getPlayer()->getX() * this->core->getBlockSize() * this->core->getGeneralScale());
@@ -55,6 +72,30 @@ void Game::handleKeyboard() {
     }
     if (keystate[SDL_SCANCODE_EQUALS]) {
         this->core->setBlockSize(this->core->getBlockSize() + 0.15);
+    }
+}
+
+void Game::handleKeypress(SDL_Event event) {
+    switch (event.type) {
+        case SDL_KEYDOWN:
+            switch (event.key.keysym.sym) {
+                case SDLK_c: {
+                    Player *p = new Player(this->core->getMap());
+                    p->setX(this->core->getPlayer()->getX());
+                    p->setY(this->core->getPlayer()->getY());
+                    this->core->getMap()->addEntity(p);
+                    break;
+                }
+                default:
+                    break;
+            }
+            break;
+
+        case SDL_KEYUP:
+            break;
+
+        default:
+            break;
     }
 }
 
