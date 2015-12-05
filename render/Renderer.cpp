@@ -16,7 +16,7 @@ bool Renderer::init() {
     } else {
         initRenderers();
         initTexData();
-        fbo.init(3, windowWidth, windowHeight, new float[4]{0.8f, 0.8f, 0.8f, 1.0f}, "fboshader");
+        fbo.init(3, windowWidth, windowHeight, new float[4]{0.8, 0.8, 0.8, 1.0}, "fboshader");
         return true;
     }
     return false;
@@ -76,6 +76,7 @@ bool Renderer::initTextures() {
 
 void Renderer::tick() {
     fbo.bind();
+    glClearColor(0.0, 0.0, 0.0, 0.0);
     glClear(GL_COLOR_BUFFER_BIT);
     textureAtlas.bindTexture(0);
     for (Block *block : core->getMap()->getBlocks()) {
