@@ -12,9 +12,10 @@ void main(void) {
     //texcoord.x += sin(texcoord.y * 4.0*2.0*3.14159 + offset) / 100.0;
     gl_FragColor = texture2D(fbo_texture, texcoord);
 
-    vec2 position = gl_FragCoord.xy/uResolution;
-    float alpha = max(abs(position.x - 0.5), abs(position.y - 0.5));
-    gl_FragColor.a *= 1.0 - (max(alpha, 0.15) - 0.15) * 3.0;
+    vec2 position = gl_FragCoord.xy;
+    float alpha = distance(position, uResolution * 0.5) / min(uResolution.x, uResolution.y);
+    gl_FragColor.a *= clamp(1.0 - alpha, 0.0, 1.0);
+    gl_FragColor.xyz *= 1 + clamp(1.4 - alpha * 6.0, 0.0, 1.0) / 4.0;
 
     /*gl_FragColor = vec4(0.0);
     gl_FragColor += texture2D(fbo_texture, v_blurTexCoords[ 0])*0.0044299121055113265;
