@@ -14,7 +14,7 @@ void main(void) {
 
     vec2 position = gl_FragCoord.xy;
     float alpha = distance(position, uResolution * 0.5) / min(uResolution.x, uResolution.y);
-    gl_FragColor.a *= clamp(1.0 - alpha, 0.0, 1.0);
+    gl_FragColor.a *= clamp(1.0 - alpha * 1.5, 0.25, 1.0);
     gl_FragColor.xyz *= 1 + clamp(1.4 - alpha * 6.0, 0.0, 1.0) / 4.0;
 
     /*gl_FragColor = vec4(0.0);
