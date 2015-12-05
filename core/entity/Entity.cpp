@@ -18,16 +18,16 @@ Entity::Entity(Map *map, double width, double height) : map(map) {
 }
 
 void Entity::update() {
-    this->x = body->GetPosition().x;
-    this->y = body->GetPosition().y;
+    this->x = body->GetPosition().x - 0.5;
+    this->y = body->GetPosition().y - 0.5;
 }
 
 void Entity::setY(double y) {
     this->y = y;
-    body->SetTransform(b2Vec2(this->getX(), this->getY()), body->GetAngle());
+    body->SetTransform(b2Vec2(this->getX() + 0.5, this->getY() + 0.5), body->GetAngle());
 }
 
 void Entity::setX(double x) {
     this->x = x;
-    body->SetTransform(b2Vec2(this->getX(), this->getY()), body->GetAngle());
+    body->SetTransform(b2Vec2(this->getX() + 0.5, this->getY() + 0.5), body->GetAngle());
 }

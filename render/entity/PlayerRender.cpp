@@ -66,7 +66,7 @@ void PlayerRender::render(const Entity *const entity, glm::mat4 projectionMatrix
     this->shaderProgram.setUniform("projectionMatrix", projectionMatrix);
     this->shaderProgram.setUniform("gSampler", texture.getBoundId());
 
-    this->tmpModelMatrix = glm::translate(this->modelMatrix, glm::vec3(0.0f - entity->getX() * scale, 0.0f - entity->getY() * scale, 0.0f));
+    this->tmpModelMatrix = glm::translate(this->modelMatrix, glm::vec3(0.0f - (entity->getX() + 0.5) * scale, 0.0f - (entity->getY() + 0.5) * scale, 0.0f));
     this->tmpModelMatrix = glm::scale(this->tmpModelMatrix, glm::vec3(scale, scale, 1.0f));
     this->tmpModelMatrix = glm::rotate(this->tmpModelMatrix, 0.0f, glm::vec3(1.0f, 0.0f, 0.0f)); // Just a variation of first rotating
 
