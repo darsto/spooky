@@ -20,8 +20,8 @@ void main(void) {
     float dist;
     float alpha = 1.0;
     for (int i = 0; i < lightPointsNum; i++) {
-        dist = distance(position, lightPoints[i]) / min(uResolution.x, uResolution.y);
-        alpha *= 1 + clamp(1.4 - dist / scale * 400.0, 0.0, 1.0) / 3.0;
+        dist = distance(position, lightPoints[i]) / scale;
+        alpha += clamp(1.4 - dist * 0.4, 0.0, 1/alpha/alpha) / 2.5;
     }
     float screenDist = distance(position, uResolution * 0.5) / min(uResolution.x, uResolution.y);
     gl_FragColor.a *= clamp(1.0 - screenDist * 0.5, 0.6, 1.0);
