@@ -9,6 +9,7 @@ uniform vec2 uResolution;
 
 uniform int lightPointsNum;
 uniform vec2 lightPoints[50];
+uniform float scale;
 
 void main(void) {
     vec2 texcoord = f_texcoord;
@@ -20,7 +21,7 @@ void main(void) {
     float alpha = 1.0;
     for (int i = 0; i < lightPointsNum; i++) {
         dist = distance(position, lightPoints[i]) / min(uResolution.x, uResolution.y);
-        alpha *= 1 + clamp(1.4 - dist * 8.0, 0.0, 1.0) / 3.0;
+        alpha *= 1 + clamp(1.4 - dist / scale * 400.0, 0.0, 1.0) / 3.0;
     }
     float screenDist = distance(position, uResolution * 0.5) / min(uResolution.x, uResolution.y);
     gl_FragColor.a *= clamp(1.0 - screenDist * 0.5, 0.6, 1.0);

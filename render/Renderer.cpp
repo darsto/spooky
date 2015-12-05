@@ -111,6 +111,7 @@ void Renderer::tick() {
     fbo.unbind();
     fbo.getShaderProgram()->useProgram();
     fbo.getShaderProgram()->setUniform("lightPointsNum", entitiesNum);
+    fbo.getShaderProgram()->setUniform("scale", (float)(this->core->getBlockSize() * this->core->getGeneralScale()));
     fbo.render(0);
 }
 
