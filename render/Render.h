@@ -15,7 +15,7 @@
 #include "block/SimpleBlockRender.h"
 #include "entity/EntityRender.h"
 #include "../core/entity/Player.h"
-#include "DefaultEntityRender.h"
+#include "entity/DefaultEntityRender.h"
 #include "../core/entity/EntityBullet.h"
 
 static std::map<const char *, BlockRender *> blockRenders;
