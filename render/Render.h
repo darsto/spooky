@@ -16,6 +16,7 @@
 #include "entity/EntityRender.h"
 #include "../core/entity/Player.h"
 #include "entity/PlayerRender.h"
+#include "../core/entity/EntityBullet.h"
 
 static std::map<const char *, BlockRender *> blockRenders;
 static std::map<const char *, EntityRender *> entityRenders;
@@ -31,6 +32,7 @@ inline EntityRender *getEntityRender(const Entity *const entity) {
 inline void initRenderers() {
     blockRenders.insert(std::make_pair(typeid(SimpleBlock).name(), new SimpleBlockRender()));
     entityRenders.insert(std::make_pair(typeid(Player).name(), new PlayerRender()));
+    entityRenders.insert(std::make_pair(typeid(EntityBullet).name(), new PlayerRender()));
 }
 
 #endif //C003_RENDER_H

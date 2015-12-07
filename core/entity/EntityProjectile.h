@@ -7,21 +7,23 @@
 #pragma once
 
 #include "../IPositionable.h"
-#include "Entity.h"
+#include "EntityMoving.h"
 
 class Map;
 
 class IPositionable;
 
-class EntityProjectile : public Entity {
+class EntityProjectile : public EntityMoving {
 protected:
     void checkCollisions(const Map *map);
     virtual void onCollision(IPositionable *object) = 0;
 
 public:
-    EntityProjectile(Map *map, double width, double height) : Entity(map, width, height) { }
+    EntityProjectile(Map *map, double width, double height) : EntityMoving(map, width, height) { }
 
-    virtual void onUpdate(Map *map) = 0;
+    virtual ~EntityProjectile() { }
+
+    virtual void update() override;
 };
 
 #endif //C003_ENTITYPROJECTILE_H

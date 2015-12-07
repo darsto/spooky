@@ -5,8 +5,9 @@
 #include "EntityProjectile.h"
 #include "../map/Map.h"
 
-void EntityProjectile::onUpdate(Map *map) {
-    checkCollisions(map);
+void EntityProjectile::update() {
+    EntityMoving::update();
+    this->checkCollisions(map);
 }
 
 void EntityProjectile::checkCollisions(const Map *map) {

@@ -81,7 +81,7 @@ void Game::handleKeypress(SDL_Event event) {
         case SDL_KEYDOWN:
             switch (event.key.keysym.sym) {
                 case SDLK_c: {
-                    Player *p = new Player(this->core->getMap());
+                    EntityBullet *p = new EntityBullet(this->core->getMap(), 0, 1);
                     p->setX(this->core->getPlayer()->getX());
                     p->setY(this->core->getPlayer()->getY());
                     this->core->getMap()->addEntity(p);
