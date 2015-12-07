@@ -7,21 +7,22 @@
 #pragma once
 
 #include <Box2D/Box2D.h>
+#include "../../IPositionable.h"
 
 class Map;
 
-class Block {
+class Block : public IPositionable {
 
 public:
     Block(Map *map, int x, int y);
 
-    int getX() const {
+    virtual double getX() const override {
         return x;
     }
 
     void setX(int x);
 
-    int getY() const {
+    virtual double getY() const override {
         return y;
     }
 
@@ -30,6 +31,14 @@ public:
     void update() { }
 
     bool isCollidable() { return true; }; //TODO
+
+    virtual double getWidth() const override {
+        return 1;
+    }
+
+    virtual double getHeight() const override {
+        return 1;
+    }
 
     virtual ~Block() { }
 

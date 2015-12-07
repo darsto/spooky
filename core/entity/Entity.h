@@ -7,20 +7,21 @@
 #pragma once
 
 #include <Box2D/Box2D.h>
+#include "../IPositionable.h"
 
 class Map;
 
-class Entity {
+class Entity : public IPositionable {
 public:
     Entity(Map *map, double width, double height);
 
-    double getX() const {
+    virtual double getX() const override {
         return x;
     }
 
     void setX(double x);
 
-    double getY() const {
+    virtual double getY() const override {
         return y;
     }
 
@@ -28,11 +29,19 @@ public:
 
     virtual void update();
 
+    virtual double getWidth() const override {
+        return this->width;
+    }
+
+    virtual double getHeight() const override {
+        return this->height;
+    }
     virtual ~Entity() { }
 
 protected:
     Map *map;
     double x = 0, y = 0;
+    double width, height;
     b2Body *body;
     b2BodyDef bodyDef;
     b2FixtureDef fixDef;
