@@ -2,10 +2,11 @@
 // Created by dar on 11/28/15.
 //
 
-#include "PlayerRender.h"
+#include "DefaultEntityRender.h"
 #include "../../core/map/block/Block.h"
+#include <string>
 
-PlayerRender::PlayerRender() {
+DefaultEntityRender::DefaultEntityRender(const string &textureFile, const string &shader) {
     /* initializing square's vertices */
     this->vertices[0] = 0.0f;
     this->vertices[1] = 1.0f;
@@ -32,7 +33,7 @@ PlayerRender::PlayerRender() {
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
-    texture.loadTexture2D("player.png", true);
+    texture.loadTexture2D(textureFile + string(".png"), true);
     texture.setFiltering(TEXTURE_FILTER_MAG_BILINEAR, TEXTURE_FILTER_MIN_BILINEAR_MIPMAP);
 
     float tCoords[] = {
@@ -49,8 +50,8 @@ PlayerRender::PlayerRender() {
 
     glBindVertexArray(0);
 
-    this->vertShader.load("shader.vert", GL_VERTEX_SHADER);
-    this->fragShader.load("shader.frag", GL_FRAGMENT_SHADER);
+    int a = this->vertShader.load(shader + string(".vert"), GL_VERTEX_SHADER);
+    int b =this->fragShader.load(shader + string(".frag"), GL_FRAGMENT_SHADER);
 
     this->shaderProgram.createProgram();
     this->shaderProgram.addShaderToProgram(&this->vertShader);
@@ -60,7 +61,7 @@ PlayerRender::PlayerRender() {
     this->shaderProgram.useProgram();
 }
 
-void PlayerRender::render(const Entity *const entity, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, double scale) {
+void DefaultEntityRender::render(const Entity *const entity, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, double scale) {
     this->texture.bindTexture(0);
     this->shaderProgram.useProgram();
     this->shaderProgram.setUniform("projectionMatrix", projectionMatrix);
@@ -78,11 +79,11 @@ void PlayerRender::render(const Entity *const entity, glm::mat4 projectionMatrix
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 }
 
-int PlayerRender::getTexPos() {
+int DefaultEntityRender::getTexPos() {
     return 0;
 }
 
-PlayerRender::~PlayerRender() {
+DefaultEntityRender::~DefaultEntityRender() {
     glDeleteBuffers(2, this->vbo);
     glDeleteVertexArrays(1, &this->vao);
 }

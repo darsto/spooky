@@ -6,7 +6,8 @@
 #include "../map/Map.h"
 
 void EntityBullet::onCollision(IPositionable *object) {
-    //TODO remove entity from vector
+    std::vector<Entity *> entities = this->map->getEntities();
+    entities.erase(std::remove(entities.begin(), entities.end(), object), entities.end());
 }
 
 void EntityBullet::update() {

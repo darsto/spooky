@@ -12,10 +12,10 @@ void EntityProjectile::update() {
 
 void EntityProjectile::checkCollisions(const Map *map) {
     for (Entity *e : map->getEntities()) {
-        if (getX() + getWidth() > e->getX() &&
-            getX() < e->getX() + e->getWidth() &&
-            getY() + getHeight() > e->getY() &&
-            getY() < e->getY() + e->getHeight()) {
+        if (getX() + getWidth() >= e->getX() &&
+            getX() <= e->getX() + e->getWidth() &&
+            getY() + getHeight() >= e->getY() &&
+            getY() <= e->getY() + e->getHeight()) {
             onCollision(e);
         }
     }

@@ -14,10 +14,10 @@
 #include "../ShaderProgram.h"
 #include "../Texture.h"
 
-class PlayerRender : public EntityRender {
+class DefaultEntityRender : public EntityRender {
 public:
-    PlayerRender();
-    ~PlayerRender();
+    DefaultEntityRender(const string &textureFile, const string &shader);
+    ~DefaultEntityRender();
     virtual void render(const Entity *const entity, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, double scale) override;
 
 private:
