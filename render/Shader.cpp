@@ -13,7 +13,7 @@ Shader::~Shader() {
     glDeleteShader(id);
 }
 
-bool Shader::load(string file, int type) {
+bool Shader::load(const string &file, int type) {
     FILE *fp = fopen(file.c_str(), "rt");
     if (!fp) return false;
 

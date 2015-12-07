@@ -14,7 +14,7 @@
 class Shader {
 public:
     ~Shader();
-    bool load(std::string file, int type);
+    bool load(const std::string &file, int type);
     bool isLoaded();
     GLuint getID();
 
