@@ -24,7 +24,7 @@ public:
     }
 
     double getCamX() const {
-        return camX;
+        return -camX;
     }
 
     void setCamX(double camX) {
@@ -32,7 +32,7 @@ public:
     }
 
     double getCamY() const {
-        return camY;
+        return -camY;
     }
 
     void setCamY(double camY) {
