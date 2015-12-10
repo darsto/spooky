@@ -36,7 +36,24 @@ public:
     virtual double getHeight() const override {
         return this->height;
     }
-    virtual ~Entity() { }
+
+    virtual /*
+     * Called when collision occurs
+     * State values:
+     *  0 - collision begin
+     *  1 - collision end
+     */
+    void onCollision(IPositionable *object, char state) { };
+
+    void remove() {
+        this->toBeDeleted = true;
+    }
+
+    bool isToBeDeleted() const {
+        return toBeDeleted;
+    }
+
+    virtual ~Entity();
 
 protected:
     Map *map;
@@ -45,6 +62,7 @@ protected:
     b2Body *body;
     b2BodyDef bodyDef;
     b2FixtureDef fixDef;
+    bool toBeDeleted = false;
 };
 
 #endif //C003_ENTITY_H

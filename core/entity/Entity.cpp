@@ -17,6 +17,7 @@ Entity::Entity(Map *map, double width, double height) : map(map) {
     fixDef.density = 1.0f;
     fixDef.friction = 0.3f;
     body->CreateFixture(&fixDef);
+    body->SetUserData(this);
 }
 
 void Entity::update() {
@@ -32,4 +33,8 @@ void Entity::setY(double y) {
 void Entity::setX(double x) {
     this->x = x;
     body->SetTransform(b2Vec2(this->getX() + 0.5, this->getY() + 0.5), body->GetAngle());
+}
+
+Entity::~Entity() {
+    map->getWorld()->DestroyBody(this->body);
 }

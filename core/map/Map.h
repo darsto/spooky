@@ -9,6 +9,7 @@
 #include <vector>
 #include "block/Block.h"
 #include "../entity/Entity.h"
+#include "CollisionListener.h"
 #include <Box2D/Box2D.h>
 
 class Map {
@@ -16,6 +17,7 @@ class Map {
 public:
     Map() {
         world = new b2World(b2Vec2(0.0, 0.0));
+        world->SetContactListener(&contactListener);
     };
 
     ~Map();
@@ -23,7 +25,7 @@ public:
 
     Entity *getEntity(int id) { /* TODO */ };
 
-    const std::vector<Block *> &getBlocks() const {
+    std::vector<Block *> &getBlocks() {
         return blocks;
     }
 
@@ -31,8 +33,8 @@ public:
         this->blocks.push_back(block);
     }
 
-    const std::vector<Entity *> &getEntities() const {
-        return entities;
+    std::vector<Entity *> &getEntities() {
+        return this->entities;
     }
 
     void addEntity(Entity *entity) {
@@ -46,11 +48,16 @@ public:
         return world;
     }
 
+    void removeEntity(Entity *entity) {
+        entities.erase(std::remove(entities.begin(), entities.end(), entity), entities.end());
+        delete entity;
+    }
+
 private:
     b2World *world;
     std::vector<Block *> blocks;
     std::vector<Entity *> entities;
-
+    CollisionListener contactListener;
 };
 
 class MapLoader {

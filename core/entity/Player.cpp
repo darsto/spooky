@@ -13,5 +13,3 @@ Player::Player(Map *map) : EntityMoving(map, 0.45, 0.45) {
     fixDef.friction = 0.3f;
     body->CreateFixture(&fixDef);
 }
-
-

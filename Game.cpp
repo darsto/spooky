@@ -46,6 +46,11 @@ void Game::update() {
     }
     this->core->getMap()->update();
     this->core->getMap()->getWorld()->Step(TIME_STEP, 8, 3);
+    for (Entity *entity : this->core->getMap()->getEntities()) {
+        if (entity->isToBeDeleted()) {
+            this->core->getMap()->removeEntity(entity);
+        }
+    }
     this->core->setCamX(-this->core->getCamX() + (this->core->getPlayer()->getX() * this->core->getBlockSize() * this->core->getGeneralScale() + this->core->getCamX()) * 0.05);
     this->core->setCamY(-this->core->getCamY() + (this->core->getPlayer()->getY() * this->core->getBlockSize() * this->core->getGeneralScale() + this->core->getCamY()) * 0.05);
 }
@@ -82,7 +87,7 @@ void Game::handleKeypress(SDL_Event event) {
             switch (event.key.keysym.sym) {
                 case SDLK_c: {
                     EntityBullet *p = new EntityBullet(this->core->getMap(), 0, 1);
-                    p->setX(this->core->getPlayer()->getX());
+                    p->setX(this->core->getPlayer()->getX() + 0.7);
                     p->setY(this->core->getPlayer()->getY());
                     this->core->getMap()->addEntity(p);
                     break;

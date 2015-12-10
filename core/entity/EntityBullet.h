@@ -20,7 +20,7 @@ public:
     virtual void update() override;
 protected:
     double angle, velocity;
-    virtual void onCollision(IPositionable *object) override;
+    virtual void onCollision(IPositionable *object, char state) override;
 };
 
 #endif //C003_ENTITYBULLET_H

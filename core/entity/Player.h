@@ -13,6 +13,7 @@ class Player : public EntityMoving {
 
 public:
     Player(Map *map);
+
 };
 
 #endif //C003_PLAYER_H
