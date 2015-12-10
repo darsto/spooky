@@ -37,13 +37,13 @@ public:
         return this->height;
     }
 
-    virtual /*
+    /*
      * Called when collision occurs
      * State values:
      *  0 - collision begin
      *  1 - collision end
      */
-    void onCollision(IPositionable *object, char state) { };
+    virtual void onCollision(IPositionable *object, char state) { };
 
     void remove() {
         this->toBeDeleted = true;
