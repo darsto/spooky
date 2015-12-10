@@ -21,11 +21,16 @@ private:
     Renderer renderer;
     Timer timer;
     const double TIME_STEP = 0.01;
+    /*
+     * An array of delays after each keyboard click.
+     * Decrements with each frame.
+     * Used to detect double keyboard presses
+     */
+    unsigned char pressDelays[256];
     void update();
     void handleKeyboard();
     void handleKeypress(SDL_Event event);
-
+    void resetMovementPressDelays();
 };
-
 
 #endif //C003_GAME_H

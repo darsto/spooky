@@ -25,6 +25,9 @@ void Game::run() {
 }
 
 void Game::update() {
+    for (int i = 0; i < 256; i++) {
+        if (this->pressDelays[i] > 0) this->pressDelays[i]--;
+    }
     handleKeyboard();
     SDL_Event e;
     while (SDL_PollEvent(&e) != 0) {
@@ -83,8 +86,35 @@ void Game::handleKeyboard() {
 
 void Game::handleKeypress(SDL_Event event) {
     switch (event.type) {
-        case SDL_KEYDOWN:
-            switch (event.key.keysym.sym) {
+        case SDL_KEYDOWN: {
+            SDL_Keycode key = event.key.keysym.sym;
+            unsigned char delay_tmp = 255;
+            static int TELEPORT_DELAY = 255 - 25;
+            switch (key) {
+                case SDLK_a:
+                    if (this->pressDelays[event.key.keysym.sym] > TELEPORT_DELAY) {
+                        this->core->getPlayer()->teleport(-1.5, 0);
+                        delay_tmp = 0, resetMovementPressDelays();
+                    }
+                    break;
+                case SDLK_d:
+                    if (this->pressDelays[event.key.keysym.sym] > TELEPORT_DELAY) {
+                        this->core->getPlayer()->teleport(1.5, 0);
+                        delay_tmp = 0, resetMovementPressDelays();
+                    }
+                    break;
+                case SDLK_w:
+                    if (this->pressDelays[event.key.keysym.sym] > TELEPORT_DELAY) {
+                        this->core->getPlayer()->teleport(0, -1.5);
+                        delay_tmp = 0, resetMovementPressDelays();
+                    }
+                    break;
+                case SDLK_s:
+                    if (this->pressDelays[event.key.keysym.sym] > TELEPORT_DELAY) {
+                        this->core->getPlayer()->teleport(0, 1.5);
+                        delay_tmp = 0, resetMovementPressDelays();
+                    }
+                    break;
                 case SDLK_c: {
                     EntityBullet *p = new EntityBullet(this->core->getMap(), 0, 1);
                     p->setX(this->core->getPlayer()->getX() + 0.7);
@@ -95,14 +125,19 @@ void Game::handleKeypress(SDL_Event event) {
                 default:
                     break;
             }
+            this->pressDelays[event.key.keysym.sym] = delay_tmp;
             break;
-
+        }
         case SDL_KEYUP:
             break;
 
         default:
             break;
     }
+}
+
+void Game::resetMovementPressDelays() {
+    this->pressDelays[SDLK_a] = this->pressDelays[SDLK_d] = this->pressDelays[SDLK_w] = this->pressDelays[SDLK_s] = 0;
 }
 
 Game::~Game() {
