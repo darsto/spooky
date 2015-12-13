@@ -93,25 +93,25 @@ void Game::handleKeypress(SDL_Event event) {
             switch (key) {
                 case SDLK_a:
                     if (this->pressDelays[event.key.keysym.sym] > TELEPORT_DELAY) {
-                        this->core->getPlayer()->teleport(-1.5, 0);
+                        this->core->getPlayer()->teleport(-1.95, 0);
                         delay_tmp = 0, resetMovementPressDelays();
                     }
                     break;
                 case SDLK_d:
                     if (this->pressDelays[event.key.keysym.sym] > TELEPORT_DELAY) {
-                        this->core->getPlayer()->teleport(1.5, 0);
+                        this->core->getPlayer()->teleport(1.95, 0);
                         delay_tmp = 0, resetMovementPressDelays();
                     }
                     break;
                 case SDLK_w:
                     if (this->pressDelays[event.key.keysym.sym] > TELEPORT_DELAY) {
-                        this->core->getPlayer()->teleport(0, -1.5);
+                        this->core->getPlayer()->teleport(0, -1.95);
                         delay_tmp = 0, resetMovementPressDelays();
                     }
                     break;
                 case SDLK_s:
                     if (this->pressDelays[event.key.keysym.sym] > TELEPORT_DELAY) {
-                        this->core->getPlayer()->teleport(0, 1.5);
+                        this->core->getPlayer()->teleport(0, 1.95);
                         delay_tmp = 0, resetMovementPressDelays();
                     }
                     break;
