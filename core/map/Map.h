@@ -10,6 +10,7 @@
 #include "block/Block.h"
 #include "../entity/Entity.h"
 #include "CollisionListener.h"
+#include "../Utils.h"
 #include <Box2D/Box2D.h>
 
 class Map {
@@ -50,7 +51,7 @@ public:
 
     void removeEntity(Entity *entity) {
         entities.erase(std::remove(entities.begin(), entities.end(), entity), entities.end());
-        delete entity;
+        SAFE_DELETE(entity);
     }
 
 private:

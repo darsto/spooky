@@ -52,6 +52,7 @@ void Game::update() {
     for (Entity *entity : this->core->getMap()->getEntities()) {
         if (entity->isToBeDeleted()) {
             this->core->getMap()->removeEntity(entity);
+
         }
     }
     this->core->setCamX(-this->core->getCamX() + (this->core->getPlayer()->getX() * this->core->getBlockSize() * this->core->getGeneralScale() + this->core->getCamX()) * 0.05);
@@ -118,8 +119,8 @@ void Game::handleKeypress(SDL_Event event) {
                 case SDLK_c: {
                     double angle = atan2(this->core->getPlayer()->getVelY(), this->core->getPlayer()->getVelX()) + M_PI;
                     EntityBullet *p = new EntityBullet(this->core->getMap(), angle, 1);
-                    p->setX(this->core->getPlayer()->getX() + 0.4 * cos(angle));
-                    p->setY(this->core->getPlayer()->getY() + 0.4 * sin(angle));
+                    p->setX(this->core->getPlayer()->getX() + 0.5 * cos(angle));
+                    p->setY(this->core->getPlayer()->getY() + 0.5 * sin(angle));
                     this->core->getMap()->addEntity(p);
                     break;
                 }
