@@ -125,7 +125,8 @@ void Game::handleKeypress(SDL_Event event) {
                 default:
                     break;
             }
-            this->pressDelays[event.key.keysym.sym] = delay_tmp;
+            if (event.key.keysym.sym >= 0 && event.key.keysym.sym < 256)
+                this->pressDelays[event.key.keysym.sym] = delay_tmp;
             break;
         }
         case SDL_KEYUP:
