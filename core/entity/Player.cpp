@@ -20,8 +20,13 @@ Player::Player(Core *core) : EntityMoving(core, 0.45, 0.45) {
  * Teleport player by given vector
  */
 bool Player::teleport(double x, double y) {
-    Ghost *ghost = new Ghost(this->core);
-    this->core->getMap()->addEntity(ghost);
+    Player *ghost;
+    if (typeid(*this).name()==typeid(Player).name()) {
+        ghost = new Ghost(this->core);
+        this->core->getMap()->addEntity(ghost);
+    } else {
+        ghost = this;
+    }
     if (this->core->getMap()->getBlock((int) (this->getX() + x + 1), (int) (this->getY() + y + 1)) == nullptr) {
         ghost->setX(this->getX() + x);
         ghost->setY(this->getY() + y);
@@ -37,4 +42,11 @@ bool Player::teleport(double x, double y) {
     }
     this->core->setPlayer(ghost);
     return true;
+}
+
+void Player::onCollision(IPositionable *object, char state) {
+    if (object != nullptr && typeid(*object).name() == typeid(Ghost).name() && state == 0) {
+        ((Ghost*)object)->remove();
+        this->core->setPlayer(this);
+    }
 }

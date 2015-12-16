@@ -14,6 +14,7 @@ class Player : public EntityMoving {
 public:
     Player(Core *core);
     bool teleport(double x, double y);
+    virtual void onCollision(IPositionable *object, char state) override;
 
 };
 
