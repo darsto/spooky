@@ -13,7 +13,7 @@ class Core {
 
 public:
     Core(Map *map) : map(map) {
-        this->player = new Player(map);
+        this->player = new Player(this);
         this->player->setX(14);
         this->player->setY(9);
         this->map->addEntity(player);
@@ -49,6 +49,10 @@ public:
 
     Player *getPlayer() const {
         return player;
+    }
+
+    void setPlayer(Player *player) {
+        Core::player = player;
     }
 
     double getGeneralScale() const {

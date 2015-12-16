@@ -10,11 +10,11 @@
 #include "../IPositionable.h"
 #include "../Ray.h"
 
-class Map;
+class Core;
 
 class Entity : public IPositionable {
 public:
-    Entity(Map *map, double width, double height);
+    Entity(Core *core, double width, double height);
 
     virtual double getX() const override {
         return x;
@@ -57,7 +57,7 @@ public:
     virtual ~Entity();
 
 protected:
-    Map *map;
+    Core *core;
     double x = 0, y = 0;
     double width, height;
     b2Body *body;

@@ -13,7 +13,7 @@
 class EntityMoving : public Entity {
 
 public:
-    EntityMoving(Map *map, double width, double height);
+    EntityMoving(Core *core, double width, double height);
 
     double getVelX() const {
         return velX;
@@ -35,7 +35,7 @@ public:
 
 protected:
     double velX = 0, velY = 0;
-    double getSpeed();
+    virtual double getSpeed();
 public:
     virtual void update() override;
 };

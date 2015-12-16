@@ -9,14 +9,14 @@
 #include "../IPositionable.h"
 #include "EntityMoving.h"
 
-class Map;
+class Core;
 
 class IPositionable;
 
 class EntityProjectile : public EntityMoving {
 
 public:
-    EntityProjectile(Map *map, double width, double height) : EntityMoving(map, width, height) { }
+    EntityProjectile(Core *core, double width, double height) : EntityMoving(core, width, height) { }
 
     virtual ~EntityProjectile() { }
 };

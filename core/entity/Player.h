@@ -12,7 +12,7 @@
 class Player : public EntityMoving {
 
 public:
-    Player(Map *map);
+    Player(Core *core);
     bool teleport(double x, double y);
 
 };

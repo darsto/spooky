@@ -3,9 +3,10 @@
 //
 
 #include "Player.h"
-#include "../map/Map.h"
+#include "../Core.h"
+#include "Ghost.h"
 
-Player::Player(Map *map) : EntityMoving(map, 0.45, 0.45) {
+Player::Player(Core *core) : EntityMoving(core, 0.45, 0.45) {
     b2CircleShape shape;
     shape.m_p.Set(0, 0);
     shape.m_radius = 0.235;
@@ -19,18 +20,21 @@ Player::Player(Map *map) : EntityMoving(map, 0.45, 0.45) {
  * Teleport player by given vector
  */
 bool Player::teleport(double x, double y) {
-    if (this->map->getBlock((int) (this->getX() + x + 1), (int) (this->getY() + y + 1)) == nullptr) {
-        this->setX(this->getX() + x);
-        this->setY(this->getY() + y);
+    Ghost *ghost = new Ghost(this->core);
+    this->core->getMap()->addEntity(ghost);
+    if (this->core->getMap()->getBlock((int) (this->getX() + x + 1), (int) (this->getY() + y + 1)) == nullptr) {
+        ghost->setX(this->getX() + x);
+        ghost->setY(this->getY() + y);
     } else {
         double angle = atan2(y, -x) + M_PI;
         static auto isEmpty = [=](int x, int y) {
-            return this->map->getBlock(x, y) == nullptr;
+            return this->core->getMap()->getBlock(x, y) == nullptr;
         };
         Ray *ray = projectRay(x + this->getX() + 1, y + this->getY() + 1, angle + M_PI, _len2d(x, y), isEmpty);
-        this->setX(this->getX() + x + ray->getCompX());
-        this->setY(this->getY() + y + ray->getCompY());
+        ghost->setX(this->getX() + x + ray->getCompX());
+        ghost->setY(this->getY() + y + ray->getCompY());
         delete ray;
     }
+    this->core->setPlayer(ghost);
     return true;
 }

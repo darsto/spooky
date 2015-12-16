@@ -14,7 +14,7 @@
 #include "block/BlockRender.h"
 #include "block/SimpleBlockRender.h"
 #include "entity/EntityRender.h"
-#include "../core/entity/Player.h"
+#include "../core/entity/Ghost.h"
 #include "entity/DefaultEntityRender.h"
 #include "../core/entity/EntityBullet.h"
 
@@ -32,6 +32,7 @@ inline EntityRender *getEntityRender(const Entity *const entity) {
 inline void initRenderers() {
     blockRenders.insert(std::make_pair(typeid(SimpleBlock).name(), new SimpleBlockRender()));
     entityRenders.insert(std::make_pair(typeid(Player).name(), new DefaultEntityRender("player", "shader")));
+    entityRenders.insert(std::make_pair(typeid(Ghost).name(), new DefaultEntityRender("ghost", "shader")));
     entityRenders.insert(std::make_pair(typeid(EntityBullet).name(), new DefaultEntityRender("bullet", "shader")));
 }
 

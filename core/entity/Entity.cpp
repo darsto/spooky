@@ -3,14 +3,14 @@
 //
 
 #include "Entity.h"
-#include "../map/Map.h"
+#include "../Core.h"
 
-Entity::Entity(Map *map, double width, double height) : map(map) {
+Entity::Entity(Core *core, double width, double height) : core(core) {
     this->width = width;
     this->height = height;
     bodyDef.type = b2_staticBody;
     bodyDef.position.Set(this->getX(), this->getY());
-    body = map->getWorld()->CreateBody(&bodyDef);
+    body = this->core->getMap()->getWorld()->CreateBody(&bodyDef);
     b2PolygonShape shape;
     shape.SetAsBox(width / 2, height / 2);
     fixDef.shape = &shape;
@@ -36,5 +36,5 @@ void Entity::setX(double x) {
 }
 
 Entity::~Entity() {
-    map->getWorld()->DestroyBody(this->body);
+    this->core->getMap()->getWorld()->DestroyBody(this->body);
 }
