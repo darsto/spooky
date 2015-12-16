@@ -49,9 +49,11 @@ void Game::update() {
     }
     this->core->getMap()->update();
     this->core->getMap()->getWorld()->Step(TIME_STEP, 8, 3);
-    for (Entity *entity : this->core->getMap()->getEntities()) {
+    for (int i = 0; i < this->core->getMap()->getEntities().size(); i++) {
+        Entity *entity = this->core->getMap()->getEntities().at(i);
         if (entity->isToBeDeleted()) {
             this->core->getMap()->removeEntity(entity);
+            i--;
 
         }
     }
