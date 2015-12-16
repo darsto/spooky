@@ -25,7 +25,7 @@ void main(void) {
     }
     float screenDist = distance(position, uResolution * 0.5) / min(uResolution.x, uResolution.y);
     gl_FragColor.a *= clamp(1.0 - screenDist * 0.5, 0.6, 1.0);
-    gl_FragColor.xyz *= alpha;
+    gl_FragColor.xyz *= min(alpha, 1.5);
 
     /*gl_FragColor = vec4(0.0);
     gl_FragColor += texture2D(fbo_texture, v_blurTexCoords[ 0])*0.0044299121055113265;
