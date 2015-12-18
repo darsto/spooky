@@ -1,0 +1,11 @@
+PROJECT(c003_tests)
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+
+add_subdirectory(lib/googletest)
+
+include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
+
+ADD_EXECUTABLE(${PROJECT_NAME} ray_test.cpp)
+
+TARGET_LINK_LIBRARIES(${PROJECT_NAME} gtest gtest_main pthread)
+TARGET_LINK_LIBRARIES(${PROJECT_NAME} c003_game)
