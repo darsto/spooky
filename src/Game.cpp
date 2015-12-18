@@ -57,8 +57,10 @@ void Game::update() {
 
         }
     }
-    this->core->setCamX(-this->core->getCamX() + (this->core->getPlayer()->getX() * this->core->getBlockSize() * this->core->getGeneralScale() + this->core->getCamX()) * 0.05);
-    this->core->setCamY(-this->core->getCamY() + (this->core->getPlayer()->getY() * this->core->getBlockSize() * this->core->getGeneralScale() + this->core->getCamY()) * 0.05);
+    double dx = this->core->getPlayer()->getX() * this->core->getBlockSize() * this->core->getGeneralScale() + this->core->getCamX();
+    double dy = this->core->getPlayer()->getY() * this->core->getBlockSize() * this->core->getGeneralScale() + this->core->getCamY();
+    if (abs(dx) > 2) this->core->setCamX(-this->core->getCamX() + (dx) * 0.05);
+    if (abs(dy) > 2) this->core->setCamY(-this->core->getCamY() + (dy) * 0.05);
 }
 
 void Game::handleKeyboard() {
