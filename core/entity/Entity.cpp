@@ -21,18 +21,16 @@ Entity::Entity(Core *core, double width, double height) : core(core) {
 }
 
 void Entity::update() {
-    this->x = body->GetPosition().x - 0.5;
-    this->y = body->GetPosition().y - 0.5;
+    this->x = body->GetPosition().x + this->width * 0.5;
+    this->y = body->GetPosition().y + this->height * 0.5;
 }
 
 void Entity::setY(double y) {
-    this->y = y;
-    body->SetTransform(b2Vec2(this->getX() + 0.5, this->getY() + 0.5), body->GetAngle());
+    body->SetTransform(b2Vec2(body->GetPosition().x, (float32) (y - this->height * 0.5)), body->GetAngle());
 }
 
 void Entity::setX(double x) {
-    this->x = x;
-    body->SetTransform(b2Vec2(this->getX() + 0.5, this->getY() + 0.5), body->GetAngle());
+    body->SetTransform(b2Vec2((float32) (x - this->width * 0.5), body->GetPosition().y), body->GetAngle());
 }
 
 Entity::~Entity() {
