@@ -5,6 +5,7 @@
 #ifndef C003_TILEDTXTMAPLOADER_H
 #define C003_TILEDTXTMAPLOADER_H
 
+#include <fstream>
 #include "Map.h"
 #include "../map/block/SimpleBlock.h"
 #include "../entity/Player.h"
