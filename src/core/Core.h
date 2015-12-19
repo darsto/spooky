@@ -77,7 +77,7 @@ private:
     Player *player = nullptr;
     double camX = 0, camY = 0;
     double generalScale = 1.0;
-    double blockSize = 50.0;
+    double blockSize = 35.0;
 };
 
 #endif //C003_CORE_H
