@@ -50,7 +50,7 @@ private:
  * then we're counting intersection point of the same ray and Y grid lines, we're counting the distance
  * finally we return the smaller distance
  */
-Ray *projectRay(double x, double y, double angle, double maxDist, std::function<bool(int, int)> doesCollide) {
+inline Ray *projectRay(double x, double y, double angle, double maxDist, std::function<bool(int, int)> doesCollide) {
     double xH = cos(angle) / std::abs(sin(angle)); //x increase on particular X grid lines
     double yH = sin(angle) > 0 ? -1 : 1; //y increase on particular X grid lines
     double xV = cos(angle) > 0 ? 1 : -1; //x increase on particular Y lines
