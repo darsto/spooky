@@ -9,7 +9,7 @@ Block::Block(Map *map, int x, int y) {
     this->x = x;
     this->y = y;
     bodyDef.position.Set(this->x, this->y);
-    if (map != nullptr) body = map->getWorld()->CreateBody(&bodyDef);
+    body = map->getWorld()->CreateBody(&bodyDef);
     shape.SetAsBox(0.5, 0.5);
     body->CreateFixture(&shape, 1.0f);
 }
