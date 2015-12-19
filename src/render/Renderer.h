@@ -8,7 +8,7 @@
 
 #define GLM_FORCE_RADIANS
 
-#include <SDL.h>
+#include <SDL2/SDL.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include "Texture.h"
 #include "Fbo.h"
