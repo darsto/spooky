@@ -10,11 +10,13 @@
 #include <map>
 #include <string>
 #include <memory>
+#include <core/entity/Toy.h>
+#include <core/entity/Player.h>
+#include <render/entity/PlayerRender.h>
 #include "../core/map/block/SimpleBlock.h"
 #include "block/BlockRender.h"
 #include "block/SimpleBlockRender.h"
 #include "entity/EntityRender.h"
-#include "../core/entity/Ghost.h"
 #include "entity/DefaultEntityRender.h"
 #include "../core/entity/EntityBullet.h"
 
@@ -31,8 +33,8 @@ inline EntityRender *getEntityRender(const Entity *const entity) {
 
 inline void initRenderers() {
     blockRenders.insert(std::make_pair(typeid(SimpleBlock).name(), new SimpleBlockRender()));
-    entityRenders.insert(std::make_pair(typeid(Player).name(), new DefaultEntityRender("player", "shader")));
-    entityRenders.insert(std::make_pair(typeid(Ghost).name(), new DefaultEntityRender("ghost", "shader")));
+    entityRenders.insert(std::make_pair(typeid(Player).name(), new PlayerRender()));
+    entityRenders.insert(std::make_pair(typeid(Toy).name(), new DefaultEntityRender("ghost", "shader")));
     entityRenders.insert(std::make_pair(typeid(EntityBullet).name(), new DefaultEntityRender("bullet", "shader")));
 }
 

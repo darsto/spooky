@@ -135,6 +135,13 @@ void Game::handleKeypress(SDL_Event event) {
                     this->core->getMap()->addEntity(p);
                     break;
                 }
+                case SDLK_k: {
+                    if (this->core->getPlayer()->getToy() == nullptr) {
+                        this->core->getPlayer()->setToy();
+                    } else {
+                        this->core->getPlayer()->eject();
+                    }
+                }
                 default:
                     break;
             }

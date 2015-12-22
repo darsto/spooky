@@ -19,7 +19,7 @@ public:
         return velX;
     }
 
-    void setVelX(double velX) {
+    virtual void setVelX(double velX) {
         EntityMoving::velX = velX;
     }
 
@@ -27,7 +27,7 @@ public:
         return velY;
     }
 
-    void setVelY(double velY) {
+    virtual void setVelY(double velY) {
         EntityMoving::velY = velY;
     }
 

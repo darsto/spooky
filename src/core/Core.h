@@ -17,6 +17,10 @@ public:
         this->player->setX(5);
         this->player->setY(5);
         this->map->addEntity(player);
+        Toy *toy = new Toy(this);
+        toy->setX(8);
+        toy->setY(4);
+        this->map->addEntity(toy);
     }
 
     Map *getMap() const {
