@@ -2,8 +2,8 @@
 // Created by dar on 11/28/15.
 //
 
-#ifndef C003_PLAYERRENDER_H
-#define C003_PLAYERRENDER_H
+#ifndef C003_DEFAULTENTITYRENDER_H
+#define C003_DEFAULTENTITYRENDER_H
 #pragma once
 
 #define GLM_FORCE_RADIANS
@@ -36,4 +36,4 @@ private:
     glm::mat4 tmpModelMatrix;
 };
 
-#endif //C003_PLAYERRENDER_H
+#endif //C003_DEFAULTENTITYRENDER_H
