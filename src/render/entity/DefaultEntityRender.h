@@ -20,7 +20,7 @@ public:
     ~DefaultEntityRender();
     virtual void render(const Entity *const entity, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, double scale) override;
 
-private:
+protected:
     const unsigned int atlasSize = 8;
     float vertices[12];
     GLuint vbo[2];
