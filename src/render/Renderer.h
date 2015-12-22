@@ -31,8 +31,8 @@ public:
 private:
     SDL_Window *gWindow = NULL;
     SDL_GLContext gContext;
-    unsigned int windowWidth = 500;
-    unsigned int windowHeight = 500;
+    unsigned int windowWidth = 1366;
+    unsigned int windowHeight = 750;
     Core *core;
     Texture textureAtlas;
     Fbo fbo;
