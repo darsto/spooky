@@ -90,7 +90,8 @@ void Renderer::tick() {
             )), this->core->getBlockSize() * this->core->getGeneralScale());
     }
     int entitiesNum = 0;
-    for (Entity *entity : core->getMap()->getEntities()) {
+    for (int i = core->getMap()->getEntities().size() - 1; i >= 0; i--) {
+        Entity *entity = core->getMap()->getEntities().at(i);
         if (entity->getX() * this->core->getGeneralScale() * this->core->getBlockSize() > -(signed) windowWidth / 2.0f - this->core->getCamX() &&
             (entity->getX() - 1) * this->core->getGeneralScale() * this->core->getBlockSize() < -(signed) windowWidth / 2.0f - this->core->getCamX() + (signed) windowWidth &&
             entity->getY() * this->core->getGeneralScale() * this->core->getBlockSize() > -(signed) windowHeight / 2.0f - this->core->getCamY() &&
