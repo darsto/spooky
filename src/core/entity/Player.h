@@ -51,6 +51,8 @@ private:
 public:
 
     virtual bool doesCollide(IPositionable *obj) override;
+    virtual double getVelX() const override;
+    virtual double getVelY() const override;
 };
 
 #endif //C003_PLAYER_H

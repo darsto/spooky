@@ -15,7 +15,7 @@ class EntityMoving : public Entity {
 public:
     EntityMoving(Core *core, double width, double height);
 
-    double getVelX() const {
+    virtual double getVelX() const {
         return velX;
     }
 
@@ -23,7 +23,7 @@ public:
         EntityMoving::velX = velX;
     }
 
-    double getVelY() const {
+    virtual double getVelY() const {
         return velY;
     }
 

@@ -77,6 +77,16 @@ void Player::setVelY(double velY) {
     else EntityMoving::setVelY(velY);
 }
 
+double Player::getVelX() const {
+    if (this->toy != nullptr) return this->toy->getVelX();
+    return EntityMoving::getVelX();
+}
+
+double Player::getVelY() const {
+    if (this->toy != nullptr) return this->toy->getVelY();
+    return EntityMoving::getVelY();
+}
+
 bool Player::doesCollide(IPositionable *obj) {
     return true;
 }
