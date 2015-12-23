@@ -100,7 +100,7 @@ void Renderer::tick() {
                 (int) ((signed) windowHeight / 2.0f - this->core->getCamY()),
                 0.0f)), this->core->getBlockSize() * this->core->getGeneralScale());
             fbo.getShaderProgram()->useProgram();
-            if (entitiesNum < fbo.MAX_LIGHT_SRCS) {
+            if (entity != this->core->getPlayer() && entitiesNum < fbo.MAX_LIGHT_SRCS) {
                 fbo.getShaderProgram()->setUniform("lightPoints[" + to_string(entitiesNum) + "]",
                                                    glm::vec2(this->core->getCamX() + entity->getX() * this->core->getBlockSize() * this->core->getGeneralScale() + (double) this->windowWidth / 2,
                                                              -this->core->getCamY() - entity->getY() * this->core->getBlockSize() * this->core->getGeneralScale() + (double) this->windowHeight / 2));
