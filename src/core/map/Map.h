@@ -11,6 +11,7 @@
 #include "../entity/Entity.h"
 #include "CollisionListener.h"
 #include "../Utils.h"
+#include "ContactFilter.h"
 #include <Box2D/Box2D.h>
 
 class Map {
@@ -18,6 +19,7 @@ class Map {
 public:
     Map() {
         world = new b2World(b2Vec2(0.0, 0.0));
+        world->SetContactFilter(&contactFilter);
         world->SetContactListener(&contactListener);
     };
 
@@ -59,6 +61,7 @@ private:
     std::vector<Block *> blocks;
     std::vector<Entity *> entities;
     CollisionListener contactListener;
+    ContactFilter contactFilter;
 };
 
 class MapLoader {

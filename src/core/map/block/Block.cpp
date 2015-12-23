@@ -12,6 +12,7 @@ Block::Block(Map *map, int x, int y) {
     body = map->getWorld()->CreateBody(&bodyDef);
     shape.SetAsBox(0.5, 0.5);
     body->CreateFixture(&shape, 1.0f);
+    body->SetUserData(this);
 }
 
 void Block::setY(int y) {

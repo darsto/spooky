@@ -17,6 +17,7 @@ public:
     virtual void setVelX(double velX) override;
     virtual void setVelY(double velY) override;
     bool teleport(double x, double y);
+
     virtual void onCollision(IPositionable *object, char state) override;
 
     virtual double getX() const override;
@@ -49,6 +50,7 @@ private:
     Toy *toy = nullptr;
 public:
 
+    virtual bool doesCollide(IPositionable *obj) override;
 };
 
 #endif //C003_PLAYER_H

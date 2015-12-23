@@ -30,7 +30,9 @@ public:
 
     void update() { }
 
-    bool isCollidable() { return true; }; //TODO
+    virtual bool doesCollide(IPositionable *obj) {
+        return true;
+    };
 
     virtual double getWidth() const override {
         return 1;

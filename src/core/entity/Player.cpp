@@ -11,8 +11,10 @@ Player::Player(Core *core) : EntityMoving(core, 0.45, 0.45) {
     shape.m_p.Set(0, 0);
     shape.m_radius = 0.235;
     fixDef.shape = &shape;
+    fixDef.isSensor = true;
     fixDef.density = 1.0f;
     fixDef.friction = 0.3f;
+    body->DestroyFixture(&this->body->GetFixtureList()[0]);
     body->CreateFixture(&fixDef);
 }
 
@@ -73,4 +75,8 @@ void Player::setVelX(double velX) {
 void Player::setVelY(double velY) {
     if (this->toy != nullptr) this->toy->setVelY(velY);
     else EntityMoving::setVelY(velY);
+}
+
+bool Player::doesCollide(IPositionable *obj) {
+    return true;
 }

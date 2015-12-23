@@ -11,13 +11,13 @@
 class CollisionListener : public b2ContactListener {
 
     void triggerContact(b2Contact *contact, char state) {
-        void *bodyUserData = contact->GetFixtureA()->GetBody()->GetUserData();
-        void *body2UserData = contact->GetFixtureB()->GetBody()->GetUserData();
-        if (Entity *entity = static_cast<Entity*>(bodyUserData)) {
-            entity->onCollision(static_cast<IPositionable*>(body2UserData), state);
+        IPositionable *bodyUserData = static_cast<IPositionable*>(contact->GetFixtureA()->GetBody()->GetUserData());
+        IPositionable *body2UserData = static_cast<IPositionable*>(contact->GetFixtureB()->GetBody()->GetUserData());
+        if (Entity *entity = dynamic_cast<Entity *>(bodyUserData)) {
+            entity->onCollision(body2UserData, state);
         }
-        if (Entity *entity = static_cast<Entity*>(body2UserData)) {
-            entity->onCollision(static_cast<IPositionable*>(bodyUserData), state);
+        if (Entity *entity = dynamic_cast<Entity *>(body2UserData)) {
+            entity->onCollision(bodyUserData, state);
         }
     }
 

@@ -7,6 +7,7 @@
 #pragma once
 
 #include <Box2D/Box2D.h>
+#include <core/map/block/Block.h>
 #include "../IPositionable.h"
 #include "../Ray.h"
 
@@ -36,6 +37,14 @@ public:
 
     virtual double getHeight() const override {
         return this->height;
+    }
+
+    virtual bool doesCollide(IPositionable *obj) {
+        if (Block *b = dynamic_cast<Block*>(obj)) {
+            return b->doesCollide(this);
+        } else {
+            return true;
+        }
     }
 
     /*
