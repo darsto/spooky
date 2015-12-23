@@ -9,13 +9,13 @@
 Player::Player(Core *core) : EntityMoving(core, 0.45, 0.45) {
     b2CircleShape shape;
     shape.m_p.Set(0, 0);
-    shape.m_radius = 0.235;
+    shape.m_radius = 0.225;
+    b2FixtureDef fixDef;
     fixDef.shape = &shape;
     fixDef.isSensor = true;
     fixDef.density = 1.0f;
     fixDef.friction = 0.3f;
-    body->DestroyFixture(&this->body->GetFixtureList()[0]);
-    body->CreateFixture(&fixDef);
+    this->body->CreateFixture(&fixDef);
 }
 
 /*

@@ -71,7 +71,6 @@ protected:
     double width, height;
     b2Body *body;
     b2BodyDef bodyDef;
-    b2FixtureDef fixDef;
     bool toBeDeleted = false;
 };
 

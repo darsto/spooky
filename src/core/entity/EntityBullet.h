@@ -15,6 +15,14 @@ public:
         this->velocity = velocity;
         this->velX = cos(angle) * velocity;
         this->velY = sin(angle) * velocity;
+        b2CircleShape shape;
+        shape.m_p.Set(0, 0);
+        shape.m_radius = 0.09;
+        b2FixtureDef fixDef;
+        fixDef.shape = &shape;
+        fixDef.density = 1.0f;
+        fixDef.friction = 0.3f;
+        this->body->CreateFixture(&fixDef);
     }
 
     virtual void update() override;

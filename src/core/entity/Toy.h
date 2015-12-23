@@ -15,11 +15,12 @@ public:
     Toy(Core *core) : EntityMoving(core, 0.45, 0.45) {
         b2CircleShape shape;
         shape.m_p.Set(0, 0);
-        shape.m_radius = 0.235;
+        shape.m_radius = 0.225;
+        b2FixtureDef fixDef;
         fixDef.shape = &shape;
         fixDef.density = 1.0f;
         fixDef.friction = 0.3f;
-        body->CreateFixture(&fixDef);
+        this->body->CreateFixture(&fixDef);
     }
 
     double getSpeed() override {

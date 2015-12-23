@@ -11,12 +11,6 @@ Entity::Entity(Core *core, double width, double height) : core(core) {
     bodyDef.type = b2_staticBody;
     bodyDef.position.Set(this->getX(), this->getY());
     body = this->core->getMap()->getWorld()->CreateBody(&bodyDef);
-    b2PolygonShape shape;
-    shape.SetAsBox(width / 2, height / 2);
-    fixDef.shape = &shape;
-    fixDef.density = 1.0f;
-    fixDef.friction = 0.3f;
-    body->CreateFixture(&fixDef);
     body->SetUserData(this);
 }
 
