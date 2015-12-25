@@ -135,6 +135,13 @@ void Game::handleKeypress(SDL_Event event) {
                     this->core->getMap()->addEntity(p);
                     break;
                 }
+                case SDLK_m: {
+                    SimpleShape *p = new SimpleShape(this->core, (unsigned int) (rand() % 3));
+                    p->setX(this->core->getPlayer()->getX() - this->core->getPlayer()->getWidth() / 2);
+                    p->setY(this->core->getPlayer()->getY() - this->core->getPlayer()->getHeight() / 2);
+                    this->core->getMap()->addEntity(p);
+                    break;
+                }
                 case SDLK_k: {
                     if (this->core->getPlayer()->getToy() == nullptr) {
                         this->core->getPlayer()->setToy();

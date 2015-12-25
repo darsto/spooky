@@ -8,19 +8,42 @@
 #include "Entity.h"
 #include "EntityMoving.h"
 
-class SimpleShape : public EntityMoving {
+struct ShapeDef {
+    ShapeDef(double width, double height, b2FixtureDef *fixtureDef) : width(width), height(height), fixtureDef(fixtureDef) { };
+    double width, height;
+    const b2FixtureDef *fixtureDef;
 
+    static ShapeDef *createShapeDef(double width, double height) {
+        b2FixtureDef *fixtureDef = new b2FixtureDef();
+        b2PolygonShape *shape = new b2PolygonShape();
+        shape->SetAsBox((float) width / 2, (float) height / 2);
+        fixtureDef->density = 1.0f;
+        fixtureDef->friction = 0.3f;
+        fixtureDef->shape = shape;
+        return new ShapeDef(width, height, fixtureDef);
+    }
+};
+
+static std::vector<ShapeDef *> shapeDefs;
+
+inline static void initShapeDefinitions() {
+    shapeDefs.push_back(ShapeDef::createShapeDef(0.25, 0.5));
+    shapeDefs.push_back(ShapeDef::createShapeDef(0.25, 0.25));
+    shapeDefs.push_back(ShapeDef::createShapeDef(0.5, 0.75));
+}
+
+class SimpleShape : public EntityMoving {
 public:
     /*
      * Shape types:
      * id : width  height
      * 0  :  0.25     0.5
      * 1  :  0.25    0.25
-     * 2  :  0.75     0.5
+     * 2  :  0.5     0.75
      */
-    SimpleShape(Core *core, b2FixtureDef fixDef, unsigned int shapeType) : EntityMoving(core, shape_sizes[shapeType].width, shape_sizes[shapeType].height) {
-        this->body->CreateFixture(&fixDef);
-        this->texPos = shapeType;
+    SimpleShape(Core *core, unsigned int shapeId) : EntityMoving(core, shapeDefs.at(shapeId)->width, shapeDefs.at(shapeId)->height) {
+        this->body->CreateFixture(shapeDefs.at(shapeId)->fixtureDef);
+        this->texPos = shapeId;
     }
 
     unsigned int getTexPos() const {
@@ -31,17 +54,6 @@ public:
 
 private:
     unsigned int texPos;
-
-    struct ShapeSize {
-        ShapeSize(double width, double height) : width(width), height(height) { };
-        double width, height;
-    };
-
-    const ShapeSize shape_sizes[3] = {
-        {0.25, 0.5},
-        {0.25, 0.25},
-        {0.75, 0.5}
-    };
 };
 
 #endif //C003_SIMPLESHAPE_H

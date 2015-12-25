@@ -14,6 +14,7 @@ class Core {
 
 public:
     Core(Map *map) : map(map) {
+        initShapeDefinitions();
         this->player = new Player(this);
         this->player->setX(5);
         this->player->setY(5);
@@ -22,13 +23,7 @@ public:
         toy->setX(6);
         toy->setY(5);
         this->map->addEntity(toy);
-        b2PolygonShape shape;
-        shape.SetAsBox(0.125, 0.25);
-        b2FixtureDef fixDef;
-        fixDef.shape = &shape;
-        fixDef.density = 1.0f;
-        fixDef.friction = 0.3f;
-        SimpleShape *sshape = new SimpleShape(this, fixDef, 0);
+        SimpleShape *sshape = new SimpleShape(this, 0);
         sshape->setX(4);
         sshape->setY(5);
         this->map->addEntity(sshape);
