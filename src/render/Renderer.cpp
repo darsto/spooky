@@ -103,8 +103,8 @@ void Renderer::tick() {
             fbo.getShaderProgram()->useProgram();
             if (entity != this->core->getPlayer() && entitiesNum < fbo.MAX_LIGHT_SRCS) {
                 fbo.getShaderProgram()->setUniform("lightPoints[" + to_string(entitiesNum) + "]",
-                                                   glm::vec2(this->core->getCamX() + (entity->getX() - 0.5 + entity->getWidth() / 2) * this->core->getBlockSize() * this->core->getGeneralScale() + (double) this->windowWidth / 2,
-                                                             -this->core->getCamY() - (entity->getY() - 0.5 + entity->getHeight() / 2) * this->core->getBlockSize() * this->core->getGeneralScale() + (double) this->windowHeight / 2));
+                                                   glm::vec2(this->core->getCamX() + (entity->getX() - 1 + entity->getWidth() / 2) * this->core->getBlockSize() * this->core->getGeneralScale() + (double) this->windowWidth / 2,
+                                                             -this->core->getCamY() - (entity->getY() - 1 + entity->getHeight() / 2) * this->core->getBlockSize() * this->core->getGeneralScale() + (double) this->windowHeight / 2));
                 entitiesNum++;
             }
         }
@@ -112,7 +112,7 @@ void Renderer::tick() {
     fbo.unbind();
     fbo.getShaderProgram()->useProgram();
     fbo.getShaderProgram()->setUniform("lightPointsNum", entitiesNum);
-    fbo.getShaderProgram()->setUniform("scale", (float)(this->core->getBlockSize() * this->core->getGeneralScale()));
+    fbo.getShaderProgram()->setUniform("scale", (float) (this->core->getBlockSize() * this->core->getGeneralScale()));
     fbo.render(0);
 }
 
