@@ -9,8 +9,9 @@
 #include "Entity.h"
 #include "EntityMoving.h"
 #include "Toy.h"
+#include "ILighted.h"
 
-class Player : public EntityMoving {
+class Player : public EntityMoving, public ILighted {
 
 public:
     Player(Core *core);

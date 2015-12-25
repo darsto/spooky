@@ -76,7 +76,7 @@ bool Renderer::initTextures() {
 
 void Renderer::tick() {
     fbo.bind();
-    glClearColor(0.0, 0.0, 0.0, 0.0);
+    glClearColor(0.9, 0.9, 0.9, 0.0);
     glClear(GL_COLOR_BUFFER_BIT);
     textureAtlas.bindTexture(0);
     for (Block *block : core->getMap()->getBlocks()) {
@@ -100,9 +100,9 @@ void Renderer::tick() {
                 (int) (-(signed) windowWidth / 2.0f - this->core->getCamX()),
                 (int) ((signed) windowHeight / 2.0f - this->core->getCamY()),
                 0.0f)), this->core->getBlockSize() * this->core->getGeneralScale());
-            if (false) { //TODO TEMPORARY
+            if (ILighted *elighted = dynamic_cast<ILighted *>(entity)) {
                 fbo.getShaderProgram()->useProgram();
-                if (entity != this->core->getPlayer() && entitiesNum < fbo.MAX_LIGHT_SRCS) {
+                if (entitiesNum < fbo.MAX_LIGHT_SRCS) {
                     fbo.getShaderProgram()->setUniform("lightPoints[" + to_string(entitiesNum) + "]",
                                                        glm::vec2(this->core->getCamX() + (entity->getX() - 1 + entity->getWidth() / 2) * this->core->getBlockSize() * this->core->getGeneralScale() +
                                                                  (double) this->windowWidth / 2,
