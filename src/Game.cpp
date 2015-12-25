@@ -123,8 +123,8 @@ void Game::handleKeypress(SDL_Event event) {
                 case SDLK_c: {
                     double angle = atan2(this->core->getPlayer()->getVelY(), this->core->getPlayer()->getVelX()) + M_PI;
                     EntityBullet *p = new EntityBullet(this->core, angle, 1);
-                    p->setX(this->core->getPlayer()->getX() - (this->core->getPlayer()->getWidth() - p->getWidth()) / 2 + 0.5 * cos(angle));
-                    p->setY(this->core->getPlayer()->getY() - (this->core->getPlayer()->getHeight() - p->getHeight()) / 2 + 0.5 * sin(angle));
+                    p->setX(this->core->getPlayer()->getX() - (p->getWidth()) + 0.5 * cos(angle));
+                    p->setY(this->core->getPlayer()->getY() - (p->getHeight()) + 0.5 * sin(angle));
                     this->core->getMap()->addEntity(p);
                     break;
                 }
