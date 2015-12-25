@@ -32,8 +32,6 @@ public:
             glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
         }
     }
-
-
 };
 
 #endif //C003_PLAYERRENDER_H
