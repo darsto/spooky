@@ -13,12 +13,14 @@
 #include <core/entity/Toy.h>
 #include <core/entity/Player.h>
 #include <render/entity/PlayerRender.h>
+#include <render/entity/SimpleShapeRender.h>
 #include "../core/map/block/SimpleBlock.h"
 #include "block/BlockRender.h"
 #include "block/SimpleBlockRender.h"
 #include "entity/EntityRender.h"
 #include "entity/DefaultEntityRender.h"
 #include "../core/entity/EntityBullet.h"
+#include "../core/entity/SimpleShape.h"
 
 static std::map<const char *, BlockRender *> blockRenders;
 static std::map<const char *, EntityRender *> entityRenders;
@@ -36,6 +38,7 @@ inline void initRenderers() {
     entityRenders.insert(std::make_pair(typeid(Player).name(), new PlayerRender()));
     entityRenders.insert(std::make_pair(typeid(Toy).name(), new DefaultEntityRender("ghost", "shader")));
     entityRenders.insert(std::make_pair(typeid(EntityBullet).name(), new DefaultEntityRender("bullet", "shader")));
+    entityRenders.insert(std::make_pair(typeid(SimpleShape).name(), new SimpleShapeRender()));
 }
 
 #endif //C003_RENDER_H
