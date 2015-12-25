@@ -17,6 +17,7 @@ Entity::Entity(Core *core, double width, double height) : core(core) {
 void Entity::update() {
     this->x = body->GetPosition().x + this->width * 0.5;
     this->y = body->GetPosition().y + this->height * 0.5;
+    this->body->SetAngularDamping(10.0);
 }
 
 void Entity::setY(double y) {

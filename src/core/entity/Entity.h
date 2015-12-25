@@ -55,6 +55,14 @@ public:
      */
     virtual void onCollision(IPositionable *object, char state) { };
 
+    double getAngle() const {
+        return this->body->GetAngle();
+    }
+
+    void setAngle(double angle) {
+        this->body->SetTransform(this->body->GetPosition(), (float) angle);
+    }
+
     void remove() {
         this->toBeDeleted = true;
     }
