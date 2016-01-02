@@ -18,13 +18,13 @@ public:
         shape.m_radius = 0.25;
         b2FixtureDef fixDef;
         fixDef.shape = &shape;
-        fixDef.density = 1.0f;
-        fixDef.friction = 0.3f;
+        fixDef.density = 6.0f;
+        fixDef.friction = 0.1f;
         this->body->CreateFixture(&fixDef);
     }
 
     double getSpeed() override {
-        return 5.0;
+        return 1.0;
     }
 
     void onCollision(IPositionable *object, char state) override { }

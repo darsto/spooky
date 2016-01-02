@@ -13,6 +13,7 @@ Entity::Entity(Core *core, double width, double height) : core(core) {
     body = this->core->getMap()->getWorld()->CreateBody(&bodyDef);
     body->SetUserData(this);
     body->SetAngularDamping(30.0);
+    body->SetLinearDamping(30.0);
 }
 
 void Entity::update() {

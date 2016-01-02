@@ -10,12 +10,17 @@ EntityMoving::EntityMoving(Core *core, double width, double height) : Entity(cor
 }
 
 double EntityMoving::getSpeed() {
-    return 2.0;
+    return 1.0;
 }
 
 void EntityMoving::update() {
-    body->SetLinearVelocity(b2Vec2(this->velX * this->getSpeed(), this->velY * this->getSpeed()));
     Entity::update();
-    this->velX *= 0.7;
-    this->velY *= 0.7;
+}
+
+void EntityMoving::applyForce(double x, double y) {
+    this->body->ApplyForce(b2Vec2(x, y), this->body->GetWorldCenter(), true);
+}
+
+void EntityMoving::applyImpulse(double x, double y) {
+    this->body->ApplyLinearImpulse(b2Vec2(x, y), this->body->GetWorldCenter(), true);
 }

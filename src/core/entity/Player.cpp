@@ -13,8 +13,8 @@ Player::Player(Core *core) : EntityMoving(core, 0.55, 0.55) {
     b2FixtureDef fixDef;
     fixDef.shape = &shape;
     fixDef.isSensor = true;
-    fixDef.density = 1.0f;
-    fixDef.friction = 0.3f;
+    fixDef.density = 2.0f;
+    fixDef.friction = 0.1f;
     this->body->CreateFixture(&fixDef);
 }
 
@@ -67,24 +67,14 @@ double Player::getY() const {
     return Entity::getY();
 }
 
-void Player::setVelX(double velX) {
-    if (this->toy != nullptr) this->toy->setVelX(velX);
-    else EntityMoving::setVelX(velX);
+void Player::applyImpulse(double x, double y) {
+    if (this->toy != nullptr) this->toy->applyImpulse(x, y);
+    else EntityMoving::applyImpulse(x, y);
 }
 
-void Player::setVelY(double velY) {
-    if (this->toy != nullptr) this->toy->setVelY(velY);
-    else EntityMoving::setVelY(velY);
-}
-
-double Player::getVelX() const {
-    if (this->toy != nullptr) return this->toy->getVelX();
-    return EntityMoving::getVelX();
-}
-
-double Player::getVelY() const {
-    if (this->toy != nullptr) return this->toy->getVelY();
-    return EntityMoving::getVelY();
+void Player::applyForce(double x, double y) {
+    if (this->toy != nullptr) this->toy->applyImpulse(x, y);
+    else EntityMoving::applyImpulse(x, y);
 }
 
 bool Player::doesCollide(IPositionable *obj) {

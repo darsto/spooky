@@ -15,8 +15,6 @@ class Player : public EntityMoving, public ILighted {
 
 public:
     Player(Core *core);
-    virtual void setVelX(double velX) override;
-    virtual void setVelY(double velY) override;
     bool teleport(double x, double y);
 
     virtual void onCollision(IPositionable *object, char state) override;
@@ -25,7 +23,7 @@ public:
     virtual double getY() const override;
 
     double getSpeed() override {
-        return 2.0;
+        return 1.0;
     }
 
     Toy *getToy() const {
@@ -52,8 +50,8 @@ private:
 public:
 
     virtual bool doesCollide(IPositionable *obj) override;
-    virtual double getVelX() const override;
-    virtual double getVelY() const override;
+    virtual void applyImpulse(double x, double y) override;
+    virtual void applyForce(double x, double y) override;
 };
 
 #endif //C003_PLAYER_H

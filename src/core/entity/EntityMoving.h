@@ -15,26 +15,13 @@ class EntityMoving : public Entity {
 public:
     EntityMoving(Core *core, double width, double height);
 
-    virtual double getVelX() const {
-        return velX;
-    }
+    virtual void applyImpulse(double x, double y);
 
-    virtual void setVelX(double velX) {
-        EntityMoving::velX = velX;
-    }
-
-    virtual double getVelY() const {
-        return velY;
-    }
-
-    virtual void setVelY(double velY) {
-        EntityMoving::velY = velY;
-    }
+    virtual void applyForce(double x, double y);
 
     virtual ~EntityMoving() { }
 
 protected:
-    double velX = 0, velY = 0;
     virtual double getSpeed();
 public:
     virtual void update() override;

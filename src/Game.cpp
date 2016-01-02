@@ -64,19 +64,19 @@ void Game::update() {
 }
 
 void Game::handleKeyboard() {
-    float SPEED = 1.0f;
     const Uint8 *keystate = SDL_GetKeyboardState(NULL);
+    double playerSpeed = this->core->getPlayer()->getSpeed();
     if (keystate[SDL_SCANCODE_W]) {
-        this->core->getPlayer()->setVelY(-SPEED);
+        this->core->getPlayer()->applyImpulse(0, -playerSpeed);
     }
     if (keystate[SDL_SCANCODE_S]) {
-        this->core->getPlayer()->setVelY(SPEED);
+        this->core->getPlayer()->applyImpulse(0, playerSpeed);
     }
     if (keystate[SDL_SCANCODE_A]) {
-        this->core->getPlayer()->setVelX(-SPEED);
+        this->core->getPlayer()->applyImpulse(-playerSpeed, 0);
     }
     if (keystate[SDL_SCANCODE_D]) {
-        this->core->getPlayer()->setVelX(SPEED);
+        this->core->getPlayer()->applyImpulse(playerSpeed, 0);
     }
     if (keystate[SDL_SCANCODE_Q]) {
         this->core->stop();
@@ -121,7 +121,7 @@ void Game::handleKeypress(SDL_Event event) {
                     }
                     break;
                 case SDLK_c: {
-                    double angle = atan2(this->core->getPlayer()->getVelY(), this->core->getPlayer()->getVelX()) + M_PI;
+                    double angle = atan2(0, 0) + M_PI; //TODO
                     EntityBullet *p = new EntityBullet(this->core, angle, 1);
                     p->setX(this->core->getPlayer()->getX() - (p->getWidth()) + 0.5 * cos(angle));
                     p->setY(this->core->getPlayer()->getY() - (p->getHeight()) + 0.5 * sin(angle));

@@ -17,8 +17,8 @@ struct ShapeDef {
         b2FixtureDef *fixtureDef = new b2FixtureDef();
         b2PolygonShape *shape = new b2PolygonShape();
         shape->SetAsBox((float) width / 2, (float) height / 2);
-        fixtureDef->density = 1.0f;
-        fixtureDef->friction = 0.3f;
+        fixtureDef->density = 10.0f;
+        fixtureDef->friction = 0.6f;
         fixtureDef->shape = shape;
         return new ShapeDef(width, height, fixtureDef);
     }

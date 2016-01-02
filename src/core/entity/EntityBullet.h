@@ -13,16 +13,18 @@ public:
     EntityBullet(Core *core, double angle, double velocity) : EntityProjectile(core, 0.18, 0.18) {
         this->angle = angle;
         this->velocity = velocity;
-        this->velX = cos(angle) * velocity;
-        this->velY = sin(angle) * velocity;
         b2CircleShape shape;
         shape.m_p.Set(0, 0);
         shape.m_radius = 0.09;
         b2FixtureDef fixDef;
         fixDef.shape = &shape;
         fixDef.density = 1.0f;
-        fixDef.friction = 0.3f;
+        fixDef.friction = 0.0f;
         this->body->CreateFixture(&fixDef);
+        double velX = cos(angle) * velocity;
+        double velY = sin(angle) * velocity;
+        this->applyImpulse(velX, velY);
+
     }
 
     virtual void update() override;

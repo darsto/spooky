@@ -13,6 +13,4 @@ void EntityBullet::onCollision(IPositionable *object, char state) {
 
 void EntityBullet::update() {
     EntityMoving::update();
-    this->velX = cos(angle) * velocity;
-    this->velY = sin(angle) * velocity;
 }
