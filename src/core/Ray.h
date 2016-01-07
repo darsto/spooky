@@ -6,6 +6,7 @@
 #define C003_RAY_H
 
 #include <functional>
+#define _USE_MATH_DEFINES
 #include <cmath>
 
 #define BREAKING_WALL_HORIZONTAL 0

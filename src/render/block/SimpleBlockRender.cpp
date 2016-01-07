@@ -4,7 +4,8 @@
 
 #define GLM_FORCE_RADIANS
 
-#include <GLES3/gl3.h>
+#define GLEW_STATIC
+#include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include "SimpleBlockRender.h"

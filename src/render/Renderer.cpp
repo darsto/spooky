@@ -4,6 +4,13 @@
 
 #include "Renderer.h"
 
+void consoleMessage() {
+    char *versionGL = "\0";
+
+    versionGL = (char *)(glGetString(GL_VERSION));
+
+    printf("OpenGL version: %s\n", versionGL);
+}
 Renderer::Renderer(Core *core) : core(core) { }
 
 bool Renderer::init() {
@@ -32,7 +39,7 @@ bool Renderer::initWindow() {
     else {
         //Use OpenGL 3.3
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 
         //Create window
         gWindow = SDL_CreateWindow("C003", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, windowWidth, windowHeight, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
@@ -53,11 +60,18 @@ bool Renderer::initWindow() {
             }
         }
     }
+    consoleMessage();
 
     return success;
 }
 
 bool Renderer::initGL() {
+    glewExperimental = GL_TRUE;
+    GLenum glewError = glewInit();
+    if( glewError != GLEW_OK ) {
+        printf( "Error initializing GLEW! %s\n", glewGetErrorString( glewError ) );
+        return false;
+    }
     viewMatrix = glm::lookAt(glm::vec3(0, 0, 0.0f), glm::vec3(0, 0, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
     projectionMatrix = glm::ortho(0.0f, float(windowWidth), 0.0f, float(windowHeight));
     glEnable(GL_TEXTURE_2D);

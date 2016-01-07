@@ -2,10 +2,8 @@
 // Created by dar on 11/21/15.
 //
 
-#include <GLES3/gl3.h>
-#include <SOIL.h>
-#include <GL/gl.h>
 #include "Texture.h"
+#include <SOIL.h>
 
 Texture::Texture() {
     bMipMapsGenerated = false;

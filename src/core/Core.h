@@ -16,7 +16,7 @@ public:
     Core(Map *map) : map(map) {
         initShapeDefinitions();
         this->player = new Player(this);
-        this->player->setX(5);
+        this->player->setX(8);
         this->player->setY(5);
         this->map->addEntity(player);
         Toy *toy = new Toy(this);

@@ -7,13 +7,15 @@
 #pragma once
 
 #define GLM_FORCE_RADIANS
+#define _USE_MATH_DEFINES
 
 #include <SDL2/SDL.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include "Texture.h"
 #include "Fbo.h"
 #include "../core/Core.h"
-#include <GLES3/gl3.h>
+#define GLEW_STATIC
+#include <GL/glew.h>
 #include <sstream>
 #include "Render.h"
 #include "../core/Timer.h"

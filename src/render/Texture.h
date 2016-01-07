@@ -7,7 +7,8 @@
 #pragma once
 
 #include <string>
-#include <GLES2/gl2.h>
+#define GLEW_STATIC
+#include <GL/glew.h>
 
 using namespace std;
 

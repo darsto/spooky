@@ -6,6 +6,7 @@
 #define C003_GAME_H
 #pragma once
 
+#define _USE_MATH_DEFINES
 #include "core/Core.h"
 #include "render/Renderer.h"
 
