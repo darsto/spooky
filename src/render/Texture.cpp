@@ -16,8 +16,6 @@ void Texture::createFromData(unsigned char *bData, int a_iWidth, int a_iHeight, 
     glTexImage2D(GL_TEXTURE_2D, 0, format, a_iWidth, a_iHeight, 0, format, GL_UNSIGNED_BYTE, bData);
     if (bGenerateMipMaps)glGenerateMipmap(GL_TEXTURE_2D);
 
-    glGenSamplers(1, &uiSampler);
-
     sPath = "";
     bMipMapsGenerated = bGenerateMipMaps;
     iWidth = a_iWidth;
@@ -38,25 +36,25 @@ bool Texture::loadTexture2D(string a_sPath, bool bGenerateMipMaps) {
 }
 
 void Texture::setSamplerParameter(GLenum parameter, GLenum value) {
-    glSamplerParameteri(uiSampler, parameter, value);
+    glTexParameteri(GL_TEXTURE_2D, parameter, value);
 }
 
 void Texture::setFiltering(int a_tfMagnification, int a_tfMinification) {
     if (a_tfMagnification == TEXTURE_FILTER_MAG_NEAREST)
-        glSamplerParameteri(uiSampler, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     else if (a_tfMagnification == TEXTURE_FILTER_MAG_BILINEAR)
-        glSamplerParameteri(uiSampler, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
     if (a_tfMinification == TEXTURE_FILTER_MIN_NEAREST)
-        glSamplerParameteri(uiSampler, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     else if (a_tfMinification == TEXTURE_FILTER_MIN_BILINEAR)
-        glSamplerParameteri(uiSampler, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     else if (a_tfMinification == TEXTURE_FILTER_MIN_NEAREST_MIPMAP)
-        glSamplerParameteri(uiSampler, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
     else if (a_tfMinification == TEXTURE_FILTER_MIN_BILINEAR_MIPMAP)
-        glSamplerParameteri(uiSampler, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
     else if (a_tfMinification == TEXTURE_FILTER_MIN_TRILINEAR)
-        glSamplerParameteri(uiSampler, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 
     tfMinification = a_tfMinification;
     tfMagnification = a_tfMagnification;
@@ -66,7 +64,6 @@ void Texture::bindTexture(int iTextureUnit) {
     this->boundId = iTextureUnit;
     glActiveTexture(GL_TEXTURE0 + iTextureUnit);
     glBindTexture(GL_TEXTURE_2D, uiTexture);
-    glBindSampler(iTextureUnit, uiSampler);
 }
 
 int Texture::getMinificationFilter() {
@@ -94,6 +91,5 @@ int Texture::getBoundId() const {
 }
 
 Texture::~Texture() {
-    glDeleteSamplers(1, &uiSampler);
     glDeleteTextures(1, &uiTexture);
 }

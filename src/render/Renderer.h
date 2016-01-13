@@ -14,8 +14,7 @@
 #include "Texture.h"
 #include "Fbo.h"
 #include "../core/Core.h"
-#define GLEW_STATIC
-#include <GL/glew.h>
+#include "opengl.h"
 #include <sstream>
 #include "Render.h"
 #include "../core/Timer.h"

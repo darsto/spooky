@@ -6,8 +6,7 @@
 #define C003_CSHADER_H
 #pragma once
 
-#define GLEW_STATIC
-#include <GL/glew.h>
+#include "opengl.h"
 #include <string>
 #include <glm/glm.hpp>
 

@@ -8,8 +8,7 @@
 
 #define GLM_FORCE_RADIANS
 
-#define GLEW_STATIC
-#include <GL/glew.h>
+#include "../opengl.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include "EntityRender.h"
 #include "../ShaderProgram.h"
