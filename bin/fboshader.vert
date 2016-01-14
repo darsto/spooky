@@ -1,6 +1,6 @@
-#version 330
+#version 120
 
-layout (location = 0) in vec2 v_coord;
+attribute vec2 v_coord;
 uniform sampler2D fbo_texture;
 varying vec2 f_texcoord;
 varying vec2 v_blurTexCoords[14];
@@ -11,7 +11,7 @@ void main(void) {
     gl_Position = vec4(v_coord, 0.0, 1.0);
     f_texcoord = (v_coord + 1.0) / 2.0;
 
-    float blur = 0.2;
+/*    float blur = 0.2;
     if (vertical) {
         v_blurTexCoords[ 0] = f_texcoord + vec2(0.0, -0.028 * blur);
         v_blurTexCoords[ 1] = f_texcoord + vec2(0.0, -0.024 * blur);
@@ -42,6 +42,6 @@ void main(void) {
         v_blurTexCoords[11] = f_texcoord + vec2( 0.020 * blur, 0.0);
         v_blurTexCoords[12] = f_texcoord + vec2( 0.024 * blur, 0.0);
         v_blurTexCoords[13] = f_texcoord + vec2( 0.028 * blur, 0.0);
-    }
+    }*/
 
 }

@@ -12,6 +12,16 @@
 #include "../Render.h"
 
 SimpleBlockRender::SimpleBlockRender() {
+    this->vertShader.load("shader.vert", GL_VERTEX_SHADER);
+    this->fragShader.load("shader.frag", GL_FRAGMENT_SHADER);
+
+    this->shaderProgram.createProgram();
+    this->shaderProgram.addShaderToProgram(&this->vertShader);
+    this->shaderProgram.addShaderToProgram(&this->fragShader);
+
+    this->shaderProgram.linkProgram();
+    this->shaderProgram.useProgram();
+
     /* initializing square's vertices */
     this->vertices[0] = 0.0f;
     this->vertices[1] = 1.0f;
@@ -35,6 +45,7 @@ SimpleBlockRender::SimpleBlockRender() {
 
     glBindBuffer(GL_ARRAY_BUFFER, this->vbo[0]); /* vertices vbo */
     glBufferData(GL_ARRAY_BUFFER, 12 * sizeof(float), this->vertices, GL_STATIC_DRAW);
+    glBindAttribLocation(this->shaderProgram.getProgramID(), 0, "inPosition");
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
@@ -47,20 +58,11 @@ SimpleBlockRender::SimpleBlockRender() {
 
     glBindBuffer(GL_ARRAY_BUFFER, this->vbo[1]); /* texture coords vbo */
     glBufferData(GL_ARRAY_BUFFER, 4 * 2 * sizeof(float), tCoords, GL_STATIC_DRAW);
+    glBindAttribLocation(this->shaderProgram.getProgramID(), 1, "inCoord");
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0);
 
     glBindVertexArray(0);
-
-    this->vertShader.load("shader.vert", GL_VERTEX_SHADER);
-    this->fragShader.load("shader.frag", GL_FRAGMENT_SHADER);
-
-    this->shaderProgram.createProgram();
-    this->shaderProgram.addShaderToProgram(&this->vertShader);
-    this->shaderProgram.addShaderToProgram(&this->fragShader);
-
-    this->shaderProgram.linkProgram();
-    this->shaderProgram.useProgram();
 }
 
 void SimpleBlockRender::render(const Block *const block, int texId, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, double scale) {
