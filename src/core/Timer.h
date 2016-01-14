@@ -1,5 +1,6 @@
 //
-// Created by dar on 11/27/15.
+// Unknown author
+// Created on 11/27/15.
 //
 
 #ifndef C003_TIMER_H
@@ -14,7 +15,7 @@ class Timer {
 public:
     Timer()
     // Init timePrev to the current point in time
-            : timePrev(high_resolution_clock::now()) {
+        : timePrev(high_resolution_clock::now()) {
     }
 
     // Returns time since last time this function was called
@@ -40,6 +41,5 @@ private:
     // ...because we want the highest possible accuracy
     time_point<high_resolution_clock> timePrev;
 };
-
 
 #endif //C003_TIMER_H
