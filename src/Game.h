@@ -6,21 +6,23 @@
 #define C003_GAME_H
 #pragma once
 
-#define _USE_MATH_DEFINES
-#include "core/Core.h"
-#include "render/Renderer.h"
+class Core;
+
+class Renderer;
+
+class Timer;
 
 class Game {
 
 public:
-    Game(Core *core);
+    Game();
     ~Game();
     void run();
 
 private:
     Core *core;
-    Renderer renderer;
-    Timer timer;
+    Renderer *renderer;
+    Timer *timer;
     const double TIME_STEP = 0.01;
     /*
      * An array of delays after each keyboard click.
@@ -30,7 +32,7 @@ private:
     unsigned char pressDelays[256];
     void update();
     void handleKeyboard();
-    void handleKeypress(SDL_Event event);
+    void handleKeypress(void *event);
     void resetMovementPressDelays();
 };
 

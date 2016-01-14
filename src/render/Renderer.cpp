@@ -10,10 +10,6 @@ void consoleMessage() {
     versionGL = (char *) (glGetString(GL_VERSION));
 
     printf("OpenGL version: %s\n", versionGL);
-    GLenum err;
-    while ((err = glGetError()) != GL_NO_ERROR) {
-        printf("OpenGL error: %s", err);
-    }
 }
 
 Renderer::Renderer(Core *core) : core(core) { }
@@ -42,7 +38,7 @@ bool Renderer::initWindow() {
         success = false;
     }
     else {
-        //Use OpenGL 3.3
+        //Use OpenGL 2.1
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 
@@ -141,7 +137,6 @@ void Renderer::tick() {
     fbo.getShaderProgram()->setUniform("lightPointsNum", entitiesNum);
     fbo.getShaderProgram()->setUniform("scale", (float) (this->core->getBlockSize() * this->core->getGeneralScale()));
     fbo.render(0);
-    GLenum err;
 }
 
 void Renderer::run() {

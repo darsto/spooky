@@ -3,23 +3,33 @@
 //
 
 #include "Game.h"
+#include "core/Core.h"
+#include "render/Renderer.h"
+#include <core/map/TiledTxtMapLoader.h>
 
-Game::Game(Core *core) : core(core), renderer(core) {
+Game::Game() {
+    this->timer = new Timer();
+
+    MapLoader *mapLoader = new TiledTxtMapLoader("test_map.txt");
+    Map *bmap = mapLoader->loadMap();
+
+    this->core = new Core(bmap);
+    this->renderer = new Renderer(core);
 }
 
 void Game::run() {
-    this->renderer.init();
+    this->renderer->init();
     SDL_StartTextInput();
-    double deltaTime = timer.GetDelta();
+    double deltaTime = timer->GetDelta();
     double accumulator = 0.0;
     while (this->core->isRunning()) {
-        deltaTime = timer.GetDelta();
+        deltaTime = timer->GetDelta();
         accumulator += deltaTime;
         while (accumulator > TIME_STEP) {
             this->update();
             accumulator -= TIME_STEP;
         }
-        this->renderer.run();
+        this->renderer->run();
     }
     SDL_StopTextInput();
 }
@@ -37,13 +47,13 @@ void Game::update() {
                 break;
             case SDL_WINDOWEVENT:
                 if (e.window.event == SDL_WINDOWEVENT_RESIZED || e.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
-                    this->renderer.resize((unsigned int) e.window.data1, (unsigned int) e.window.data2);
+                    this->renderer->resize((unsigned int) e.window.data1, (unsigned int) e.window.data2);
                 }
                 break;
             case SDL_KEYDOWN:
             case SDL_KEYUP:
                 if (e.key.repeat == 0)
-                    handleKeypress(e);
+                    handleKeypress(&e);
                 break;
         }
     }
@@ -89,33 +99,34 @@ void Game::handleKeyboard() {
     }
 }
 
-void Game::handleKeypress(SDL_Event event) {
-    switch (event.type) {
+void Game::handleKeypress(void *event1) {
+    SDL_Event *event = (SDL_Event*) event1;
+    switch (event->type) {
         case SDL_KEYDOWN: {
-            SDL_Keycode key = event.key.keysym.sym;
+            SDL_Keycode key = event->key.keysym.sym;
             unsigned char delay_tmp = 255;
             static int TELEPORT_DELAY = 255 - 25;
             switch (key) {
                 case SDLK_a:
-                    if (this->pressDelays[event.key.keysym.sym] > TELEPORT_DELAY) {
+                    if (this->pressDelays[event->key.keysym.sym] > TELEPORT_DELAY) {
                         this->core->getPlayer()->teleport(-1.95, 0);
                         delay_tmp = 0, resetMovementPressDelays();
                     }
                     break;
                 case SDLK_d:
-                    if (this->pressDelays[event.key.keysym.sym] > TELEPORT_DELAY) {
+                    if (this->pressDelays[event->key.keysym.sym] > TELEPORT_DELAY) {
                         this->core->getPlayer()->teleport(1.95, 0);
                         delay_tmp = 0, resetMovementPressDelays();
                     }
                     break;
                 case SDLK_w:
-                    if (this->pressDelays[event.key.keysym.sym] > TELEPORT_DELAY) {
+                    if (this->pressDelays[event->key.keysym.sym] > TELEPORT_DELAY) {
                         this->core->getPlayer()->teleport(0, -1.95);
                         delay_tmp = 0, resetMovementPressDelays();
                     }
                     break;
                 case SDLK_s:
-                    if (this->pressDelays[event.key.keysym.sym] > TELEPORT_DELAY) {
+                    if (this->pressDelays[event->key.keysym.sym] > TELEPORT_DELAY) {
                         this->core->getPlayer()->teleport(0, 1.95);
                         delay_tmp = 0, resetMovementPressDelays();
                     }
@@ -152,8 +163,8 @@ void Game::handleKeypress(SDL_Event event) {
                 default:
                     break;
             }
-            if (event.key.keysym.sym >= 0 && event.key.keysym.sym < 256)
-                this->pressDelays[event.key.keysym.sym] = delay_tmp;
+            if (event->key.keysym.sym >= 0 && event->key.keysym.sym < 256)
+                this->pressDelays[event->key.keysym.sym] = delay_tmp;
             break;
         }
         case SDL_KEYUP:
