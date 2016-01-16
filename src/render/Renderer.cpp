@@ -22,7 +22,7 @@ bool Renderer::init() {
     } else if (!this->initTextures()) {
         printf("Unable to initialize textures!\n");
     } else {
-        initRenderers();
+        initRenderers(this->textureAtlas.getWidth());
         initTexData();
         fbo.init(3, windowWidth, windowHeight, new float[4]{0.9, 0.9, 0.9, 1.0}, "fboshader");
         return true;
@@ -86,8 +86,8 @@ bool Renderer::initGL() {
 
 bool Renderer::initTextures() {
     bool ret = true;
-    if (!textureAtlas.loadTexture2D("terrain.png", true)) ret = false;
-    textureAtlas.setFiltering(TEXTURE_FILTER_MAG_BILINEAR, TEXTURE_FILTER_MIN_BILINEAR_MIPMAP);
+    if (!textureAtlas.loadTexture2D("terrain.png", false)) ret = false;
+    textureAtlas.setFiltering(TEXTURE_FILTER_MAG_NEAREST, TEXTURE_FILTER_MIN_NEAREST);
     return ret;
 }
 
@@ -101,7 +101,7 @@ void Renderer::tick() {
             (block->getX() - 1) * this->core->getGeneralScale() * this->core->getBlockSize() < -(signed) windowWidth / 2.0f - this->core->getCamX() + (signed) windowWidth &&
             block->getY() * this->core->getGeneralScale() * this->core->getBlockSize() > -(signed) windowHeight / 2.0f - this->core->getCamY() &&
             (block->getY() - 1) * this->core->getGeneralScale() * this->core->getBlockSize() < -(signed) windowHeight / 2.0f - this->core->getCamY() + (signed) windowHeight)
-            getBlockRender(block)->render(block, textureAtlas.getBoundId(), projectionMatrix, glm::translate(viewMatrix, glm::vec3(
+            getBlockRender(block)->render(block, &textureAtlas, projectionMatrix, glm::translate(viewMatrix, glm::vec3(
                 (int) (-(signed) windowWidth / 2.0f - this->core->getCamX()),
                 (int) ((signed) windowHeight / 2.0f - this->core->getCamY()), 0.0f
             )), this->core->getBlockSize() * this->core->getGeneralScale());

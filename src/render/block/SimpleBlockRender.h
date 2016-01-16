@@ -6,6 +6,7 @@
 #define C003_SIMPLEBLOCKRENDER_H
 #pragma once
 
+#include <render/Texture.h>
 #include "BlockRender.h"
 #include "../Shader.h"
 #include "../ShaderProgram.h"
@@ -13,11 +14,12 @@
 class SimpleBlockRender : public BlockRender {
 
 public:
-    SimpleBlockRender();
+    SimpleBlockRender(int texSize);
     ~SimpleBlockRender();
-    virtual void render(const Block *const block, int texId, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, double scale) override;
+    virtual void render(const Block *const block, Texture *tex, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, double scale) override;
 private:
     const unsigned int atlasSize = 8;
+    const int texSize;
     float vertices[12];
     GLuint vbo[2];
     GLuint vao;

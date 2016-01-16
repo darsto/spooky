@@ -7,8 +7,8 @@
 #include <string>
 
 DefaultEntityRender::DefaultEntityRender(const string &textureFile, const string &shader) {
-    texture.loadTexture2D(textureFile + string(".png"), true);
-    texture.setFiltering(TEXTURE_FILTER_MAG_BILINEAR, TEXTURE_FILTER_MIN_BILINEAR_MIPMAP);
+    texture.loadTexture2D(textureFile + string(".png"), false);
+    texture.setFiltering(TEXTURE_FILTER_MAG_NEAREST, TEXTURE_FILTER_MIN_NEAREST);
 
     int a = this->vertShader.load(shader + string(".vert"), GL_VERTEX_SHADER);
     int b = this->fragShader.load(shader + string(".frag"), GL_FRAGMENT_SHADER);
@@ -47,11 +47,12 @@ DefaultEntityRender::DefaultEntityRender(const string &textureFile, const string
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
+    float size = (float) (1.0 - (atlasSize + 1.5) / texture.getWidth()) / atlasSize;
     float tCoords[] = {
-        1.0f / atlasSize, 0.0f,
-        1.0f / atlasSize, 1.0f / atlasSize,
+        size, 0.0f,
+        size, size,
         0.0f, 0.0f,
-        0.0f, 1.0f / atlasSize,
+        0.0f, size,
     };
 
     glBindBuffer(GL_ARRAY_BUFFER, this->vbo[1]); /* texture coords vbo */
@@ -74,8 +75,8 @@ void DefaultEntityRender::render(const Entity *const entity, glm::mat4 projectio
     this->tmpModelMatrix = glm::rotate(this->tmpModelMatrix, 0.0f, glm::vec3(1.0f, 0.0f, 0.0f)); // Just a variation of first rotating
 
     shaderProgram.setUniform("modelViewMatrix", viewMatrix * this->tmpModelMatrix);
-    shaderProgram.setUniform("texPosX", (float) (this->getTexPos() % atlasSize) / atlasSize);
-    shaderProgram.setUniform("texPosY", (float) (this->getTexPos() / atlasSize) / atlasSize);
+    shaderProgram.setUniform("texPosX", 1.0f / this->texture.getWidth() + (float) (this->getTexPos() % atlasSize) / atlasSize);
+    shaderProgram.setUniform("texPosY", 1.0f / this->texture.getWidth() + (float) (this->getTexPos() / atlasSize) / atlasSize);
 
     glBindVertexArray(this->vao);
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);

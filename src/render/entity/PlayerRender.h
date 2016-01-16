@@ -25,8 +25,8 @@ public:
             this->tmpModelMatrix = glm::rotate(this->tmpModelMatrix, 0.0f, glm::vec3(1.0f, 0.0f, 0.0f)); // Just a variation of first rotating
 
             shaderProgram.setUniform("modelViewMatrix", viewMatrix * this->tmpModelMatrix);
-            shaderProgram.setUniform("texPosX", (float) (this->getTexPos() % atlasSize) / atlasSize);
-            shaderProgram.setUniform("texPosY", (float) (this->getTexPos() / atlasSize) / atlasSize);
+            shaderProgram.setUniform("texPosX", 1.0f / this->texture.getWidth() + (float) (this->getTexPos() % atlasSize) / atlasSize);
+            shaderProgram.setUniform("texPosY", 1.0f / this->texture.getWidth() + (float) (this->getTexPos() / atlasSize) / atlasSize);
 
             glBindVertexArray(this->vao);
             glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);

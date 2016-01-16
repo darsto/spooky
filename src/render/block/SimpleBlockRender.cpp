@@ -11,7 +11,7 @@
 #include "../../core/map/block/SimpleBlock.h"
 #include "../Render.h"
 
-SimpleBlockRender::SimpleBlockRender() {
+SimpleBlockRender::SimpleBlockRender(int texSize) : texSize(texSize) {
     this->vertShader.load("shader.vert", GL_VERTEX_SHADER);
     this->fragShader.load("shader.frag", GL_FRAGMENT_SHADER);
 
@@ -49,11 +49,12 @@ SimpleBlockRender::SimpleBlockRender() {
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
+    float size = (float) (1.0 - (atlasSize + 1.5) / texSize) / atlasSize;
     float tCoords[] = {
-            1.0f / atlasSize, 0.0f,
-            1.0f / atlasSize, 1.0f / atlasSize,
+            size, 0.0f,
+            size, size,
             0.0f, 0.0f,
-            0.0f, 1.0f / atlasSize,
+            0.0f, size,
     };
 
     glBindBuffer(GL_ARRAY_BUFFER, this->vbo[1]); /* texture coords vbo */
@@ -65,10 +66,10 @@ SimpleBlockRender::SimpleBlockRender() {
     glBindVertexArray(0);
 }
 
-void SimpleBlockRender::render(const Block *const block, int texId, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, double scale) {
+void SimpleBlockRender::render(const Block *const block, Texture *tex, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, double scale) {
     this->shaderProgram.useProgram();
     this->shaderProgram.setUniform("projectionMatrix", projectionMatrix);
-    this->shaderProgram.setUniform("gSampler", texId);
+    this->shaderProgram.setUniform("gSampler", tex->getBoundId());
 
 
     this->tmpModelMatrix = glm::translate(this->modelMatrix, glm::vec3(0.0f - block->getX() * scale, 0.0f - block->getY() * scale, 0.0f));
@@ -76,15 +77,15 @@ void SimpleBlockRender::render(const Block *const block, int texId, glm::mat4 pr
     this->tmpModelMatrix = glm::rotate(this->tmpModelMatrix, 0.0f, glm::vec3(1.0f, 0.0f, 0.0f)); // Just a variation of first rotating
 
     shaderProgram.setUniform("modelViewMatrix", viewMatrix * this->tmpModelMatrix);
-    shaderProgram.setUniform("texPosX", (float) (this->getTexPos(block) % atlasSize) / atlasSize);
-    shaderProgram.setUniform("texPosY", (float) (this->getTexPos(block) / atlasSize) / atlasSize);
+    shaderProgram.setUniform("texPosX", 1.0f / texSize + (float) (this->getTexPos(block) % atlasSize) / atlasSize);
+    shaderProgram.setUniform("texPosY", 1.0f / texSize + (float) (this->getTexPos(block) / atlasSize) / atlasSize);
 
     glBindVertexArray(this->vao);
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 }
 
 int SimpleBlockRender::getTexPos(const Block *const block) {
-    return ((SimpleBlock *) block)->getTexPos();
+    return 0;//((SimpleBlock *) block)->getTexPos();
 }
 
 SimpleBlockRender::~SimpleBlockRender() {
