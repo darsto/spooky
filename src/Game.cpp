@@ -2,6 +2,8 @@
 // Created by dar on 11/27/15.
 //
 
+#include <stdio.h>
+#include <stdlib.h>
 #include "Game.h"
 #include "core/Core.h"
 #include "render/Renderer.h"
