@@ -4,24 +4,22 @@
 
 #include "Renderer.h"
 
-void consoleMessage() {
-    char *versionGL;
-
-    versionGL = (char *) (glGetString(GL_VERSION));
-
-    printf("OpenGL version: %s\n", versionGL);
-}
-
 Renderer::Renderer(Core *core) : core(core) { }
 
 bool Renderer::init() {
+#ifndef __ANDROID__
     if (!this->initWindow()) {
         printf("Failed to initialize window!\n");
-    } else if (!this->initGL()) {
+    } else
+#endif // __ANDROID__
+    if (!this->initGL()) {
         printf("Unable to initialize OpenGL!\n");
     } else if (!this->initTextures()) {
         printf("Unable to initialize textures!\n");
     } else {
+#ifdef __ANDROID__
+        initBindings();
+#endif // __ANDROID__
         initRenderers(this->textureAtlas.getWidth());
         initTexData();
         fbo.init(3, windowWidth, windowHeight, new float[4]{0.9, 0.9, 0.9, 1.0}, "fboshader");
@@ -33,6 +31,10 @@ bool Renderer::init() {
 bool Renderer::initWindow() {
     bool success = true;
 
+#ifdef __ANDROID__
+    success = false;
+    printf("Cannot initialize window on Android device.");
+#else // non __ANDROID__
     if (SDL_Init(SDL_INIT_VIDEO) < 0) { //Initialize SDL
         printf("SDL could not initialize! SDL Error: %s\n", SDL_GetError());
         success = false;
@@ -61,8 +63,7 @@ bool Renderer::initWindow() {
             }
         }
     }
-    consoleMessage();
-
+#endif // non __ANDROID__
     return success;
 }
 
@@ -120,7 +121,7 @@ void Renderer::tick() {
             if (ILighted *elighted = dynamic_cast<ILighted *>(entity)) {
                 fbo.getShaderProgram()->useProgram();
                 if (entitiesNum < fbo.MAX_LIGHT_SRCS) {
-                    char *uniform_name_formatted = new char[15 + (int)log((double)fbo.MAX_LIGHT_SRCS)];
+                    char *uniform_name_formatted = new char[15 + (int) log((double) fbo.MAX_LIGHT_SRCS)];
                     sprintf(uniform_name_formatted, "lightPoints[%d]", entitiesNum);
                     fbo.getShaderProgram()->setUniform(uniform_name_formatted,
                                                        glm::vec2(this->core->getCamX() + (entity->getX() - 1 + entity->getWidth() / 2) * this->core->getBlockSize() * this->core->getGeneralScale() +
@@ -141,7 +142,9 @@ void Renderer::tick() {
 
 void Renderer::run() {
     this->tick();
+#ifndef __ANDROID__
     SDL_GL_SwapWindow(gWindow);
+#endif // __ANDROID__
 }
 
 void Renderer::resize(unsigned int width, unsigned int height) {
@@ -156,6 +159,8 @@ void Renderer::resize(unsigned int width, unsigned int height) {
 }
 
 Renderer::~Renderer() {
+#ifndef __ANDROID__
     SDL_DestroyWindow(this->gWindow);
     SDL_Quit();
+#endif // __ANDROID__
 }

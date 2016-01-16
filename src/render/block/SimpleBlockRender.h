@@ -6,8 +6,8 @@
 #define C003_SIMPLEBLOCKRENDER_H
 #pragma once
 
-#include <render/Texture.h>
 #include "BlockRender.h"
+#include "../Texture.h"
 #include "../Shader.h"
 #include "../ShaderProgram.h"
 

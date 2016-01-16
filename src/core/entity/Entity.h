@@ -8,7 +8,7 @@
 
 #define _USE_MATH_DEFINES
 #include <Box2D/Box2D.h>
-#include <core/map/block/Block.h>
+#include "../map/block/Block.h"
 #include "../IPositionable.h"
 #include "../Ray.h"
 

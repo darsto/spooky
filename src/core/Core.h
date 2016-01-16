@@ -6,7 +6,7 @@
 #define C003_CORE_H
 #pragma once
 
-#include <core/entity/SimpleShape.h>
+#include "entity/SimpleShape.h"
 #include "map/Map.h"
 #include "entity/Player.h"
 

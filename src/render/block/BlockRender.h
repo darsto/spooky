@@ -9,6 +9,7 @@
 #include <glm/detail/type_mat.hpp>
 #include <glm/detail/type_mat4x4.hpp>
 #include "../../core/map/block/Block.h"
+#include "../Texture.h"
 
 class BlockRender {
 public:

@@ -9,7 +9,9 @@
 #define GLM_FORCE_RADIANS
 #define _USE_MATH_DEFINES
 
+#ifndef __ANDROID__
 #include <SDL2/SDL.h>
+#endif // __ANDROID__
 #include <glm/gtc/matrix_transform.hpp>
 #include "Texture.h"
 #include "Fbo.h"
@@ -30,8 +32,10 @@ public:
     void resize(unsigned int width, unsigned int height);
 
 private:
+#ifndef __ANDROID__
     SDL_Window *gWindow = NULL;
     SDL_GLContext gContext;
+#endif // __ANDROID__
     unsigned int windowWidth = 1366;
     unsigned int windowHeight = 750;
     Core *core;

@@ -24,16 +24,19 @@ private:
     Renderer *renderer;
     Timer *timer;
     const double TIME_STEP = 0.01;
+    void update();
+#ifndef __ANDROID__
     /*
      * An array of delays after each keyboard click.
      * Decrements with each frame.
      * Used to detect double keyboard presses
      */
     unsigned char pressDelays[256];
-    void update();
     void handleKeyboard();
     void handleKeypress(void *event);
     void resetMovementPressDelays();
+#endif // __ANDROID__
+
 };
 
 #endif //C003_GAME_H

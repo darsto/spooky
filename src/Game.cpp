@@ -5,7 +5,7 @@
 #include "Game.h"
 #include "core/Core.h"
 #include "render/Renderer.h"
-#include <core/map/TiledTxtMapLoader.h>
+#include "core/map/TiledTxtMapLoader.h"
 
 Game::Game() {
     this->timer = new Timer();
@@ -19,7 +19,9 @@ Game::Game() {
 
 void Game::run() {
     this->renderer->init();
+#ifndef __ANDROID__
     SDL_StartTextInput();
+#endif // __ANDROID__
     double deltaTime = timer->GetDelta();
     double accumulator = 0.0;
     while (this->core->isRunning()) {
@@ -31,10 +33,13 @@ void Game::run() {
         }
         this->renderer->run();
     }
+#ifndef __ANDROID__
     SDL_StopTextInput();
+#endif // __ANDROID__
 }
 
 void Game::update() {
+#ifndef __ANDROID__
     for (int i = 0; i < 256; i++) {
         if (this->pressDelays[i] > 0) this->pressDelays[i]--;
     }
@@ -57,6 +62,7 @@ void Game::update() {
                 break;
         }
     }
+#endif // __ANDROID__
     this->core->getMap()->update();
     this->core->getMap()->getWorld()->Step(TIME_STEP, 8, 3);
     for (int i = 0; i < this->core->getMap()->getEntities().size(); i++) {
@@ -73,6 +79,7 @@ void Game::update() {
     if (abs(dy) > 2) this->core->setCamY(-this->core->getCamY() + (dy) * 0.05);
 }
 
+#ifndef __ANDROID__
 void Game::handleKeyboard() {
     const Uint8 *keystate = SDL_GetKeyboardState(NULL);
     double playerSpeed = this->core->getPlayer()->getSpeed();
@@ -98,7 +105,9 @@ void Game::handleKeyboard() {
         this->core->setBlockSize(this->core->getBlockSize() + 0.15);
     }
 }
+#endif // __ANDROID__
 
+#ifndef __ANDROID__
 void Game::handleKeypress(void *event1) {
     SDL_Event *event = (SDL_Event*) event1;
     switch (event->type) {
@@ -174,10 +183,13 @@ void Game::handleKeypress(void *event1) {
             break;
     }
 }
+#endif // __ANDROID__
 
+#ifndef __ANDROID__
 void Game::resetMovementPressDelays() {
     this->pressDelays[SDLK_a] = this->pressDelays[SDLK_d] = this->pressDelays[SDLK_w] = this->pressDelays[SDLK_s] = 0;
 }
+#endif // __ANDROID__
 
 Game::~Game() {
     delete this->core;
