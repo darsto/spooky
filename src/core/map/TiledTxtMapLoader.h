@@ -32,7 +32,11 @@ TiledTxtMapLoader::TiledTxtMapLoader(const std::string &fileName) {
     int width, height;
 
     std::string line;
-    std::ifstream myfile(fileName.c_str());
+    std::string file_path = fileName;
+#ifdef __ANDROID__
+    file_path = "/sdcard/c003/" + fileName;
+#endif // __ANDROID__
+    std::ifstream myfile(file_path.c_str());
     if (myfile.is_open()) {
         getline(myfile, line); //skip first line
         getline(myfile, line), width = parseTiledVariable(line);

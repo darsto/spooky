@@ -18,6 +18,9 @@ public:
     Game();
     ~Game();
     void run();
+#ifdef __ANDROID__
+void resize(int width, int height);
+#endif // __ANDROID__
 
 private:
     Core *core;

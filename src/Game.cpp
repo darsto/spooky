@@ -17,13 +17,12 @@ Game::Game() {
 
     this->core = new Core(bmap);
     this->renderer = new Renderer(core);
+    this->renderer->init();
 }
 
 void Game::run() {
-    this->renderer->init();
 #ifndef __ANDROID__
     SDL_StartTextInput();
-#endif // __ANDROID__
     double deltaTime = timer->GetDelta();
     double accumulator = 0.0;
     while (this->core->isRunning()) {
@@ -33,9 +32,12 @@ void Game::run() {
             this->update();
             accumulator -= TIME_STEP;
         }
+#else // __ANDROID__
+        this->update(); //TODO No delta time for now
+#endif // __ANDROID__
         this->renderer->run();
-    }
 #ifndef __ANDROID__
+    }
     SDL_StopTextInput();
 #endif // __ANDROID__
 }
@@ -190,6 +192,10 @@ void Game::handleKeypress(void *event1) {
 #ifndef __ANDROID__
 void Game::resetMovementPressDelays() {
     this->pressDelays[SDLK_a] = this->pressDelays[SDLK_d] = this->pressDelays[SDLK_w] = this->pressDelays[SDLK_s] = 0;
+}
+#else
+void Game::resize(int width, int height) {
+    this->renderer->resize((unsigned int) width, (unsigned int) height);
 }
 #endif // __ANDROID__
 

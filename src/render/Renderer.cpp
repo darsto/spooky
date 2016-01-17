@@ -36,7 +36,7 @@ bool Renderer::initWindow() {
     printf("Cannot initialize window on Android device.");
 #else // non __ANDROID__
     if (SDL_Init(SDL_INIT_VIDEO) < 0) { //Initialize SDL
-        printf("SDL could not initialize! SDL Error: %s\n", SDL_GetError());
+        printf("SDL could not initialize! SDL Error: %d\n", SDL_GetError());
         success = false;
     }
     else {
@@ -78,7 +78,6 @@ bool Renderer::initGL() {
 #endif /*__ANDROID__*/
     viewMatrix = glm::lookAt(glm::vec3(0, 0, 0.0f), glm::vec3(0, 0, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
     projectionMatrix = glm::ortho(0.0f, float(windowWidth), 0.0f, float(windowHeight));
-    glEnable(GL_TEXTURE_2D);
     glDisable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -93,7 +92,7 @@ bool Renderer::initTextures() {
 }
 
 void Renderer::tick() {
-    fbo.bind();
+    //fbo.bind(); //TODO Current FBO doesn't work on android
     glClearColor(0.9, 0.9, 0.9, 0.0);
     glClear(GL_COLOR_BUFFER_BIT);
     textureAtlas.bindTexture(0);
@@ -118,7 +117,7 @@ void Renderer::tick() {
                 (int) (-(signed) windowWidth / 2.0f - this->core->getCamX()),
                 (int) ((signed) windowHeight / 2.0f - this->core->getCamY()),
                 0.0f)), this->core->getBlockSize() * this->core->getGeneralScale());
-            if (ILighted *elighted = dynamic_cast<ILighted *>(entity)) {
+            /*if (ILighted *elighted = dynamic_cast<ILighted *>(entity)) {
                 fbo.getShaderProgram()->useProgram();
                 if (entitiesNum < fbo.MAX_LIGHT_SRCS) {
                     char *uniform_name_formatted = new char[15 + (int) log((double) fbo.MAX_LIGHT_SRCS)];
@@ -130,14 +129,14 @@ void Renderer::tick() {
                                                                  (double) this->windowHeight / 2));
                     entitiesNum++;
                 }
-            }
+            }*/
         }
     }
-    fbo.unbind();
+    /*fbo.unbind();
     fbo.getShaderProgram()->useProgram();
     fbo.getShaderProgram()->setUniform("lightPointsNum", entitiesNum);
     fbo.getShaderProgram()->setUniform("scale", (float) (this->core->getBlockSize() * this->core->getGeneralScale()));
-    fbo.render(0);
+    fbo.render(0);*/
 }
 
 void Renderer::run() {

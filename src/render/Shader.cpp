@@ -14,12 +14,20 @@ Shader::~Shader() {
 }
 
 bool Shader::load(const string &file, int type) {
-    FILE *fp = fopen(file.c_str(), "rt");
+    string file_path = file;
+#ifdef __ANDROID__
+    file_path = "/sdcard/c003/" + file;
+#endif // __ANDROID__
+    FILE *fp = fopen(file_path.c_str(), "rt");
     if (!fp) return false;
-
     this->type = type;
     vector<string> program_vec;
     char sLine[255];
+#ifdef __ANDROID__
+    if (type == GL_FRAGMENT_SHADER) {
+        program_vec.push_back("precision mediump float;");
+    }
+#endif // __ANDROID__
     while (fgets(sLine, 255, fp))program_vec.push_back(sLine);
     fclose(fp);
     const char **program_str = new const char *[program_vec.size()];
