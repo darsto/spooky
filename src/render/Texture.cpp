@@ -6,7 +6,6 @@
 #include <SOIL.h>
 
 Texture::Texture() {
-    bMipMapsGenerated = false;
 }
 
 void Texture::createFromData(unsigned char *bData, int a_iWidth, int a_iHeight, int a_iBPP, GLenum format, bool bGenerateMipMaps) {
@@ -25,16 +24,14 @@ void Texture::createFromData(unsigned char *bData, int a_iWidth, int a_iHeight, 
 
 bool Texture::loadTexture2D(string a_sPath, bool bGenerateMipMaps) {
 
-    int width, height;
+    int width, height, channels;
 #ifdef __ANDROID__
     a_sPath = "/sdcard/c003/" + a_sPath; //TODO Move files inside apk
 #endif // __ANDROID__
-    unsigned char *data_ptr = SOIL_load_image(a_sPath.c_str(), &width, &height, 0, SOIL_LOAD_RGBA);
+    unsigned char *data_ptr = SOIL_load_image(a_sPath.c_str(), &width, &height, &channels, SOIL_LOAD_RGBA);
 
-    createFromData(data_ptr, width, height, 4, GL_RGBA, bGenerateMipMaps);
-
+    createFromData(data_ptr, width, height, channels, GL_RGBA, bGenerateMipMaps);
     sPath = a_sPath;
-
     return true;
 }
 
