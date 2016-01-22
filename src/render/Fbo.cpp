@@ -90,9 +90,9 @@ void Fbo::render(GLuint renderTo) {
     shader_program.setUniform("fbo_texture", this->texId);
     glBindVertexArray(vaoId);
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindTexture(GL_TEXTURE_2D, 0);
     glBindVertexArray(0);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 void initTexData() {
