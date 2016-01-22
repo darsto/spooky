@@ -38,6 +38,19 @@ bool Shader::load(const string &file, int type) {
     glShaderSource(id, program_vec.size(), program_str, NULL);
     glCompileShader(id);
 
+    GLint isCompiled = 0;
+    glGetShaderiv(id, GL_COMPILE_STATUS, &isCompiled);
+    if (isCompiled == GL_FALSE) {
+        int b, length;
+        char log[length];
+
+        glGetShaderInfoLog(id, 200, &length, log);
+
+        printf("Log file: ");
+        if (length > 1)
+            printf("%s\n", log);
+    }
+
     delete[] program_str;
 
     int compilationStatus;
