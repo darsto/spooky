@@ -42,6 +42,7 @@ private:
     string shaderName;
     Shader vert_shader, frag_shader;
     ShaderProgram shader_program;
+    GLuint vaoId, texture_vertices;
 
     /*
      * Loads and initializes shaders, creates shader program
@@ -55,8 +56,5 @@ private:
      */
     unsigned char initShader();
 };
-
-static GLuint vaoId, texture_vertices;
-void initTexData();
 
 #endif //C003_FBO_H

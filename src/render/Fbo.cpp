@@ -19,8 +19,6 @@ unsigned char Fbo::initShader() {
     this->shader_program.createProgram();
     if (!this->shader_program.addShaderToProgram(&vert_shader)) errCode |= 1 << 2;
     if (!this->shader_program.addShaderToProgram(&frag_shader)) errCode |= 1 << 3;
-
-    if (!this->shader_program.linkProgram()) errCode |= 1 << 4;
     return errCode;
 }
 
@@ -57,6 +55,25 @@ int Fbo::init(int texId, unsigned int width, unsigned int height, float bgColor[
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+    glGenVertexArrays(1, &vaoId);
+    glGenBuffers(1, &texture_vertices);
+
+    GLfloat fbo_vertices[] = {
+        -1.0f, 1.0f,
+        -1.0f, -1.0f,
+        1.0f, 1.0f,
+        1.0f, -1.0f,
+    };
+
+    glBindVertexArray(vaoId);
+    glBindBuffer(GL_ARRAY_BUFFER, texture_vertices);
+    glBufferData(GL_ARRAY_BUFFER, 4 * 2 * sizeof(float), fbo_vertices, GL_STATIC_DRAW);
+    glEnableVertexAttribArray((GLuint) 0);
+    glVertexAttribPointer((GLuint) 0, 2, GL_FLOAT, GL_FALSE, 0, 0);
+    glBindVertexArray(0);
+
+    this->shader_program.linkProgram();
     return status;
 }
 
@@ -93,23 +110,4 @@ void Fbo::render(GLuint renderTo) {
     glBindVertexArray(0);
     glBindTexture(GL_TEXTURE_2D, 0);
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
-}
-
-void initTexData() {
-    glGenVertexArrays(1, &vaoId);
-    glGenBuffers(1, &texture_vertices);
-
-    GLfloat fbo_vertices[] = {
-            -1.0f, 1.0f,
-            -1.0f, -1.0f,
-            1.0f, 1.0f,
-            1.0f, -1.0f,
-    };
-
-    glBindVertexArray(vaoId);
-    glBindBuffer(GL_ARRAY_BUFFER, texture_vertices);
-    glBufferData(GL_ARRAY_BUFFER, 4 * 2 * sizeof(float), fbo_vertices, GL_STATIC_DRAW);
-    glEnableVertexAttribArray((GLuint) 0);
-    glVertexAttribPointer((GLuint) 0, 2, GL_FLOAT, GL_FALSE, 0, 0);
-    glBindVertexArray(0);
 }

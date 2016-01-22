@@ -21,7 +21,6 @@ bool Renderer::init() {
         initBindings();
 #endif // __ANDROID__
         initRenderers(this->textureAtlas.getWidth());
-        initTexData();
         fbo.init(3, windowWidth, windowHeight, new float[4]{0.9, 0.9, 0.9, 1.0}, "fboshader");
         return true;
     }
@@ -92,7 +91,7 @@ bool Renderer::initTextures() {
 }
 
 void Renderer::tick() {
-    //fbo.bind(); //TODO Current FBO doesn't work on android
+    fbo.bind(); //TODO Current FBO doesn't work on android
     glClearColor(0.9, 0.9, 0.9, 0.0);
     glClear(GL_COLOR_BUFFER_BIT);
     textureAtlas.bindTexture(0);
@@ -117,7 +116,7 @@ void Renderer::tick() {
                 (int) (-(signed) windowWidth / 2.0f - this->core->getCamX()),
                 (int) ((signed) windowHeight / 2.0f - this->core->getCamY()),
                 0.0f)), this->core->getBlockSize() * this->core->getGeneralScale());
-            /*if (ILighted *elighted = dynamic_cast<ILighted *>(entity)) {
+            if (ILighted *elighted = dynamic_cast<ILighted *>(entity)) {
                 fbo.getShaderProgram()->useProgram();
                 if (entitiesNum < fbo.MAX_LIGHT_SRCS) {
                     char *uniform_name_formatted = new char[15 + (int) log((double) fbo.MAX_LIGHT_SRCS)];
@@ -129,14 +128,14 @@ void Renderer::tick() {
                                                                  (double) this->windowHeight / 2));
                     entitiesNum++;
                 }
-            }*/
+            }
         }
     }
-    /*fbo.unbind();
+    fbo.unbind();
     fbo.getShaderProgram()->useProgram();
     fbo.getShaderProgram()->setUniform("lightPointsNum", entitiesNum);
     fbo.getShaderProgram()->setUniform("scale", (float) (this->core->getBlockSize() * this->core->getGeneralScale()));
-    fbo.render(0);*/
+    fbo.render(0);
 }
 
 void Renderer::run() {
