@@ -11,18 +11,21 @@ import javax.microedition.khronos.opengles.GL10;
  */
 public class GLRenderer implements GLSurfaceView.Renderer {
 
+	private JniBridge jniBridge = null;
+
     @Override
     public void onSurfaceCreated(GL10 unused, EGLConfig config) {
-        JniBridge.init();
+        this.jniBridge = new JniBridge();
+        this.jniBridge.init();
     }
 
     @Override
     public void onSurfaceChanged(GL10 unused, int width, int height) {
-        JniBridge.resize(width, height);
+        this.jniBridge.resize(width, height);
     }
 
     @Override
     public void onDrawFrame(GL10 unused) {
-        JniBridge.tick();
+        this.jniBridge.tick();
     }
 }
