@@ -17,9 +17,6 @@ DefaultEntityRender::DefaultEntityRender(const string &textureFile, const string
     this->shaderProgram.addShaderToProgram(&this->vertShader);
     this->shaderProgram.addShaderToProgram(&this->fragShader);
 
-    this->shaderProgram.linkProgram();
-    this->shaderProgram.useProgram();
-
     /* initializing square's vertices */
     this->vertices[0] = 0.0f;
     this->vertices[1] = 1.0f;
@@ -62,6 +59,9 @@ DefaultEntityRender::DefaultEntityRender(const string &textureFile, const string
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0);
 
     glBindVertexArray(0);
+
+    this->shaderProgram.linkProgram();
+    this->shaderProgram.useProgram();
 }
 
 void DefaultEntityRender::render(const Entity *const entity, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, double scale) {

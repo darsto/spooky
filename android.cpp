@@ -3,7 +3,6 @@
 //
 
 #ifdef __ANDROID__
-#include <jni.h>
 #include "src/Game.h"
 #include "src/android.h"
 
@@ -19,6 +18,12 @@ Game *game;
 JNIEXPORT void JNICALL Java_tk_approach_android_spookytom_JniBridge_init(JNIEnv *env, jobject obj) {
 LOGD("InitializeGL");
 game =  new Game();
+    jclass cls = env->GetObjectClass(obj);
+    jmethodID mid = env->GetMethodID(cls, "loadTexture", "()V");
+    if (mid == 0) {
+        return;
+    }
+    env->CallVoidMethod(obj, mid);
 }
 
 JNIEXPORT void JNICALL Java_tk_approach_android_spookytom_JniBridge_resize(JNIEnv *env, jobject obj, jint width, jint height) {

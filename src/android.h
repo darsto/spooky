@@ -6,6 +6,7 @@
 #define C003_ANDROID_H
 
 #ifdef __ANDROID__
+#include <jni.h>
 #include <android/log.h>
 #define  LOG_TAG    "SpookyTom"
 

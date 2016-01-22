@@ -11,6 +11,5 @@ varying vec2 texCoord;
 void main()
 {
 	gl_Position = projectionMatrix*modelViewMatrix*vec4(inPosition, 0.0, 1.0);
-	texCoord = vec2( 0.0, 0.0 ); //TODO causes error on android
-	//texCoord = vec2( inCoord.x + texPosX, inCoord.y + texPosY );
+	texCoord = vec2( inCoord.x + texPosX, inCoord.y + texPosY );
 }
