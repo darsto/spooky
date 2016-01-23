@@ -6,7 +6,7 @@
 #define C003_PLAYERRENDER_H
 
 #include "DefaultEntityRender.h"
-#include "core/entity/EntityPlayer.h"
+#include "../../core/entity/EntityPlayer.h"
 
 class PlayerRender : public DefaultEntityRender {
 public:

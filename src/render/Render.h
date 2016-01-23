@@ -10,8 +10,8 @@
 #include <map>
 #include <string>
 #include <memory>
-#include "core/entity/EntityToy.h"
-#include "core/entity/EntityPlayer.h"
+#include "../core/entity/EntityToy.h"
+#include "../core/entity/EntityPlayer.h"
 #include "../render/entity/PlayerRender.h"
 #include "../render/entity/SimpleShapeRender.h"
 #include "../core/map/block/SimpleBlock.h"

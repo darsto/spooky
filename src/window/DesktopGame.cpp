@@ -15,15 +15,14 @@ Game::Game() {
 }
 
 void Game::reload() {
-    if (this->core != nullptr) delete this->core;
-
-    MapLoader *mapLoader = new TiledTxtMapLoader("test_map.txt");
-    Map *bmap = mapLoader->loadMap();
-    this->core = new Core(bmap);
-    delete mapLoader;
-    this->renderer = new Renderer(this->core);
+    if (this->core == nullptr) {
+        MapLoader *mapLoader = new TiledTxtMapLoader("test_map.txt");
+        Map *bmap = mapLoader->loadMap();
+        this->core = new Core(bmap);
+        this->renderer = new Renderer(this->core);
+        delete mapLoader;
+    }
     this->renderer->init();
-
     SDL_StartTextInput();
 }
 
@@ -84,27 +83,27 @@ void Game::handleKeypress(void *event1) {
             switch (key) { //TODO move to KeyboardManager (?)
                 case SDLK_a:
                     /*if (this->pressDelays[event->key.keysym.sym] > TELEPORT_DELAY)*/ {
-                        //this->core->getPlayer()->teleport(-1.95, 0);
-                        delay_tmp = 0, resetMovementPressDelays();
-                    }
+                    //this->core->getPlayer()->teleport(-1.95, 0);
+                    delay_tmp = 0, resetMovementPressDelays();
+                }
                     break;
                 case SDLK_d:
                     /*if (this->pressDelays[event->key.keysym.sym] > TELEPORT_DELAY)*/ {
-                        //this->core->getPlayer()->teleport(1.95, 0);
-                        delay_tmp = 0, resetMovementPressDelays();
-                    }
+                    //this->core->getPlayer()->teleport(1.95, 0);
+                    delay_tmp = 0, resetMovementPressDelays();
+                }
                     break;
                 case SDLK_w:
                     /*if (this->pressDelays[event->key.keysym.sym] > TELEPORT_DELAY)*/ {
-                        //this->core->getPlayer()->teleport(0, -1.95);
-                        delay_tmp = 0, resetMovementPressDelays();
-                    }
+                    //this->core->getPlayer()->teleport(0, -1.95);
+                    delay_tmp = 0, resetMovementPressDelays();
+                }
                     break;
                 case SDLK_s:
                     /*if (this->pressDelays[event->key.keysym.sym] > TELEPORT_DELAY)*/ {
-                        //this->core->getPlayer()->teleport(0, 1.95);
-                        delay_tmp = 0, resetMovementPressDelays();
-                    }
+                    //this->core->getPlayer()->teleport(0, 1.95);
+                    delay_tmp = 0, resetMovementPressDelays();
+                }
                     break;
                 case SDLK_c: {
                     double angle = atan2(0, 0) + M_PI; //TODO
@@ -140,7 +139,7 @@ void Game::handleKeypress(void *event1) {
             }
             if (event->key.keysym.sym >= 0 && event->key.keysym.sym < 256)
                 //this->pressDelays[event->key.keysym.sym] = delay_tmp;
-            break;
+                break;
         }
         case SDL_KEYUP:
             break;

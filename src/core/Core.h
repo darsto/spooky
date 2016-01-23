@@ -8,7 +8,7 @@
 
 #include "entity/SimpleShape.h"
 #include "map/Map.h"
-#include "core/entity/EntityPlayer.h"
+#include "entity/EntityPlayer.h"
 
 class Core {
 
