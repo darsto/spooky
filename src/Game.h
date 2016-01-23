@@ -20,8 +20,8 @@ public:
     void run();
 #ifdef __ANDROID__
     void resize(int width, int height);
-    void handleTouch(int i, int action, float x, float y);
 #endif // __ANDROID__
+    void handleTouch(int i, int action, float x, float y);
 
 private:
     Core *core;

@@ -64,6 +64,13 @@ void Game::update() {
                 if (e.key.repeat == 0)
                     handleKeypress(&e);
                 break;
+            case SDL_MOUSEBUTTONDOWN: {
+                //Get mouse position
+                int x, y;
+                SDL_GetMouseState(&x, &y);
+                handleTouch(0, 0, x, y);
+                break;
+            }
         }
     }
 #endif // __ANDROID__
@@ -197,12 +204,12 @@ void Game::resetMovementPressDelays() {
 void Game::resize(int width, int height) {
     this->renderer->resize((unsigned int) width, (unsigned int) height);
 }
+#endif // __ANDROID__
 
 void Game::handleTouch(int i, int action, float x, float y) {
     double playerSpeed = this->core->getPlayer()->getSpeed();
     this->core->getPlayer()->applyImpulse(playerSpeed, 0);
 }
-#endif // __ANDROID__
 
 Game::~Game() {
     delete this->core;
