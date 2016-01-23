@@ -16,7 +16,7 @@ import java.io.InputStream;
 public class JniBridge {
 
     static {
-        System.loadLibrary("c003");
+        System.loadLibrary("c003_game");
     }
 
     public native void init();
@@ -25,7 +25,7 @@ public class JniBridge {
 
     public native void tick();
 
-    public native void handleTouch(int i, int x, int y);
+    public native void handleTouch(int i, int action, float x, float y);
 
     public void loadTexture() { //TODO
         int textureId = R.drawable.terrain;//TODO load

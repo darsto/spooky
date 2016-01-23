@@ -28,4 +28,8 @@ public class GLRenderer implements GLSurfaceView.Renderer {
     public void onDrawFrame(GL10 unused) {
         this.jniBridge.tick();
     }
+
+    public JniBridge getJniBridge() {
+        return jniBridge;
+    }
 }
