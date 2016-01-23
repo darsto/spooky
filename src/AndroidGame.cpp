@@ -20,8 +20,8 @@ AndroidGame::AndroidGame() {
 }
 
 void AndroidGame::run() {
-        this->update(); //TODO No delta time for now
-        this->renderer->run();
+    this->update(); //TODO No delta time for now
+    this->renderer->run();
 }
 
 void AndroidGame::update() {
@@ -56,6 +56,9 @@ AndroidGame::~AndroidGame() {
 
 AndroidGame *game;
 
+/* It's here just to stop IDE from reformatting (and breaking) code below. */
+#ifdef __ANDROID__
+
 JNIEXPORT void JNICALL Java_tk_approach_android_spookytom_JniBridge_init(JNIEnv *env, jobject obj) {
     LOGD("C++ init");
     game =  new AndroidGame();
@@ -80,3 +83,5 @@ JNIEXPORT void JNICALL Java_tk_approach_android_spookytom_JniBridge_handleTouch(
     LOGD("C++ touch. i:%d, action:%d, x:%f, y:%f", i, action, x, y);
     game->handleTouch(i, action, x, y);
 }
+
+#endif // __ANDROID__
