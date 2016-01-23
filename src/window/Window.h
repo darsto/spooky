@@ -6,8 +6,6 @@
 #define C003_WINDOW_H
 #pragma once
 
-#include <string>
-
 class Renderer;
 
 class Window {
