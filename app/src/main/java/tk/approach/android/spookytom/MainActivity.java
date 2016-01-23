@@ -18,7 +18,7 @@ public class MainActivity extends Activity {
             super.onCreate(savedInstanceState);
             JniBridge.resources = this.getResources();
             requestWindowFeature(Window.FEATURE_NO_TITLE);
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
             surfaceView = new GLView(this);
