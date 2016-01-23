@@ -4,12 +4,14 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "Game.h"
+#include "DesktopGame.h"
 #include "core/Core.h"
 #include "render/Renderer.h"
 #include "core/map/TiledTxtMapLoader.h"
+#include "logging.h"
 
-Game::Game() {
+
+DesktopGame::DesktopGame() {
     this->timer = new Timer();
 
     MapLoader *mapLoader = new TiledTxtMapLoader("test_map.txt");
@@ -20,8 +22,7 @@ Game::Game() {
     this->renderer->init();
 }
 
-void Game::run() {
-#ifndef __ANDROID__
+void DesktopGame::run() {
     SDL_StartTextInput();
     double deltaTime = timer->GetDelta();
     double accumulator = 0.0;
@@ -32,18 +33,12 @@ void Game::run() {
             this->update();
             accumulator -= TIME_STEP;
         }
-#else // __ANDROID__
-        this->update(); //TODO No delta time for now
-#endif // __ANDROID__
         this->renderer->run();
-#ifndef __ANDROID__
     }
     SDL_StopTextInput();
-#endif // __ANDROID__
 }
 
-void Game::update() {
-#ifndef __ANDROID__
+void DesktopGame::update() {
     for (int i = 0; i < 256; i++) {
         if (this->pressDelays[i] > 0) this->pressDelays[i]--;
     }
@@ -65,15 +60,13 @@ void Game::update() {
                     handleKeypress(&e);
                 break;
             case SDL_MOUSEBUTTONDOWN: {
-                //Get mouse position
                 int x, y;
                 SDL_GetMouseState(&x, &y);
-                handleTouch(0, 0, x, y);
+                handleMouse(0, x, y);
                 break;
             }
         }
     }
-#endif // __ANDROID__
     this->core->getMap()->update();
     this->core->getMap()->getWorld()->Step(TIME_STEP, 8, 3);
     for (int i = 0; i < this->core->getMap()->getEntities().size(); i++) {
@@ -90,8 +83,7 @@ void Game::update() {
     if (abs(dy) > 2) this->core->setCamY(-this->core->getCamY() + (dy) * 0.05);
 }
 
-#ifndef __ANDROID__
-void Game::handleKeyboard() {
+void DesktopGame::handleKeyboard() {
     const Uint8 *keystate = SDL_GetKeyboardState(NULL);
     double playerSpeed = this->core->getPlayer()->getSpeed();
     if (keystate[SDL_SCANCODE_W]) {
@@ -116,10 +108,8 @@ void Game::handleKeyboard() {
         this->core->setBlockSize(this->core->getBlockSize() + 0.15);
     }
 }
-#endif // __ANDROID__
 
-#ifndef __ANDROID__
-void Game::handleKeypress(void *event1) {
+void DesktopGame::handleKeypress(void *event1) {
     SDL_Event *event = (SDL_Event*) event1;
     switch (event->type) {
         case SDL_KEYDOWN: {
@@ -194,23 +184,16 @@ void Game::handleKeypress(void *event1) {
             break;
     }
 }
-#endif // __ANDROID__
 
-#ifndef __ANDROID__
-void Game::resetMovementPressDelays() {
+void DesktopGame::resetMovementPressDelays() {
     this->pressDelays[SDLK_a] = this->pressDelays[SDLK_d] = this->pressDelays[SDLK_w] = this->pressDelays[SDLK_s] = 0;
 }
-#else
-void Game::resize(int width, int height) {
-    this->renderer->resize((unsigned int) width, (unsigned int) height);
-}
-#endif // __ANDROID__
 
-void Game::handleTouch(int i, int action, float x, float y) {
+void DesktopGame::handleMouse(int action, float x, float y) {
     double playerSpeed = this->core->getPlayer()->getSpeed();
     this->core->getPlayer()->applyImpulse(playerSpeed, 0);
 }
 
-Game::~Game() {
+DesktopGame::~DesktopGame() {
     delete this->core;
 }

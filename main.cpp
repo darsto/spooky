@@ -1,7 +1,7 @@
-#include "src/Game.h"
+#include "DesktopGame.h"
 
 int main(int argc, char *args[]) {
-    Game game = Game();
+    DesktopGame game = DesktopGame();
     game.run();
     return 0;
 }

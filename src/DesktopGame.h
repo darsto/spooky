@@ -2,8 +2,8 @@
 // Created by dar on 11/27/15.
 //
 
-#ifndef C003_GAME_H
-#define C003_GAME_H
+#ifndef C003_DESKTOP_H
+#define C003_DESKTOP_H
 #pragma once
 
 class Core;
@@ -12,16 +12,12 @@ class Renderer;
 
 class Timer;
 
-class Game {
+class DesktopGame {
 
 public:
-    Game();
-    ~Game();
+    DesktopGame();
+    ~DesktopGame();
     void run();
-#ifdef __ANDROID__
-    void resize(int width, int height);
-#endif // __ANDROID__
-    void handleTouch(int i, int action, float x, float y);
 
 private:
     Core *core;
@@ -29,7 +25,6 @@ private:
     Timer *timer;
     const double TIME_STEP = 0.01;
     void update();
-#ifndef __ANDROID__
     /*
      * An array of delays after each keyboard click.
      * Decrements with each frame.
@@ -39,8 +34,8 @@ private:
     void handleKeyboard();
     void handleKeypress(void *event);
     void resetMovementPressDelays();
-#endif // __ANDROID__
+    void handleMouse(int action, float x, float y);
 
 };
 
-#endif //C003_GAME_H
+#endif //C003_DESKTOP_H
