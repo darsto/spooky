@@ -5,7 +5,7 @@
 #ifndef C003_ILIGHTED_H
 #define C003_ILIGHTED_H
 
-class ILighted {
+class IEntityLighted {
 
 };
 

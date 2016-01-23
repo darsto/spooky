@@ -2,9 +2,9 @@
 // Created by dar on 11/28/15.
 //
 
-#include "Player.h"
+#include "EntityPlayer.h"
 #include "../Core.h"
-#include "Toy.h"
+#include "EntityToy.h"
 
 Player::Player(Core *core) : EntityMoving(core, 0.55, 0.55) {
     b2CircleShape shape;
@@ -39,7 +39,7 @@ bool Player::teleport(double x, double y) {
 }
 
 void Player::onCollision(IPositionable *object, char state) {
-    if (object != nullptr) if (Toy *toy = dynamic_cast<Toy *>(object)) {
+    if (object != nullptr) if (EntityToy *toy = dynamic_cast<EntityToy *>(object)) {
         if (state == 0 && this->toy == nullptr && this->toyToMerge == nullptr) {
             this->toyToMerge = toy;
         } else if (state == 1 && this->toy == nullptr && this->toyToMerge == toy) {

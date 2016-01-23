@@ -116,7 +116,7 @@ void Renderer::tick() {
                 (int) (-(signed) windowWidth / 2.0f - this->core->getCamX()),
                 (int) ((signed) windowHeight / 2.0f - this->core->getCamY()),
                 0.0f)), this->core->getBlockSize() * this->core->getGeneralScale());
-            if (ILighted *elighted = dynamic_cast<ILighted *>(entity)) {
+            if (IEntityLighted *elighted = dynamic_cast<IEntityLighted *>(entity)) {
                 fbo.getShaderProgram()->useProgram();
                 if (entitiesNum < fbo.MAX_LIGHT_SRCS) {
                     char *uniform_name_formatted = new char[16 + (int) log((double) fbo.MAX_LIGHT_SRCS)];

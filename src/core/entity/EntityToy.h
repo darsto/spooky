@@ -9,10 +9,10 @@
 
 class Player;
 
-class Toy : public EntityMoving {
+class EntityToy : public EntityMoving {
 
 public:
-    Toy(Core *core) : EntityMoving(core, 0.5, 0.5) {
+    EntityToy(Core *core) : EntityMoving(core, 0.5, 0.5) {
         b2CircleShape shape;
         shape.m_p.Set(0, 0);
         shape.m_radius = 0.25;
@@ -34,7 +34,7 @@ public:
     }
 
     void setHost(Player *host) {
-        Toy::host = host;
+        EntityToy::host = host;
     }
 
 private:

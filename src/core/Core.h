@@ -8,7 +8,7 @@
 
 #include "entity/SimpleShape.h"
 #include "map/Map.h"
-#include "entity/Player.h"
+#include "core/entity/EntityPlayer.h"
 
 class Core {
 
@@ -19,7 +19,7 @@ public:
         this->player->setX(8);
         this->player->setY(5);
         this->map->addEntity(player);
-        Toy *toy = new Toy(this);
+        EntityToy *toy = new EntityToy(this);
         toy->setX(6);
         toy->setY(5);
         this->map->addEntity(toy);

@@ -10,8 +10,8 @@
 #include <map>
 #include <string>
 #include <memory>
-#include "../core/entity/Toy.h"
-#include "../core/entity/Player.h"
+#include "core/entity/EntityToy.h"
+#include "core/entity/EntityPlayer.h"
 #include "../render/entity/PlayerRender.h"
 #include "../render/entity/SimpleShapeRender.h"
 #include "../core/map/block/SimpleBlock.h"
@@ -36,7 +36,7 @@ inline EntityRender *getEntityRender(const Entity *const entity) {
 inline void initRenderers(int texAtlasSize) {
     blockRenders.insert(std::make_pair(typeid(SimpleBlock).name(), new SimpleBlockRender(texAtlasSize)));
     entityRenders.insert(std::make_pair(typeid(Player).name(), new PlayerRender()));
-    entityRenders.insert(std::make_pair(typeid(Toy).name(), new DefaultEntityRender("ghost", "shader")));
+    entityRenders.insert(std::make_pair(typeid(EntityToy).name(), new DefaultEntityRender("ghost", "shader")));
     entityRenders.insert(std::make_pair(typeid(EntityBullet).name(), new DefaultEntityRender("bullet", "shader")));
     entityRenders.insert(std::make_pair(typeid(SimpleShape).name(), new SimpleShapeRender()));
 }

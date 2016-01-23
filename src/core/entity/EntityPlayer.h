@@ -8,10 +8,10 @@
 
 #include "Entity.h"
 #include "EntityMoving.h"
-#include "Toy.h"
-#include "ILighted.h"
+#include "EntityToy.h"
+#include "IEntityLighted.h"
 
-class Player : public EntityMoving, public ILighted {
+class Player : public EntityMoving, public IEntityLighted {
 
 public:
     Player(Core *core);
@@ -26,11 +26,11 @@ public:
         return 1.0;
     }
 
-    Toy *getToy() const {
+    EntityToy *getToy() const {
         return toy;
     }
 
-    Toy *getToyToMerge() const {
+    EntityToy *getToyToMerge() const {
         return toyToMerge;
     }
 
@@ -45,8 +45,8 @@ public:
     void eject();
 
 private:
-    Toy *toyToMerge = nullptr;
-    Toy *toy = nullptr;
+    EntityToy *toyToMerge = nullptr;
+    EntityToy *toy = nullptr;
 public:
 
     virtual bool doesCollide(IPositionable *obj) override;

@@ -115,7 +115,7 @@ void Game::handleKeypress(void *event1) {
                     break;
                 }
                 case SDLK_n: {
-                    Toy *p = new Toy(this->core);
+                    EntityToy *p = new EntityToy(this->core);
                     p->setX(this->core->getPlayer()->getX() - this->core->getPlayer()->getWidth() / 2);
                     p->setY(this->core->getPlayer()->getY() - this->core->getPlayer()->getHeight() / 2);
                     this->core->getMap()->addEntity(p);

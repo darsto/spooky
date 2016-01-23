@@ -8,7 +8,7 @@
 #include <fstream>
 #include "Map.h"
 #include "../map/block/SimpleBlock.h"
-#include "../entity/Player.h"
+#include "core/entity/EntityPlayer.h"
 
 class TiledTxtMapLoader : public MapLoader {
 
