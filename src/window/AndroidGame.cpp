@@ -13,13 +13,13 @@ Game::Game() {
 }
 
 void Game::reload() {
-    if (this->core != nullptr) delete this->core;
-
-    MapLoader *mapLoader = new TiledTxtMapLoader("test_map.txt");
-    Map *bmap = mapLoader->loadMap();
-    this->core = new Core(bmap);
-    delete mapLoader;
-    this->renderer = new Renderer(this->core);
+    if (this->core == nullptr) {
+        MapLoader *mapLoader = new TiledTxtMapLoader("test_map.txt");
+        Map *bmap = mapLoader->loadMap();
+        this->core = new Core(bmap);
+        this->renderer = new Renderer(this->core);
+        delete mapLoader;
+    }
     this->renderer->init();
 }
 
