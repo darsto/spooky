@@ -19,7 +19,8 @@ public:
     ~Game();
     void run();
 #ifdef __ANDROID__
-void resize(int width, int height);
+    void resize(int width, int height);
+    void handleTouch(int i, int action, float x, float y);
 #endif // __ANDROID__
 
 private:

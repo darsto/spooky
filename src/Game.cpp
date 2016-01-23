@@ -197,6 +197,11 @@ void Game::resetMovementPressDelays() {
 void Game::resize(int width, int height) {
     this->renderer->resize((unsigned int) width, (unsigned int) height);
 }
+
+void Game::handleTouch(int i, int action, float x, float y) {
+    double playerSpeed = this->core->getPlayer()->getSpeed();
+    this->core->getPlayer()->applyImpulse(playerSpeed, 0);
+}
 #endif // __ANDROID__
 
 Game::~Game() {
