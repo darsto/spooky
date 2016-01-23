@@ -119,7 +119,7 @@ void Renderer::tick() {
             if (ILighted *elighted = dynamic_cast<ILighted *>(entity)) {
                 fbo.getShaderProgram()->useProgram();
                 if (entitiesNum < fbo.MAX_LIGHT_SRCS) {
-                    char *uniform_name_formatted = new char[15 + (int) log((double) fbo.MAX_LIGHT_SRCS)];
+                    char *uniform_name_formatted = new char[16 + (int) log((double) fbo.MAX_LIGHT_SRCS)];
                     sprintf(uniform_name_formatted, "lightPoints[%d]", entitiesNum);
                     fbo.getShaderProgram()->setUniform(uniform_name_formatted,
                                                        glm::vec2(this->core->getCamX() + (entity->getX() - 1 + entity->getWidth() / 2) * this->core->getBlockSize() * this->core->getGeneralScale() +
