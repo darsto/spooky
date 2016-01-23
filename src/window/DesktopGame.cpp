@@ -4,71 +4,36 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "DesktopGame.h"
-#include "core/Core.h"
-#include "render/Renderer.h"
-#include "core/map/TiledTxtMapLoader.h"
-#include "logging.h"
+#include "Game.h"
+#include "../core/Core.h"
+#include "../core/map/TiledTxtMapLoader.h"
+#include "../render/Renderer.h"
+#include "../logging.h"
 
+Game::Game() {
+    this->reload();
+}
 
-DesktopGame::DesktopGame() {
-    this->timer = new Timer();
+void Game::reload() {
+    if (this->core != nullptr) delete this->core;
 
     MapLoader *mapLoader = new TiledTxtMapLoader("test_map.txt");
     Map *bmap = mapLoader->loadMap();
-
     this->core = new Core(bmap);
-    this->renderer = new Renderer(core);
+    delete mapLoader;
+    this->renderer = new Renderer(this->core);
     this->renderer->init();
-}
 
-void DesktopGame::run() {
     SDL_StartTextInput();
-    double deltaTime = timer->GetDelta();
-    double accumulator = 0.0;
-    while (this->core->isRunning()) {
-        deltaTime = timer->GetDelta();
-        accumulator += deltaTime;
-        while (accumulator > TIME_STEP) {
-            this->update();
-            accumulator -= TIME_STEP;
-        }
-        this->renderer->run();
-    }
-    SDL_StopTextInput();
 }
 
-void DesktopGame::update() {
+void Game::tick(double deltaTime) {
     for (int i = 0; i < 256; i++) {
-        if (this->pressDelays[i] > 0) this->pressDelays[i]--;
+        //if (this->pressDelays[i] > 0) this->pressDelays[i]--;
     }
-    handleKeyboard();
-    SDL_Event e;
-    while (SDL_PollEvent(&e) != 0) {
-        switch (e.type) {
-            case SDL_QUIT:
-                this->core->stop();
-                break;
-            case SDL_WINDOWEVENT:
-                if (e.window.event == SDL_WINDOWEVENT_RESIZED || e.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
-                    this->renderer->resize((unsigned int) e.window.data1, (unsigned int) e.window.data2);
-                }
-                break;
-            case SDL_KEYDOWN:
-            case SDL_KEYUP:
-                if (e.key.repeat == 0)
-                    handleKeypress(&e);
-                break;
-            case SDL_MOUSEBUTTONDOWN: {
-                int x, y;
-                SDL_GetMouseState(&x, &y);
-                handleMouse(0, x, y);
-                break;
-            }
-        }
-    }
+
     this->core->getMap()->update();
-    this->core->getMap()->getWorld()->Step(TIME_STEP, 8, 3);
+    this->core->getMap()->getWorld()->Step(deltaTime, 8, 3);
     for (int i = 0; i < this->core->getMap()->getEntities().size(); i++) {
         Entity *entity = this->core->getMap()->getEntities().at(i);
         if (entity->isToBeDeleted()) {
@@ -83,7 +48,7 @@ void DesktopGame::update() {
     if (abs(dy) > 2) this->core->setCamY(-this->core->getCamY() + (dy) * 0.05);
 }
 
-void DesktopGame::handleKeyboard() {
+void Game::handleKeyboard() {
     const Uint8 *keystate = SDL_GetKeyboardState(NULL);
     double playerSpeed = this->core->getPlayer()->getSpeed();
     if (keystate[SDL_SCANCODE_W]) {
@@ -109,35 +74,35 @@ void DesktopGame::handleKeyboard() {
     }
 }
 
-void DesktopGame::handleKeypress(void *event1) {
-    SDL_Event *event = (SDL_Event*) event1;
+void Game::handleKeypress(void *event1) {
+    SDL_Event *event = (SDL_Event *) event1;
     switch (event->type) {
         case SDL_KEYDOWN: {
             SDL_Keycode key = event->key.keysym.sym;
             unsigned char delay_tmp = 255;
             static int TELEPORT_DELAY = 255 - 25;
-            switch (key) {
+            switch (key) { //TODO move to KeyboardManager (?)
                 case SDLK_a:
-                    if (this->pressDelays[event->key.keysym.sym] > TELEPORT_DELAY) {
-                        this->core->getPlayer()->teleport(-1.95, 0);
+                    /*if (this->pressDelays[event->key.keysym.sym] > TELEPORT_DELAY)*/ {
+                        //this->core->getPlayer()->teleport(-1.95, 0);
                         delay_tmp = 0, resetMovementPressDelays();
                     }
                     break;
                 case SDLK_d:
-                    if (this->pressDelays[event->key.keysym.sym] > TELEPORT_DELAY) {
-                        this->core->getPlayer()->teleport(1.95, 0);
+                    /*if (this->pressDelays[event->key.keysym.sym] > TELEPORT_DELAY)*/ {
+                        //this->core->getPlayer()->teleport(1.95, 0);
                         delay_tmp = 0, resetMovementPressDelays();
                     }
                     break;
                 case SDLK_w:
-                    if (this->pressDelays[event->key.keysym.sym] > TELEPORT_DELAY) {
-                        this->core->getPlayer()->teleport(0, -1.95);
+                    /*if (this->pressDelays[event->key.keysym.sym] > TELEPORT_DELAY)*/ {
+                        //this->core->getPlayer()->teleport(0, -1.95);
                         delay_tmp = 0, resetMovementPressDelays();
                     }
                     break;
                 case SDLK_s:
-                    if (this->pressDelays[event->key.keysym.sym] > TELEPORT_DELAY) {
-                        this->core->getPlayer()->teleport(0, 1.95);
+                    /*if (this->pressDelays[event->key.keysym.sym] > TELEPORT_DELAY)*/ {
+                        //this->core->getPlayer()->teleport(0, 1.95);
                         delay_tmp = 0, resetMovementPressDelays();
                     }
                     break;
@@ -174,7 +139,7 @@ void DesktopGame::handleKeypress(void *event1) {
                     break;
             }
             if (event->key.keysym.sym >= 0 && event->key.keysym.sym < 256)
-                this->pressDelays[event->key.keysym.sym] = delay_tmp;
+                //this->pressDelays[event->key.keysym.sym] = delay_tmp;
             break;
         }
         case SDL_KEYUP:
@@ -185,15 +150,20 @@ void DesktopGame::handleKeypress(void *event1) {
     }
 }
 
-void DesktopGame::resetMovementPressDelays() {
-    this->pressDelays[SDLK_a] = this->pressDelays[SDLK_d] = this->pressDelays[SDLK_w] = this->pressDelays[SDLK_s] = 0;
+void Game::resetMovementPressDelays() {
+    //this->pressDelays[SDLK_a] = this->pressDelays[SDLK_d] = this->pressDelays[SDLK_w] = this->pressDelays[SDLK_s] = 0;
 }
 
-void DesktopGame::handleMouse(int action, float x, float y) {
+void Game::handleClick(int unused, int action, float x, float y) {
     double playerSpeed = this->core->getPlayer()->getSpeed();
     this->core->getPlayer()->applyImpulse(playerSpeed, 0);
 }
 
-DesktopGame::~DesktopGame() {
+Renderer *Game::getRenderer() const {
+    return this->renderer;
+}
+
+Game::~Game() {
+    SDL_StopTextInput();
     delete this->core;
 }

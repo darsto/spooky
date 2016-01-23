@@ -1,7 +1,10 @@
-#include "DesktopGame.h"
+#include "src/Application.h"
 
 int main(int argc, char *args[]) {
-    DesktopGame game = DesktopGame();
-    game.run();
+    Application *application = new Application();
+    while (application->isRunning()) {
+        application->update(true);
+    }
+    delete application;
     return 0;
 }
