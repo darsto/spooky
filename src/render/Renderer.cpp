@@ -91,7 +91,7 @@ bool Renderer::initTextures() {
 }
 
 void Renderer::tick() {
-    fbo.bind(); //TODO Current FBO doesn't work on android
+    fbo.bind();
     glClearColor(0.9, 0.9, 0.9, 0.0);
     glClear(GL_COLOR_BUFFER_BIT);
     textureAtlas.bindTexture(0);
