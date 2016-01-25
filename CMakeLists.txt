@@ -6,6 +6,7 @@ SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 if (ANDROID)
     INCLUDE_DIRECTORIES(${ANDROID_NDK}/platforms/android-8/arch-arm/usr/include)
+    INCLUDE_DIRECTORIES(src)
     ADD_SUBDIRECTORY(src)
 else ()
     ADD_EXECUTABLE(${PROJECT_NAME} main.cpp)
