@@ -11,11 +11,11 @@ GuiButton::GuiButton(int x, int y, int width, int height) {
     this->height = height;
 }
 
-bool virtual GuiButton::onClick(int action, float x, float y) {
+bool GuiButton::onClick(int action, float x, float y) {
     if (onClickListener == NULL) return false;
     return onClickListener(action, x, y);
 }
 
-void virtual GuiButton::setOnClickListener(std::function<bool(int, float, float)> onClickListener) {
+void GuiButton::setOnClickListener(std::function<bool(int, float, float)> onClickListener) {
     this->onClickListener = onClickListener;
 }
