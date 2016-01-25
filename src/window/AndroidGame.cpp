@@ -4,7 +4,7 @@
 
 #include "Game.h"
 #include "../core/Core.h"
-#include "../render/Renderer.h"
+#include "render/RenderManager.h"
 #include "../core/map/TiledTxtMapLoader.h"
 #include "../logging.h"
 
@@ -17,10 +17,8 @@ void Game::reload() {
         MapLoader *mapLoader = new TiledTxtMapLoader("test_map.txt");
         Map *bmap = mapLoader->loadMap();
         this->core = new Core(bmap);
-        this->renderer = new Renderer(this->core);
         delete mapLoader;
     }
-    this->renderer->init();
 }
 
 void Game::tick(double deltaTime) {
@@ -51,10 +49,6 @@ void Game::handleKeyboard() {
 
 void Game::handleKeypress(void *event1) {
     LOGW("Keyboard input is unsupported on current platform\n");
-}
-
-Renderer *Game::getRenderer() const {
-    return this->renderer;
 }
 
 Game::~Game() {

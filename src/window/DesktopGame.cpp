@@ -7,7 +7,7 @@
 #include "Game.h"
 #include "../core/Core.h"
 #include "../core/map/TiledTxtMapLoader.h"
-#include "../render/Renderer.h"
+#include "render/RenderManager.h"
 #include "../logging.h"
 
 Game::Game() {
@@ -19,10 +19,8 @@ void Game::reload() {
         MapLoader *mapLoader = new TiledTxtMapLoader("test_map.txt");
         Map *bmap = mapLoader->loadMap();
         this->core = new Core(bmap);
-        this->renderer = new Renderer(this->core);
         delete mapLoader;
     }
-    this->renderer->init();
     SDL_StartTextInput();
 }
 
@@ -156,10 +154,6 @@ void Game::resetMovementPressDelays() {
 void Game::handleClick(int unused, int action, float x, float y) {
     double playerSpeed = this->core->getPlayer()->getSpeed();
     this->core->getPlayer()->applyImpulse(playerSpeed, 0);
-}
-
-Renderer *Game::getRenderer() const {
-    return this->renderer;
 }
 
 Game::~Game() {

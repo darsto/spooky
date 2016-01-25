@@ -31,13 +31,16 @@
 
 class Window;
 
+class RenderManager;
+
 class Application {
 
 public:
     Application();
     void update(bool dynamic);
+    void resize(int width, int height);
 
-    Window *getWindow() const {
+    Window *getCurrentWindow() const { //TODO make private, handle window operations indirectly through application layer
         return window;
     }
 
@@ -50,6 +53,7 @@ public:
 private:
     bool running = true;
     Window *window = nullptr;
+    RenderManager *renderer = nullptr;
     Timer *timer = nullptr;
     const double TIME_STEP = 0.01;
     double accumulator;

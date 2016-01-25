@@ -15,21 +15,29 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "Texture.h"
 #include "Fbo.h"
-#include "../core/Core.h"
 #include "opengl.h"
 #include <sstream>
+#include <render/window/WindowRender.h>
 #include "Render.h"
-#include "../core/Timer.h"
 
 
-class Renderer {
+class RenderManager {
 
 public:
-    Renderer(Core *core);
-    ~Renderer();
+    RenderManager();
+    ~RenderManager();
     bool init();
-    void run();
-    void resize(unsigned int width, unsigned int height);
+    void render(Window *window);
+    void resize(Window *window, unsigned int width, unsigned int height);
+    void initWindow(Window *window);
+
+    unsigned int getWindowWidth() const {
+        return windowWidth;
+    }
+
+    unsigned int getWindowHeight() const {
+        return windowHeight;
+    }
 
 private:
 #ifndef __ANDROID__
@@ -38,16 +46,14 @@ private:
 #endif // __ANDROID__
     unsigned int windowWidth = 1366;
     unsigned int windowHeight = 750;
-    Core *core;
-    Texture textureAtlas;
-    Fbo fbo;
-    glm::mat4 viewMatrix;
-    glm::mat4 projectionMatrix;
 
     bool initWindow();
     bool initGL();
-    bool initTextures();
-    void tick();
+    bool initRenders();
+
+    std::map<const char *, WindowRender *> windowRenders;
+
+    WindowRender * getWindowRender(const Window *const window);
 };
 
 #endif //C003_RENDERER_H

@@ -10,7 +10,7 @@
 
 class Core;
 
-class Renderer;
+class RenderManager;
 
 class Timer;
 
@@ -20,15 +20,18 @@ public:
     Game();
     virtual void reload() override;
     virtual void tick(double deltaTime) override;
-    virtual Renderer *getRenderer() const override;
     virtual void handleKeyboard() override;
     virtual void handleKeypress(void *event) override;
     virtual void handleClick(int i, int action, float x, float y) override;
+
+    Core *getCore() const {
+        return core;
+    }
+
     virtual ~Game() override;
 
 private:
     Core *core = nullptr;
-    Renderer *renderer = nullptr;
     void resetMovementPressDelays(); //TODO remove
 };
 
