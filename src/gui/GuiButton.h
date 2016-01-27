@@ -23,6 +23,8 @@ public:
         GuiButton::pressed = pressed;
     }
 
+    virtual ~GuiButton() { };
+
 protected:
     bool pressed;
     std::function<bool(int, float, float)> onClickListener;

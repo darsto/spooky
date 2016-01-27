@@ -39,6 +39,8 @@ public:
         GuiElement::height = height;
     }
 
+    virtual ~GuiElement() { };
+
 protected:
     double x, y;
     double width, height;
