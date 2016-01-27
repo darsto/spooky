@@ -38,7 +38,9 @@ inline EntityRender *getEntityRender(const Entity *const entity) {
 }
 
 inline GuiElementRender *getGuiElementRender(const GuiElement *const element) {
-    return guiRenders[typeid(*element).name()];
+    GuiElementRender *render = guiRenders[typeid(*element).name()];
+    if (render == nullptr) render = guiRenders[typeid(GuiElement).name()];
+    return render;
 }
 
 inline void initRenderers() {
@@ -47,7 +49,7 @@ inline void initRenderers() {
     entityRenders.insert(std::make_pair(typeid(EntityToy).name(), new DefaultEntityRender("ghost", "shader")));
     entityRenders.insert(std::make_pair(typeid(EntityBullet).name(), new DefaultEntityRender("bullet", "shader")));
     entityRenders.insert(std::make_pair(typeid(SimpleShape).name(), new SimpleShapeRender()));
-    guiRenders.insert(std::make_pair(typeid(GuiButton).name(), new GuiElementRender("gui", "shader")));
+    guiRenders.insert(std::make_pair(typeid(GuiElement).name(), new GuiElementRender("gui", "shader")));
 }
 
 #endif //C003_RENDER_H

@@ -6,6 +6,7 @@
 #define C003_GAME_H
 #pragma once
 
+#include <vector>
 #include "Window.h"
 
 class Core;
@@ -13,6 +14,8 @@ class Core;
 class RenderManager;
 
 class Timer;
+
+class GuiElement;
 
 class Game : public Window {
 
@@ -28,11 +31,16 @@ public:
         return core;
     }
 
+    const std::vector<GuiElement *> &getGuiElements() const {
+        return guiElements;
+    }
+
     virtual ~Game() override;
 
 private:
     Core *core = nullptr;
     void resetMovementPressDelays(); //TODO remove
+    std::vector<GuiElement *> guiElements;
 };
 
 #endif //C003_GAME_H

@@ -53,11 +53,19 @@ void GameRender::render(Window *window) {
             }
         }
     }
+
     fbo.unbind();
     fbo.getShaderProgram()->useProgram();
     fbo.getShaderProgram()->setUniform("lightPointsNum", entitiesNum);
     fbo.getShaderProgram()->setUniform("scale", (float) (core->getBlockSize() * core->getGeneralScale()));
     fbo.render(0);
+
+    for (GuiElement *guiElement : game->getGuiElements()) {
+        getGuiElementRender(guiElement)->render(guiElement, projectionMatrix, glm::translate(viewMatrix, glm::vec3(
+            (int) (-(signed) windowWidth * 0),
+            (int) ((signed) windowHeight),
+            0.0f)), core->getGeneralScale());
+    }
 }
 
 void GameRender::resize(unsigned int width, unsigned int height) {
