@@ -39,7 +39,7 @@ public:
         GuiElement::height = height;
     }
 
-private:
+protected:
     int x, y;
     int width, height;
 };
