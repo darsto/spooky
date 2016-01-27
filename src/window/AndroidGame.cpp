@@ -9,7 +9,13 @@
 #include "../logging.h"
 
 Game::Game() {
-    GuiButton *b = new GuiButton(15, 15, 75, 75);
+    GuiButton *b = new GuiButton(50, 50, 200, 200);
+    auto moveController = [&](int action, float x, float y) {
+        double playerSpeed = this->core->getPlayer()->getSpeed();
+        this->core->getPlayer()->applyImpulse((x - 50 - 100) / 100.0f, (y - 50 - 100) / 100.0f);
+        return true;
+    };
+    b->setOnClickListener(moveController);
     this->guiElements.push_back(b);
 }
 
@@ -40,8 +46,14 @@ void Game::tick(double deltaTime) {
 }
 
 void Game::handleClick(int i, int action, float x, float y) {
-    double playerSpeed = this->core->getPlayer()->getSpeed();
-    this->core->getPlayer()->applyImpulse(playerSpeed, 0);
+    for (GuiElement *e : this->guiElements) {
+        if (GuiButton *b = dynamic_cast<GuiButton *>(e)) {
+            if (x > b->getX() && x < b->getX() + b->getWidth() &&
+                y > b->getY() && y < b->getY() + b->getHeight()) {
+                b->onClick(action, x, y); //TODO it's just a prototype
+            }
+        }
+    }
 }
 
 void Game::handleKeyboard() {
