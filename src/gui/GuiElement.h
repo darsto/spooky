@@ -7,41 +7,41 @@
 
 class GuiElement {
 public:
-    int getX() const {
+    double getX() const {
         return x;
     }
 
-    void setX(int x) {
+    void setX(double x) {
         GuiElement::x = x;
     }
 
-    int getY() const {
+    double getY() const {
         return y;
     }
 
-    void setY(int y) {
+    void setY(double y) {
         GuiElement::y = y;
     }
 
-    int getWidth() const {
+    double getWidth() const {
         return width;
     }
 
-    void setWidth(int width) {
+    void setWidth(double width) {
         GuiElement::width = width;
     }
 
-    int getHeight() const {
+    double getHeight() const {
         return height;
     }
 
-    void setHeight(int height) {
+    void setHeight(double height) {
         GuiElement::height = height;
     }
 
 protected:
-    int x, y;
-    int width, height;
+    double x, y;
+    double width, height;
 };
 
 #endif //C003_GUIELEMENT_H

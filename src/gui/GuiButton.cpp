@@ -4,7 +4,7 @@
 
 #include "GuiButton.h"
 
-GuiButton::GuiButton(int x, int y, int width, int height) {
+GuiButton::GuiButton(double x, double y, double width, double height) {
     this->x = x;
     this->y = y;
     this->width = width;

@@ -11,7 +11,7 @@
 class GuiButton : public GuiElement {
 
 public:
-    GuiButton(int x, int y, int width, int height);
+    GuiButton(double x, double y, double width, double height);
     virtual bool onClick(int action, float x, float y);
     virtual void setOnClickListener(std::function<bool(int, float, float)> onClickListener);
 
