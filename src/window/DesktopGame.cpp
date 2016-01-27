@@ -11,7 +11,6 @@
 #include "../logging.h"
 
 Game::Game() {
-    this->reload();
     GuiButton *b = new GuiButton(15, 15, 75, 75);
     this->guiElements.push_back(b);
 }

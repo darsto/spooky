@@ -37,6 +37,7 @@ class Application {
 
 public:
     Application();
+    void reinit();
     void update(bool dynamic);
     void resize(int width, int height);
 

@@ -9,11 +9,16 @@
 
 Application::Application() {
     this->renderer = new RenderManager();
-    this->renderer->init();
     this->window = new Game();
+    this->reinit();
     this->renderer->initWindow(this->window); //TODO
     this->timer = new Timer();
     timer->GetDelta(); //if not called right now, first call in game loop would return a very huge value
+}
+
+void Application::reinit() {
+    this->renderer->init();
+    this->getCurrentWindow()->reload();
 }
 
 void Application::update(bool dynamic) {
@@ -53,7 +58,7 @@ JNIEXPORT void JNICALL Java_tk_approach_android_spookytom_JniBridge_init(JNIEnv 
     if (application == nullptr || application->getCurrentWindow() == nullptr) {
         application =  new Application();
     } else {
-        application->getCurrentWindow()->reload();
+        application->reinit();
     }
     jclass cls = env->GetObjectClass(obj);
     jmethodID mid = env->GetMethodID(cls, "loadTexture", "()V");
