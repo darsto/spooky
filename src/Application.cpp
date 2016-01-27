@@ -10,15 +10,15 @@
 Application::Application() {
     this->renderer = new RenderManager();
     this->window = new Game();
-    this->reinit();
-    this->renderer->initWindow(this->window); //TODO
     this->timer = new Timer();
-    timer->GetDelta(); //if not called right now, first call in game loop would return a very huge value
+    this->reinit();
 }
 
 void Application::reinit() {
     this->renderer->init();
     this->getCurrentWindow()->reload();
+    this->renderer->initWindow(this->window); //TODO
+    timer->GetDelta(); //if not called right now, first call in game loop would return a very huge value
 }
 
 void Application::update(bool dynamic) {
