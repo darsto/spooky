@@ -26,12 +26,9 @@ public:
     ~GameRender();
 
 private:
-    Texture textureAtlas;
     Fbo fbo;
     glm::mat4 viewMatrix;
     glm::mat4 projectionMatrix;
-
-    bool initTextures();
 };
 
 #endif //C003_GAMERENDER_H

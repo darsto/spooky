@@ -13,7 +13,7 @@
 
 class BlockRender {
 public:
-    virtual void render(const Block *const block, Texture *tex, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, double scale) = 0;
+    virtual void render(const Block *const block, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, double scale) = 0;
 };
 
 

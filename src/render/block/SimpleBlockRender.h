@@ -14,17 +14,17 @@
 class SimpleBlockRender : public BlockRender {
 
 public:
-    SimpleBlockRender(int texSize);
+    SimpleBlockRender();
     ~SimpleBlockRender();
-    virtual void render(const Block *const block, Texture *tex, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, double scale) override;
+    virtual void render(const Block *const block, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, double scale) override;
 private:
     const unsigned int atlasSize = 8;
-    const int texSize;
     float vertices[12];
     GLuint vbo[2];
     GLuint vao;
     Shader vertShader, fragShader;
     ShaderProgram shaderProgram;
+    Texture texture;
     glm::mat4 modelMatrix = glm::mat4(1.0);
 
     int getTexPos(const Block *const block);

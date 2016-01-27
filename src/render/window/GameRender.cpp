@@ -19,13 +19,12 @@ void GameRender::render(Window *window) {
     fbo.bind();
     glClearColor(0.9, 0.9, 0.9, 0.0);
     glClear(GL_COLOR_BUFFER_BIT);
-    textureAtlas.bindTexture(0);
     for (Block *block : core->getMap()->getBlocks()) {
         if (block->getX() * scale > -(signed) windowWidth / 2.0f - core->getCamX() &&
             (block->getX() - 1) * scale < -(signed) windowWidth / 2.0f - core->getCamX() + (signed) windowWidth &&
             block->getY() * scale > -(signed) windowHeight / 2.0f - core->getCamY() &&
             (block->getY() - 1) * scale < -(signed) windowHeight / 2.0f - core->getCamY() + (signed) windowHeight)
-            getBlockRender(block)->render(block, &textureAtlas, projectionMatrix, glm::translate(viewMatrix, glm::vec3(
+            getBlockRender(block)->render(block, projectionMatrix, glm::translate(viewMatrix, glm::vec3(
                 (int) (-(signed) windowWidth / 2.0f - core->getCamX()),
                 (int) ((signed) windowHeight / 2.0f - core->getCamY()), 0.0f
             )), core->getBlockSize() * core->getGeneralScale());
@@ -68,23 +67,13 @@ void GameRender::resize(unsigned int width, unsigned int height) {
 }
 
 void GameRender::init() {
-    if (!this->initTextures()) {
-        printf("Unable to initialize textures!\n");
-    }
-    initRenderers(this->textureAtlas.getWidth());
+    initRenderers();
     fbo.init(3, this->renderManager->getWindowWidth(), this->renderManager->getWindowHeight(), new float[4]{0.9, 0.9, 0.9, 1.0}, "fboshader");
     viewMatrix = glm::lookAt(glm::vec3(0, 0, 0.0f), glm::vec3(0, 0, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
     projectionMatrix = glm::ortho(0.0f, float(this->renderManager->getWindowWidth()), 0.0f, float(this->renderManager->getWindowHeight()));
     glDisable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-}
-
-bool GameRender::initTextures() {
-    bool ret = true;
-    if (!textureAtlas.loadTexture2D("terrain.png", false)) ret = false;
-    textureAtlas.setFiltering(TEXTURE_FILTER_MAG_NEAREST, TEXTURE_FILTER_MIN_NEAREST);
-    return ret;
 }
 
 GameRender::GameRender(RenderManager *renderManager) : WindowRender(renderManager) {

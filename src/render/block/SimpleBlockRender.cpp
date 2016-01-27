@@ -11,7 +11,10 @@
 #include "../../core/map/block/SimpleBlock.h"
 #include "../Render.h"
 
-SimpleBlockRender::SimpleBlockRender(int texSize) : texSize(texSize) {
+SimpleBlockRender::SimpleBlockRender() {
+    texture.loadTexture2D("terrain.png", false);
+    texture.setFiltering(TEXTURE_FILTER_MAG_NEAREST, TEXTURE_FILTER_MIN_NEAREST);
+
     this->vertShader.load("shader.vert", GL_VERTEX_SHADER);
     this->fragShader.load("shader.frag", GL_FRAGMENT_SHADER);
 
@@ -46,7 +49,7 @@ SimpleBlockRender::SimpleBlockRender(int texSize) : texSize(texSize) {
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
-    float size = (float) (1.0 - (atlasSize + 1.5) / texSize) / atlasSize;
+    float size = (float) (1.0 - (atlasSize + 1.5) / texture.getWidth()) / atlasSize;
     float tCoords[] = {
             size, 0.0f,
             size, size,
@@ -66,10 +69,11 @@ SimpleBlockRender::SimpleBlockRender(int texSize) : texSize(texSize) {
     this->shaderProgram.useProgram();
 }
 
-void SimpleBlockRender::render(const Block *const block, Texture *tex, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, double scale) {
+void SimpleBlockRender::render(const Block *const block, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, double scale) {
+    texture.bindTexture(0);
     this->shaderProgram.useProgram();
     this->shaderProgram.setUniform("projectionMatrix", projectionMatrix);
-    this->shaderProgram.setUniform("gSampler", tex->getBoundId());
+    this->shaderProgram.setUniform("gSampler", texture.getBoundId());
 
 
     this->tmpModelMatrix = glm::translate(this->modelMatrix, glm::vec3(0.0f - block->getX() * scale, 0.0f - block->getY() * scale, 0.0f));
@@ -77,8 +81,8 @@ void SimpleBlockRender::render(const Block *const block, Texture *tex, glm::mat4
     this->tmpModelMatrix = glm::rotate(this->tmpModelMatrix, 0.0f, glm::vec3(1.0f, 0.0f, 0.0f)); // Just a variation of first rotating
 
     shaderProgram.setUniform("modelViewMatrix", viewMatrix * this->tmpModelMatrix);
-    shaderProgram.setUniform("texPosX", 1.0f / texSize + (float) (this->getTexPos(block) % atlasSize) / atlasSize);
-    shaderProgram.setUniform("texPosY", 1.0f / texSize + (float) (this->getTexPos(block) / atlasSize) / atlasSize);
+    shaderProgram.setUniform("texPosX", 1.0f / texture.getWidth() + (float) (this->getTexPos(block) % atlasSize) / atlasSize);
+    shaderProgram.setUniform("texPosY", 1.0f / texture.getHeight() + (float) (this->getTexPos(block) / atlasSize) / atlasSize);
 
     glBindVertexArray(this->vao);
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
