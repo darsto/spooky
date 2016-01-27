@@ -4,7 +4,7 @@
 
 #include "GuiButton.h"
 
-GuiButton::GuiButton(double x, double y, double width, double height) {
+GuiButton::GuiButton(double x, double y, double width, double height) { //TODO add some "placement" flag (TOP-RIGHT, MIDDLE-RIGHT, BOTTOM-RIGHT, etc.)
     this->x = x;
     this->y = y;
     this->width = width;
