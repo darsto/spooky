@@ -23,8 +23,8 @@ void Application::reinit() {
 
 void Application::update(bool dynamic) {
     if (!MOBILE) tickSDL();
-    double deltaTime = timer->GetDelta();
     if (dynamic) {
+        double deltaTime = timer->GetDelta();
         this->accumulator += deltaTime;
         while (accumulator > TIME_STEP) {
             this->getCurrentWindow()->tick(TIME_STEP);
