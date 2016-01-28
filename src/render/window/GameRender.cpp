@@ -25,8 +25,8 @@ void GameRender::render(Window *window) {
             block->getY() * scale > -(signed) windowHeight / 2.0f - core->getCamY() &&
             (block->getY() - 1) * scale < -(signed) windowHeight / 2.0f - core->getCamY() + (signed) windowHeight)
             getBlockRender(block)->render(block, projectionMatrix, glm::translate(viewMatrix, glm::vec3(
-                (int) (-(signed) windowWidth / 2.0f - core->getCamX()),
-                (int) ((signed) windowHeight / 2.0f - core->getCamY()), 0.0f
+                -(signed) windowWidth / 2.0f - core->getCamX(),
+                (signed) windowHeight / 2.0f - core->getCamY(), 0.0f
             )), core->getBlockSize() * core->getGeneralScale());
     }
     int entitiesNum = 0;
@@ -37,8 +37,8 @@ void GameRender::render(Window *window) {
             entity->getY() * scale > -(signed) windowHeight / 2.0f - core->getCamY() &&
             (entity->getY() - 1) * scale < -(signed) windowHeight / 2.0f - core->getCamY() + (signed) windowHeight) {
             getEntityRender(entity)->render(entity, projectionMatrix, glm::translate(viewMatrix, glm::vec3(
-                (int) (-(signed) windowWidth / 2.0f - core->getCamX()),
-                (int) ((signed) windowHeight / 2.0f - core->getCamY()),
+                -(signed) windowWidth / 2.0f - core->getCamX(),
+                (signed) windowHeight / 2.0f - core->getCamY(),
                 0.0f)), core->getBlockSize() * core->getGeneralScale());
             if (IEntityLighted *elighted = dynamic_cast<IEntityLighted *>(entity)) {
                 fbo.getShaderProgram()->useProgram();
