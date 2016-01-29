@@ -57,17 +57,31 @@ void Game::handleClick(const TouchPoint *const p) {
         if (GuiButton *b = dynamic_cast<GuiButton *>(e)) {
             if (p->x > b->getX() && p->x < b->getX() + b->getWidth() &&
                 p->y > b->getY() && p->y < b->getY() + b->getHeight()) {
-                if (b->onClick(p)) //TODO it's just a prototype
+                if (b->onClick(p)) { //TODO it's just a prototype
                     clicked = true;
+                    break;
+                }
             }
         }
     }
     if (!clicked && p->state == 0) {
         controller->setX(p->x - controller->getWidth() / 2);
         controller->setY(p->y - controller->getHeight() / 2);
-    } else if (!clicked && p->state == 2) {
         joystick->setX(p->x - joystick->getWidth() / 2);
         joystick->setY(p->y - joystick->getHeight() / 2);
+    } else if (!clicked && p->state == 2) {
+        double x = p->x - controller->getX() - controller->getWidth() / 2;
+        double y = p->y - controller->getY() - controller->getHeight() / 2;
+        if (sqrt(x*x + y*y) > joystick->getWidth() / 2) {
+            double angle = atan2(y, x);
+            x = cos(angle) * controller->getWidth() / 2;
+            y = sin(angle) * controller->getHeight() / 2;
+        }
+        joystick->setX(controller->getX() + x);
+        joystick->setY(controller->getY() + y);
+    } else if (!clicked && p->state == 1) {
+        joystick->setX(controller->getX());
+        joystick->setY(controller->getY());
     }
 }
 
