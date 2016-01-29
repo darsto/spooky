@@ -9,11 +9,14 @@ Texture::Texture() {
 }
 
 void Texture::createFromData(unsigned char *bData, int a_iWidth, int a_iHeight, int a_iBPP, GLenum format, bool bGenerateMipMaps) {
-    glGenTextures(1, &uiTexture);
+    uiTexture = SOIL_create_OGL_texture(bData, a_iWidth, a_iHeight, a_iBPP, 0, SOIL_FLAG_MULTIPLY_ALPHA);
+
+    //Old, manual texture loading
+    /*glGenTextures(1, &uiTexture);
     glBindTexture(GL_TEXTURE_2D, uiTexture);
 
     glTexImage2D(GL_TEXTURE_2D, 0, format, a_iWidth, a_iHeight, 0, format, GL_UNSIGNED_BYTE, bData);
-    if (bGenerateMipMaps)glGenerateMipmap(GL_TEXTURE_2D);
+    if (bGenerateMipMaps)glGenerateMipmap(GL_TEXTURE_2D);*/
 
     sPath = "";
     bMipMapsGenerated = bGenerateMipMaps;
@@ -31,6 +34,7 @@ bool Texture::loadTexture2D(string a_sPath, bool bGenerateMipMaps) {
     unsigned char *data_ptr = SOIL_load_image(a_sPath.c_str(), &width, &height, &channels, SOIL_LOAD_RGBA);
 
     createFromData(data_ptr, width, height, channels, GL_RGBA, bGenerateMipMaps);
+
     sPath = a_sPath;
     return true;
 }
