@@ -20,6 +20,7 @@ void InputManager::handleClick(int i, int action, float x, float y) {
 }
 
 #ifndef __DEFMOBILE__
+
 void InputManager::handleKeypress(SDL_Event *e) {
     if (e->key.keysym.sym == SDLK_ESCAPE) {
         //this->running = false; //TODO
@@ -31,6 +32,7 @@ void InputManager::handleKeypress(SDL_Event *e) {
             key->pressCounter++;
     }
 }
+
 #endif //__DEFMOBILE__
 
 void InputManager::tick(Window *window) {
@@ -54,8 +56,12 @@ void InputManager::handleKeyboard(Window *window) {
 void InputManager::handleTouch(Window *window) {
     for (auto it = touchPoints.begin(); it != touchPoints.end(); it++) {
         TouchPoint *p = it->second;
-        if (p->state != 1) {
+        if (p != nullptr) {
             window->handleClick(p);
+            if (p->state == 1) {
+                delete p;
+                this->touchPoints[it->first] = nullptr;
+            }
         }
     }
 }
