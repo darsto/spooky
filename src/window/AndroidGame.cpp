@@ -5,6 +5,7 @@
 #include "Game.h"
 #include "../core/Core.h"
 #include "render/RenderManager.h"
+#include "InputManager.h"
 #include "../core/map/TiledTxtMapLoader.h"
 #include "../logging.h"
 
@@ -45,22 +46,18 @@ void Game::tick(double deltaTime) {
     if (abs(dy) > 2) this->core->setCamY(-this->core->getCamY() + (dy) * 0.05);
 }
 
-void Game::handleClick(int i, int action, float x, float y) {
+void Game::handleClick(const TouchPoint *const p) {
     for (GuiElement *e : this->guiElements) {
         if (GuiButton *b = dynamic_cast<GuiButton *>(e)) {
-            if (x > b->getX() && x < b->getX() + b->getWidth() &&
-                y > b->getY() && y < b->getY() + b->getHeight()) {
-                b->onClick(action, x, y); //TODO it's just a prototype
+            if (p->x > b->getX() && p->x < b->getX() + b->getWidth() &&
+                p->y > b->getY() && p->y < b->getY() + b->getHeight()) {
+                b->onClick(p->state, p->x, p->y); //TODO it's just a prototype
             }
         }
     }
 }
 
-void Game::handleKeyboard() {
-    LOGW("Keyboard input is unsupported on current platform\n");
-}
-
-void Game::handleKeypress(void *event1) {
+void Game::handleKeyboard(const Keypress *const keypress) {
     LOGW("Keyboard input is unsupported on current platform\n");
 }
 

@@ -24,7 +24,6 @@ void Application::reinit() {
 }
 
 void Application::update(bool dynamic) {
-    if (!MOBILE) tickSDL();
     if (dynamic) {
         double deltaTime = timer->GetDelta();
         this->accumulator += deltaTime;
@@ -35,8 +34,9 @@ void Application::update(bool dynamic) {
     } else {
         this->getCurrentWindow()->tick(TIME_STEP);
     }
-    this->inputManager->tick(this->getCurrentWindow());
     this->renderer->render(this->getCurrentWindow());
+    if (!MOBILE) this->handleEvents();
+    this->inputManager->tick(this->getCurrentWindow());
 }
 
 Application::~Application() {
@@ -87,7 +87,15 @@ JNIEXPORT void JNICALL Java_tk_approach_android_spookytom_JniBridge_handleTouch(
 
 #endif //__ANDROID__
 
-void Application::tickSDL() {
+void Application::resize(int width, int height) {
+    this->renderer->resize(this->getCurrentWindow(), width, height);
+}
+
+void Application::handleClick(int i, int action, float x, float y) {
+    this->inputManager->handleClick(i, action, x, y);
+}
+
+void Application::handleEvents() {
 #ifndef __ANDROID__
     while (SDL_PollEvent(&e) != 0) {
         switch (e.type) {
@@ -101,31 +109,19 @@ void Application::tickSDL() {
                 break;
             case SDL_KEYDOWN:
             case SDL_KEYUP:
-                if (e.key.keysym.sym == SDLK_ESCAPE) {
-                    this->running = false;
-                } else if (e.key.repeat == 0) {
-                    this->getCurrentWindow()->handleKeypress(&e);
-                }
+                this->inputManager->handleKeypress(&e);
                 break;
             case SDL_MOUSEBUTTONDOWN:
             case SDL_MOUSEBUTTONUP: {
                 int x, y;
                 SDL_GetMouseState(&x, &y);
-                this->getCurrentWindow()->handleClick(0, e.type == SDL_MOUSEBUTTONUP ? 1 : 0, x, y);
+                this->handleClick(0, e.type == SDL_MOUSEBUTTONUP ? 1 : 0, x, y);
                 break;
             }
         }
     }
-    this->getCurrentWindow()->handleKeyboard();
 #else //__ANDROID__
     LOGW("SDL is not supported on this platform\n");
 #endif //__ANDROID__
-}
 
-void Application::resize(int width, int height) {
-    this->renderer->resize(this->getCurrentWindow(), width, height);
-}
-
-void Application::handleClick(int i, int action, float x, float y) {
-    this->inputManager->handleClick(i, action, x, y);
 }

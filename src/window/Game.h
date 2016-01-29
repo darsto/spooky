@@ -23,9 +23,8 @@ public:
     Game();
     virtual void reload() override;
     virtual void tick(double deltaTime) override;
-    virtual void handleKeyboard() override;
-    virtual void handleKeypress(void *event) override;
-    virtual void handleClick(int i, int action, float x, float y) override;
+    virtual void handleKeyboard(const Keypress *const keypress) override;
+    virtual void handleClick(const TouchPoint *const touchPoint) override;
 
     Core *getCore() const {
         return core;
@@ -39,7 +38,6 @@ public:
 
 private:
     Core *core = nullptr;
-    void resetMovementPressDelays(); //TODO remove
     std::vector<GuiElement *> guiElements;
 };
 
