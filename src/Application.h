@@ -6,6 +6,7 @@
 #define C003_APPLICATION_H
 
 #include "core/Timer.h"
+#include "InputManager.h"
 
 #ifndef __ANDROID__
 #include "SDL2/SDL.h"
@@ -45,6 +46,8 @@ public:
         return window;
     }
 
+    void handleClick(int i, int action, float x, float y);
+
     bool isRunning() const {
         return running;
     }
@@ -55,6 +58,7 @@ private:
     bool running = true;
     Window *window = nullptr;
     RenderManager *renderer = nullptr;
+    InputManager *inputManager = nullptr;
     Timer *timer = nullptr;
     const double TIME_STEP = 0.01;
     double accumulator;

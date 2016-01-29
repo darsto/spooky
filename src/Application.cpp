@@ -11,6 +11,7 @@ Application::Application() {
     this->renderer = new RenderManager();
     this->window = new Game();
     this->timer = new Timer();
+    this->inputManager = new InputManager();
     this->reinit();
 }
 
@@ -19,6 +20,7 @@ void Application::reinit() {
     this->getCurrentWindow()->reload();
     this->renderer->initWindow(this->window); //TODO
     timer->GetDelta(); //if not called right now, first call in game loop would return a very huge value
+    this->inputManager->reload();
 }
 
 void Application::update(bool dynamic) {
@@ -33,6 +35,7 @@ void Application::update(bool dynamic) {
     } else {
         this->getCurrentWindow()->tick(TIME_STEP);
     }
+    this->inputManager->tick(this->getCurrentWindow());
     this->renderer->render(this->getCurrentWindow());
 }
 
@@ -79,7 +82,7 @@ JNIEXPORT void JNICALL Java_tk_approach_android_spookytom_JniBridge_tick(JNIEnv 
 
 JNIEXPORT void JNICALL Java_tk_approach_android_spookytom_JniBridge_handleTouch(JNIEnv *env, jobject obj, jint i,  jint action, jfloat x, jfloat y) {
     LOGD("C++ touch. i:%d, action:%d, x:%f, y:%f", i, action, x, y);
-    application->getCurrentWindow()->handleClick(i, action, x, y);
+    application->handleClick(i, action, x, y);
 }
 
 #endif //__ANDROID__
@@ -121,4 +124,8 @@ void Application::tickSDL() {
 
 void Application::resize(int width, int height) {
     this->renderer->resize(this->getCurrentWindow(), width, height);
+}
+
+void Application::handleClick(int i, int action, float x, float y) {
+    this->inputManager->handleClick(i, action, x, y);
 }
