@@ -65,6 +65,8 @@ void Game::handleClick(const TouchPoint *const p) {
         }
     }
     if (!clicked && p->state == 0) {
+        controller->setVisible(true);
+        joystick->setVisible(true);
         controller->setX(p->x - controller->getWidth() / 2);
         controller->setY(p->y - controller->getHeight() / 2);
         joystick->setX(p->x - joystick->getWidth() / 2);
@@ -82,6 +84,8 @@ void Game::handleClick(const TouchPoint *const p) {
     } else if (!clicked && p->state == 1) {
         joystick->setX(controller->getX());
         joystick->setY(controller->getY());
+        controller->setVisible(false);
+        joystick->setVisible(false);
     }
 }
 

@@ -64,21 +64,23 @@ GuiElementRender(const string &textureFile, const string &shader) {
 }
 
 void GuiElementRender::render(const GuiElement *const element, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, double scale) {
-    this->texture.bindTexture(0);
-    this->shaderProgram.useProgram();
-    this->shaderProgram.setUniform("projectionMatrix", projectionMatrix);
-    this->shaderProgram.setUniform("gSampler", texture.getBoundId());
+    if (element->isVisible()) {
+        this->texture.bindTexture(0);
+        this->shaderProgram.useProgram();
+        this->shaderProgram.setUniform("projectionMatrix", projectionMatrix);
+        this->shaderProgram.setUniform("gSampler", texture.getBoundId());
 
-    this->tmpModelMatrix = glm::translate(this->modelMatrix, glm::vec3(0.0f - (element->getX() + element->getWidth()) * scale, 0.0f - (element->getY() + element->getHeight()) * scale, 0.0f));
-    this->tmpModelMatrix = glm::scale(this->tmpModelMatrix, glm::vec3(element->getWidth() * scale, element->getHeight() * scale, 1.0f));
-    this->tmpModelMatrix = glm::rotate(this->tmpModelMatrix, 0.0f, glm::vec3(1.0f, 0.0f, 0.0f)); // Just a variation of first rotating
+        this->tmpModelMatrix = glm::translate(this->modelMatrix, glm::vec3(0.0f - (element->getX() + element->getWidth()) * scale, 0.0f - (element->getY() + element->getHeight()) * scale, 0.0f));
+        this->tmpModelMatrix = glm::scale(this->tmpModelMatrix, glm::vec3(element->getWidth() * scale, element->getHeight() * scale, 1.0f));
+        this->tmpModelMatrix = glm::rotate(this->tmpModelMatrix, 0.0f, glm::vec3(1.0f, 0.0f, 0.0f)); // Just a variation of first rotating
 
-    shaderProgram.setUniform("modelViewMatrix", viewMatrix * this->tmpModelMatrix);
-    shaderProgram.setUniform("texPosX", 1.0f / this->texture.getWidth() + (float) (this->getTexPos(element) % atlasSize) / atlasSize);
-    shaderProgram.setUniform("texPosY", 1.0f / this->texture.getWidth() + (float) (this->getTexPos(element) / atlasSize) / atlasSize);
+        shaderProgram.setUniform("modelViewMatrix", viewMatrix * this->tmpModelMatrix);
+        shaderProgram.setUniform("texPosX", 1.0f / this->texture.getWidth() + (float) (this->getTexPos(element) % atlasSize) / atlasSize);
+        shaderProgram.setUniform("texPosY", 1.0f / this->texture.getWidth() + (float) (this->getTexPos(element) / atlasSize) / atlasSize);
 
-    glBindVertexArray(this->vao);
-    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+        glBindVertexArray(this->vao);
+        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+    }
 }
 
 int GuiElementRender::getTexPos(const GuiElement *const element) {

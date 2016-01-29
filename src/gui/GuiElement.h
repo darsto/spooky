@@ -39,11 +39,20 @@ public:
         GuiElement::height = height;
     }
 
+    bool isVisible() const {
+        return this->visible;
+    }
+
+    void setVisible(bool visible) {
+        GuiElement::visible = visible;
+    }
+
     virtual ~GuiElement() { };
 
 protected:
     double x, y;
     double width, height;
+    bool visible = true;
 };
 
 #endif //C003_GUIELEMENT_H
