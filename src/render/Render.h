@@ -46,7 +46,7 @@ inline GuiElementRender *getGuiElementRender(const GuiElement *const element) {
 inline void initRenderers() {
     blockRenders.insert(std::make_pair(typeid(SimpleBlock).name(), new SimpleBlockRender()));
     entityRenders.insert(std::make_pair(typeid(Player).name(), new PlayerRender()));
-    entityRenders.insert(std::make_pair(typeid(EntityToy).name(), new DefaultEntityRender("ghost", "shader")));
+    entityRenders.insert(std::make_pair(typeid(EntityToy).name(), new DefaultEntityRender("toy", "shader")));
     entityRenders.insert(std::make_pair(typeid(EntityBullet).name(), new DefaultEntityRender("bullet", "shader")));
     entityRenders.insert(std::make_pair(typeid(SimpleShape).name(), new SimpleShapeRender()));
     guiRenders.insert(std::make_pair(typeid(GuiElement).name(), new GuiElementRender("gui", "shader")));
