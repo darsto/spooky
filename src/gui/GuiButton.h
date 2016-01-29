@@ -8,12 +8,14 @@
 #include <functional>
 #include "GuiElement.h"
 
+class TouchPoint;
+
 class GuiButton : public GuiElement {
 
 public:
     GuiButton(double x, double y, double width, double height);
-    virtual bool onClick(int action, float x, float y);
-    virtual void setOnClickListener(std::function<bool(int, float, float)> onClickListener);
+    virtual bool onClick(const TouchPoint *const touchPoint);
+    virtual void setOnClickListener(std::function<bool(const TouchPoint *const)> onClickListener);
 
     bool isPressed() const {
         return pressed;
@@ -27,7 +29,7 @@ public:
 
 protected:
     bool pressed;
-    std::function<bool(int, float, float)> onClickListener;
+    std::function<bool(const TouchPoint *const)> onClickListener;
 };
 
 #endif //C003_GUIBUTTON_H

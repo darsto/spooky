@@ -3,6 +3,7 @@
 //
 
 #include "GuiButton.h"
+#include "InputManager.h"
 
 GuiButton::GuiButton(double x, double y, double width, double height) { //TODO add some "placement" flag (TOP-RIGHT, MIDDLE-RIGHT, BOTTOM-RIGHT, etc.)
     this->x = x;
@@ -11,11 +12,11 @@ GuiButton::GuiButton(double x, double y, double width, double height) { //TODO a
     this->height = height;
 }
 
-bool GuiButton::onClick(int action, float x, float y) {
+bool GuiButton::onClick(const TouchPoint *const touchPoint) {
     if (onClickListener == NULL) return false;
-    return onClickListener(action, x, y);
+    return onClickListener(touchPoint);
 }
 
-void GuiButton::setOnClickListener(std::function<bool(int, float, float)> onClickListener) {
+void GuiButton::setOnClickListener(std::function<bool(const TouchPoint *const)> onClickListener) {
     this->onClickListener = onClickListener;
 }

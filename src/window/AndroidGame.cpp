@@ -9,15 +9,18 @@
 #include "../core/map/TiledTxtMapLoader.h"
 #include "../logging.h"
 
+GuiButton *controller;
+GuiButton *joystick;
+
 Game::Game() {
-    GuiButton *b = new GuiButton(50, 50, 200, 200);
-    auto moveController = [&](int action, float x, float y) {
-        double playerSpeed = this->core->getPlayer()->getSpeed();
-        this->core->getPlayer()->applyImpulse((x - 50 - 100) / 100.0f, (y - 50 - 100) / 100.0f);
-        return true;
+    controller = new GuiButton(0, 0, 200, 200);
+    joystick = new GuiButton(0, 0, 200, 200);
+    auto moveController = [&](const TouchPoint *const touchPoint) {
+        return false;
     };
-    b->setOnClickListener(moveController);
-    this->guiElements.push_back(b);
+    controller->setOnClickListener(moveController);
+    this->guiElements.push_back(controller);
+    this->guiElements.push_back(joystick);
 }
 
 void Game::reload() {
@@ -37,9 +40,11 @@ void Game::tick(double deltaTime) {
         if (entity->isToBeDeleted()) {
             this->core->getMap()->removeEntity(entity);
             i--;
-
         }
     }
+    double playerSpeed = this->core->getPlayer()->getSpeed();
+    this->core->getPlayer()->applyImpulse((joystick->getX() - controller->getX()) / 100.0f, (joystick->getY() - controller->getY()) / 100.0f);
+
     double dx = (this->core->getPlayer()->getX() + this->core->getPlayer()->getWidth() / 2 - 1) * this->core->getBlockSize() * this->core->getGeneralScale() + this->core->getCamX();
     double dy = (this->core->getPlayer()->getY() + this->core->getPlayer()->getHeight() / 2 - 1) * this->core->getBlockSize() * this->core->getGeneralScale() + this->core->getCamY();
     if (abs(dx) > 2) this->core->setCamX(-this->core->getCamX() + (dx) * 0.05);
@@ -47,13 +52,22 @@ void Game::tick(double deltaTime) {
 }
 
 void Game::handleClick(const TouchPoint *const p) {
+    bool clicked = false;
     for (GuiElement *e : this->guiElements) {
         if (GuiButton *b = dynamic_cast<GuiButton *>(e)) {
             if (p->x > b->getX() && p->x < b->getX() + b->getWidth() &&
                 p->y > b->getY() && p->y < b->getY() + b->getHeight()) {
-                b->onClick(p->state, p->x, p->y); //TODO it's just a prototype
+                if (b->onClick(p)) //TODO it's just a prototype
+                    clicked = true;
             }
         }
+    }
+    if (!clicked && p->state == 0) {
+        controller->setX(p->x - controller->getWidth() / 2);
+        controller->setY(p->y - controller->getHeight() / 2);
+    } else if (!clicked && p->state == 2) {
+        joystick->setX(p->x - joystick->getWidth() / 2);
+        joystick->setY(p->y - joystick->getHeight() / 2);
     }
 }
 
