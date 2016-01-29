@@ -20,7 +20,9 @@ public class GLView extends GLSurfaceView {
 
     @Override
     public boolean onTouchEvent(MotionEvent e) {
-        this.renderer.getJniBridge().handleTouch(e.getActionIndex(), e.getAction(), e.getX(e.getActionIndex()), e.getY(e.getActionIndex()));
+        if (this.renderer.getJniBridge() != null) {
+            this.renderer.getJniBridge().handleTouch(e.getActionIndex(), e.getAction(), e.getX(e.getActionIndex()), e.getY(e.getActionIndex()));
+        }
         return true;
     }
 }
