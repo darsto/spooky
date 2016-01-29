@@ -7,7 +7,7 @@
 GuiElementRender::
 GuiElementRender(const string &textureFile, const string &shader) {
     texture.loadTexture2D(textureFile + string(".png"), false);
-    texture.setFiltering(TEXTURE_FILTER_MAG_NEAREST, TEXTURE_FILTER_MIN_NEAREST);
+    texture.setFiltering(TEXTURE_FILTER_MAG_BILINEAR, TEXTURE_FILTER_MIN_BILINEAR);
 
     int a = this->vertShader.load(shader + string(".vert"), GL_VERTEX_SHADER);
     int b = this->fragShader.load(shader + string(".frag"), GL_FRAGMENT_SHADER);
@@ -43,7 +43,7 @@ GuiElementRender(const string &textureFile, const string &shader) {
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
-    float size = (float) (1.0 - (atlasSize + 1.5) / texture.getWidth()) / atlasSize;
+    float size = (float) (1.0 - (atlasSize + 1) / texture.getWidth()) / atlasSize;
     float tCoords[] = {
         size, 0.0f,
         size, size,
@@ -75,8 +75,10 @@ void GuiElementRender::render(const GuiElement *const element, glm::mat4 project
         this->tmpModelMatrix = glm::rotate(this->tmpModelMatrix, 0.0f, glm::vec3(1.0f, 0.0f, 0.0f)); // Just a variation of first rotating
 
         shaderProgram.setUniform("modelViewMatrix", viewMatrix * this->tmpModelMatrix);
-        shaderProgram.setUniform("texPosX", 1.0f / this->texture.getWidth() + (float) (this->getTexPos(element) % atlasSize) / atlasSize);
-        shaderProgram.setUniform("texPosY", 1.0f / this->texture.getWidth() + (float) (this->getTexPos(element) / atlasSize) / atlasSize);
+        float x = (float) (this->getTexPos(element) % atlasSize);
+        float y = (float) (this->getTexPos(element) / atlasSize);
+        shaderProgram.setUniform("texPosX", (x + 1.5f) / this->texture.getWidth() + x / atlasSize);
+        shaderProgram.setUniform("texPosY", (y + 1.5f) / this->texture.getWidth() + y / atlasSize);
 
         glBindVertexArray(this->vao);
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
@@ -84,7 +86,7 @@ void GuiElementRender::render(const GuiElement *const element, glm::mat4 project
 }
 
 int GuiElementRender::getTexPos(const GuiElement *const element) {
-    return 0;
+    return element->getTexPos();
 }
 
 GuiElementRender::~GuiElementRender() {

@@ -47,6 +47,8 @@ public:
         GuiElement::visible = visible;
     }
 
+    virtual int getTexPos() const = 0;
+
     virtual ~GuiElement() { };
 
 protected:

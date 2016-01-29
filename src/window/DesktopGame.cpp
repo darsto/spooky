@@ -12,7 +12,7 @@
 #include "../logging.h"
 
 Game::Game() {
-    GuiButton *b = new GuiButton(15, 15, 75, 75);
+    GuiButton *b = new GuiButton(0, 15, 15, 75, 75);
     this->guiElements.push_back(b);
 }
 

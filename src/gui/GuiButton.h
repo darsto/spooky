@@ -13,7 +13,7 @@ class TouchPoint;
 class GuiButton : public GuiElement {
 
 public:
-    GuiButton(double x, double y, double width, double height);
+    GuiButton(int texturePos, double x, double y, double width, double height);
     virtual bool onClick(const TouchPoint *const touchPoint);
     virtual void setOnClickListener(std::function<bool(const TouchPoint *const)> onClickListener);
 
@@ -25,9 +25,12 @@ public:
         GuiButton::pressed = pressed;
     }
 
+    virtual int getTexPos() const override;
+
     virtual ~GuiButton() { };
 
 protected:
+    int texturePos;
     bool pressed;
     std::function<bool(const TouchPoint *const)> onClickListener;
 };

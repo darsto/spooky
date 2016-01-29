@@ -13,8 +13,10 @@ GuiButton *controller;
 GuiButton *joystick;
 
 Game::Game() {
-    controller = new GuiButton(0, 0, 200, 200);
-    joystick = new GuiButton(0, 0, 200, 200);
+    controller = new GuiButton(0, 0, 0, 200, 200);
+    joystick = new GuiButton(1, 0, 0, 200, 200);
+    controller->setVisible(false);
+    joystick->setVisible(false);
     auto moveController = [&](const TouchPoint *const touchPoint) {
         return false;
     };
@@ -57,7 +59,7 @@ void Game::handleClick(const TouchPoint *const p) {
         if (GuiButton *b = dynamic_cast<GuiButton *>(e)) {
             if (p->x > b->getX() && p->x < b->getX() + b->getWidth() &&
                 p->y > b->getY() && p->y < b->getY() + b->getHeight()) {
-                if (b->onClick(p)) { //TODO it's just a prototype
+                if (!b->isPressed() && b->onClick(p)) { //TODO it's just a prototype
                     clicked = true;
                     break;
                 }
