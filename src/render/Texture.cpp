@@ -35,6 +35,8 @@ bool Texture::loadTexture2D(string a_sPath, bool bGenerateMipMaps) {
 
     createFromData(data_ptr, width, height, channels, GL_RGBA, bGenerateMipMaps);
 
+    delete data_ptr;
+
     sPath = a_sPath;
     return true;
 }
