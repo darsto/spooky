@@ -27,6 +27,8 @@ public:
 
     virtual int getTexPos() const override;
 
+    virtual void setTexPos(int texturePos) override;
+
     virtual ~GuiButton() { };
 
 protected:

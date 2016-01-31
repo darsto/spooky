@@ -25,3 +25,7 @@ void GuiButton::setOnClickListener(std::function<bool(const TouchPoint *const)> 
 int GuiButton::getTexPos() const {
     return this->texturePos;
 }
+
+void GuiButton::setTexPos(int texturePos) {
+    this->texturePos = texturePos;
+}

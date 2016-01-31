@@ -49,6 +49,8 @@ public:
 
     virtual int getTexPos() const = 0;
 
+    virtual void setTexPos(int texturePos) = 0;
+
     virtual ~GuiElement() { };
 
 protected:
