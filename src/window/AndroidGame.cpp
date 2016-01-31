@@ -11,6 +11,7 @@
 
 GuiButton *controller;
 GuiButton *joystick;
+GuiButton *possessButton;
 
 Game::Game() {
     controller = new GuiButton(0, 0, 0, 200, 200);
@@ -23,6 +24,21 @@ Game::Game() {
     controller->setOnClickListener(moveController);
     this->guiElements.push_back(controller);
     this->guiElements.push_back(joystick);
+    possessButton = new GuiButton(2, 50, 50, 125, 125);
+    possessButton->setVisible(false);
+    auto possessAction = [&](const TouchPoint *const touchPoint) {
+        possessButton->setTexPos(2 + (touchPoint->state == 1 ? 0 : 8));
+        if (touchPoint->state == 1) {
+            if (this->core->getPlayer()->getToy() == nullptr) {
+                this->core->getPlayer()->setToy();
+            } else {
+                this->core->getPlayer()->eject();
+            }
+        }
+        return true;
+    };
+    possessButton->setOnClickListener(possessAction);
+    this->guiElements.push_back(possessButton);
 }
 
 void Game::reload() {
@@ -44,6 +60,9 @@ void Game::tick(double deltaTime) {
             i--;
         }
     }
+
+    possessButton->setVisible(this->core->getPlayer()->getToyToMerge() != nullptr || this->core->getPlayer()->getToy() != nullptr);
+
     double playerSpeed = this->core->getPlayer()->getSpeed();
     this->core->getPlayer()->applyImpulse((joystick->getX() - controller->getX()) / 100.0f, (joystick->getY() - controller->getY()) / 100.0f);
 
