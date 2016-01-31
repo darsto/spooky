@@ -53,6 +53,7 @@ void Player::eject() {
         this->setX(this->toy->getX());
         this->setY(this->toy->getY());
         toy->setHost(nullptr);
+        this->toyToMerge = toy;
         this->toy = nullptr;
     }
 }
