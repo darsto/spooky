@@ -5,8 +5,26 @@
 #ifndef C003_GUIELEMENT_H
 #define C003_GUIELEMENT_H
 
+#define GUI_TOP_LEFT 0
+#define GUI_TOP_CENTER 1
+#define GUI_TOP_RIGHT 2
+#define GUI_MIDDLE_LEFT 3
+#define GUI_MIDDLE_CENTER 4
+#define GUI_MIDDLE_RIGHT 5
+#define GUI_BOTTOM_RIGHT 6
+#define GUI_BOTTOM_CENTER 7
+#define GUI_BOTTOM_LEFT 8
+
 class GuiElement {
 public:
+    char getPositionFlag() const {
+        return positionFlag;
+    }
+
+    void setPositionFlag(char positionFlag) {
+        GuiElement::positionFlag = positionFlag;
+    }
+
     double getX() const {
         return x;
     }
@@ -54,6 +72,7 @@ public:
     virtual ~GuiElement() { };
 
 protected:
+    char positionFlag;
     double x, y;
     double width, height;
     bool visible = true;

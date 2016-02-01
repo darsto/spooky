@@ -5,12 +5,13 @@
 #include "GuiButton.h"
 #include "InputManager.h"
 
-GuiButton::GuiButton(int texturePos, double x, double y, double width, double height) { //TODO add some "placement" flag (TOP-RIGHT, MIDDLE-RIGHT, BOTTOM-RIGHT, etc.)
-    this->texturePos = texturePos;
+GuiButton::GuiButton(char positionFlag, double x, double y, double width, double height, int texturePos) {
+    this->positionFlag = positionFlag;
     this->x = x;
     this->y = y;
     this->width = width;
     this->height = height;
+    this->texturePos = texturePos;
 }
 
 bool GuiButton::onClick(const TouchPoint *const touchPoint) {

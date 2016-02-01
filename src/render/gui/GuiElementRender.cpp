@@ -70,7 +70,58 @@ void GuiElementRender::render(const GuiElement *const element, glm::mat4 project
         this->shaderProgram.setUniform("projectionMatrix", projectionMatrix);
         this->shaderProgram.setUniform("gSampler", texture.getBoundId());
 
-        this->tmpModelMatrix = glm::translate(this->modelMatrix, glm::vec3(0.0f - (element->getX() + element->getWidth()) * scale, 0.0f - (element->getY() + element->getHeight()) * scale, 0.0f));
+        double px = element->getX() * scale;
+        double py = element->getY() * scale;
+        double pwidth = element->getWidth() * scale;
+        double pheight =  element->getHeight() * scale;
+
+
+        GLint viewport[4];
+        glGetIntegerv(GL_VIEWPORT, viewport);
+        int screenWidth = viewport[2];
+        int screenHeight = viewport[3];
+
+        switch(element->getPositionFlag()) {
+            default:
+            case GUI_TOP_LEFT:
+                px += pwidth;
+                py += pheight;
+                break;
+            case GUI_TOP_CENTER:
+                px += pwidth / 2 + screenWidth / 2;
+                py += pheight;
+                break;
+            case GUI_TOP_RIGHT:
+                px = screenWidth - px;
+                py += pheight;
+                break;
+            case GUI_MIDDLE_LEFT:
+                px += pwidth;
+                py += pheight / 2 + screenHeight / 2;
+                break;
+            case GUI_MIDDLE_CENTER:
+                px += pwidth / 2 + screenWidth / 2;
+                py += pheight / 2 + screenHeight / 2;
+                break;
+            case GUI_MIDDLE_RIGHT:
+                px = screenWidth - px;
+                py += pheight / 2 + screenHeight / 2;
+                break;
+            case GUI_BOTTOM_LEFT:
+                px += pwidth;
+                py = screenHeight - py;
+                break;
+            case GUI_BOTTOM_CENTER:
+                px += pwidth / 2 + screenWidth / 2;
+                py = screenHeight - py;
+                break;
+            case GUI_BOTTOM_RIGHT:
+                px = screenWidth - px;
+                py = screenHeight - py;
+                break;
+        }
+
+        this->tmpModelMatrix = glm::translate(this->modelMatrix, glm::vec3(-px, -py, 0.0f));
         this->tmpModelMatrix = glm::scale(this->tmpModelMatrix, glm::vec3(element->getWidth() * scale, element->getHeight() * scale, 1.0f));
         this->tmpModelMatrix = glm::rotate(this->tmpModelMatrix, 0.0f, glm::vec3(1.0f, 0.0f, 0.0f)); // Just a variation of first rotating
 
