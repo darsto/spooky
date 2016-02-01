@@ -70,10 +70,7 @@ void GuiElementRender::render(const GuiElement *const element, glm::mat4 project
         this->shaderProgram.setUniform("projectionMatrix", projectionMatrix);
         this->shaderProgram.setUniform("gSampler", texture.getBoundId());
 
-        double px = (element->getX() + element->getWidth()) * scale;
-        double py = (element->getY() + element->getHeight()) * scale;
-
-        this->tmpModelMatrix = glm::translate(this->modelMatrix, glm::vec3(-px, -py, 0.0f));
+        this->tmpModelMatrix = glm::translate(this->modelMatrix, glm::vec3(-(element->getX() + element->getWidth()) * scale, -(element->getY() + element->getHeight()) * scale, 0.0f));
         this->tmpModelMatrix = glm::scale(this->tmpModelMatrix, glm::vec3(element->getWidth() * scale, element->getHeight() * scale, 1.0f));
         this->tmpModelMatrix = glm::rotate(this->tmpModelMatrix, 0.0f, glm::vec3(1.0f, 0.0f, 0.0f)); // Just a variation of first rotating
 
