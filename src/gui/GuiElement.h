@@ -25,12 +25,20 @@ public:
         GuiElement::positionFlag = positionFlag;
     }
 
+    double getRawX() const {
+        return rawX;
+    }
+
     double getX() const {
         return x;
     }
 
     void setX(double x) {
-        GuiElement::x = x;
+        this->x = this->rawX = x;
+    }
+
+    double getRawY() const {
+        return rawY;
     }
 
     double getY() const {
@@ -38,7 +46,7 @@ public:
     }
 
     void setY(double y) {
-        GuiElement::y = y;
+        this->y = this->rawY = y;
     }
 
     double getWidth() const {
@@ -65,6 +73,46 @@ public:
         GuiElement::visible = visible;
     }
 
+    void reinit(unsigned int windowWidth, unsigned int windowHeight) {
+        double px = rawX;
+        double py = rawY;
+        switch(this->positionFlag) {
+            default:
+            case GUI_TOP_LEFT:
+                break;
+            case GUI_TOP_CENTER:
+                px += -this->width / 2 + windowWidth / 2;
+                break;
+            case GUI_TOP_RIGHT:
+                px = windowWidth - px - this->width;
+                break;
+            case GUI_MIDDLE_LEFT:
+                py += -this->height / 2 + windowHeight / 2;
+                break;
+            case GUI_MIDDLE_CENTER:
+                px += -this->width / 2 + windowWidth / 2;
+                py += -this->height / 2 + windowHeight / 2;
+                break;
+            case GUI_MIDDLE_RIGHT:
+                px = windowWidth - px - this->width;
+                py += -this->height / 2 + windowHeight / 2;
+                break;
+            case GUI_BOTTOM_LEFT:
+                py = windowHeight - py - this->height;
+                break;
+            case GUI_BOTTOM_CENTER:
+                px += -this->width / 2 + windowWidth / 2;
+                py = windowHeight - py - this->height;
+                break;
+            case GUI_BOTTOM_RIGHT:
+                px = windowWidth - px - this->width;
+                py = windowHeight - py - this->height;
+                break;
+        }
+        this->x = px;
+        this->y = py;
+    }
+
     virtual int getTexPos() const = 0;
 
     virtual void setTexPos(int texturePos) = 0;
@@ -73,6 +121,7 @@ public:
 
 protected:
     char positionFlag;
+    double rawX, rawY;
     double x, y;
     double width, height;
     bool visible = true;

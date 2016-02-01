@@ -14,8 +14,8 @@ GuiButton *joystick;
 GuiButton *possessButton;
 
 Game::Game() {
-    controller = new GuiButton(0, 0, 0, 200, 200);
-    joystick = new GuiButton(1, 0, 0, 200, 200);
+    controller = new GuiButton(GUI_TOP_LEFT, 0, 0, 200, 200, 0);
+    joystick = new GuiButton(GUI_TOP_LEFT, 0, 0, 200, 200, 1);
     controller->setVisible(false);
     joystick->setVisible(false);
     auto moveController = [&](const TouchPoint *const touchPoint) {
@@ -24,7 +24,7 @@ Game::Game() {
     controller->setOnClickListener(moveController);
     this->guiElements.push_back(controller);
     this->guiElements.push_back(joystick);
-    possessButton = new GuiButton(2, 50, 50, 125, 125);
+    possessButton = new GuiButton(GUI_BOTTOM_RIGHT, 50, 50, 125, 125, 2);
     possessButton->setVisible(false);
     auto possessAction = [&](const TouchPoint *const touchPoint) {
         possessButton->setTexPos(2 + (touchPoint->state == 1 ? 0 : 8));
@@ -41,12 +41,15 @@ Game::Game() {
     this->guiElements.push_back(possessButton);
 }
 
-void Game::reload() {
+void Game::reload(unsigned int windowWidth, unsigned int windowHeight) {
     if (this->core == nullptr) {
         MapLoader *mapLoader = new TiledTxtMapLoader("test_map.txt");
         Map *bmap = mapLoader->loadMap();
         this->core = new Core(bmap);
         delete mapLoader;
+    }
+    for (GuiElement *e : this->guiElements) {
+        e->reinit(windowWidth, windowHeight);
     }
 }
 

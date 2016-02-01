@@ -12,16 +12,19 @@
 #include "../logging.h"
 
 Game::Game() {
-    GuiButton *b = new GuiButton(GUI_TOP_LEFT, 15, 15, 75, 75, 0);
+    GuiButton *b = new GuiButton(GUI_TOP_RIGHT, 15, 15, 75, 75, 0);
     this->guiElements.push_back(b);
 }
 
-void Game::reload() {
+void Game::reload(unsigned int windowWidth, unsigned int windowHeight) {
     if (this->core == nullptr) {
         MapLoader *mapLoader = new TiledTxtMapLoader("test_map.txt");
         Map *bmap = mapLoader->loadMap();
         this->core = new Core(bmap);
         delete mapLoader;
+    }
+    for (GuiElement *e : this->guiElements) {
+        e->reinit(windowWidth, windowHeight);
     }
     SDL_StartTextInput();
 }

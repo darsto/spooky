@@ -21,7 +21,7 @@ class Game : public Window {
 
 public:
     Game();
-    virtual void reload() override;
+    virtual void reload(unsigned int windowWidth, unsigned int windowHeight) override;
     virtual void tick(double deltaTime) override;
     virtual void handleKeyboard(const Keypress *const keypress) override;
     virtual void handleClick(const TouchPoint *const touchPoint) override;

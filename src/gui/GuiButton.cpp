@@ -7,8 +7,8 @@
 
 GuiButton::GuiButton(char positionFlag, double x, double y, double width, double height, int texturePos) {
     this->positionFlag = positionFlag;
-    this->x = x;
-    this->y = y;
+    this->rawX = x;
+    this->rawY = y;
     this->width = width;
     this->height = height;
     this->texturePos = texturePos;

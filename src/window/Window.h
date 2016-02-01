@@ -16,7 +16,7 @@ class Keypress;
 
 class Window {
 public:
-    virtual void reload() = 0;
+    virtual void reload(unsigned int windowWidth, unsigned int WindowHeight) = 0;
     virtual void tick(double deltaTime) = 0;
     virtual void handleKeyboard(const Keypress *const keypress) = 0;
     virtual void handleClick(const TouchPoint *const touchPoint) = 0;

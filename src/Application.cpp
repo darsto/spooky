@@ -13,11 +13,11 @@ Application::Application() {
     this->timer = new Timer();
     this->inputManager = new InputManager();
     this->reinit();
+    this->resize(1366,750);
 }
 
 void Application::reinit() {
     this->renderer->init();
-    this->getCurrentWindow()->reload();
     this->renderer->initWindow(this->window); //TODO
     timer->GetDelta(); //if not called right now, first call in game loop would return a very huge value
     this->inputManager->reload();
@@ -88,6 +88,7 @@ JNIEXPORT void JNICALL Java_tk_approach_android_spookytom_JniBridge_handleTouch(
 #endif //__ANDROID__
 
 void Application::resize(int width, int height) {
+    this->getCurrentWindow()->reload(width, height);
     this->renderer->resize(this->getCurrentWindow(), width, height);
 }
 
