@@ -67,7 +67,11 @@ void Game::tick(double deltaTime) {
     possessButton->setVisible(this->core->getPlayer()->getToyToMerge() != nullptr || this->core->getPlayer()->getToy() != nullptr);
 
     double playerSpeed = this->core->getPlayer()->getSpeed();
-    this->core->getPlayer()->applyImpulse((joystick->getX() - controller->getX()) / 100.0f, (joystick->getY() - controller->getY()) / 100.0f);
+    double x = (joystick->getX() - controller->getX()) / 100.0f * playerSpeed;
+    double y = (joystick->getY() - controller->getY()) / 100.0f * playerSpeed;
+    double angle = atan2(y, x);
+    this->core->getPlayer()->applyImpulse(x, y);
+    this->core->getPlayer()->setAngle(angle);
 
     double dx = (this->core->getPlayer()->getX() + this->core->getPlayer()->getWidth() / 2 - 1) * this->core->getBlockSize() * this->core->getGeneralScale() + this->core->getCamX();
     double dy = (this->core->getPlayer()->getY() + this->core->getPlayer()->getHeight() / 2 - 1) * this->core->getBlockSize() * this->core->getGeneralScale() + this->core->getCamY();
