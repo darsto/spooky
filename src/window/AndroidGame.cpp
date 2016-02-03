@@ -70,8 +70,10 @@ void Game::tick(double deltaTime) {
     double x = (joystick->getX() - controller->getX()) / 100.0f * playerSpeed;
     double y = (joystick->getY() - controller->getY()) / 100.0f * playerSpeed;
     double angle = atan2(y, x);
-    this->core->getPlayer()->applyImpulse(x, y);
-    this->core->getPlayer()->setAngle(angle);
+    if (x != 0 || y != 0) {
+        this->core->getPlayer()->applyImpulse(x, y);
+        this->core->getPlayer()->setAngle(angle);
+    }
 
     double dx = (this->core->getPlayer()->getX() + this->core->getPlayer()->getWidth() / 2 - 1) * this->core->getBlockSize() * this->core->getGeneralScale() + this->core->getCamX();
     double dy = (this->core->getPlayer()->getY() + this->core->getPlayer()->getHeight() / 2 - 1) * this->core->getBlockSize() * this->core->getGeneralScale() + this->core->getCamY();
