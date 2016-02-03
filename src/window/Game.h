@@ -17,6 +17,8 @@ class Timer;
 
 class GuiElement;
 
+class GuiButton;
+
 class Game : public Window {
 
 public:
@@ -39,6 +41,14 @@ public:
 private:
     Core *core = nullptr;
     std::vector<GuiElement *> guiElements;
+
+#ifdef __ANDROID__
+    void resetButtons(const TouchPoint *const p, const GuiButton *const b);
+
+    void resetButtons(const TouchPoint *const p) {
+        this->resetButtons(p, nullptr);
+    }
+#endif //__ANDROID__
 };
 
 #endif //C003_GAME_H

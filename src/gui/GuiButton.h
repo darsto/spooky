@@ -21,19 +21,24 @@ public:
         return pressed;
     }
 
-    void setPressed(bool pressed) {
-        GuiButton::pressed = pressed;
-    }
+    void setPressed(bool pressed);
 
     virtual int getTexPos() const override;
 
     virtual void setTexPos(int texturePos) override;
+
+    int getTouchedBy() const {
+        return touchedBy;
+    }
+
+    bool canBeClicked(const TouchPoint *const touchPoint);
 
     virtual ~GuiButton() { };
 
 protected:
     int texturePos;
     bool pressed;
+    int touchedBy;
     std::function<bool(const TouchPoint *const)> onClickListener;
 };
 

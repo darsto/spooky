@@ -26,9 +26,9 @@ Game::Game() {
     this->guiElements.push_back(joystick);
     possessButton = new GuiButton(GUI_BOTTOM_RIGHT, 50, 50, 125, 125, 2);
     possessButton->setVisible(false);
-    auto possessAction = [&](const TouchPoint *const touchPoint) {
-        possessButton->setTexPos(2 + (touchPoint->state == 1 ? 0 : 8));
-        if (touchPoint->state == 1) {
+    auto possessAction = [&](const TouchPoint *const p) {
+        possessButton->setTexPos(2 + (p->state == 1 ? 0 : 8));
+        if (p->state == 1 && possessButton->canBeClicked(p)) {
             if (this->core->getPlayer()->getToy() == nullptr) {
                 this->core->getPlayer()->setToy();
             } else {
@@ -79,38 +79,50 @@ void Game::handleClick(const TouchPoint *const p) {
     bool clicked = false;
     for (GuiElement *e : this->guiElements) {
         if (GuiButton *b = dynamic_cast<GuiButton *>(e)) {
-            if (p->x > b->getX() && p->x < b->getX() + b->getWidth() &&
-                p->y > b->getY() && p->y < b->getY() + b->getHeight()) {
-                if (!b->isPressed() && b->onClick(p)) { //TODO it's just a prototype
-                    clicked = true;
-                    break;
+            if (b->canBeClicked(p)) {
+                if (p->state == 1) this->resetButtons(p, b);
+                if ((p->state == 0 && !b->isPressed()) ||
+                    (b->getTouchedBy() == p->id && p->state != 0)) {
+                    if (b->onClick(p)) {
+                        clicked = true;
+                        return;
+                    }
                 }
             }
         }
     }
-    if (!clicked && p->state == 0) {
-        controller->setVisible(true);
-        joystick->setVisible(true);
+    if (p->state == 0) {
+        controller->setVisible(true), joystick->setVisible(true);
         controller->setX(p->x - controller->getWidth() / 2);
         controller->setY(p->y - controller->getHeight() / 2);
         joystick->setX(p->x - joystick->getWidth() / 2);
         joystick->setY(p->y - joystick->getHeight() / 2);
-    } else if (!clicked && p->state == 2) {
-        double x = p->x - controller->getX() - controller->getWidth() / 2;
-        double y = p->y - controller->getY() - controller->getHeight() / 2;
-        if (sqrt(x * x + y * y) > joystick->getWidth() / 2) {
-            double angle = atan2(y, x);
-            x = cos(angle) * controller->getWidth() / 2;
-            y = sin(angle) * controller->getHeight() / 2;
+    } else if (p->state == 2) {
+        if (controller->isVisible()) {
+            double x = p->x - controller->getX() - controller->getWidth() / 2;
+            double y = p->y - controller->getY() - controller->getHeight() / 2;
+            if (sqrt(x * x + y * y) > joystick->getWidth() / 2) {
+                double angle = atan2(y, x);
+                x = cos(angle) * controller->getWidth() / 2;
+                y = sin(angle) * controller->getHeight() / 2;
+            }
+            joystick->setX(controller->getX() + x), joystick->setY(controller->getY() + y);
         }
-        joystick->setX(controller->getX() + x);
-        joystick->setY(controller->getY() + y);
-    } else if (!clicked && p->state == 1) {
-        joystick->setX(controller->getX());
-        joystick->setY(controller->getY());
-        controller->setVisible(false);
-        joystick->setVisible(false);
+    } else if (p->state == 1) {
+        this->resetButtons(p);
     }
+}
+
+void Game::resetButtons(const TouchPoint *const p, const GuiButton *const b) {
+    for (GuiElement *e : this->guiElements) {
+        if (GuiButton *b1 = dynamic_cast<GuiButton *>(e)) {
+            if (b1 != b && b1->getTouchedBy() == p->id) {
+                b1->onClick(p);
+            }
+        }
+    }
+    joystick->setX(controller->getX()), joystick->setY(controller->getY());
+    controller->setVisible(false), joystick->setVisible(false);
 }
 
 void Game::handleKeyboard(const Keypress *const keypress) {
