@@ -71,8 +71,12 @@ void DefaultEntityRender::render(const Entity *const entity, glm::mat4 projectio
     this->shaderProgram.setUniform("gSampler", texture.getBoundId());
 
     this->tmpModelMatrix = glm::translate(this->modelMatrix, glm::vec3(0.0f - (entity->getX() - entity->getWidth() / 2) * scale, 0.0f - (entity->getY() - entity->getHeight() / 2) * scale, 0.0f));
+
+    this->tmpModelMatrix = glm::translate(this->tmpModelMatrix, glm::vec3(0.5 * scale, 0.5 * scale, 0.0)); // Translate to the middle of the entity
+    this->tmpModelMatrix = glm::rotate(this->tmpModelMatrix, (const float) entity->getAngle(), glm::vec3(0.0f, 0.0f, 1.0f)); // Apply rotation
+    this->tmpModelMatrix = glm::translate(this->tmpModelMatrix, glm::vec3(-0.5 * scale, -0.5 * scale, 0.0)); // Translate back to the origin
+
     this->tmpModelMatrix = glm::scale(this->tmpModelMatrix, glm::vec3(scale, scale, 1.0f));
-    this->tmpModelMatrix = glm::rotate(this->tmpModelMatrix, 0.0f, glm::vec3(1.0f, 0.0f, 0.0f)); // Just a variation of first rotating
 
     shaderProgram.setUniform("modelViewMatrix", viewMatrix * this->tmpModelMatrix);
     shaderProgram.setUniform("texPosX", 1.0f / this->texture.getWidth() + (float) (this->getTexPos() % atlasSize) / atlasSize);
