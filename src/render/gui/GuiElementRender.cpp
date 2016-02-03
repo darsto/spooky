@@ -4,8 +4,7 @@
 
 #include "GuiElementRender.h"
 
-GuiElementRender::
-GuiElementRender(const string &textureFile, const string &shader) {
+GuiElementRender::GuiElementRender(const string &textureFile, const string &shader) {
     texture.loadTexture2D(textureFile + string(".png"), false);
     texture.setFiltering(TEXTURE_FILTER_MAG_BILINEAR, TEXTURE_FILTER_MIN_BILINEAR);
 
