@@ -113,9 +113,9 @@ public:
         this->y = py;
     }
 
-    virtual int getTexPos() const = 0;
+    virtual int getTexPos(int i) const = 0;
 
-    virtual void setTexPos(int texturePos) = 0;
+    virtual void setTexPos(int i, int texturePos) = 0;
 
     virtual ~GuiElement() { };
 

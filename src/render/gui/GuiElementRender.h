@@ -17,7 +17,7 @@ public:
     GuiElementRender(const string &textureFile, const string &shader);
     ~GuiElementRender();
     virtual void render(const GuiElement *const element, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, double scale);
-private:
+protected:
     const unsigned int atlasSize = 8;
     float vertices[12];
     GLuint vbo[2];
@@ -27,7 +27,7 @@ private:
     Texture texture;
     glm::mat4 modelMatrix = glm::mat4(1.0);
 
-    int getTexPos(const GuiElement *const element);
+    virtual int getTexPos(const GuiElement *const element);
 
     /* -- tmp -- */
     glm::mat4 tmpModelMatrix;

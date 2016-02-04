@@ -85,7 +85,7 @@ void GuiElementRender::render(const GuiElement *const element, glm::mat4 project
 }
 
 int GuiElementRender::getTexPos(const GuiElement *const element) {
-    return element->getTexPos();
+    return element->getTexPos(0);
 }
 
 GuiElementRender::~GuiElementRender() {

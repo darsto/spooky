@@ -12,6 +12,7 @@
 #include <memory>
 #include <gui/GuiElement.h>
 #include <gui/GuiButton.h>
+#include <render/gui/GuiButtonRender.h>
 #include "../core/entity/EntityToy.h"
 #include "../core/entity/EntityPlayer.h"
 #include "../render/entity/PlayerRender.h"
@@ -50,6 +51,7 @@ inline void initRenderers() {
     entityRenders.insert(std::make_pair(typeid(EntityBullet).name(), new DefaultEntityRender("bullet", "shader")));
     entityRenders.insert(std::make_pair(typeid(SimpleShape).name(), new SimpleShapeRender()));
     guiRenders.insert(std::make_pair(typeid(GuiElement).name(), new GuiElementRender("gui", "shader")));
+    guiRenders.insert(std::make_pair(typeid(GuiButton).name(), new GuiButtonRender("gui", "shader")));
 }
 
 #endif //C003_RENDER_H

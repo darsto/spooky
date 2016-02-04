@@ -24,10 +24,9 @@ Game::Game() {
     controller->setOnClickListener(moveController);
     this->guiElements.push_back(controller);
     this->guiElements.push_back(joystick);
-    possessButton = new GuiButton(GUI_BOTTOM_RIGHT, 50, 50, 125, 125, 2);
+    possessButton = new GuiButton(GUI_BOTTOM_RIGHT, 50, 50, 125, 125, new int[2]{2, 10}, 2);
     possessButton->setVisible(false);
     auto possessAction = [&](const TouchPoint *const p) {
-        possessButton->setTexPos(2 + (p->state == 1 ? 0 : 8));
         if (p->state == 1 && possessButton->canBeClicked(p)) {
             if (this->core->getPlayer()->getToy() == nullptr) {
                 this->core->getPlayer()->setToy();

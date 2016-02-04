@@ -5,12 +5,13 @@
 #include "GuiButton.h"
 #include "InputManager.h"
 
-GuiButton::GuiButton(char positionFlag, double x, double y, double width, double height, int texturePos) {
+GuiButton::GuiButton(char positionFlag, double x, double y, double width, double height, int *texturePos, int texturesNum) {
     this->positionFlag = positionFlag;
     this->rawX = x;
     this->rawY = y;
     this->width = width;
     this->height = height;
+    this->texturesNum = texturesNum;
     this->texturePos = texturePos;
 }
 
@@ -26,12 +27,13 @@ void GuiButton::setOnClickListener(std::function<bool(const TouchPoint *const)> 
     this->onClickListener = onClickListener;
 }
 
-int GuiButton::getTexPos() const {
-    return this->texturePos;
+int GuiButton::getTexPos(int i) const {
+    if (i < 0 || i >= this->texturesNum) return -1;
+    return this->texturePos[i];
 }
 
-void GuiButton::setTexPos(int texturePos) {
-    this->texturePos = texturePos;
+void GuiButton::setTexPos(int i, int texturePos) {
+    this->texturePos[i] = texturePos;
 }
 
 void GuiButton::setPressed(bool pressed) {
