@@ -27,11 +27,13 @@ Game::Game() {
     possessButton = new GuiButton(GUI_BOTTOM_RIGHT, 50, 50, 125, 125, new int[2]{2, 10}, 2);
     possessButton->setVisible(false);
     auto possessAction = [&](const TouchPoint *const p) {
-        if (p->state == 1 && possessButton->canBeClicked(p)) {
-            if (this->core->getPlayer()->getToy() == nullptr) {
-                this->core->getPlayer()->setToy();
-            } else {
-                this->core->getPlayer()->eject();
+        if (p->state == 1) {
+            if (possessButton->canBeClicked(p)) {
+                if (this->core->getPlayer()->getToy() == nullptr) {
+                    this->core->getPlayer()->setToy();
+                } else {
+                    this->core->getPlayer()->eject();
+                }
             }
             return false;
         }
