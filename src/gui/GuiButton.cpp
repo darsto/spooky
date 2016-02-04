@@ -15,7 +15,7 @@ GuiButton::GuiButton(char positionFlag, double x, double y, double width, double
 }
 
 bool GuiButton::onClick(const TouchPoint *const touchPoint) {
-    this->touchedBy = touchPoint->id;
+    this->touchedBy = touchPoint != nullptr ? touchPoint->id : -1;
     if (onClickListener == NULL || !this->isVisible()) this->setPressed(false);
     else this->setPressed(onClickListener(touchPoint));
     return this->isPressed();
