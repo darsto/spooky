@@ -87,35 +87,37 @@ void Game::handleClick(const TouchPoint *const p) {
         if (GuiButton *b = dynamic_cast<GuiButton *>(e)) {
             if (b->canBeClicked(p)) {
                 if (p->state == 1) this->resetButtons(p, b);
-                if ((p->state == 0 && !b->isPressed()) ||
-                    (b->getTouchedBy() == p->id && p->state != 0)) {
+                if ((p->state == 0 && (!b->isPressed()) || b->getTouchedBy() == p->id) ||
+                    (b->getTouchedBy() == p->id && p->state == 2)) {
                     if (b->onClick(p)) {
                         clicked = true;
-                        return;
+                        break;
                     }
                 }
             }
         }
     }
-    if (p->state == 0) {
-        controller->setVisible(true), joystick->setVisible(true);
-        controller->setX(p->x - controller->getWidth() / 2);
-        controller->setY(p->y - controller->getHeight() / 2);
-        joystick->setX(p->x - joystick->getWidth() / 2);
-        joystick->setY(p->y - joystick->getHeight() / 2);
-    } else if (p->state == 2) {
-        if (controller->isVisible()) {
-            double x = p->x - controller->getX() - controller->getWidth() / 2;
-            double y = p->y - controller->getY() - controller->getHeight() / 2;
-            if (sqrt(x * x + y * y) > joystick->getWidth() / 2) {
-                double angle = atan2(y, x);
-                x = cos(angle) * controller->getWidth() / 2;
-                y = sin(angle) * controller->getHeight() / 2;
+    if (!clicked) {
+        if (p->state == 0) {
+            controller->setVisible(true), joystick->setVisible(true);
+            controller->setX(p->x - controller->getWidth() / 2);
+            controller->setY(p->y - controller->getHeight() / 2);
+            joystick->setX(p->x - joystick->getWidth() / 2);
+            joystick->setY(p->y - joystick->getHeight() / 2);
+        } else if (p->state == 2) {
+            if (controller->isVisible()) {
+                double x = p->x - controller->getX() - controller->getWidth() / 2;
+                double y = p->y - controller->getY() - controller->getHeight() / 2;
+                if (sqrt(x * x + y * y) > joystick->getWidth() / 2) {
+                    double angle = atan2(y, x);
+                    x = cos(angle) * controller->getWidth() / 2;
+                    y = sin(angle) * controller->getHeight() / 2;
+                }
+                joystick->setX(controller->getX() + x), joystick->setY(controller->getY() + y);
             }
-            joystick->setX(controller->getX() + x), joystick->setY(controller->getY() + y);
+        } else if (p->state == 1) {
+            this->resetButtons(p);
         }
-    } else if (p->state == 1) {
-        this->resetButtons(p);
     }
 }
 
