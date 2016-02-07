@@ -113,10 +113,11 @@ void Application::handleEvents() {
                 this->inputManager->handleKeypress(&e);
                 break;
             case SDL_MOUSEBUTTONDOWN:
+            case SDL_MOUSEMOTION:
             case SDL_MOUSEBUTTONUP: {
                 int x, y;
                 SDL_GetMouseState(&x, &y);
-                this->handleClick(e.button.button, e.type == SDL_MOUSEBUTTONUP ? 1 : 0, x, y);
+                this->inputManager->handleClick(e.button.button, e.type == SDL_MOUSEBUTTONDOWN ? 0 : (e.type == SDL_MOUSEBUTTONUP ? 1 : 2), x, y);
                 break;
             }
         }
