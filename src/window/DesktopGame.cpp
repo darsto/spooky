@@ -126,6 +126,14 @@ void Game::handleClick(const TouchPoint *const p) {
                 this->heldEntity = nullptr;
             }
         }
+    } else if (p->id == SDL_BUTTON_RIGHT) {
+        if (p->state == 0) {
+            this->heldEntity = this->getEntityAt(x, y);
+        } else if (p->state == 1) {
+            if (this->heldEntity != nullptr && this->getEntityAt(x, y) == this->heldEntity) {
+                this->heldEntity->remove();
+            }
+        }
     }
 }
 
