@@ -116,7 +116,7 @@ void Application::handleEvents() {
             case SDL_MOUSEBUTTONUP: {
                 int x, y;
                 SDL_GetMouseState(&x, &y);
-                this->handleClick(0, e.type == SDL_MOUSEBUTTONUP ? 1 : 0, x, y);
+                this->handleClick(e.button.button, e.type == SDL_MOUSEBUTTONUP ? 1 : 0, x, y);
                 break;
             }
         }
