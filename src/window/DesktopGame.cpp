@@ -103,9 +103,15 @@ void Game::handleKeyboard(const Keypress *const keypress) {
     }
 }
 
-void Game::handleClick(const TouchPoint *const touchPoint) {
-    double playerSpeed = this->core->getPlayer()->getSpeed();
-    this->core->getPlayer()->applyImpulse(playerSpeed, 0);
+void Game::handleClick(const TouchPoint *const p) {
+    if (p->id == SDL_BUTTON_LEFT) {
+        if (p->state == 1) {
+            SimpleShape *s = new SimpleShape(this->core, (unsigned int) (rand() % 3));
+            s->setX((-this->core->getCamX() - (double) this->windowWidth / 2 + p->x) / this->core->getGeneralScale() / this->core->getBlockSize() + 0.5 + s->getWidth() / 2);
+            s->setY((-this->core->getCamY() - (double) this->windowHeight / 2 + p->y) / this->core->getGeneralScale() / this->core->getBlockSize() + 0.5 + s->getHeight() / 2);
+            this->core->getMap()->addEntity(s);
+        }
+    }
 }
 
 Game::~Game() {
