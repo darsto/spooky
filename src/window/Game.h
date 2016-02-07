@@ -19,6 +19,8 @@ class GuiElement;
 
 class GuiButton;
 
+class Entity;
+
 class Game : public Window {
 
 public:
@@ -52,6 +54,9 @@ private:
     void resetButtons(const TouchPoint *const p) {
         this->resetButtons(p, nullptr);
     }
+#else
+    Entity *heldEntity;
+    Entity *getEntityAt(float x, float y);
 #endif //__ANDROID__
 
     unsigned int windowWidth, windowHeight;

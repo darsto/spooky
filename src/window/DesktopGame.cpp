@@ -104,14 +104,39 @@ void Game::handleKeyboard(const Keypress *const keypress) {
 }
 
 void Game::handleClick(const TouchPoint *const p) {
+    float x = (float) ((-this->core->getCamX() - (double) this->windowWidth / 2 + p->x) / this->core->getGeneralScale() / this->core->getBlockSize() + 0.5);
+    float y = (float) ((-this->core->getCamY() - (double) this->windowHeight / 2 + p->y) / this->core->getGeneralScale() / this->core->getBlockSize() + 0.5);
     if (p->id == SDL_BUTTON_LEFT) {
-        if (p->state == 1) {
-            SimpleShape *s = new SimpleShape(this->core, (unsigned int) (rand() % 3));
-            s->setX((-this->core->getCamX() - (double) this->windowWidth / 2 + p->x) / this->core->getGeneralScale() / this->core->getBlockSize() + 0.5 + s->getWidth() / 2);
-            s->setY((-this->core->getCamY() - (double) this->windowHeight / 2 + p->y) / this->core->getGeneralScale() / this->core->getBlockSize() + 0.5 + s->getHeight() / 2);
-            this->core->getMap()->addEntity(s);
+        if (p->state == 0) {
+            this->heldEntity = this->getEntityAt(x, y);
+            int i = 0;
+        } else if (p->state == 2) {
+            if (this->heldEntity != nullptr) {
+                Entity *e = this->heldEntity;
+                e->setX(x + e->getWidth() / 2);
+                e->setY(y + e->getHeight() / 2);
+            }
+        } else if (p->state == 1) {
+            if (this->heldEntity == nullptr) {
+                SimpleShape *s = new SimpleShape(this->core, (unsigned int) (rand() % 3));
+                s->setX(x + s->getWidth() / 2);
+                s->setY(y + s->getWidth() / 2);
+                this->core->getMap()->addEntity(s);
+            } else {
+                this->heldEntity = nullptr;
+            }
         }
     }
+}
+
+Entity *Game::getEntityAt(float x, float y) {
+    for (Entity *e : this->core->getMap()->getEntities()) {
+        if (x >= e->getX() - e->getWidth() && x <= e->getX() &&
+            y >= e->getY() - e->getHeight() && y <= e->getY()) {
+            return e;
+        }
+    }
+    return nullptr;
 }
 
 Game::~Game() {
