@@ -26,6 +26,8 @@ void Game::reload(unsigned int windowWidth, unsigned int windowHeight) {
     for (GuiElement *e : this->guiElements) {
         e->reinit(windowWidth, windowHeight);
     }
+    this->windowWidth = windowWidth;
+    this->windowHeight = windowHeight;
     SDL_StartTextInput();
 }
 
@@ -49,7 +51,6 @@ void Game::tick(double deltaTime) {
     if (abs(dx) > 2) this->core->setCamX(-this->core->getCamX() + (dx) * 0.05);
     if (abs(dy) > 2) this->core->setCamY(-this->core->getCamY() + (dy) * 0.05);
 }
-
 
 void Game::handleKeyboard(const Keypress *const keypress) {
     if (keypress[SDLK_c].isPressed()) {

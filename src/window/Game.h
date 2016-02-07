@@ -49,6 +49,8 @@ private:
         this->resetButtons(p, nullptr);
     }
 #endif //__ANDROID__
+
+    unsigned int windowWidth, windowHeight;
 };
 
 #endif //C003_GAME_H
