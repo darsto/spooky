@@ -43,6 +43,10 @@ private:
     std::vector<GuiElement *> guiElements;
 
 #ifdef __ANDROID__
+    GuiButton *controller;
+    GuiButton *joystick;
+    GuiButton *possessButton;
+
     void resetButtons(const TouchPoint *const p, const GuiButton *const b);
 
     void resetButtons(const TouchPoint *const p) {

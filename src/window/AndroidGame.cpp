@@ -9,10 +9,6 @@
 #include "../core/map/TiledTxtMapLoader.h"
 #include "../logging.h"
 
-GuiButton *controller;
-GuiButton *joystick;
-GuiButton *possessButton;
-
 Game::Game() {
     controller = new GuiButton(GUI_TOP_LEFT, 0, 0, 200, 200, 0);
     joystick = new GuiButton(GUI_TOP_LEFT, 0, 0, 200, 200, 1);
