@@ -58,7 +58,7 @@ void InputManager::handleTouch(Window *window) {
         TouchPoint *p = it->second;
         if (p != nullptr) {
             window->handleClick(p);
-            if (p->state == 1) {
+            if (!MOBILE || p->state == 1) {
                 delete p;
                 this->touchPoints[it->first] = nullptr;
             }
