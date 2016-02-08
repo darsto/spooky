@@ -15,6 +15,7 @@ class Core {
 public:
     Core(Map *map) : map(map) {
         initShapeDefinitions();
+        //TODO add entity load/save
         this->player = new Player(this);
         this->player->setX(8);
         this->player->setY(5);
