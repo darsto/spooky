@@ -5,6 +5,8 @@
 #ifndef C003_INPUTMANAGER_H
 #define C003_INPUTMANAGER_H
 
+#include "os.h"
+
 #ifndef __DEFMOBILE__
 #include "SDL2/SDL.h"
 #endif // __DEFMOBILE__
