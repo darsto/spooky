@@ -81,15 +81,17 @@ void SimpleBlockRender::render(const Block *const block, glm::mat4 projectionMat
     this->tmpModelMatrix = glm::rotate(this->tmpModelMatrix, 0.0f, glm::vec3(1.0f, 0.0f, 0.0f)); // Just a variation of first rotating
 
     shaderProgram.setUniform("modelViewMatrix", viewMatrix * this->tmpModelMatrix);
-    shaderProgram.setUniform("texPosX", 1.0f / texture.getWidth() + (float) (this->getTexPos(block) % atlasSize) / atlasSize);
-    shaderProgram.setUniform("texPosY", 1.0f / texture.getHeight() + (float) (this->getTexPos(block) / atlasSize) / atlasSize);
+
+    int texId = this->getTexPos(block);
+    shaderProgram.setUniform("texPosX", 1.0f / texture.getWidth() + (float) (texId % atlasSize) / atlasSize);
+    shaderProgram.setUniform("texPosY", 1.0f / texture.getHeight() + (float) (texId / atlasSize) / atlasSize);
 
     glBindVertexArray(this->vao);
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 }
 
 int SimpleBlockRender::getTexPos(const Block *const block) {
-    return 0;//((SimpleBlock *) block)->getTexPos();
+    return ((SimpleBlock *) block)->getTexPos();
 }
 
 SimpleBlockRender::~SimpleBlockRender() {
