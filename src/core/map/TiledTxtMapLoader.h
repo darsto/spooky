@@ -45,7 +45,6 @@ inline int parseTiledVariable(const std::string &s) {
 }
 
 TiledTxtMapLoader::TiledTxtMapLoader(const std::string &fileName) {
-    this->map = new Map();
     int width, height;
 
     std::string line;
@@ -58,6 +57,7 @@ TiledTxtMapLoader::TiledTxtMapLoader(const std::string &fileName) {
         getline(myfile, line); //skip first line
         getline(myfile, line), width = parseTiledVariable(line);
         getline(myfile, line), height = parseTiledVariable(line);
+        this->map = new Map(width, height);
 
         while (line.find("[layer]") == std::string::npos) { //skip some lines, move to terrain data
             getline(myfile, line);

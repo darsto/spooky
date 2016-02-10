@@ -24,7 +24,7 @@ private:
 #endif //C003_STRINGMAPLOADER_H
 
 StringMapLoader::StringMapLoader(char *mapData, int width, int height) {
-    this->map = new Map();
+    this->map = new Map(width, height);
     for (int y = 0; y < height; y++) {
         for (int x = 0; x < width; x++) {
             if (mapData[y * width + x] != ' ')

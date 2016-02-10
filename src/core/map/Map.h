@@ -17,11 +17,19 @@
 class Map {
 
 public:
-    Map() {
+    Map(unsigned int width, unsigned int height) {
         world = new b2World(b2Vec2(0.0, 0.0));
         world->SetContactFilter(&contactFilter);
         world->SetContactListener(&contactListener);
     };
+
+    unsigned int getWidth() const {
+        return width;
+    }
+
+    unsigned int getHeight() const {
+        return height;
+    }
 
     ~Map();
     Block *getBlock(int x, int y);
@@ -57,6 +65,7 @@ public:
     }
 
 private:
+    unsigned int width, height;
     b2World *world;
     std::vector<Block *> blocks;
     std::vector<Entity *> entities;
