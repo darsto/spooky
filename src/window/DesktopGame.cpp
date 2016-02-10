@@ -46,10 +46,27 @@ void Game::tick(double deltaTime) {
 
         }
     }
-    double dx = (this->core->getPlayer()->getX() + this->core->getPlayer()->getWidth() / 2 - 1) * this->core->getBlockSize() * this->core->getGeneralScale() + this->core->getCamX();
-    double dy = (this->core->getPlayer()->getY() + this->core->getPlayer()->getHeight() / 2 - 1) * this->core->getBlockSize() * this->core->getGeneralScale() + this->core->getCamY();
+
+    double finalx = (this->core->getPlayer()->getX() + this->core->getPlayer()->getWidth() / 2 - 1) * this->core->getBlockSize() * this->core->getGeneralScale();
+    double finaly = (this->core->getPlayer()->getY() + this->core->getPlayer()->getHeight() / 2 - 1) * this->core->getBlockSize() * this->core->getGeneralScale();
+    double dx = finalx + this->core->getCamX();
+    double dy = finaly + this->core->getCamY();
     if (abs(dx) > 2) this->core->setCamX(-this->core->getCamX() + (dx) * 0.05);
     if (abs(dy) > 2) this->core->setCamY(-this->core->getCamY() + (dy) * 0.05);
+
+    double camX = this->core->getCamX(), camY = this->core->getCamY();
+    if (-camX < this->windowWidth/2 - this->core->getBlockSize() * this->core->getGeneralScale()) {
+        this->core->setCamX(this->windowWidth/2 - this->core->getBlockSize() * this->core->getGeneralScale());
+    }
+    if (-camY < this->windowHeight/2 - this->core->getBlockSize() * this->core->getGeneralScale()) {
+        this->core->setCamY(this->windowHeight/2 - this->core->getBlockSize() * this->core->getGeneralScale());
+    }
+    if (-camX > -(signed)this->windowWidth/2 + (this->core->getMap()->getWidth() - 1) * this->core->getBlockSize() * this->core->getGeneralScale()) {
+        this->core->setCamX(-(signed)this->windowWidth/2 + (this->core->getMap()->getWidth() - 1) * this->core->getBlockSize() * this->core->getGeneralScale());
+    }
+    if (-camY > -(signed)this->windowHeight/2 + (this->core->getMap()->getHeight() - 1) * this->core->getBlockSize() * this->core->getGeneralScale()) {
+        this->core->setCamY(-(signed)this->windowHeight/2 + (this->core->getMap()->getHeight() - 1) * this->core->getBlockSize() * this->core->getGeneralScale());
+    }
 }
 
 void Game::handleKeyboard(const Keypress *const keypress) {
