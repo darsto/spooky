@@ -51,9 +51,9 @@ map_data getBasicMapData() {
 
     Map *tmpNullMap = new Map();
     std::vector<Block *> blocks;
-    blocks.push_back(new SimpleBlock(tmpNullMap, 0, 0, 0));
-    blocks.push_back(new SimpleBlock(tmpNullMap, 0, 6, 3));
-    blocks.push_back(new SimpleBlock(tmpNullMap, 0, 14, 12));
+    blocks.push_back(new SimpleBlock(tmpNullMap, 8, 0, 0));
+    blocks.push_back(new SimpleBlock(tmpNullMap, 11, 12, 2));
+    blocks.push_back(new SimpleBlock(tmpNullMap, 11, 0, 14));
 
     data.mapLoader = new TiledTxtMapLoader("test_map.txt");
     data.blocks = blocks;
