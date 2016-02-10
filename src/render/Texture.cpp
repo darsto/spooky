@@ -16,7 +16,8 @@ void Texture::createFromData(unsigned char *bData, int a_iWidth, int a_iHeight, 
     glBindTexture(GL_TEXTURE_2D, uiTexture);
 
     glTexImage2D(GL_TEXTURE_2D, 0, format, a_iWidth, a_iHeight, 0, format, GL_UNSIGNED_BYTE, bData);
-    if (bGenerateMipMaps)glGenerateMipmap(GL_TEXTURE_2D);*/
+     */
+    if (bGenerateMipMaps)glGenerateMipmap(GL_TEXTURE_2D);
 
     sPath = "";
     bMipMapsGenerated = bGenerateMipMaps;
