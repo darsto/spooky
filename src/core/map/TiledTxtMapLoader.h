@@ -6,9 +6,26 @@
 #define C003_TILEDTXTMAPLOADER_H
 
 #include <fstream>
+#include <sstream>
 #include "Map.h"
 #include "../map/block/SimpleBlock.h"
 #include "../entity/EntityPlayer.h"
+
+std::vector<std::string> &split(const std::string &s, char delim, std::vector<std::string> &elems) {
+    std::stringstream ss(s);
+    std::string item;
+    while (std::getline(ss, item, delim)) {
+        elems.push_back(item);
+    }
+    return elems;
+}
+
+
+std::vector<std::string> split(const std::string &s, char delim) {
+    std::vector<std::string> elems;
+    split(s, delim, elems);
+    return elems;
+}
 
 class TiledTxtMapLoader : public MapLoader {
 
@@ -50,8 +67,9 @@ TiledTxtMapLoader::TiledTxtMapLoader(const std::string &fileName) {
 
         for (int y = 0; y < height; y++) {
             getline(myfile, line);
+            std::vector<std::string> blockRow = split(line, ',');
             for (int x = 0; x < width; x++) {
-                int blockId = atoi(line.substr(x * 2, 1).c_str()) - 1;
+                int blockId = atoi(blockRow.at(x).c_str()) - 1;
                 if (blockId >= 0) this->map->addBlock(new SimpleBlock(map, blockId, x, y));
             }
         }
