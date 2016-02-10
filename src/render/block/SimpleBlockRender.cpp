@@ -49,7 +49,7 @@ SimpleBlockRender::SimpleBlockRender() {
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
-    float size = (float) (1.0 - (atlasSize + 1.5) / texture.getWidth()) / atlasSize;
+    float size = (float) (1.0 - (atlasSize + 1.0) / texture.getWidth()) / atlasSize - 0.5f / texture.getWidth();
     float tCoords[] = {
             size, 0.0f,
             size, size,
