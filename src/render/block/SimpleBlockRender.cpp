@@ -12,8 +12,8 @@
 #include "../Render.h"
 
 SimpleBlockRender::SimpleBlockRender() {
-    texture.loadTexture2D("terrain.png", false);
-    texture.setFiltering(TEXTURE_FILTER_MAG_NEAREST, TEXTURE_FILTER_MIN_NEAREST);
+    texture.loadTexture2D("terrain.png", true);
+    texture.setFiltering(TEXTURE_FILTER_MAG_NEAREST, TEXTURE_FILTER_MIN_NEAREST_MIPMAP);
 
     this->vertShader.load("shader.vert", GL_VERTEX_SHADER);
     this->fragShader.load("shader.frag", GL_FRAGMENT_SHADER);
