@@ -4,14 +4,14 @@
 
 #include "CharRender.h"
 #include <glm/gtc/matrix_transform.hpp>
+#include <logging.h>
 
 CharRender::CharRender() {
     texture.loadTexture2D("font.png", true);
     texture.setFiltering(TEXTURE_FILTER_MAG_BILINEAR, TEXTURE_FILTER_MIN_BILINEAR_MIPMAP);
 
-    this->vertShader.load("shader.vert", GL_VERTEX_SHADER);
-    this->fragShader.load("shader.frag", GL_FRAGMENT_SHADER);
-
+    this->vertShader.load("font.vert", GL_VERTEX_SHADER);
+    this->fragShader.load("font.frag", GL_FRAGMENT_SHADER);
     this->shaderProgram.createProgram();
     this->shaderProgram.addShaderToProgram(&this->vertShader);
     this->shaderProgram.addShaderToProgram(&this->fragShader);
