@@ -13,7 +13,7 @@ class TextManager {
 
 public:
     TextManager();
-    void render(std::string string, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, int x, int y, float scale, int color, char flags);
+    void render(const std::string &string, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, int x, int y, float scale, int color, char flags);
     ~TextManager();
 
 private:
