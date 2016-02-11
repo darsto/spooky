@@ -19,7 +19,7 @@
 #include <sstream>
 #include <render/window/WindowRender.h>
 #include "Render.h"
-
+#include "TextManager.h"
 
 class RenderManager {
 
@@ -44,6 +44,7 @@ private:
     SDL_Window *gWindow = NULL;
     SDL_GLContext gContext;
 #endif // __ANDROID__
+    TextManager *textManager;
     unsigned int windowWidth = 1366;
     unsigned int windowHeight = 750;
 

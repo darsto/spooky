@@ -75,6 +75,7 @@ bool RenderManager::initGL() {
         return false;
     }
 #endif /*__ANDROID__*/
+    this->textManager = new TextManager();
     return true;
 }
 
