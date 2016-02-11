@@ -4,7 +4,13 @@
 
 #include "TextManager.h"
 
-TextManager::TextManager() : charRender(new CharRender()) { }
+TextManager::TextManager() { }
+
+void TextManager::init() {
+    if (this->charRender == nullptr) {
+        this->charRender = new CharRender();
+    }
+}
 
 void TextManager::render(const std::string &string, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, int x, int y, float scale, int color, char flags) {
     for (int i = 0; i < string.length(); i++) {

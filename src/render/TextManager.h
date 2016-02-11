@@ -13,11 +13,12 @@ class TextManager {
 
 public:
     TextManager();
+    void init();
     void render(const std::string &string, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, int x, int y, float scale, int color, char flags);
     ~TextManager();
 
 private:
-    CharRender *const charRender;
+    CharRender *charRender;
     const float SPACING_PX = 4; //space between letters (in pixels)
 };
 
