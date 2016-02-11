@@ -32,10 +32,6 @@ void Game::reload(unsigned int windowWidth, unsigned int windowHeight) {
 }
 
 void Game::tick(double deltaTime) {
-    for (int i = 0; i < 256; i++) {
-        //if (this->pressDelays[i] > 0) this->pressDelays[i]--;
-    }
-
     this->core->getMap()->update();
     this->core->getMap()->getWorld()->Step(deltaTime, 8, 3);
     for (int i = 0; i < this->core->getMap()->getEntities().size(); i++) {
@@ -43,14 +39,11 @@ void Game::tick(double deltaTime) {
         if (entity->isToBeDeleted()) {
             this->core->getMap()->removeEntity(entity);
             i--;
-
         }
     }
 
-    double finalx = (this->core->getPlayer()->getX() + this->core->getPlayer()->getWidth() / 2 - 1) * this->core->getBlockSize() * this->core->getGeneralScale();
-    double finaly = (this->core->getPlayer()->getY() + this->core->getPlayer()->getHeight() / 2 - 1) * this->core->getBlockSize() * this->core->getGeneralScale();
-    double dx = finalx + this->core->getCamX();
-    double dy = finaly + this->core->getCamY();
+    double dx = (this->core->getPlayer()->getX() + this->core->getPlayer()->getWidth() / 2 - 1) * this->core->getBlockSize() * this->core->getGeneralScale() + this->core->getCamX();
+    double dy = (this->core->getPlayer()->getY() + this->core->getPlayer()->getHeight() / 2 - 1) * this->core->getBlockSize() * this->core->getGeneralScale() + this->core->getCamY();
     if (abs(dx) > 2) this->core->setCamX(-this->core->getCamX() + (dx) * 0.05);
     if (abs(dy) > 2) this->core->setCamY(-this->core->getCamY() + (dy) * 0.05);
 
