@@ -70,7 +70,7 @@ void CharRender::render(char character, glm::mat4 projectionMatrix, glm::mat4 vi
     this->shaderProgram.setUniform("gSampler", texture.getBoundId());
 
 
-    this->tmpModelMatrix = glm::translate(this->modelMatrix, glm::vec3(-x, -y, 0.0f));
+    this->tmpModelMatrix = glm::translate(this->modelMatrix, glm::vec3(-(x + scale), -y, 0.0f));
     this->tmpModelMatrix = glm::scale(this->tmpModelMatrix, glm::vec3(scale, scale, 1.0f));
 
     shaderProgram.setUniform("modelViewMatrix", viewMatrix * this->tmpModelMatrix);
