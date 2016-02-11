@@ -45,6 +45,7 @@ inline GuiElementRender *getGuiElementRender(const GuiElement *const element) {
 }
 
 inline void initRenderers() {
+    //TODO clear maps
     blockRenders.insert(std::make_pair(typeid(SimpleBlock).name(), new SimpleBlockRender()));
     entityRenders.insert(std::make_pair(typeid(Player).name(), new PlayerRender()));
     entityRenders.insert(std::make_pair(typeid(EntityToy).name(), new DefaultEntityRender("toy", "shader")));
