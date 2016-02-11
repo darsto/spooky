@@ -15,7 +15,7 @@ class CharRender {
 public:
     CharRender();
     void render(char character, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, int x, int y, float scale, int color, char flags);
-    int getGlyphSize(char character);
+    float getGlyphSize(char character);
 
     int getGlyphPos(char character) {
         int indx = -1;
