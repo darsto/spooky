@@ -62,10 +62,15 @@ void GameRender::render(Window *window) {
 
     for (GuiElement *guiElement : game->getGuiElements()) {
         getGuiElementRender(guiElement)->render(guiElement, projectionMatrix, glm::translate(viewMatrix, glm::vec3(
-            (int) (-(signed) windowWidth * 0),
+            0,
             (int) ((signed) windowHeight),
             0.0f)), core->getGeneralScale());
     }
+
+    this->textManager->render("DEV VERSION", projectionMatrix, glm::translate(viewMatrix, glm::vec3(
+        0,
+        (int) ((signed) windowHeight),
+        0.0f)), 15, windowHeight - 15, 32 * core->getGeneralScale(), 0, 0);
 }
 
 void GameRender::resize(unsigned int width, unsigned int height) {
@@ -84,5 +89,5 @@ void GameRender::init() {
 }
 
 GameRender::GameRender(RenderManager *renderManager) : WindowRender(renderManager) {
-
+    this->textManager = new TextManager();
 }
