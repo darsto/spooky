@@ -18,7 +18,7 @@ public:
     ~TextManager();
 
 private:
-    CharRender *charRender;
+    CharRender *charRender = nullptr;
     const float SPACING_PX = 4; //space between letters (in pixels)
 };
 
