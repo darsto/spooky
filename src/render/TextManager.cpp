@@ -7,9 +7,7 @@
 TextManager::TextManager() { }
 
 void TextManager::init() {
-    if (this->charRender == nullptr) {
-        this->charRender = new CharRender();
-    }
+    this->charRender = new CharRender();
 }
 
 void TextManager::render(const std::string &string, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, int x, int y, float scale, int color, char flags) {
