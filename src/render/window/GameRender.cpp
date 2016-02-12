@@ -81,8 +81,8 @@ void GameRender::resize(unsigned int width, unsigned int height) {
 
 void GameRender::init() {
     initRenderers();
+    this->textManager->init();
     fbo.init(3, this->renderManager->getWindowWidth(), this->renderManager->getWindowHeight(), new float[4]{0.9, 0.9, 0.9, 1.0}, "fboshader");
-    textManager->init();
     viewMatrix = glm::lookAt(glm::vec3(0, 0, 0.0f), glm::vec3(0, 0, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
     projectionMatrix = glm::ortho(0.0f, float(this->renderManager->getWindowWidth()), 0.0f, float(this->renderManager->getWindowHeight()));
     glEnable(GL_BLEND);
