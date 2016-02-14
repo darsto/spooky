@@ -19,10 +19,10 @@ void TextManager::render(const GuiElement *const element, glm::mat4 projectionMa
     for (int i = 0; i < text->getString().length(); i++) {
         int j = this->charRender->getGlyphPos(text->getString().at(i));
         if (j == -1) {
-            x += this->charRender->TEXT_SPACESIZE * scale;
+            x += this->charRender->TEXT_SPACESIZE * scale * text->getScale();
             continue;
         }
         this->charRender->render(text->getString().at(i), projectionMatrix, viewMatrix, x, (int) text->getY(), text->getScale() * scale, text->getColor(), text->getFlags());
-        x += this->charRender->getGlyphSize(j) * scale + SPACING_PX;
+        x += this->charRender->getGlyphSize(j) * scale * text->getScale() + SPACING_PX;
     }
 }
