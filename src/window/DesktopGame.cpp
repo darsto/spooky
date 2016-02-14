@@ -12,17 +12,18 @@
 #include "../logging.h"
 
 Game::Game() {
+    MapLoader *mapLoader = new TiledTxtMapLoader("test_map.txt");
+    Map *bmap = mapLoader->loadMap();
+    this->core = new Core(bmap);
+    delete mapLoader;
+
     GuiButton *b = new GuiButton(GUI_TOP_RIGHT, 15, 15, 75, 75, 0);
     this->guiElements.push_back(b);
+    GuiText *t = new GuiText("DEV VERSION", 100, 100, GUI_BOTTOM_LEFT, 32 * core->getGeneralScale(), 0, 0);
+    this->guiElements.push_back(t);
 }
 
 void Game::reload(unsigned int windowWidth, unsigned int windowHeight) {
-    if (this->core == nullptr) {
-        MapLoader *mapLoader = new TiledTxtMapLoader("test_map.txt");
-        Map *bmap = mapLoader->loadMap();
-        this->core = new Core(bmap);
-        delete mapLoader;
-    }
     for (GuiElement *e : this->guiElements) {
         e->reinit(windowWidth, windowHeight);
     }
@@ -48,17 +49,17 @@ void Game::tick(double deltaTime) {
     if (abs(dy) > 2) this->core->setCamY(-this->core->getCamY() + (dy) * 0.05);
 
     double camX = this->core->getCamX(), camY = this->core->getCamY();
-    if (-camX < this->windowWidth/2 - this->core->getBlockSize() * this->core->getGeneralScale()) {
-        this->core->setCamX(this->windowWidth/2 - this->core->getBlockSize() * this->core->getGeneralScale());
+    if (-camX < this->windowWidth / 2 - this->core->getBlockSize() * this->core->getGeneralScale()) {
+        this->core->setCamX(this->windowWidth / 2 - this->core->getBlockSize() * this->core->getGeneralScale());
     }
-    if (-camY < this->windowHeight/2 - this->core->getBlockSize() * this->core->getGeneralScale()) {
-        this->core->setCamY(this->windowHeight/2 - this->core->getBlockSize() * this->core->getGeneralScale());
+    if (-camY < this->windowHeight / 2 - this->core->getBlockSize() * this->core->getGeneralScale()) {
+        this->core->setCamY(this->windowHeight / 2 - this->core->getBlockSize() * this->core->getGeneralScale());
     }
-    if (-camX > -(signed)this->windowWidth/2 + (this->core->getMap()->getWidth() - 1) * this->core->getBlockSize() * this->core->getGeneralScale()) {
-        this->core->setCamX(-(signed)this->windowWidth/2 + (this->core->getMap()->getWidth() - 1) * this->core->getBlockSize() * this->core->getGeneralScale());
+    if (-camX > -(signed) this->windowWidth / 2 + (this->core->getMap()->getWidth() - 1) * this->core->getBlockSize() * this->core->getGeneralScale()) {
+        this->core->setCamX(-(signed) this->windowWidth / 2 + (this->core->getMap()->getWidth() - 1) * this->core->getBlockSize() * this->core->getGeneralScale());
     }
-    if (-camY > -(signed)this->windowHeight/2 + (this->core->getMap()->getHeight() - 1) * this->core->getBlockSize() * this->core->getGeneralScale()) {
-        this->core->setCamY(-(signed)this->windowHeight/2 + (this->core->getMap()->getHeight() - 1) * this->core->getBlockSize() * this->core->getGeneralScale());
+    if (-camY > -(signed) this->windowHeight / 2 + (this->core->getMap()->getHeight() - 1) * this->core->getBlockSize() * this->core->getGeneralScale()) {
+        this->core->setCamY(-(signed) this->windowHeight / 2 + (this->core->getMap()->getHeight() - 1) * this->core->getBlockSize() * this->core->getGeneralScale());
     }
 }
 
