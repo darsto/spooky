@@ -13,9 +13,8 @@ class EntityToy : public EntityMoving {
 
 public:
     EntityToy(Core *core) : EntityMoving(core, 0.5, 0.5) {
-        b2CircleShape shape;
-        shape.m_p.Set(0, 0);
-        shape.m_radius = 0.25;
+        b2PolygonShape shape;
+        shape.SetAsBox(0.34, 0.17);
         b2FixtureDef fixDef;
         fixDef.shape = &shape;
         fixDef.density = 6.0f;
