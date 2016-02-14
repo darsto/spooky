@@ -78,6 +78,14 @@ void Player::applyForce(double x, double y) {
     else EntityMoving::applyImpulse(x, y);
 }
 
+void Player::setAngle(double angle) {
+    if (this->toy != nullptr) {
+        double dx = atan2(-sin(angle - this->toy->getAngle()), cos(angle - this->toy->getAngle())) + M_PI;
+        this->toy->setAngle(this->toy->getAngle() - (dx - M_PI) * 0.1);
+    }
+    Entity::setAngle(angle);
+}
+
 bool Player::doesCollide(IPositionable *obj) {
     return true;
 }

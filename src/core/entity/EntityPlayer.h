@@ -52,6 +52,7 @@ public:
     virtual bool doesCollide(IPositionable *obj) override;
     virtual void applyImpulse(double x, double y) override;
     virtual void applyForce(double x, double y) override;
+    virtual void setAngle(double angle) override;
 };
 
 #endif //C003_PLAYER_H
