@@ -22,7 +22,7 @@ void TextManager::render(const GuiElement *const element, glm::mat4 projectionMa
             x += this->charRender->TEXT_SPACESIZE * scale;
             continue;
         }
-        this->charRender->render(text->getString().at(i), projectionMatrix, viewMatrix, x, (int) text->getY(), text->getScale(), text->getColor(), text->getFlags());
+        this->charRender->render(text->getString().at(i), projectionMatrix, viewMatrix, x, (int) text->getY(), text->getScale() * scale, text->getColor(), text->getFlags());
         x += this->charRender->getGlyphSize(j) * scale + SPACING_PX;
     }
 }
