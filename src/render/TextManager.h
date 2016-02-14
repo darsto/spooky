@@ -8,13 +8,14 @@
 #include <string>
 #include <glm/glm.hpp>
 #include <render/font/CharRender.h>
+#include <render/gui/GuiElementRender.h>
 
-class TextManager {
+class TextManager : public GuiElementRender {
 
 public:
     TextManager();
     void init();
-    void render(const std::string &string, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, int x, int y, float scale, int color, char flags);
+    virtual void render(const GuiElement *const element, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, double scale) override;
     ~TextManager();
 
 private:

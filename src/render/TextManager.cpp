@@ -2,26 +2,29 @@
 // Created by dar on 2/11/16.
 //
 
+#include <gui/GuiText.h>
 #include "TextManager.h"
 
-TextManager::TextManager() { }
+TextManager::TextManager() : GuiElementRender() { }
 
 void TextManager::init() {
     this->charRender = new CharRender();
 }
 
-void TextManager::render(const std::string &string, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, int x, int y, float scale, int color, char flags) {
-    for (int i = 0; i < string.length(); i++) {
-        int j = this->charRender->getGlyphPos(string.at(i));
+TextManager::~TextManager() {
+    delete this->charRender;
+}
+
+void TextManager::render(const GuiElement *const element, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, double scale) {
+    const GuiText *const text = (const GuiText *const) element;
+    int x = (int) text->getX();
+    for (int i = 0; i < text->getString().length(); i++) {
+        int j = this->charRender->getGlyphPos(text->getString().at(i));
         if (j == -1) {
             x += this->charRender->TEXT_SPACESIZE * scale;
             continue;
         }
-        this->charRender->render(string.at(i), projectionMatrix, viewMatrix, x, y, scale, color, flags);
+        this->charRender->render(text->getString().at(i), projectionMatrix, viewMatrix, x, (int) text->getY(), text->getScale(), text->getColor(), text->getFlags());
         x += this->charRender->getGlyphSize(j) * scale + SPACING_PX;
     }
-}
-
-TextManager::~TextManager() {
-    delete this->charRender;
 }
