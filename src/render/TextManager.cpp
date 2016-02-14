@@ -26,3 +26,7 @@ void TextManager::render(const GuiElement *const element, glm::mat4 projectionMa
         x += this->charRender->getGlyphSize(j) * scale * text->getScale() + SPACING_PX;
     }
 }
+
+float TextManager::getGlyphSize(char character) {
+    return this->charRender->getGlyphSize(character);
+}
