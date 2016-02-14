@@ -29,7 +29,6 @@ private:
     Fbo fbo;
     glm::mat4 viewMatrix;
     glm::mat4 projectionMatrix;
-    TextManager *textManager;
 };
 
 #endif //C003_GAMERENDER_H

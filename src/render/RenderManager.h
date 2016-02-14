@@ -19,7 +19,6 @@
 #include <sstream>
 #include <render/window/WindowRender.h>
 #include "Render.h"
-#include "TextManager.h"
 
 class RenderManager {
 

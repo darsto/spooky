@@ -19,7 +19,7 @@ Game::Game() {
 
     GuiButton *b = new GuiButton(GUI_TOP_RIGHT, 15, 15, 75, 75, 0);
     this->guiElements.push_back(b);
-    GuiText *t = new GuiText("DEV VERSION", 100, 100, GUI_BOTTOM_LEFT, 32 * core->getGeneralScale(), 0, 0);
+    GuiText *t = new GuiText("Dev Version", 15, 15, GUI_BOTTOM_LEFT, 32, 0, 0);
     this->guiElements.push_back(t);
 }
 

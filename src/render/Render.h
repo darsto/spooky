@@ -13,6 +13,7 @@
 #include <gui/GuiElement.h>
 #include <gui/GuiButton.h>
 #include <render/gui/GuiButtonRender.h>
+#include <render/font/TextRender.h>
 #include "../core/entity/EntityToy.h"
 #include "../core/entity/EntityPlayer.h"
 #include "../render/entity/PlayerRender.h"
@@ -26,7 +27,6 @@
 #include "../core/entity/SimpleShape.h"
 #include "gui/GuiElementRender.h"
 #include "gui/GuiText.h"
-#include "TextManager.h"
 
 static std::map<const char *, BlockRender *> blockRenders;
 static std::map<const char *, EntityRender *> entityRenders;
@@ -55,7 +55,7 @@ inline void initRenderers() {
     entityRenders.insert(std::make_pair(typeid(SimpleShape).name(), new SimpleShapeRender()));
     guiRenders.insert(std::make_pair(typeid(GuiElement).name(), new GuiElementRender("gui", "shader")));
     guiRenders.insert(std::make_pair(typeid(GuiButton).name(), new GuiButtonRender("gui", "shader")));
-    guiRenders.insert(std::make_pair(typeid(GuiText).name(), new TextManager()));
+    guiRenders.insert(std::make_pair(typeid(GuiText).name(), new TextRender()));
 }
 
 #endif //C003_RENDER_H
