@@ -14,7 +14,6 @@ class TextManager : public GuiElementRender {
 
 public:
     TextManager();
-    void init();
     virtual void render(const GuiElement *const element, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, double scale) override;
     ~TextManager();
 

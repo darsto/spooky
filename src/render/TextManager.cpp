@@ -5,9 +5,7 @@
 #include <gui/GuiText.h>
 #include "TextManager.h"
 
-TextManager::TextManager() : GuiElementRender() { }
-
-void TextManager::init() {
+TextManager::TextManager() : GuiElementRender() {
     this->charRender = new CharRender();
 }
 
