@@ -15,7 +15,12 @@ public:
         this->rawX = x;
         this->rawY = y;
         this->positionFlag = position;
+        this->scale = scale;
         this->recalculateSize();
+    }
+
+    const std::string &getString() const {
+        return string;
     }
 
     void updateString(const std::string &string) {
@@ -23,8 +28,35 @@ public:
         this->recalculateSize();
     }
 
+    float getScale() const {
+        return scale;
+    }
+
+    void setScale(float scale) {
+        GuiText::scale = scale;
+    }
+
+    int getColor() const {
+        return color;
+    }
+
+    void setColor(int color) {
+        GuiText::color = color;
+    }
+
+    char getFlags() const {
+        return flags;
+    }
+
+    void setFlags(char flags) {
+        GuiText::flags = flags;
+    }
+
 private:
     std::string string;
+    float scale;
+    int color;
+    char flags;
 
     void recalculateSize() {
         //TODO this->width = getStringWidth(string); this->height = ...
