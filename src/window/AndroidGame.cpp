@@ -37,6 +37,9 @@ Game::Game() {
     };
     possessButton->setOnClickListener(possessAction);
     this->guiElements.push_back(possessButton);
+
+    GuiText *t = new GuiText("Dev Version", 15, 15, GUI_BOTTOM_LEFT, 32, 0, 0);
+    this->guiElements.push_back(t);
 }
 
 void Game::reload(unsigned int windowWidth, unsigned int windowHeight) {
