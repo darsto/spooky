@@ -10,6 +10,7 @@
 #include "../ShaderProgram.h"
 #include "../../core/map/block/Block.h"
 
+//TODO inherit GuiElementRender, remove repeating stuff from here
 class CharRender {
 
 public:
