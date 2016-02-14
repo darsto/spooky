@@ -16,6 +16,7 @@ public:
         this->rawY = y;
         this->positionFlag = position;
         this->scale = scale;
+        this->flags = flags;
         this->recalculateSize();
     }
 
