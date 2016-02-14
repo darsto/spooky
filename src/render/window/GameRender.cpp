@@ -66,11 +66,6 @@ void GameRender::render(Window *window) {
             (int) ((signed) windowHeight),
             0.0f)), core->getGeneralScale());
     }
-
-    this->textManager->render("DEV VERSION", projectionMatrix, glm::translate(viewMatrix, glm::vec3(
-        0,
-        (int) ((signed) windowHeight),
-        0.0f)), 15, windowHeight - 15, 32 * core->getGeneralScale(), 0, 0);
 }
 
 void GameRender::resize(unsigned int width, unsigned int height) {
@@ -81,7 +76,6 @@ void GameRender::resize(unsigned int width, unsigned int height) {
 
 void GameRender::init() {
     initRenderers();
-    this->textManager->init();
     fbo.init(3, this->renderManager->getWindowWidth(), this->renderManager->getWindowHeight(), new float[4]{0.9, 0.9, 0.9, 1.0}, "fboshader");
     viewMatrix = glm::lookAt(glm::vec3(0, 0, 0.0f), glm::vec3(0, 0, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
     projectionMatrix = glm::ortho(0.0f, float(this->renderManager->getWindowWidth()), 0.0f, float(this->renderManager->getWindowHeight()));
@@ -89,6 +83,4 @@ void GameRender::init() {
     glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 }
 
-GameRender::GameRender(RenderManager *renderManager) : WindowRender(renderManager) {
-    this->textManager = new TextManager();
-}
+GameRender::GameRender(RenderManager *renderManager) : WindowRender(renderManager) { }
