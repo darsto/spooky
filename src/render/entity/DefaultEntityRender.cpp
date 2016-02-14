@@ -7,8 +7,8 @@
 #include <string>
 
 DefaultEntityRender::DefaultEntityRender(const string &textureFile, const string &shader) {
-    texture.loadTexture2D(textureFile + string(".png"), false);
-    texture.setFiltering(TEXTURE_FILTER_MAG_NEAREST, TEXTURE_FILTER_MIN_NEAREST);
+    texture.loadTexture2D(textureFile + string(".png"), true);
+    texture.setFiltering(TEXTURE_FILTER_MAG_BILINEAR, TEXTURE_FILTER_MIN_BILINEAR_MIPMAP);
 
     int a = this->vertShader.load(shader + string(".vert"), GL_VERTEX_SHADER);
     int b = this->fragShader.load(shader + string(".frag"), GL_FRAGMENT_SHADER);
