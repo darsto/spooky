@@ -57,7 +57,6 @@ JNIEXPORT void JNICALL Java_tk_approach_android_spookytom_JniBridge_handleTouch(
 };
 
 JNIEXPORT void JNICALL Java_tk_approach_android_spookytom_JniBridge_init(JNIEnv *env, jobject obj) {
-    LOGD("C++ init");
     if (application == nullptr || application->getCurrentWindow() == nullptr) {
         application =  new Application();
     } else {
@@ -72,7 +71,6 @@ JNIEXPORT void JNICALL Java_tk_approach_android_spookytom_JniBridge_init(JNIEnv 
 }
 
 JNIEXPORT void JNICALL Java_tk_approach_android_spookytom_JniBridge_resize(JNIEnv *env, jobject obj, jint width, jint height) {
-    LOGD("C++ resize(%d, %d)", width, height);
     application->resize(width, height);
 }
 
@@ -81,7 +79,6 @@ JNIEXPORT void JNICALL Java_tk_approach_android_spookytom_JniBridge_tick(JNIEnv 
 }
 
 JNIEXPORT void JNICALL Java_tk_approach_android_spookytom_JniBridge_handleTouch(JNIEnv *env, jobject obj, jint i,  jint action, jfloat x, jfloat y) {
-    LOGD("C++ touch. i:%d, action:%d, x:%f, y:%f", i, action, x, y);
     application->handleClick(i, action, x, y);
 }
 
