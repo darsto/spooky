@@ -2,11 +2,15 @@
 // Created by dar on 1/25/16.
 //
 
-#include "../Render.h"
+#include <render/block/SimpleBlockRender.h>
+#include <render/entity/PlayerRender.h>
+#include <render/entity/SimpleShapeRender.h>
 #include "../RenderManager.h"
 #include "GameRender.h"
 #include "../../window/Game.h"
 #include "../../core/Core.h"
+#include <core/entity/EntityBullet.h>
+#include <core/map/block/SimpleBlock.h>
 
 void GameRender::render(Window *window, RenderContext *const renderContext) {
     Game *game = ((Game *) window);
@@ -75,7 +79,7 @@ void GameRender::resize(unsigned int width, unsigned int height) {
 }
 
 void GameRender::init() {
-    initRenderers();
+    this->initRenders();
     fbo.init(3, this->renderManager->getWindowWidth(), this->renderManager->getWindowHeight(), new float[4]{0.9, 0.9, 0.9, 1.0}, "fboshader");
     viewMatrix = glm::lookAt(glm::vec3(0, 0, 0.0f), glm::vec3(0, 0, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
     projectionMatrix = glm::ortho(0.0f, float(this->renderManager->getWindowWidth()), 0.0f, float(this->renderManager->getWindowHeight()));
@@ -84,3 +88,19 @@ void GameRender::init() {
 }
 
 GameRender::GameRender(RenderManager *renderManager) : WindowRender(renderManager) { }
+
+BlockRender *GameRender::getBlockRender(const Block *const block) {
+    return blockRenders[typeid(*block).name()];
+}
+
+EntityRender *GameRender::getEntityRender(const Entity *const entity) {
+    return entityRenders[typeid(*entity).name()];
+}
+
+void GameRender::initRenders() {
+    blockRenders.insert(std::make_pair(typeid(SimpleBlock).name(), new SimpleBlockRender()));
+    entityRenders.insert(std::make_pair(typeid(Player).name(), new PlayerRender()));
+    entityRenders.insert(std::make_pair(typeid(EntityToy).name(), new DefaultEntityRender("toy", "shader")));
+    entityRenders.insert(std::make_pair(typeid(EntityBullet).name(), new DefaultEntityRender("bullet", "shader")));
+    entityRenders.insert(std::make_pair(typeid(SimpleShape).name(), new SimpleShapeRender()));
+}

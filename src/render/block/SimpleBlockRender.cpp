@@ -9,7 +9,6 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include "SimpleBlockRender.h"
 #include "../../core/map/block/SimpleBlock.h"
-#include "../Render.h"
 
 SimpleBlockRender::SimpleBlockRender() {
     texture.loadTexture2D("terrain.png", true);

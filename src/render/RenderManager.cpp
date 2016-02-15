@@ -5,7 +5,9 @@
 #include "RenderManager.h"
 #include <Application.h>
 #include <render/window/GameRender.h>
+#include <render/window/MainMenuRender.h>
 #include "../window/Game.h"
+#include "../window/MainMenu.h"
 
 RenderManager::RenderManager() { }
 
@@ -21,7 +23,7 @@ bool RenderManager::init() {
 #ifdef __ANDROID__
         initBindings();
 #endif // __ANDROID__
-
+        this->renderContext = new RenderContext();
         return true;
     }
     return false;
@@ -79,8 +81,8 @@ bool RenderManager::initGL() {
 }
 
 bool RenderManager::initRenders() {
-    this->renderContext = new RenderContext();
     windowRenders.insert(std::make_pair(typeid(Game).name(), new GameRender(this)));
+    windowRenders.insert(std::make_pair(typeid(MainMenu).name(), new MainMenuRender(this)));
     return true;
 }
 

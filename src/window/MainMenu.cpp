@@ -4,11 +4,14 @@
 
 #include <gui/GuiButton.h>
 #include <gui/GuiText.h>
-#include <SDL_keyboard.h>
 #include "MainMenu.h"
 #include <string>
 #include <InputManager.h>
 #include <logging.h>
+
+#ifndef __ANDROID__
+#include <SDL_keyboard.h>
+#endif //__ANDROID__
 
 MainMenu::MainMenu() {
     GuiButton *b = new GuiButton(GUI_TOP_RIGHT, 15, 15, 75, 75, 0);
@@ -21,7 +24,6 @@ void MainMenu::reload(unsigned int windowWidth, unsigned int windowHeight) {
     for (GuiElement *e : this->guiElements) {
         e->reinit(windowWidth, windowHeight);
     }
-    SDL_StartTextInput();
 }
 
 void MainMenu::tick(double deltaTime) {
@@ -33,6 +35,21 @@ void MainMenu::handleKeyboard(const Keypress *const keypress) {
 }
 
 void MainMenu::handleClick(const TouchPoint *const p) {
+#ifdef __ANDROID__
+    for (GuiElement *e : this->guiElements) {
+        if (GuiButton *b = dynamic_cast<GuiButton *>(e)) {
+            if (b->canBeClicked(p)) {
+                if (p->state == 1) this->resetButtons(p, b);
+                if ((p->state == 0 && (!b->isPressed()) || b->getTouchedBy() == p->id) ||
+                    (b->getTouchedBy() == p->id && p->state == 2)) {
+                    if (b->onClick(p)) {
+                        break;
+                    }
+                }
+            }
+        }
+    }
+#else //__ANDROID__
     float x = p->x;
     float y = p->y;
     if (p->id == SDL_BUTTON_LEFT) {
@@ -50,8 +67,23 @@ void MainMenu::handleClick(const TouchPoint *const p) {
 
         }
     }
+#endif //__ANDROID__
 }
 
 MainMenu::~MainMenu() {
-    SDL_StopTextInput();
+
+}
+
+void MainMenu::resetButtons(const TouchPoint *const p, const GuiButton *const b) {
+    for (GuiElement *e : this->guiElements) {
+        if (GuiButton *b1 = dynamic_cast<GuiButton *>(e)) {
+            if (b1 != b) {
+                if (p == nullptr) {
+                    b1->setPressed(false);
+                } else if (b1->getTouchedBy() == p->id) {
+                    b1->onClick(p);
+                }
+            }
+        }
+    }
 }

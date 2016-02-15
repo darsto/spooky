@@ -2,6 +2,7 @@
 // Created by dar on 1/23/16.
 //
 
+#include <window/MainMenu.h>
 #include "Application.h"
 #include "window/Game.h"
 #include "render/RenderManager.h"

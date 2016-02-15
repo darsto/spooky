@@ -12,6 +12,10 @@
 #include <render/Fbo.h>
 #include <glm/detail/type_mat.hpp>
 #include <window/Window.h>
+#include <render/block/BlockRender.h>
+#include <render/entity/EntityRender.h>
+#include <core/map/block/Block.h>
+#include <core/entity/Entity.h>
 #include "WindowRender.h"
 
 class Game;
@@ -19,7 +23,6 @@ class Game;
 class GameRender : public WindowRender {
 
 public:
-
     GameRender(RenderManager *renderManager);
     virtual void init() override;
     virtual void render(Window *window, RenderContext *const renderContext) override;
@@ -30,6 +33,12 @@ private:
     Fbo fbo;
     glm::mat4 viewMatrix;
     glm::mat4 projectionMatrix;
+    std::map<const char *, BlockRender *> blockRenders;
+    std::map<const char *, EntityRender *> entityRenders;
+
+    void initRenders();
+    BlockRender *getBlockRender(const Block *const block);
+    EntityRender *getEntityRender(const Entity *const entity);
 };
 
 #endif //C003_GAMERENDER_H

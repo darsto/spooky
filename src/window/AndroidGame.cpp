@@ -8,6 +8,8 @@
 #include "InputManager.h"
 #include "../core/map/TiledTxtMapLoader.h"
 #include "../logging.h"
+#include <gui/GuiText.h>
+#include <gui/GuiButton.h>
 
 Game::Game() {
     controller = new GuiButton(GUI_TOP_LEFT, 0, 0, 200, 200, 0);

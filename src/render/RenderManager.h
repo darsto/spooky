@@ -18,7 +18,6 @@
 #include "opengl.h"
 #include <sstream>
 #include <render/window/WindowRender.h>
-#include "Render.h"
 #include "RenderContext.h"
 
 class RenderManager {

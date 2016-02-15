@@ -8,6 +8,12 @@
 #include <vector>
 #include "Window.h"
 
+class GuiElement;
+
+class TouchPoint;
+
+class GuiButton;
+
 class MainMenu : public Window {
 
 public:
@@ -20,7 +26,7 @@ public:
 
 private:
     std::vector<GuiElement *> guiElements;
-
+    void resetButtons(const TouchPoint *const p, const GuiButton *const b);
 };
 
 #endif //C003_MAINMENU_H

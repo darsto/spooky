@@ -4,11 +4,14 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <gui/GuiText.h>
+#include <gui/GuiButton.h>
 #include "Game.h"
 #include "../core/Core.h"
 #include "../core/map/TiledTxtMapLoader.h"
 #include "render/RenderManager.h"
 #include "InputManager.h"
+#include <core/entity/EntityBullet.h>
 #include "../logging.h"
 
 Game::Game() {
