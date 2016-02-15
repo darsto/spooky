@@ -19,6 +19,7 @@
 #include <sstream>
 #include <render/window/WindowRender.h>
 #include "Render.h"
+#include "RenderContext.h"
 
 class RenderManager {
 
@@ -38,6 +39,7 @@ public:
         return windowHeight;
     }
 
+
 private:
 #ifndef __ANDROID__
     SDL_Window *gWindow = NULL;
@@ -45,14 +47,16 @@ private:
 #endif // __ANDROID__
     unsigned int windowWidth = 1366;
     unsigned int windowHeight = 750;
+    RenderContext *renderContext;
+
+    std::map<const char *, WindowRender *> windowRenders;
+    WindowRender *getWindowRender(const Window *const window);
+
 
     bool initWindow();
     bool initGL();
     bool initRenders();
 
-    std::map<const char *, WindowRender *> windowRenders;
-
-    WindowRender * getWindowRender(const Window *const window);
 };
 
 #endif //C003_RENDERER_H

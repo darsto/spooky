@@ -79,6 +79,7 @@ bool RenderManager::initGL() {
 }
 
 bool RenderManager::initRenders() {
+    this->renderContext = new RenderContext();
     windowRenders.insert(std::make_pair(typeid(Game).name(), new GameRender(this)));
     return true;
 }

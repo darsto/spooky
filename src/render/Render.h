@@ -30,7 +30,6 @@
 
 static std::map<const char *, BlockRender *> blockRenders;
 static std::map<const char *, EntityRender *> entityRenders;
-static std::map<const char *, GuiElementRender *> guiRenders;
 
 inline BlockRender *getBlockRender(const Block *const block) {
     return blockRenders[typeid(*block).name()];
@@ -40,12 +39,6 @@ inline EntityRender *getEntityRender(const Entity *const entity) {
     return entityRenders[typeid(*entity).name()];
 }
 
-inline GuiElementRender *getGuiElementRender(const GuiElement *const element) {
-    GuiElementRender *render = guiRenders[typeid(*element).name()];
-    if (render == nullptr) render = guiRenders[typeid(GuiElement).name()];
-    return render;
-}
-
 inline void initRenderers() {
     //TODO clear maps
     blockRenders.insert(std::make_pair(typeid(SimpleBlock).name(), new SimpleBlockRender()));
@@ -53,9 +46,6 @@ inline void initRenderers() {
     entityRenders.insert(std::make_pair(typeid(EntityToy).name(), new DefaultEntityRender("toy", "shader")));
     entityRenders.insert(std::make_pair(typeid(EntityBullet).name(), new DefaultEntityRender("bullet", "shader")));
     entityRenders.insert(std::make_pair(typeid(SimpleShape).name(), new SimpleShapeRender()));
-    guiRenders.insert(std::make_pair(typeid(GuiElement).name(), new GuiElementRender("gui", "shader")));
-    guiRenders.insert(std::make_pair(typeid(GuiButton).name(), new GuiButtonRender("gui", "shader")));
-    guiRenders.insert(std::make_pair(typeid(GuiText).name(), new TextRender()));
 }
 
 #endif //C003_RENDER_H
