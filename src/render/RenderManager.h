@@ -52,7 +52,6 @@ private:
     std::map<const char *, WindowRender *> windowRenders;
     WindowRender *getWindowRender(const Window *const window);
 
-
     bool initWindow();
     bool initGL();
     bool initRenders();

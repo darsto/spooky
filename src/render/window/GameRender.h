@@ -11,6 +11,7 @@
 #include <render/Texture.h>
 #include <render/Fbo.h>
 #include <glm/detail/type_mat.hpp>
+#include <window/Window.h>
 #include "WindowRender.h"
 
 class Game;
@@ -21,7 +22,7 @@ public:
 
     GameRender(RenderManager *renderManager);
     virtual void init() override;
-    virtual void render(Window *window) override;
+    virtual void render(Window *window, RenderContext *const renderContext) override;
     virtual void resize(unsigned int width, unsigned int height) override;
     ~GameRender();
 

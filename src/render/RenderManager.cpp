@@ -85,7 +85,7 @@ bool RenderManager::initRenders() {
 }
 
 void RenderManager::render(Window *window) {
-    this->getWindowRender(window)->render(window);
+    this->getWindowRender(window)->render(window, this->renderContext);
 #ifndef __ANDROID__
     SDL_GL_SwapWindow(gWindow);
 #endif // __ANDROID__

@@ -5,7 +5,7 @@
 #ifndef C003_MAINMENU_H
 #define C003_MAINMENU_H
 
-#include <bits/stl_vector.h>
+#include <vector>
 #include "Window.h"
 
 class MainMenu : public Window {

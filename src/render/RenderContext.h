@@ -7,7 +7,7 @@
 
 #include <gui/GuiElement.h>
 #include <render/gui/GuiElementRender.h>
-#include <bits/stl_map.h>
+#include <map>
 
 struct RenderContext {
 public:

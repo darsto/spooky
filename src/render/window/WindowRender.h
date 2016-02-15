@@ -5,6 +5,8 @@
 #ifndef C003_WINDOWRENDER_H
 #define C003_WINDOWRENDER_H
 
+#include <render/RenderContext.h>
+
 class Window;
 
 class RenderManager;
@@ -15,7 +17,7 @@ public:
     WindowRender(RenderManager *renderManager) : renderManager(renderManager) { }
 
     virtual void init() = 0; //TODO call on window change
-    virtual void render(Window *window) = 0;
+    virtual void render(Window *window, RenderContext *const renderContext) = 0;
     virtual void resize(unsigned int width, unsigned int height) = 0;
 
 protected:

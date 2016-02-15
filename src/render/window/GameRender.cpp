@@ -8,7 +8,7 @@
 #include "../../window/Game.h"
 #include "../../core/Core.h"
 
-void GameRender::render(Window *window) {
+void GameRender::render(Window *window, RenderContext *const renderContext) {
     Game *game = ((Game *) window);
     Core *core = game->getCore();
 
@@ -61,7 +61,7 @@ void GameRender::render(Window *window) {
     fbo.render(0);
 
     for (GuiElement *guiElement : game->getGuiElements()) {
-        getGuiElementRender(guiElement)->render(guiElement, projectionMatrix, glm::translate(viewMatrix, glm::vec3(
+        renderContext->getGuiElementRender(guiElement)->render(guiElement, projectionMatrix, glm::translate(viewMatrix, glm::vec3(
             0,
             (int) ((signed) windowHeight),
             0.0f)), core->getGeneralScale());
