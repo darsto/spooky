@@ -11,10 +11,14 @@
 class MainMenuRender : public WindowRender {
 
 public:
-    MainMenuRender(RenderManager *renderManager);
-    virtual void init() override;
+    MainMenuRender();
+    virtual void init(RenderContext *const renderContext) override;
     virtual void render(Window *window, RenderContext *const renderContext) override;
-    virtual void resize(unsigned int width, unsigned int height) override;
+    virtual void resize(RenderContext *const renderContext) override;
+
+private:
+    glm::mat4 viewMatrix;
+    glm::mat4 projectionMatrix;
 };
 
 #endif //C003_MAINMENURENDER_H
