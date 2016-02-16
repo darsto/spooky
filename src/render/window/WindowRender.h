@@ -14,14 +14,13 @@ class RenderManager;
 class WindowRender {
 
 public:
-    WindowRender(RenderManager *renderManager) : renderManager(renderManager) { }
+    WindowRender() { }
 
     virtual void init(RenderContext *const renderContext) = 0; //TODO call on window change
     virtual void render(Window *window, RenderContext *const renderContext) = 0;
     virtual void resize(RenderContext *const renderContext) = 0;
 
 protected:
-    const RenderManager *const renderManager;
 };
 
 #endif //C003_WINDOWRENDER_H

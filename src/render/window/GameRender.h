@@ -23,7 +23,7 @@ class Game;
 class GameRender : public WindowRender {
 
 public:
-    GameRender(RenderManager *renderManager);
+    GameRender();
     virtual void init(RenderContext *const renderContext) override;
     virtual void render(Window *window, RenderContext *const renderContext) override;
     virtual void resize(RenderContext *const renderContext) override;

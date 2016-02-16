@@ -16,8 +16,8 @@ void GameRender::render(Window *window, RenderContext *const renderContext) {
     Game *game = ((Game *) window);
     Core *core = game->getCore();
 
-    unsigned int windowWidth = this->renderManager->getWindowWidth();
-    unsigned int windowHeight = this->renderManager->getWindowHeight();
+    unsigned int windowWidth = renderContext->getWindowWidth();
+    unsigned int windowHeight = renderContext->getWindowHeight();
     double scale = core->getBlockSize() * core->getGeneralScale();
 
     fbo.bind();
@@ -80,14 +80,14 @@ void GameRender::resize(RenderContext *const renderContext) {
 
 void GameRender::init(RenderContext *const renderContext) {
     this->initRenders();
-    fbo.init(3, this->renderManager->getWindowWidth(), this->renderManager->getWindowHeight(), new float[4]{0.9, 0.9, 0.9, 1.0}, "fboshader");
+    fbo.init(3, renderContext->getWindowWidth(), renderContext->getWindowHeight(), new float[4]{0.9, 0.9, 0.9, 1.0}, "fboshader");
     viewMatrix = glm::lookAt(glm::vec3(0, 0, 0.0f), glm::vec3(0, 0, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-    projectionMatrix = glm::ortho(0.0f, float(this->renderManager->getWindowWidth()), 0.0f, float(this->renderManager->getWindowHeight()));
+    projectionMatrix = glm::ortho(0.0f, float(renderContext->getWindowWidth()), 0.0f, float(renderContext->getWindowHeight()));
     glEnable(GL_BLEND);
     glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 }
 
-GameRender::GameRender(RenderManager *renderManager) : WindowRender(renderManager) { }
+GameRender::GameRender() { }
 
 BlockRender *GameRender::getBlockRender(const Block *const block) {
     return blockRenders[typeid(*block).name()];

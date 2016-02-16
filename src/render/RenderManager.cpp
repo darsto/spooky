@@ -81,8 +81,8 @@ bool RenderManager::initGL() {
 }
 
 bool RenderManager::initRenders() {
-    windowRenders.insert(std::make_pair(typeid(Game).name(), new GameRender(this)));
-    windowRenders.insert(std::make_pair(typeid(MainMenu).name(), new MainMenuRender(this)));
+    windowRenders.insert(std::make_pair(typeid(Game).name(), new GameRender()));
+    windowRenders.insert(std::make_pair(typeid(MainMenu).name(), new MainMenuRender()));
     return true;
 }
 
