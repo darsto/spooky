@@ -13,6 +13,7 @@ Application::Application() {
     auto switchVideo = [=](Window *window) {
         this->window = window;
         this->renderer->initWindow(this->window);
+        this->resize(this->renderer->getRenderContext()->getWindowWidth(), this->renderer->getRenderContext()->getWindowHeight());
         return true;
     };
     this->window = new MainMenu(switchVideo);
