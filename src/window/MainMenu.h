@@ -24,6 +24,10 @@ public:
     virtual void handleClick(const TouchPoint *const p) override;
     virtual ~MainMenu() override;
 
+    const std::vector<GuiElement *> &getGuiElements() const {
+        return guiElements;
+    }
+
 private:
     std::vector<GuiElement *> guiElements;
     void resetButtons(const TouchPoint *const p, const GuiButton *const b);
