@@ -14,7 +14,7 @@
 #include <core/entity/EntityBullet.h>
 #include "../logging.h"
 
-Game::Game() {
+Game::Game(std::function<bool(Window *window)> switchWindow) : Window(switchWindow) {
     MapLoader *mapLoader = new TiledTxtMapLoader("test_map.txt");
     Map *bmap = mapLoader->loadMap();
     this->core = new Core(bmap);

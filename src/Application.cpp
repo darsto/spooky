@@ -10,7 +10,12 @@
 
 Application::Application() {
     this->renderer = new RenderManager();
-    this->window = new Game();
+    auto switchVideo = [=](Window *window) {
+        this->window = window;
+        this->renderer->initWindow(this->window);
+        return true;
+    };
+    this->window = new MainMenu(switchVideo);
     this->timer = new Timer();
     this->inputManager = new InputManager();
     this->reinit();

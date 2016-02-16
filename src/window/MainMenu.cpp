@@ -5,15 +5,18 @@
 #include <gui/GuiButton.h>
 #include <gui/GuiText.h>
 #include "MainMenu.h"
+#include "Game.h"
 #include <string>
 #include <InputManager.h>
 #include <logging.h>
 
 #ifndef __ANDROID__
+
 #include <SDL_keyboard.h>
+
 #endif //__ANDROID__
 
-MainMenu::MainMenu() {
+MainMenu::MainMenu(std::function<bool(Window *window)> switchWindow) : Window(switchWindow) {
     GuiButton *b = new GuiButton(GUI_MIDDLE_CENTER, 0, -100, 150, 75, 0);
     auto moveController = [&](const TouchPoint *const p) {
         if (p->state == 1) {
@@ -48,13 +51,13 @@ void MainMenu::handleKeyboard(const Keypress *const keypress) {
 }
 
 void MainMenu::handleClick(const TouchPoint *const p) {
-#ifdef __ANDROID__
     for (GuiElement *e : this->guiElements) {
         if (GuiButton *b = dynamic_cast<GuiButton *>(e)) {
             if (b->canBeClicked(p)) {
                 if (p->state == 1) this->resetButtons(p, b);
                 if ((p->state == 0 && (!b->isPressed()) || b->getTouchedBy() == p->id) ||
                     (b->getTouchedBy() == p->id && p->state == 2)) {
+                    this->switchWindow(new Game(switchWindow));
                     if (b->onClick(p)) {
                         break;
                     }
@@ -62,25 +65,6 @@ void MainMenu::handleClick(const TouchPoint *const p) {
             }
         }
     }
-#else //__ANDROID__
-    float x = p->x;
-    float y = p->y;
-    if (p->id == SDL_BUTTON_LEFT) {
-        if (p->state == 0) {
-            LOGD("CLICK");
-            int i = 0;
-        } else if (p->state == 2) {
-
-        } else if (p->state == 1) {
-
-        }
-    } else if (p->id == SDL_BUTTON_RIGHT) {
-        if (p->state == 0) {
-        } else if (p->state == 1) {
-
-        }
-    }
-#endif //__ANDROID__
 }
 
 MainMenu::~MainMenu() {
