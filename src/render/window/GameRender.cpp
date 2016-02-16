@@ -98,6 +98,16 @@ EntityRender *GameRender::getEntityRender(const Entity *const entity) {
 }
 
 void GameRender::initRenders() {
+    for (std::pair<const char *, BlockRender *>& renderPair : blockRenders) {
+        delete renderPair.second;
+    }
+
+    blockRenders.clear();
+    for (std::pair<const char *, EntityRender *>& renderPair : entityRenders) {
+        delete renderPair.second;
+    }
+    entityRenders.clear();
+
     blockRenders.insert(std::make_pair(typeid(SimpleBlock).name(), new SimpleBlockRender()));
     entityRenders.insert(std::make_pair(typeid(Player).name(), new PlayerRender()));
     entityRenders.insert(std::make_pair(typeid(EntityToy).name(), new DefaultEntityRender("toy", "shader")));
