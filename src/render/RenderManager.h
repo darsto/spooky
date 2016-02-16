@@ -30,15 +30,6 @@ public:
     void resize(Window *window, unsigned int width, unsigned int height);
     void initWindow(Window *window);
 
-    unsigned int getWindowWidth() const {
-        return windowWidth;
-    }
-
-    unsigned int getWindowHeight() const {
-        return windowHeight;
-    }
-
-
 private:
 #ifndef __ANDROID__
     SDL_Window *gWindow = NULL;

@@ -23,7 +23,7 @@ bool RenderManager::init() {
 #ifdef __ANDROID__
         initBindings();
 #endif // __ANDROID__
-        this->renderContext = new RenderContext();
+        this->renderContext = new RenderContext(this->windowWidth, this->windowHeight);
         return true;
     }
     return false;

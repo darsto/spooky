@@ -11,7 +11,7 @@
 
 struct RenderContext {
 public:
-    RenderContext();
+    RenderContext(unsigned int windowWidth, unsigned int windowHeight);
     GuiElementRender *getGuiElementRender(const GuiElement *const element);
 
     unsigned int getWindowWidth() const {

@@ -20,6 +20,8 @@ void RenderContext::initGuiRenders() {
     guiRenders.insert(std::make_pair(typeid(GuiText).name(), new TextRender()));
 }
 
-RenderContext::RenderContext() {
+RenderContext::RenderContext(unsigned int windowWidth, unsigned int windowHeight) {
+    this->windowWidth = windowWidth;
+    this->windowHeight = windowHeight;
     this->initGuiRenders();
 }
