@@ -97,8 +97,9 @@ void RenderManager::resize(Window *window, unsigned int width, unsigned int heig
     if (width != this->windowWidth || height != this->windowHeight) {
         this->windowWidth = width;
         this->windowHeight = height;
+        this->renderContext->resize(width, height);
         glViewport(0, 0, windowWidth, windowHeight);
-        this->getWindowRender(window)->resize(width, height);
+        this->getWindowRender(window)->resize(this->renderContext);
     }
 }
 
@@ -114,5 +115,5 @@ WindowRender *RenderManager::getWindowRender(const Window *const window) {
 }
 
 void RenderManager::initWindow(Window *window) {
-    this->getWindowRender(window)->init();
+    this->getWindowRender(window)->init(this->renderContext);
 }

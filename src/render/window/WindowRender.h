@@ -16,9 +16,9 @@ class WindowRender {
 public:
     WindowRender(RenderManager *renderManager) : renderManager(renderManager) { }
 
-    virtual void init() = 0; //TODO call on window change
+    virtual void init(RenderContext *const renderContext) = 0; //TODO call on window change
     virtual void render(Window *window, RenderContext *const renderContext) = 0;
-    virtual void resize(unsigned int width, unsigned int height) = 0;
+    virtual void resize(RenderContext *const renderContext) = 0;
 
 protected:
     const RenderManager *const renderManager;

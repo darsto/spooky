@@ -24,9 +24,9 @@ class GameRender : public WindowRender {
 
 public:
     GameRender(RenderManager *renderManager);
-    virtual void init() override;
+    virtual void init(RenderContext *const renderContext) override;
     virtual void render(Window *window, RenderContext *const renderContext) override;
-    virtual void resize(unsigned int width, unsigned int height) override;
+    virtual void resize(RenderContext *const renderContext) override;
     ~GameRender();
 
 private:

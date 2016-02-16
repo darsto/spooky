@@ -14,7 +14,23 @@ public:
     RenderContext();
     GuiElementRender *getGuiElementRender(const GuiElement *const element);
 
+    unsigned int getWindowWidth() const {
+        return windowWidth;
+    }
+
+    unsigned int getWindowHeight() const {
+        return windowHeight;
+    }
+
+    void resize(unsigned int windowWidth, unsigned int windowHeight) {
+        this->windowWidth = windowWidth;
+        this->windowHeight = windowHeight;
+    }
+
 private:
+    unsigned int windowWidth;
+    unsigned int windowHeight;
+
     void initGuiRenders();
     std::map<const char *, GuiElementRender *> guiRenders;
 };
