@@ -12,6 +12,11 @@
 #include <gui/GuiButton.h>
 
 Game::Game(std::function<bool(Window *window)> switchWindow) : Window(switchWindow) {
+    MapLoader *mapLoader = new TiledTxtMapLoader("test_map.txt");
+    Map *bmap = mapLoader->loadMap();
+    this->core = new Core(bmap);
+    delete mapLoader;
+
     controller = new GuiButton(GUI_TOP_LEFT, 0, 0, 200, 200, 0);
     joystick = new GuiButton(GUI_TOP_LEFT, 0, 0, 200, 200, 1);
     controller->setVisible(false);
@@ -45,12 +50,6 @@ Game::Game(std::function<bool(Window *window)> switchWindow) : Window(switchWind
 }
 
 void Game::reload(unsigned int windowWidth, unsigned int windowHeight) {
-    if (this->core == nullptr) {
-        MapLoader *mapLoader = new TiledTxtMapLoader("test_map.txt");
-        Map *bmap = mapLoader->loadMap();
-        this->core = new Core(bmap);
-        delete mapLoader;
-    }
     for (GuiElement *e : this->guiElements) {
         e->reinit(windowWidth, windowHeight);
     }
