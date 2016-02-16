@@ -32,5 +32,6 @@ void MainMenuRender::render(Window *window, RenderContext *const renderContext) 
 }
 
 void MainMenuRender::resize(RenderContext *const renderContext) {
-
+    viewMatrix = glm::lookAt(glm::vec3(0, 0, 0.0f), glm::vec3(0, 0, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+    this->projectionMatrix = glm::ortho(0.0f, float(renderContext->getWindowWidth()), 0.0f, float(renderContext->getWindowHeight()));
 }
