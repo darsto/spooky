@@ -30,6 +30,10 @@ public:
     void resize(Window *window, unsigned int width, unsigned int height);
     void initWindow(Window *window);
 
+    RenderContext *getRenderContext() const {
+        return renderContext;
+    }
+
 private:
 #ifndef __ANDROID__
     SDL_Window *gWindow = NULL;
