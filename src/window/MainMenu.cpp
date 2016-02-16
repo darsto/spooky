@@ -14,7 +14,20 @@
 #endif //__ANDROID__
 
 MainMenu::MainMenu() {
-    GuiButton *b = new GuiButton(GUI_TOP_RIGHT, 15, 15, 75, 75, 0);
+    GuiButton *b = new GuiButton(GUI_MIDDLE_CENTER, 0, -100, 150, 75, 0);
+    auto moveController = [&](const TouchPoint *const p) {
+        if (p->state == 1) {
+            if (b->canBeClicked(p)) {
+            }
+            return false;
+        }
+        return true;
+    };
+    b->setOnClickListener(moveController);
+    this->guiElements.push_back(b);
+    b = new GuiButton(GUI_MIDDLE_CENTER, 0, 0, 150, 75, 0);
+    this->guiElements.push_back(b);
+    b = new GuiButton(GUI_MIDDLE_CENTER, 0, 100, 150, 75, 0);
     this->guiElements.push_back(b);
     GuiText *t = new GuiText(std::string("Dev Build: ") + __DATE__ + " " + __TIME__, 15, 15, GUI_BOTTOM_LEFT, 32, 0, 0);
     this->guiElements.push_back(t);
