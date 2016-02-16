@@ -21,7 +21,7 @@ void MainMenuRender::init(RenderContext *const renderContext) {
 void MainMenuRender::render(Window *window, RenderContext *const renderContext) {
     MainMenu *game = ((MainMenu *) window);
 
-    glClearColor(0.9, 0.9, 0.9, 0.0);
+    glClearColor(0.7, 0.7, 0.7, 0.0);
     glClear(GL_COLOR_BUFFER_BIT);
     for (GuiElement *guiElement : game->getGuiElements()) {
         renderContext->getGuiElementRender(guiElement)->render(guiElement, projectionMatrix, glm::translate(viewMatrix, glm::vec3(
