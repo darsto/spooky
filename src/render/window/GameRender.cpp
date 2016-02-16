@@ -98,12 +98,12 @@ EntityRender *GameRender::getEntityRender(const Entity *const entity) {
 }
 
 void GameRender::initRenders() {
-    for (std::pair<const char *, BlockRender *>& renderPair : blockRenders) {
+    for (std::pair<const char *, BlockRender *> renderPair : blockRenders) {
         delete renderPair.second;
     }
 
     blockRenders.clear();
-    for (std::pair<const char *, EntityRender *>& renderPair : entityRenders) {
+    for (std::pair<const char *, EntityRender *> renderPair : entityRenders) {
         delete renderPair.second;
     }
     entityRenders.clear();
