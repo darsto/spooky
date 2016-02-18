@@ -23,9 +23,12 @@ public:
             this->shaderProgram.setUniform("gSampler", texture.getBoundId());
 
             double ratio = b->getWidth()/b->getHeight();
+            double singular_ratio = ratio - (int)ratio;
+            if (singular_ratio - (int)singular_ratio == 0) singular_ratio++;
+            singular_ratio = singular_ratio / ceil(singular_ratio);
             for (int i = 0; i < ratio; i++) {
-                this->tmpModelMatrix = glm::translate(this->modelMatrix, glm::vec3(-(element->getX() + element->getHeight() * (i + 1)) * scale, -(element->getY() + element->getHeight()) * scale, 0.0f));
-                this->tmpModelMatrix = glm::scale(this->tmpModelMatrix, glm::vec3(element->getHeight() * scale, element->getHeight() * scale, 1.0f));
+                this->tmpModelMatrix = glm::translate(this->modelMatrix, glm::vec3(-(element->getX() + element->getHeight() +  i * element->getHeight() * singular_ratio) * scale, -(element->getY() + element->getHeight()) * scale, 0.0f));
+                this->tmpModelMatrix = glm::scale(this->tmpModelMatrix, glm::vec3(element->getHeight() * scale * singular_ratio, element->getHeight() * scale, 1.0f));
                 this->tmpModelMatrix = glm::rotate(this->tmpModelMatrix, 0.0f, glm::vec3(1.0f, 0.0f, 0.0f)); // Just a variation of first rotating
 
                 shaderProgram.setUniform("modelViewMatrix", viewMatrix * this->tmpModelMatrix);
