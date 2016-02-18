@@ -43,6 +43,7 @@ private:
     double accumulator;
 #ifndef __DEFMOBILE__
     SDL_Event e;
+    bool isMouseDown[5];
 #endif //__DEFMOBILE__
 
     void handleEvents();

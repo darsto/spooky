@@ -20,7 +20,7 @@ Application::Application() {
     this->timer = new Timer();
     this->inputManager = new InputManager();
     this->reinit();
-    this->resize(1366,750);
+    this->resize(1366, 750);
 }
 
 void Application::reinit() {
@@ -39,7 +39,7 @@ void Application::update(bool dynamic) {
             this->accumulator -= TIME_STEP;
         }
     } else {
-        this->getCurrentWindow()->tick(1.0/30);
+        this->getCurrentWindow()->tick(1.0 / 30);
     }
     this->renderer->render(this->getCurrentWindow());
     if (!MOBILE) this->handleEvents();
@@ -117,11 +117,14 @@ void Application::handleEvents() {
                 this->inputManager->handleKeypress(&e);
                 break;
             case SDL_MOUSEBUTTONDOWN:
-            case SDL_MOUSEMOTION:
-            case SDL_MOUSEBUTTONUP: {
-                int x, y;
-                SDL_GetMouseState(&x, &y);
-                this->inputManager->handleClick(e.button.button, e.type == SDL_MOUSEBUTTONDOWN ? 0 : (e.type == SDL_MOUSEBUTTONUP ? 1 : 2), x, y);
+            case SDL_MOUSEBUTTONUP:
+                if (e.button.button >= 0 && e.button.button < 5) this->isMouseDown[e.button.button] = e.type == SDL_MOUSEBUTTONDOWN;
+            case SDL_MOUSEMOTION: {
+                if (this->isMouseDown[e.button.button] || e.type == SDL_MOUSEBUTTONUP) {
+                    int x, y;
+                    SDL_GetMouseState(&x, &y);
+                    this->inputManager->handleClick(e.button.button, e.type == SDL_MOUSEBUTTONDOWN ? 0 : (e.type == SDL_MOUSEBUTTONUP ? 1 : 2), x, y);
+                }
                 break;
             }
         }
