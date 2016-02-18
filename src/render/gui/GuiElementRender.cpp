@@ -42,7 +42,7 @@ GuiElementRender::GuiElementRender(const string &textureFile, const string &shad
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
-    float size = (float) (1.0 - (atlasSize + 1) / texture.getWidth()) / atlasSize;
+    float size = 1.0f / atlasSize;
     float tCoords[] = {
         size, 0.0f,
         size, size,
@@ -76,8 +76,8 @@ void GuiElementRender::render(const GuiElement *const element, glm::mat4 project
         shaderProgram.setUniform("modelViewMatrix", viewMatrix * this->tmpModelMatrix);
         float x = (float) (this->getTexPos(element) % atlasSize);
         float y = (float) (this->getTexPos(element) / atlasSize);
-        shaderProgram.setUniform("texPosX", (x + 1.5f) / this->texture.getWidth() + x / atlasSize);
-        shaderProgram.setUniform("texPosY", (y + 1.5f) / this->texture.getWidth() + y / atlasSize);
+        shaderProgram.setUniform("texPosX", x / atlasSize);
+        shaderProgram.setUniform("texPosY", y / atlasSize);
 
         glBindVertexArray(this->vao);
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
