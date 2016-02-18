@@ -17,7 +17,7 @@
 #endif //__ANDROID__
 
 MainMenu::MainMenu(std::function<bool(Window *window)> switchWindow) : Window(switchWindow) {
-    GuiButton *b = new GuiButton(GUI_MIDDLE_CENTER, 0, -100, 225, 75, new int[2]{3, 11}, 2);
+    GuiButton *b = new GuiButton("Play", GUI_MIDDLE_CENTER, 0, -100, 225, 75, new int[2]{3, 11}, 2);
     auto moveController = [=](const TouchPoint *const p) {
         if (p->state == 1) {
             if (b->canBeClicked(p)) {

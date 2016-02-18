@@ -6,6 +6,7 @@
 #include <render/RenderContext.h>
 #include <window/MainMenu.h>
 #include "MainMenuRender.h"
+#include <gui/GuiButton.h>
 
 MainMenuRender::MainMenuRender() : WindowRender() {
 
@@ -27,6 +28,14 @@ void MainMenuRender::render(Window *window, RenderContext *const renderContext) 
             0,
             (int) ((signed) renderContext->getWindowHeight()),
             0.0f)), 1.0f);
+        if (GuiButton *b = dynamic_cast<GuiButton *>(guiElement)) {
+            if (b->getText() != nullptr) {
+                renderContext->getGuiElementRender(b->getText())->render(b->getText(), projectionMatrix, glm::translate(viewMatrix, glm::vec3(
+                    0,
+                    (int) ((signed) renderContext->getWindowHeight()),
+                    0.0f)), 1.0f);
+            }
+        }
     }
 }
 

@@ -4,8 +4,9 @@
 
 #include "GuiButton.h"
 #include "InputManager.h"
+#include <string>
 
-GuiButton::GuiButton(char positionFlag, double x, double y, double width, double height, int *texturePos, int texturesNum) {
+GuiButton::GuiButton(const std::string &string, char positionFlag, double x, double y, double width, double height, int *texturePos, int texturesNum) {
     this->positionFlag = positionFlag;
     this->rawX = x;
     this->rawY = y;
@@ -13,6 +14,9 @@ GuiButton::GuiButton(char positionFlag, double x, double y, double width, double
     this->height = height;
     this->texturesNum = texturesNum;
     this->texturePos = texturePos;
+    if (string.length() > 0) {
+        this->text = new GuiText(string, x, y, positionFlag, height / 2.5, 0, 0);
+    }
 }
 
 bool GuiButton::onClick(const TouchPoint *const touchPoint) {
@@ -44,4 +48,9 @@ void GuiButton::setPressed(bool pressed) {
 bool GuiButton::canBeClicked(const TouchPoint *const p) {
     return p->x > this->getX() && p->x < this->getX() + this->getWidth() &&
            p->y > this->getY() && p->y < this->getY() + this->getHeight();
+}
+
+void GuiButton::reinit(unsigned int windowWidth, unsigned int windowHeight) {
+    GuiElement::reinit(windowWidth, windowHeight);
+    if (this->text != nullptr) this->text->reinit(windowWidth, windowHeight);
 }

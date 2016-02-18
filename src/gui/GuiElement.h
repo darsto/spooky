@@ -73,7 +73,7 @@ public:
         GuiElement::visible = visible;
     }
 
-    void reinit(unsigned int windowWidth, unsigned int windowHeight) {
+    virtual void reinit(unsigned int windowWidth, unsigned int windowHeight) {
         double px = rawX;
         double py = rawY;
         switch(this->positionFlag) {
