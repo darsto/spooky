@@ -12,10 +12,9 @@ MainMenuRender::MainMenuRender() : WindowRender() {
 }
 
 void MainMenuRender::init(RenderContext *const renderContext) {
-    viewMatrix = glm::lookAt(glm::vec3(0, 0, 0.0f), glm::vec3(0, 0, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-    projectionMatrix = glm::ortho(0.0f, float(renderContext->getWindowWidth()), 0.0f, float(renderContext->getWindowHeight()));
     glEnable(GL_BLEND);
     glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+    this->resize(renderContext);
 }
 
 void MainMenuRender::render(Window *window, RenderContext *const renderContext) {
