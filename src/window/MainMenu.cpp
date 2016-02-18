@@ -17,10 +17,11 @@
 #endif //__ANDROID__
 
 MainMenu::MainMenu(std::function<bool(Window *window)> switchWindow) : Window(switchWindow) {
-    GuiButton *b = new GuiButton(GUI_MIDDLE_CENTER, 0, -100, 150, 75, new int[2] {3, 11}, 2);
-    auto moveController = [&](const TouchPoint *const p) {
+    GuiButton *b = new GuiButton(GUI_MIDDLE_CENTER, 0, -100, 225, 75, new int[2]{3, 11}, 2);
+    auto moveController = [=](const TouchPoint *const p) {
         if (p->state == 1) {
             if (b->canBeClicked(p)) {
+                this->switchWindow(new Game(switchWindow));
             }
             return false;
         }
@@ -28,9 +29,9 @@ MainMenu::MainMenu(std::function<bool(Window *window)> switchWindow) : Window(sw
     };
     b->setOnClickListener(moveController);
     this->guiElements.push_back(b);
-    b = new GuiButton(GUI_MIDDLE_CENTER, 0, 0, 150, 75, new int[2] {3, 11}, 2);
+    b = new GuiButton(GUI_MIDDLE_CENTER, 0, 0, 225, 75, new int[2]{3, 11}, 2);
     this->guiElements.push_back(b);
-    b = new GuiButton(GUI_MIDDLE_CENTER, 0, 100, 150, 75, new int[2] {3, 11}, 2);
+    b = new GuiButton(GUI_MIDDLE_CENTER, 0, 100, 225, 75, new int[2]{3, 11}, 2);
     this->guiElements.push_back(b);
     GuiText *t = new GuiText(std::string("Dev Build: ") + __DATE__ + " " + __TIME__, 15, 15, GUI_BOTTOM_LEFT, 32, 0, 0);
     this->guiElements.push_back(t);
@@ -51,18 +52,25 @@ void MainMenu::handleKeyboard(const Keypress *const keypress) {
 }
 
 void MainMenu::handleClick(const TouchPoint *const p) {
+    bool clicked = false;
     for (GuiElement *e : this->guiElements) {
         if (GuiButton *b = dynamic_cast<GuiButton *>(e)) {
             if (b->canBeClicked(p)) {
                 if (p->state == 1) this->resetButtons(p, b);
                 if ((p->state == 0 && (!b->isPressed()) || b->getTouchedBy() == p->id) ||
                     (b->getTouchedBy() == p->id && p->state == 2)) {
-                    this->switchWindow(new Game(switchWindow));
                     if (b->onClick(p)) {
+                        clicked = true;
                         break;
                     }
                 }
             }
+        }
+    }
+
+    if (!clicked) {
+        if (p->state == 1) {
+            this->resetButtons(p, nullptr);
         }
     }
 }
