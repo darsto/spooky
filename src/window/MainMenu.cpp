@@ -17,7 +17,7 @@
 #endif //__ANDROID__
 
 MainMenu::MainMenu(std::function<bool(Window *window)> switchWindow) : Window(switchWindow) {
-    GuiButton *b = new GuiButton("Play", GUI_MIDDLE_CENTER, 0, -100, 225, 75, new int[2]{3, 11}, 2);
+    GuiButton *b = new GuiButton("Play", GUI_MIDDLE_CENTER, 0, -200, 450, 150, new int[2]{3, 11}, 2);
     auto moveController = [=](const TouchPoint *const p) {
         if (p->state == 1) {
             if (b->canBeClicked(p)) {
@@ -29,9 +29,9 @@ MainMenu::MainMenu(std::function<bool(Window *window)> switchWindow) : Window(sw
     };
     b->setOnClickListener(moveController);
     this->guiElements.push_back(b);
-    b = new GuiButton(GUI_MIDDLE_CENTER, 0, 0, 225, 75, new int[2]{3, 11}, 2);
+    b = new GuiButton(GUI_MIDDLE_CENTER, 0, 0, 450, 150, new int[2]{3, 11}, 2);
     this->guiElements.push_back(b);
-    b = new GuiButton(GUI_MIDDLE_CENTER, 0, 100, 225, 75, new int[2]{3, 11}, 2);
+    b = new GuiButton(GUI_MIDDLE_CENTER, 0, 200, 450, 150, new int[2]{3, 11}, 2);
     this->guiElements.push_back(b);
     GuiText *t = new GuiText(std::string("Dev Build: ") + __DATE__ + " " + __TIME__, 15, 15, GUI_BOTTOM_LEFT, 32, 0, 0);
     this->guiElements.push_back(t);
