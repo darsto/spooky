@@ -35,8 +35,8 @@ public:
                 int texXPos = i == 0 ? 0 : (i == (int)(ratio - 1) ? 2 : 1);
                 float x = (float) ((this->getTexPos(element) + texXPos) % atlasSize);
                 float y = (float) ((this->getTexPos(element) + texXPos) / atlasSize);
-                shaderProgram.setUniform("texPosX", x / atlasSize);
-                shaderProgram.setUniform("texPosY", y / atlasSize);
+                shaderProgram.setUniform("texPosX", x / atlasSize + 0.5f / texture.getWidth());
+                shaderProgram.setUniform("texPosY", y / atlasSize + 0.5f / texture.getHeight());
 
                 glBindVertexArray(this->vao);
                 glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
