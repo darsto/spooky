@@ -5,6 +5,9 @@
 #include "Texture.h"
 #include <SOIL.h>
 
+int boundTexId = -1;
+int activeTexId = -1;
+
 Texture::Texture() {
 }
 
@@ -69,8 +72,14 @@ void Texture::setFiltering(int a_tfMagnification, int a_tfMinification) {
 
 void Texture::bindTexture(int iTextureUnit) {
     this->boundId = iTextureUnit;
-    glActiveTexture(GL_TEXTURE0 + iTextureUnit);
-    glBindTexture(GL_TEXTURE_2D, uiTexture);
+    if (boundTexId != uiTexture || activeTexId != iTextureUnit) {
+        glActiveTexture(GL_TEXTURE0 + iTextureUnit);
+        activeTexId = iTextureUnit;
+    }
+    if (boundTexId != uiTexture) {
+        glBindTexture(GL_TEXTURE_2D, uiTexture);
+        boundTexId = uiTexture;
+    }
 }
 
 int Texture::getMinificationFilter() {
