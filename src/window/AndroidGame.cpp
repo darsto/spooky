@@ -136,7 +136,7 @@ void Game::handleClick(const TouchPoint *const p) {
         if (controller->isVisible() && controller->getTouchedBy() == p->id) {
             double x = p->x - controller->getX() - controller->getWidth() / 2;
             double y = p->y - controller->getY() - controller->getHeight() / 2;
-            if (sqrt(x * x + y * y) > joystick->getWidth() / 2) {
+            if (std::sqrt(x * x + y * y) > joystick->getWidth() / 2) {
                 double angle = atan2(y, x);
                 x = cos(angle) * controller->getWidth() / 2;
                 y = sin(angle) * controller->getHeight() / 2;
