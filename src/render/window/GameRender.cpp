@@ -86,7 +86,7 @@ void GameRender::init(RenderContext *const renderContext) {
     this->resize(renderContext);
 }
 
-GameRender::GameRender() { }
+GameRender::GameRender() : WindowRender() { }
 
 BlockRender *GameRender::getBlockRender(const Block *const block) {
     return blockRenders[typeid(*block).name()];
