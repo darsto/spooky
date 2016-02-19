@@ -32,7 +32,7 @@ void MainMenuRender::render(Window *window, RenderContext *const renderContext) 
             if (b->getText() != nullptr) {
                 renderContext->getGuiElementRender(b->getText())->render(b->getText(), projectionMatrix, glm::translate(viewMatrix, glm::vec3(
                     0,
-                    (int) ((signed) renderContext->getWindowHeight()),
+                    (int) ((signed) renderContext->getWindowHeight() - (b->isPressed() * (b->getHeight() * 0.04))),
                     0.0f)), 1.0f);
             }
         }
