@@ -5,9 +5,10 @@
 #include "RenderManager.h"
 #include <Application.h>
 #include <render/window/GameRender.h>
-#include <render/window/MainMenuRender.h>
+#include <render/window/MenuRender.h>
 #include "../window/Game.h"
 #include "../window/MainMenu.h"
+#include "../window/Settings.h"
 
 RenderManager::RenderManager() { }
 
@@ -82,7 +83,8 @@ bool RenderManager::initGL() {
 
 bool RenderManager::initRenders() {
     windowRenders.insert(std::make_pair(typeid(Game).name(), new GameRender()));
-    windowRenders.insert(std::make_pair(typeid(MainMenu).name(), new MainMenuRender()));
+    windowRenders.insert(std::make_pair(typeid(MainMenu).name(), new MenuRender()));
+    windowRenders.insert(std::make_pair(typeid(Settings).name(), new MenuRender()));
     return true;
 }
 

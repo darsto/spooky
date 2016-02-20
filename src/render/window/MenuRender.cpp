@@ -5,25 +5,26 @@
 #include <window/Window.h>
 #include <render/RenderContext.h>
 #include <window/MainMenu.h>
-#include "MainMenuRender.h"
+#include "MenuRender.h"
 #include <gui/GuiButton.h>
+#include <window/Menu.h>
 
-MainMenuRender::MainMenuRender() : WindowRender() {
+MenuRender::MenuRender() : WindowRender() {
 
 }
 
-void MainMenuRender::init(RenderContext *const renderContext) {
+void MenuRender::init(RenderContext *const renderContext) {
     glEnable(GL_BLEND);
     glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
     this->resize(renderContext);
 }
 
-void MainMenuRender::render(Window *window, RenderContext *const renderContext) {
-    MainMenu *game = ((MainMenu *) window);
+void MenuRender::render(Window *window, RenderContext *const renderContext) {
+    Menu *menu = ((Menu *) window);
 
     glClearColor(0.7, 0.7, 0.7, 0.0);
     glClear(GL_COLOR_BUFFER_BIT);
-    for (GuiElement *guiElement : game->getGuiElements()) {
+    for (GuiElement *guiElement : menu->getGuiElements()) {
         renderContext->getGuiElementRender(guiElement)->render(guiElement, projectionMatrix, glm::translate(viewMatrix, glm::vec3(
             0,
             (int) ((signed) renderContext->getWindowHeight()),
@@ -39,7 +40,7 @@ void MainMenuRender::render(Window *window, RenderContext *const renderContext) 
     }
 }
 
-void MainMenuRender::resize(RenderContext *const renderContext) {
+void MenuRender::resize(RenderContext *const renderContext) {
     viewMatrix = glm::lookAt(glm::vec3(0, 0, 0.0f), glm::vec3(0, 0, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
     this->projectionMatrix = glm::ortho(0.0f, float(renderContext->getWindowWidth()), 0.0f, float(renderContext->getWindowHeight()));
 }

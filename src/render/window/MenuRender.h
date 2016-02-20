@@ -8,10 +8,10 @@
 #include <render/RenderContext.h>
 #include "WindowRender.h"
 
-class MainMenuRender : public WindowRender {
+class MenuRender : public WindowRender {
 
 public:
-    MainMenuRender();
+    MenuRender();
     virtual void init(RenderContext *const renderContext) override;
     virtual void render(Window *window, RenderContext *const renderContext) override;
     virtual void resize(RenderContext *const renderContext) override;
