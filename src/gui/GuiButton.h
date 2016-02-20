@@ -57,7 +57,7 @@ protected:
     GuiText *text = nullptr;
     int texturesNum;
     int *texturePos;
-    bool pressed;
+    bool pressed = false;
     int touchedBy;
     std::function<bool(const TouchPoint *const)> onClickListener;
 };
