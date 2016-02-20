@@ -6,6 +6,7 @@
 #include <gui/GuiText.h>
 #include "MainMenu.h"
 #include "Game.h"
+#include "Settings.h"
 #include <string>
 #include <InputManager.h>
 #include <logging.h>
@@ -18,7 +19,7 @@
 
 MainMenu::MainMenu(std::function<bool(Window *window)> switchWindow) : Window(switchWindow) {
     GuiButton *b = new GuiButton("Play", GUI_MIDDLE_CENTER, 0, -220, 375, 125, new int[2]{3, 11}, 2);
-    auto moveController = [=](const TouchPoint *const p) {
+    auto playAction = [=](const TouchPoint *const p) {
         if (p->state == 1) {
             if (b->canBeClicked(p)) {
                 this->switchWindow(new Game(switchWindow));
@@ -27,9 +28,19 @@ MainMenu::MainMenu(std::function<bool(Window *window)> switchWindow) : Window(sw
         }
         return true;
     };
-    b->setOnClickListener(moveController);
+    b->setOnClickListener(playAction);
     this->guiElements.push_back(b);
     b = new GuiButton("Settings", GUI_MIDDLE_CENTER, 0, -80, 375, 125, new int[2]{3, 11}, 2);
+    auto settingsAction = [=](const TouchPoint *const p) {
+        if (p->state == 1) {
+            if (b->canBeClicked(p)) {
+                this->switchWindow(new Settings(switchWindow));
+            }
+            return false;
+        }
+        return true;
+    };
+    b->setOnClickListener(settingsAction);
     this->guiElements.push_back(b);
     b = new GuiButton("About", GUI_MIDDLE_CENTER, 0, 60, 375, 125, new int[2]{3, 11}, 2);
     this->guiElements.push_back(b);
