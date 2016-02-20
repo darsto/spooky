@@ -24,10 +24,13 @@ public:
         toy->setX(6);
         toy->setY(5);
         this->map->addEntity(toy);
-        SimpleShape *sshape = new SimpleShape(this, 0);
-        sshape->setX(4);
-        sshape->setY(5);
-        this->map->addEntity(sshape);
+        for (int i = 0; i < 40; i++) {
+            SimpleShape *sshape = new SimpleShape(this, i % 3);
+            sshape->setX(3 + (rand() % 22) * 0.5);
+            sshape->setY(3 + (rand() % 8) * 0.5);
+            sshape->setAngle(M_2_PI * (rand() % 100) * 0.01);
+            this->map->addEntity(sshape);
+        }
     }
 
     Map *getMap() const {
