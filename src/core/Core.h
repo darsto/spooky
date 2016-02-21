@@ -6,9 +6,9 @@
 #define C003_CORE_H
 #pragma once
 
-#include "entity/SimpleShape.h"
+#include "map/entity/SimpleShape.h"
 #include "map/Map.h"
-#include "entity/EntityPlayer.h"
+#include "map/entity/EntityPlayer.h"
 
 class Core {
 

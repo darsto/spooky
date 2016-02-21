@@ -3,7 +3,7 @@
 //
 
 #include "EntityPlayer.h"
-#include "../map/Map.h"
+#include "core/map/Map.h"
 #include "EntityToy.h"
 
 Player::Player(Map *map) : EntityMoving(map, 0.55, 0.55) {

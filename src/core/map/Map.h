@@ -8,7 +8,7 @@
 
 #include <vector>
 #include "block/Block.h"
-#include "../entity/Entity.h"
+#include "../map/entity/Entity.h"
 #include "CollisionListener.h"
 #include "../Utils.h"
 #include "ContactFilter.h"

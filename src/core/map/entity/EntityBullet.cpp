@@ -3,7 +3,7 @@
 //
 
 #include "EntityBullet.h"
-#include "../map/Map.h"
+#include "core/map/Map.h"
 
 void EntityBullet::onCollision(IPositionable *object, char state) {
     if (state == 0) {

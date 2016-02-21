@@ -5,7 +5,7 @@
 #ifndef C003_SIMPLESHAPERENDER_H
 #define C003_SIMPLESHAPERENDER_H
 
-#include "../../core/entity/SimpleShape.h"
+#include <core/map/entity/SimpleShape.h>
 #include "DefaultEntityRender.h"
 
 class SimpleShapeRender : public DefaultEntityRender {

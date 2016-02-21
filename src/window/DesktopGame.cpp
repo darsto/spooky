@@ -11,7 +11,7 @@
 #include "../core/map/TiledTxtMapLoader.h"
 #include "render/RenderManager.h"
 #include "InputManager.h"
-#include <core/entity/EntityBullet.h>
+#include <core/map/entity/EntityBullet.h>
 #include "../logging.h"
 
 Game::Game(std::function<bool(Window *window)> switchWindow) : Window(switchWindow) {

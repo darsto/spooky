@@ -6,7 +6,7 @@
 #define C003_COLLISIONLISTENER_H
 
 #include <Box2D/Dynamics/b2WorldCallbacks.h>
-#include "../entity/Entity.h"
+#include <core/map/entity/Entity.h>
 
 class CollisionListener : public b2ContactListener {
 

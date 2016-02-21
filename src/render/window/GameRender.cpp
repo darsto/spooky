@@ -9,7 +9,7 @@
 #include "GameRender.h"
 #include "../../window/Game.h"
 #include "../../core/Core.h"
-#include <core/entity/EntityBullet.h>
+#include <core/map/entity/EntityBullet.h>
 #include <core/map/block/SimpleBlock.h>
 
 void GameRender::render(Window *window, RenderContext *const renderContext) {

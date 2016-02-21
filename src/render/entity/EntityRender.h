@@ -8,7 +8,7 @@
 
 #include <glm/detail/type_mat.hpp>
 #include <glm/detail/type_mat4x4.hpp>
-#include "../../core/entity/Entity.h"
+#include <core/map/entity/Entity.h>
 
 class EntityRender {
 public:

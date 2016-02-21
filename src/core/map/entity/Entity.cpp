@@ -3,7 +3,7 @@
 //
 
 #include "Entity.h"
-#include "../map/Map.h"
+#include "core/map/Map.h"
 
 Entity::Entity(Map *map, double width, double height) : map(map) {
     this->width = width;

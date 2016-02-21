@@ -7,7 +7,7 @@
 
 #include <Box2D/Dynamics/b2WorldCallbacks.h>
 #include <Box2D/Dynamics/b2Fixture.h>
-#include "../entity/Entity.h"
+#include "../map/entity/Entity.h"
 
 class ContactFilter : public b2ContactFilter {
 

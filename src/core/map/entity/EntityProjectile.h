@@ -6,7 +6,7 @@
 #define C003_ENTITYPROJECTILE_H
 #pragma once
 
-#include "../IPositionable.h"
+#include "core/IPositionable.h"
 #include "EntityMoving.h"
 
 class Core;

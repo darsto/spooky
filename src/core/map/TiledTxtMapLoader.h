@@ -9,7 +9,7 @@
 #include <sstream>
 #include "Map.h"
 #include "../map/block/SimpleBlock.h"
-#include "../entity/EntityPlayer.h"
+#include "../map/entity/EntityPlayer.h"
 
 std::vector<std::string> &split(const std::string &s, char delim, std::vector<std::string> &elems) {
     std::stringstream ss(s);

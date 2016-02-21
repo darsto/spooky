@@ -15,7 +15,7 @@
 #include <render/block/BlockRender.h>
 #include <render/entity/EntityRender.h>
 #include <core/map/block/Block.h>
-#include <core/entity/Entity.h>
+#include <core/map/entity/Entity.h>
 #include "WindowRender.h"
 
 class Game;
