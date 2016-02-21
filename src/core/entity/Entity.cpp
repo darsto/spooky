@@ -3,14 +3,14 @@
 //
 
 #include "Entity.h"
-#include "../Core.h"
+#include "../map/Map.h"
 
-Entity::Entity(Core *core, double width, double height) : core(core) {
+Entity::Entity(Map *map, double width, double height) : map(map) {
     this->width = width;
     this->height = height;
     bodyDef.type = b2_staticBody;
     bodyDef.position.Set(this->getX(), this->getY());
-    body = this->core->getMap()->getWorld()->CreateBody(&bodyDef);
+    body = this->map->getWorld()->CreateBody(&bodyDef);
     body->SetUserData(this);
     body->SetAngularDamping(30.0);
     body->SetLinearDamping(30.0);
@@ -30,5 +30,5 @@ void Entity::setX(double x) {
 }
 
 Entity::~Entity() {
-    this->core->getMap()->getWorld()->DestroyBody(this->body);
+    this->map->getWorld()->DestroyBody(this->body);
 }

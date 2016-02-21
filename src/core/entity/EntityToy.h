@@ -12,7 +12,7 @@ class Player;
 class EntityToy : public EntityMoving {
 
 public:
-    EntityToy(Core *core) : EntityMoving(core, 0.5, 0.5) {
+    EntityToy(Map *map) : EntityMoving(map, 0.5, 0.5) {
         b2PolygonShape shape;
         shape.SetAsBox(0.34, 0.17);
         b2FixtureDef fixDef;

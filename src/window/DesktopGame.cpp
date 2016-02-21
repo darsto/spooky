@@ -69,19 +69,19 @@ void Game::tick(double deltaTime) {
 void Game::handleKeyboard(const Keypress *const keypress) {
     if (keypress[SDLK_c].isPressed()) {
         double angle = atan2(0, 0) + M_PI; //TODO
-        EntityBullet *p = new EntityBullet(this->core, angle, 1);
+        EntityBullet *p = new EntityBullet(this->core->getMap(), angle, 1);
         p->setX(this->core->getPlayer()->getX() - (p->getWidth()) + 0.5 * cos(angle));
         p->setY(this->core->getPlayer()->getY() - (p->getHeight()) + 0.5 * sin(angle));
         this->core->getMap()->addEntity(p);
     }
     if (keypress[SDLK_n].isPressed()) {
-        EntityToy *p = new EntityToy(this->core);
+        EntityToy *p = new EntityToy(this->core->getMap());
         p->setX(this->core->getPlayer()->getX() - this->core->getPlayer()->getWidth() / 2);
         p->setY(this->core->getPlayer()->getY() - this->core->getPlayer()->getHeight() / 2);
         this->core->getMap()->addEntity(p);
     }
     if (keypress[SDLK_m].isPressed()) {
-        SimpleShape *p = new SimpleShape(this->core, (unsigned int) (rand() % 3));
+        SimpleShape *p = new SimpleShape(this->core->getMap(), (unsigned int) (rand() % 3));
         p->setX(this->core->getPlayer()->getX() - this->core->getPlayer()->getWidth() / 2);
         p->setY(this->core->getPlayer()->getY() - this->core->getPlayer()->getHeight() / 2);
         this->core->getMap()->addEntity(p);
@@ -132,7 +132,7 @@ void Game::handleClick(const TouchPoint *const p) {
             }
         } else if (p->state == 1) {
             if (this->heldEntity == nullptr) {
-                SimpleShape *s = new SimpleShape(this->core, (unsigned int) (rand() % 3));
+                SimpleShape *s = new SimpleShape(this->core->getMap(), (unsigned int) (rand() % 3));
                 s->setX(x + s->getWidth() / 2);
                 s->setY(y + s->getWidth() / 2);
                 this->core->getMap()->addEntity(s);

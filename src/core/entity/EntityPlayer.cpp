@@ -3,10 +3,10 @@
 //
 
 #include "EntityPlayer.h"
-#include "../Core.h"
+#include "../map/Map.h"
 #include "EntityToy.h"
 
-Player::Player(Core *core) : EntityMoving(core, 0.55, 0.55) {
+Player::Player(Map *map) : EntityMoving(map, 0.55, 0.55) {
     b2CircleShape shape;
     shape.m_p.Set(0, 0);
     shape.m_radius = 0.35; // A bit more than our size because it is only a sensor
@@ -22,13 +22,13 @@ Player::Player(Core *core) : EntityMoving(core, 0.55, 0.55) {
  * Teleport player by given vector
  */
 bool Player::teleport(double x, double y) {
-    if (this->core->getMap()->getBlock((int) (this->getX() + x), (int) (this->getY() + this->height * 0.55 + y)) == nullptr) {
+    if (this->map->getBlock((int) (this->getX() + x), (int) (this->getY() + this->height * 0.55 + y)) == nullptr) {
         this->setX(this->getX() + x);
         this->setY(this->getY() + y);
     } else {
         double angle = atan2(y, -x) + M_PI;
         static auto isEmpty = [&](int x, int y) {
-            return this->core->getMap()->getBlock(x, y) == nullptr;
+            return this->map->getBlock(x, y) == nullptr;
         };
         Ray *ray = projectRay(x + this->getX() + this->width * 0.55, y + this->getY() + this->height * 0.55, angle + M_PI, _len2d(x, y), isEmpty);
         this->setX(this->getX() + x + ray->getCompX() - cos(angle) * this->width / 2);

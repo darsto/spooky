@@ -5,7 +5,7 @@
 #include "EntityMoving.h"
 #include "../map/Map.h"
 
-EntityMoving::EntityMoving(Core *core, double width, double height) : Entity(core, width, height) {
+EntityMoving::EntityMoving(Map *map, double width, double height) : Entity(map, width, height) {
     body->SetType(b2_dynamicBody);
 }
 

@@ -13,7 +13,7 @@
 class EntityMoving : public Entity {
 
 public:
-    EntityMoving(Core *core, double width, double height);
+    EntityMoving(Map *map, double width, double height);
 
     virtual void applyImpulse(double x, double y);
 

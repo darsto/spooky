@@ -14,7 +14,7 @@
 class Player : public EntityMoving, public IEntityLighted {
 
 public:
-    Player(Core *core);
+    Player(Map *map);
     bool teleport(double x, double y);
 
     virtual void onCollision(IPositionable *object, char state) override;

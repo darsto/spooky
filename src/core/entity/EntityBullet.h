@@ -10,7 +10,7 @@
 class EntityBullet : public EntityProjectile {
 
 public:
-    EntityBullet(Core *core, double angle, double velocity) : EntityProjectile(core, 0.18, 0.18) {
+    EntityBullet(Map *map, double angle, double velocity) : EntityProjectile(map, 0.18, 0.18) {
         this->angle = angle;
         this->velocity = velocity;
         b2CircleShape shape;

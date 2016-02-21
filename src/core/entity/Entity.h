@@ -16,7 +16,7 @@ class Core;
 
 class Entity : public IPositionable {
 public:
-    Entity(Core *core, double width, double height);
+    Entity(Map *map, double width, double height);
 
     virtual double getX() const override {
         return x;
@@ -75,7 +75,7 @@ public:
     virtual ~Entity();
 
 protected:
-    Core *core;
+    Map *map;
     double x = 0, y = 0;
     double width, height;
     b2Body *body;

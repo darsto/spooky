@@ -41,7 +41,7 @@ public:
      * 1  :  0.25    0.25
      * 2  :  0.5     0.75
      */
-    SimpleShape(Core *core, unsigned int shapeId) : EntityMoving(core, shapeDefs.at(shapeId)->width, shapeDefs.at(shapeId)->height) {
+    SimpleShape(Map *map, unsigned int shapeId) : EntityMoving(map, shapeDefs.at(shapeId)->width, shapeDefs.at(shapeId)->height) {
         this->body->CreateFixture(shapeDefs.at(shapeId)->fixtureDef);
         this->texPos = shapeId;
     }
