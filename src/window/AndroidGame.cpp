@@ -12,7 +12,7 @@
 #include <gui/GuiButton.h>
 
 Game::Game(std::function<bool(Window *window)> switchWindow) : Window(switchWindow) {
-    MapLoader *mapLoader = new TiledTxtMapLoader("test_map.txt");
+    MapLoader *mapLoader = new TiledTxtMapLoader("test_map");
     Map *bmap = mapLoader->loadMap();
     this->core = new Core(bmap);
     delete mapLoader;

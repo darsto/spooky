@@ -20,7 +20,6 @@ std::vector<std::string> &split(const std::string &s, char delim, std::vector<st
     return elems;
 }
 
-
 std::vector<std::string> split(const std::string &s, char delim) {
     std::vector<std::string> elems;
     split(s, delim, elems);
@@ -75,6 +74,33 @@ TiledTxtMapLoader::TiledTxtMapLoader(const std::string &fileName) {
         }
 
         myfile.close();
+
+        file_path += "-entities";
+
+        std::ifstream myfile2(file_path.c_str());
+        if (myfile2.is_open()) {
+            for (int y = 0; y < 2; y++) {
+                getline(myfile2, line);
+                std::vector<std::string> blockRow = split(line, ',');
+                Entity *sshape;
+                int id = atoi(blockRow.at(0).c_str());
+                switch (id) {
+                    case 0:
+                        sshape = new Player(this->map);
+                        break;
+                    case 1:
+                        sshape = new EntityToy(this->map);
+                        break;
+                    default:
+                        break;
+                }
+                sshape->setX(atoi(blockRow.at(1).c_str()));
+                sshape->setY(atoi(blockRow.at(2).c_str()));
+                sshape->setAngle(std::stod(blockRow.at(3).c_str()));
+                this->map->addEntity(sshape);
+            }
+            myfile2.close();
+        }
     }
 }
 
