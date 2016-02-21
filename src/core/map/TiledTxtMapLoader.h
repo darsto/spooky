@@ -7,6 +7,7 @@
 
 #include <fstream>
 #include <sstream>
+#include <core/map/entity/EntityFather.h>
 #include "Map.h"
 #include "../map/block/SimpleBlock.h"
 #include "../map/entity/EntityPlayer.h"
@@ -79,7 +80,7 @@ TiledTxtMapLoader::TiledTxtMapLoader(const std::string &fileName) {
 
         std::ifstream myfile2(file_path.c_str());
         if (myfile2.is_open()) {
-            for (int y = 0; y < 2; y++) {
+            for (int y = 0; y < 3; y++) {
                 getline(myfile2, line);
                 std::vector<std::string> blockRow = split(line, ',');
                 Entity *sshape;
@@ -91,11 +92,14 @@ TiledTxtMapLoader::TiledTxtMapLoader(const std::string &fileName) {
                     case 1:
                         sshape = new EntityToy(this->map);
                         break;
+                    case 2:
+                        sshape = new EntityFather(this->map);
+                        break;
                     default:
                         break;
                 }
-                sshape->setX(atoi(blockRow.at(1).c_str()));
-                sshape->setY(atoi(blockRow.at(2).c_str()));
+                sshape->setX(std::stod(blockRow.at(1).c_str()));
+                sshape->setY(std::stod(blockRow.at(2).c_str()));
                 sshape->setAngle(std::stod(blockRow.at(3).c_str()));
                 this->map->addEntity(sshape);
             }

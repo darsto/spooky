@@ -10,6 +10,7 @@
 #include "../../window/Game.h"
 #include "../../core/Core.h"
 #include <core/map/entity/EntityBullet.h>
+#include <core/map/entity/EntityFather.h>
 #include <core/map/block/SimpleBlock.h>
 
 void GameRender::render(Window *window, RenderContext *const renderContext) {
@@ -112,4 +113,5 @@ void GameRender::initRenders() {
     entityRenders.insert(std::make_pair(typeid(EntityToy).name(), new DefaultEntityRender("toy", "shader")));
     entityRenders.insert(std::make_pair(typeid(EntityBullet).name(), new DefaultEntityRender("bullet", "shader")));
     entityRenders.insert(std::make_pair(typeid(SimpleShape).name(), new SimpleShapeRender()));
+    entityRenders.insert(std::make_pair(typeid(EntityFather).name(), new DefaultEntityRender("toy", "shader")));
 }
