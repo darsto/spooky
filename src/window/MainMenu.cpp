@@ -17,7 +17,7 @@
 
 #endif //__ANDROID__
 
-MainMenu::MainMenu(std::function<bool(Window *window)> switchWindow) : Window(switchWindow) {
+MainMenu::MainMenu(const std::function<bool(Window *window)> &switchWindow) : Window(switchWindow) {
     GuiButton *b = new GuiButton("Play", GUI_MIDDLE_CENTER, 0, -220, 375, 125, new int[2]{3, 11}, 2);
     auto playAction = [=](const TouchPoint *const p) {
         if (p->state == 1) {

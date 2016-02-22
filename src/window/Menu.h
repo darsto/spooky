@@ -16,7 +16,7 @@ class Menu : public Window {
 
 public:
 
-    Menu(std::function<bool(Window *window)> switchWindow) : Window(switchWindow) { }
+    Menu(const std::function<bool(Window *window)> &switchWindow) : Window(switchWindow) { }
 
     virtual void reload(unsigned int windowWidth, unsigned int windowHeight) override;
     virtual void tick(double deltaTime) override;

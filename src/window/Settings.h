@@ -14,7 +14,7 @@ class GuiButton;
 class Settings : public Menu {
 
 public:
-    Settings(std::function<bool(Window *window)> switchWindow);
+    Settings(const std::function<bool(Window *window)> &switchWindow);
     virtual void reload(unsigned int windowWidth, unsigned int windowHeight);
     virtual void tick(double deltaTime);
     virtual void handleClick(const TouchPoint *const touchPoint);

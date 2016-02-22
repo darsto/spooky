@@ -24,7 +24,7 @@ class Entity;
 class Game : public Window {
 
 public:
-    Game(std::function<bool(Window *window)> switchWindow);
+    Game(const std::function<bool(Window *window)> &switchWindow);
     virtual void reload(unsigned int windowWidth, unsigned int windowHeight) override;
     virtual void tick(double deltaTime) override;
     virtual void handleKeyboard(const Keypress *const keypress) override;

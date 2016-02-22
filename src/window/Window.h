@@ -18,7 +18,7 @@ class Keypress;
 
 class Window {
 public:
-    Window(std::function<bool(Window *window)> switchWindow) : switchWindow(switchWindow) { };
+    Window(const std::function<bool(Window *window)> &switchWindow) : switchWindow(switchWindow) { };
     virtual void reload(unsigned int windowWidth, unsigned int windowHeight) = 0;
     virtual void tick(double deltaTime) = 0;
     virtual void handleKeyboard(const Keypress *const keypress) = 0;

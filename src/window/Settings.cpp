@@ -17,7 +17,7 @@
 
 #endif //__ANDROID__
 
-Settings::Settings(std::function<bool(Window *window)> switchWindow) : Menu(switchWindow) {
+Settings::Settings(const std::function<bool(Window *window)> &switchWindow) : Menu(switchWindow) {
     GuiButton *b = new GuiButton("Setting 1", GUI_MIDDLE_CENTER, 0, -80, 375, 125, new int[2]{3, 11}, 2);
     auto button1Action = [=](const TouchPoint *const p) {
         if (p->state == 1) {
