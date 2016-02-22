@@ -113,5 +113,5 @@ void GameRender::initRenders() {
     entityRenders.insert(std::make_pair(typeid(EntityToy).name(), new DefaultEntityRender("toy", "shader")));
     entityRenders.insert(std::make_pair(typeid(EntityBullet).name(), new DefaultEntityRender("bullet", "shader")));
     entityRenders.insert(std::make_pair(typeid(SimpleShape).name(), new SimpleShapeRender()));
-    entityRenders.insert(std::make_pair(typeid(EntityFather).name(), new DefaultEntityRender("toy", "shader")));
+    entityRenders.insert(std::make_pair(typeid(EntityFather).name(), new DefaultEntityRender("parents", "shader")));
 }
