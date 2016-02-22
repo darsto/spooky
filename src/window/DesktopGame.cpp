@@ -109,6 +109,9 @@ void Game::handleKeyboard(const Keypress *const keypress) {
     if (keypress[SDLK_q].isPressed()) {
         this->core->stop();
     }
+    if (keypress[SDLK_p].isPressed()) {
+        this->core->getMap()->saveEntities();
+    }
     if (keypress[SDLK_MINUS].isDown()) {
         this->core->setBlockSize(this->core->getBlockSize() - 0.15);
     }

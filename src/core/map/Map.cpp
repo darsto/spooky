@@ -2,6 +2,8 @@
 // Created by dar on 11/25/15.
 //
 
+#include <core/map/entity/EntityPlayer.h>
+#include <core/map/entity/EntityFather.h>
 #include "Map.h"
 
 Map::~Map() {
@@ -28,5 +30,29 @@ void Map::update() {
     }
     for (Entity *entity : this->entities) {
         entity->update();
+    }
+}
+
+void Map::saveEntities() {
+    std::string filePath = this->fileName + "-entities";
+#ifdef __ANDROID__
+    filePath = "/sdcard/c003/" + filePath;
+#endif // __ANDROID__
+    std::ofstream myfile;
+    myfile.open(filePath);
+    if (myfile.is_open()) {
+        for (int i = 0; i < this->getEntities().size(); i++) {
+            Entity *e = this->getEntities().at(i);
+            int id = -1;
+            if (Player *p = dynamic_cast<Player *>(e)) id = 0;
+            else if (EntityToy *p = dynamic_cast<EntityToy *>(e)) id = 1;
+            else if (EntityFather *p = dynamic_cast<EntityFather *>(e)) id = 2;
+            else continue;
+            myfile << id << "," << e->getX() << "," << e->getY() << "," << e->getAngle();
+            if (i != this->getEntities().size() - 1) {
+                myfile << "\n";
+            }
+        }
+        myfile.close();
     }
 }

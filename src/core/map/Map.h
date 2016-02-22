@@ -7,6 +7,7 @@
 #pragma once
 
 #include <vector>
+#include <fstream>
 #include "block/Block.h"
 #include "../map/entity/Entity.h"
 #include "CollisionListener.h"
@@ -17,7 +18,7 @@
 class Map {
 
 public:
-    Map(unsigned int width, unsigned int height) : world(new b2World(b2Vec2(0.0, 0.0))), width(width), height(height) {
+    Map(const std::string &fileName, unsigned int width, unsigned int height) : fileName(fileName), world(new b2World(b2Vec2(0.0, 0.0))), width(width), height(height) {
         world->SetContactFilter(&contactFilter);
         world->SetContactListener(&contactListener);
     };
@@ -63,7 +64,10 @@ public:
         SAFE_DELETE(entity);
     }
 
+    void saveEntities();
+
 private:
+    const std::string fileName;
     const unsigned int width, height;
     b2World *const world;
     std::vector<Block *> blocks;
