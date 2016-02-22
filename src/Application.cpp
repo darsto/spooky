@@ -124,12 +124,15 @@ void Application::handleEvents() {
                 break;
             case SDL_MOUSEBUTTONDOWN:
             case SDL_MOUSEBUTTONUP:
-                if (e.button.button >= 0 && e.button.button < 5) this->isMouseDown[e.button.button] = e.type == SDL_MOUSEBUTTONDOWN;
+                if (e.button.button >= 0 && e.button.button < 5) this->isMouseDown[e.button.button] = (e.type == SDL_MOUSEBUTTONDOWN);
+                LOGD("%s button with id %d\n", e.type == SDL_MOUSEBUTTONDOWN ? "Pressed" : "Unpressed", e.button.button);
             case SDL_MOUSEMOTION: {
-                if (this->isMouseDown[e.button.button] || e.type == SDL_MOUSEBUTTONUP) {
+                int button = (int) round(log(e.button.button) / log(2)) + 1;
+                if (button < 0 || button >= 5) break;
+                if (this->isMouseDown[button] || e.type == SDL_MOUSEBUTTONUP) {
                     int x, y;
                     SDL_GetMouseState(&x, &y);
-                    this->inputManager->handleClick(e.button.button, e.type == SDL_MOUSEBUTTONDOWN ? 0 : (e.type == SDL_MOUSEBUTTONUP ? 1 : 2), x, y);
+                    this->inputManager->handleClick(button, e.type == SDL_MOUSEBUTTONDOWN ? 0 : (e.type == SDL_MOUSEBUTTONUP ? 1 : 2), x, y);
                 }
                 break;
             }

@@ -20,6 +20,11 @@ Game::Game(const std::function<bool(Window *window)> &switchWindow) : Window(swi
     this->core = new Core(bmap);
     delete mapLoader;
 
+    double ringScale = 2 * this->core->getBlockSize();
+    this->entityRotationRing = new GuiElement(GUI_TOP_LEFT, 0, 0, ringScale, ringScale, 6);
+    this->entityRotationRing->setVisible(false);
+    this->entityRotationRing->setAngle(2);
+    this->guiElements.push_back(this->entityRotationRing);
     GuiButton *b = new GuiButton(GUI_TOP_RIGHT, 15, 15, 75, 75, 0);
     this->guiElements.push_back(b);
     GuiText *t = new GuiText(string("Dev Build: ") + __DATE__ + " " + __TIME__, 15, 15, GUI_BOTTOM_LEFT, 32, 0, 0);
@@ -128,7 +133,7 @@ void Game::handleClick(const TouchPoint *const p) {
             this->heldEntity = this->getEntityAt(x, y);
             int i = 0;
         } else if (p->state == 2) {
-            if (this->heldEntity != nullptr) {
+            if (this->heldEntity != nullptr && !this->entityRotationRing->isVisible()) {
                 Entity *e = this->heldEntity;
                 e->setX(x + e->getWidth() / 2);
                 e->setY(y + e->getHeight() / 2);
@@ -141,14 +146,42 @@ void Game::handleClick(const TouchPoint *const p) {
                 this->core->getMap()->addEntity(s);
             } else {
                 this->heldEntity = nullptr;
+                this->entityRotationRing->setVisible(false);
+                SDL_ShowCursor(true);
+                SDL_WarpMouseGlobal(this->mouseLockX, this->mouseLockY);
             }
         }
-    } else if (p->id == SDL_BUTTON_RIGHT) {
+    } else if (p->id == SDL_BUTTON_MIDDLE) {
         if (p->state == 0) {
             this->heldEntity = this->getEntityAt(x, y);
         } else if (p->state == 1) {
             if (this->heldEntity != nullptr && this->getEntityAt(x, y) == this->heldEntity) {
                 this->heldEntity->remove();
+            }
+        }
+    } else if (p->id == SDL_BUTTON_RIGHT) {
+        if (p->state == 0) {
+            if (this->heldEntity != nullptr) {
+                this->entityRotationRing->setX(p->x - this->entityRotationRing->getWidth() / 2);
+                this->entityRotationRing->setY(p->y - this->entityRotationRing->getHeight() / 2);
+                this->entityRotationRing->setAngle(this->heldEntity->getAngle());
+                this->entityRotationRing->setVisible(true);
+                SDL_GetGlobalMouseState(&this->mouseLockX, &this->mouseLockY);
+                SDL_ShowCursor(false);
+            }
+        } else if (p->state == 2) {
+            if (this->heldEntity != nullptr) {
+                int x, y;
+                SDL_GetGlobalMouseState(&x, &y);
+                double angle = atan2(y - this->mouseLockY, x - this->mouseLockX);
+                this->entityRotationRing->setAngle(angle);
+                this->heldEntity->setAngle(angle);
+            }
+        } else if (p->state == 1) {
+            if (this->entityRotationRing->isVisible()) {
+                this->entityRotationRing->setVisible(false);
+                SDL_ShowCursor(true);
+                SDL_WarpMouseGlobal(this->mouseLockX, this->mouseLockY);
             }
         }
     }

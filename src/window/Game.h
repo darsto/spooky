@@ -57,6 +57,9 @@ private:
 #else
     Entity *heldEntity = nullptr;
     Entity *getEntityAt(float x, float y);
+
+    GuiElement *entityRotationRing;
+    int mouseLockX, mouseLockY;
 #endif //__ANDROID__
 
     unsigned int windowWidth, windowHeight;
