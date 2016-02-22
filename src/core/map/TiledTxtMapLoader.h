@@ -44,6 +44,7 @@ inline int parseTiledVariable(const std::string &s) {
     return atoi(number.c_str());
 }
 
+/* NOTE: There is also map saving at <core/map/Map.cpp> */
 TiledTxtMapLoader::TiledTxtMapLoader(const std::string &fileName) {
     int width, height;
 
@@ -80,7 +81,8 @@ TiledTxtMapLoader::TiledTxtMapLoader(const std::string &fileName) {
 
         std::ifstream myfile2(file_path.c_str());
         if (myfile2.is_open()) {
-            while (getline(myfile, line)) {
+            std::string line;
+            while (getline(myfile2, line) && line.size() > 0) {
                 std::vector<std::string> blockRow = split(line, ',');
                 Entity *sshape;
                 int id = atoi(blockRow.at(0).c_str());
