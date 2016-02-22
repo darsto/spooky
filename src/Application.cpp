@@ -3,6 +3,7 @@
 //
 
 #include <window/MainMenu.h>
+#include <window/Window.h>
 #include "Application.h"
 #include "window/Game.h"
 #include "render/RenderManager.h"
@@ -11,6 +12,7 @@
 Application::Application() {
     this->renderer = new RenderManager();
     auto switchVideo = [=](Window *window) {
+        this->previousWindow = this->window;
         this->window = window;
         this->renderer->initWindow(this->window);
         this->resize(this->renderer->getRenderContext()->getWindowWidth(), this->renderer->getRenderContext()->getWindowHeight());
@@ -31,6 +33,10 @@ void Application::reinit() {
 }
 
 void Application::update(bool dynamic) {
+    if (this->previousWindow != nullptr) {
+        delete this->previousWindow;
+        this->previousWindow = nullptr;
+    }
     if (dynamic) {
         double deltaTime = timer->GetDelta();
         this->accumulator += deltaTime;

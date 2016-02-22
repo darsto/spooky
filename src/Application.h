@@ -35,6 +35,7 @@ public:
 
 private:
     bool running = true;
+    Window *previousWindow = nullptr;
     Window *window = nullptr;
     RenderManager *renderer = nullptr;
     InputManager *inputManager = nullptr;
