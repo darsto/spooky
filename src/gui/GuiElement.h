@@ -117,6 +117,14 @@ public:
         this->y = py;
     }
 
+    double getAngle() const {
+        return angle;
+    }
+
+    void setAngle(double angle) {
+        this->angle = angle;
+    }
+
     virtual int getTexPos(int i) const {
         if (i < 0 || i >= this->texturesNum) return -1;
         return this->texturePos[i];
@@ -133,6 +141,7 @@ protected:
     double rawX, rawY;
     double x, y;
     double width, height;
+    double angle;
     bool visible = true;
     int texturesNum;
     int *texturePos;

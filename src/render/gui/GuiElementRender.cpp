@@ -70,8 +70,12 @@ void GuiElementRender::render(const GuiElement *const element, glm::mat4 project
         this->shaderProgram.setUniform("gSampler", texture.getBoundId());
 
         this->tmpModelMatrix = glm::translate(this->modelMatrix, glm::vec3(-(element->getX() + element->getWidth()) * scale, -(element->getY() + element->getHeight()) * scale, 0.0f));
+
+        this->tmpModelMatrix = glm::translate(this->tmpModelMatrix, glm::vec3(0.5 * element->getWidth() * scale, 0.5 *  element->getHeight() * scale, 0.0)); // Translate to the middle of the entity
+        this->tmpModelMatrix = glm::rotate(this->tmpModelMatrix, (const float) element->getAngle(), glm::vec3(0.0f, 0.0f, 1.0f)); // Apply rotation
+        this->tmpModelMatrix = glm::translate(this->tmpModelMatrix, glm::vec3(-0.5 *  element->getWidth() * scale, -0.5 *  element->getHeight() * scale, 0.0)); // Translate back to the origin
+
         this->tmpModelMatrix = glm::scale(this->tmpModelMatrix, glm::vec3(element->getWidth() * scale, element->getHeight() * scale, 1.0f));
-        this->tmpModelMatrix = glm::rotate(this->tmpModelMatrix, 0.0f, glm::vec3(1.0f, 0.0f, 0.0f)); // Just a variation of first rotating
 
         shaderProgram.setUniform("modelViewMatrix", viewMatrix * this->tmpModelMatrix);
         float x = (float) (this->getTexPos(element) % atlasSize);
