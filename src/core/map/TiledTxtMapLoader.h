@@ -57,7 +57,7 @@ TiledTxtMapLoader::TiledTxtMapLoader(const std::string &fileName) {
         getline(myfile, line); //skip first line
         getline(myfile, line), width = parseTiledVariable(line);
         getline(myfile, line), height = parseTiledVariable(line);
-        this->map = new Map(width, height);
+        this->map = new Map(fileName, width, height);
 
         while (line.find("[layer]") == std::string::npos) { //skip some lines, move to terrain data
             getline(myfile, line);
@@ -80,8 +80,7 @@ TiledTxtMapLoader::TiledTxtMapLoader(const std::string &fileName) {
 
         std::ifstream myfile2(file_path.c_str());
         if (myfile2.is_open()) {
-            for (int y = 0; y < 3; y++) {
-                getline(myfile2, line);
+            while (getline(myfile, line)) {
                 std::vector<std::string> blockRow = split(line, ',');
                 Entity *sshape;
                 int id = atoi(blockRow.at(0).c_str());
