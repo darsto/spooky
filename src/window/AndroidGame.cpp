@@ -10,6 +10,7 @@
 #include "../logging.h"
 #include <gui/GuiText.h>
 #include <gui/GuiButton.h>
+#include <window/MainMenu.h>
 
 Game::Game(const std::function<bool(Window *window)> &switchWindow) : Window(switchWindow) {
     MapLoader *mapLoader = new TiledTxtMapLoader("test_map");
