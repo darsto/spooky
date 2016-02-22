@@ -44,7 +44,18 @@ Game::Game(const std::function<bool(Window *window)> &switchWindow) : Window(swi
     };
     possessButton->setOnClickListener(possessAction);
     this->guiElements.push_back(possessButton);
-
+    GuiButton *backButton = new GuiButton(GUI_TOP_LEFT, 25, 25, 100, 100, new int[2]{8, 16}, 2);
+    auto backAction = [=](const TouchPoint *const p) {
+        if (p->state == 1) {
+            if (backButton->canBeClicked(p)) {
+                this->switchWindow(new MainMenu(switchWindow));
+            }
+            return false;
+        }
+        return true;
+    };
+    backButton->setOnClickListener(backAction);
+    this->guiElements.push_back(backButton);
     GuiText *t = new GuiText(string("Dev Build: ") + __DATE__ + " " + __TIME__, 15, 15, GUI_BOTTOM_LEFT, 32, 0, 0);
     this->guiElements.push_back(t);
 }
