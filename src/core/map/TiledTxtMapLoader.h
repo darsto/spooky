@@ -98,9 +98,9 @@ TiledTxtMapLoader::TiledTxtMapLoader(const std::string &fileName) {
                     default:
                         break;
                 }
-                sshape->setX(std::stod(blockRow.at(1).c_str()));
-                sshape->setY(std::stod(blockRow.at(2).c_str()));
-                sshape->setAngle(std::stod(blockRow.at(3).c_str()));
+                sshape->setX(atof(blockRow.at(1).c_str()));
+                sshape->setY(atof(blockRow.at(2).c_str()));
+                sshape->setAngle(atof(blockRow.at(3).c_str()));
                 this->map->addEntity(sshape);
             }
             myfile2.close();
