@@ -55,7 +55,7 @@ private:
         this->resetButtons(p, nullptr);
     }
 #else
-    Entity *heldEntity;
+    Entity *heldEntity = nullptr;
     Entity *getEntityAt(float x, float y);
 #endif //__ANDROID__
 
