@@ -17,6 +17,10 @@
 
 class GuiElement {
 public:
+    GuiElement(char positionFlag, double x, double y, double width, double height, int *texturePos, int texturesNum);
+
+    GuiElement(char positionFlag, double x, double y, double width, double height, int texturePos) : GuiElement(positionFlag, x, y, width, height, new int[1]{texturePos}, 1) { };
+
     char getPositionFlag() const {
         return positionFlag;
     }
@@ -76,7 +80,7 @@ public:
     virtual void reinit(unsigned int windowWidth, unsigned int windowHeight) {
         double px = rawX;
         double py = rawY;
-        switch(this->positionFlag) {
+        switch (this->positionFlag) {
             default:
             case GUI_TOP_LEFT:
                 break;
@@ -113,9 +117,14 @@ public:
         this->y = py;
     }
 
-    virtual int getTexPos(int i) const = 0;
+    virtual int getTexPos(int i) const {
+        if (i < 0 || i >= this->texturesNum) return -1;
+        return this->texturePos[i];
+    }
 
-    virtual void setTexPos(int i, int texturePos) = 0;
+    virtual void setTexPos(int i, int texturePos) {
+        this->texturePos[i] = texturePos;
+    }
 
     virtual ~GuiElement() { };
 
@@ -125,6 +134,8 @@ protected:
     double x, y;
     double width, height;
     bool visible = true;
+    int texturesNum;
+    int *texturePos;
 };
 
 #endif //C003_GUIELEMENT_H

@@ -31,10 +31,6 @@ public:
 
     void setPressed(bool pressed);
 
-    virtual int getTexPos(int i) const override;
-
-    virtual void setTexPos(int i, int texturePos) override;
-
     int getTouchedBy() const {
         return touchedBy;
     }
@@ -55,8 +51,6 @@ public:
 
 protected:
     GuiText *text = nullptr;
-    int texturesNum;
-    int *texturePos;
     bool pressed = false;
     int touchedBy;
     std::function<bool(const TouchPoint *const)> onClickListener;

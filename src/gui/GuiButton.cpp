@@ -6,14 +6,7 @@
 #include "InputManager.h"
 #include <string>
 
-GuiButton::GuiButton(const std::string &string, char positionFlag, double x, double y, double width, double height, int *texturePos, int texturesNum) {
-    this->positionFlag = positionFlag;
-    this->rawX = x;
-    this->rawY = y;
-    this->width = width;
-    this->height = height;
-    this->texturesNum = texturesNum;
-    this->texturePos = texturePos;
+GuiButton::GuiButton(const std::string &string, char positionFlag, double x, double y, double width, double height, int *texturePos, int texturesNum) : GuiElement(positionFlag, x, y, width, height, texturePos, texturesNum) {
     if (string.length() > 0) {
         this->text = new GuiText(string, x, y, positionFlag, height / 2.5, 0, 0);
     }
@@ -29,15 +22,6 @@ bool GuiButton::onClick(const TouchPoint *const touchPoint) {
 
 void GuiButton::setOnClickListener(std::function<bool(const TouchPoint *const)> onClickListener) {
     this->onClickListener = onClickListener;
-}
-
-int GuiButton::getTexPos(int i) const {
-    if (i < 0 || i >= this->texturesNum) return -1;
-    return this->texturePos[i];
-}
-
-void GuiButton::setTexPos(int i, int texturePos) {
-    this->texturePos[i] = texturePos;
 }
 
 void GuiButton::setPressed(bool pressed) {

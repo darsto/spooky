@@ -19,11 +19,8 @@ const int GLYPH_SIZE[] = {39, 103, 166, 231, 295, 359, 423, 487,
 
 class GuiText : public GuiElement {
 public:
-    GuiText(const std::string &string, int x, int y, char position, float scale, int color, char flags) {
+    GuiText(const std::string &string, int x, int y, char position, float scale, int color, char flags) : GuiElement(position, x, y, 0, 0, 0) {
         this->string = string;
-        this->rawX = x;
-        this->rawY = y;
-        this->positionFlag = position;
         this->scale = scale;
         this->flags = flags;
         this->recalculateSize();
