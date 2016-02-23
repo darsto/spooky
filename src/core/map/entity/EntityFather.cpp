@@ -7,7 +7,7 @@
 
 EntityFather::EntityFather(Map *map) : EntityMoving(map, 0.25, 0.25) {
     b2PolygonShape shape;
-    shape.SetAsBox(0.25, 0.25);
+    shape.SetAsBox(0.225, 0.435);
     b2FixtureDef fixDef;
     fixDef.shape = &shape;
     fixDef.density = 6.0f;
