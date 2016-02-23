@@ -168,9 +168,11 @@ void Game::handleClick(const TouchPoint *const p) {
                 this->core->getMap()->addEntity(s);
             } else {
                 this->heldEntity = nullptr;
-                this->entityRotationRing->setVisible(false);
-                SDL_ShowCursor(true);
-                SDL_WarpMouseGlobal(this->mouseLockX, this->mouseLockY);
+                if (this->entityRotationRing->isVisible()) {
+                    this->entityRotationRing->setVisible(false);
+                    SDL_ShowCursor(true);
+                    SDL_WarpMouseGlobal(this->mouseLockX, this->mouseLockY);
+                }
             }
         }
     } else if (p->id == SDL_BUTTON_MIDDLE) {
