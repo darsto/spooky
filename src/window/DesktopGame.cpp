@@ -197,7 +197,7 @@ void Game::handleClick(const TouchPoint *const p) {
             if (this->heldEntity != nullptr) {
                 int x, y;
                 SDL_GetGlobalMouseState(&x, &y);
-                double angle = atan2(y - this->mouseLockY, x - this->mouseLockX);
+                double angle = 10.0 * (x - this->mouseLockX) / this->windowWidth;
                 this->entityRotationRing->setAngle(angle);
                 this->heldEntity->setAngle(angle);
             }
