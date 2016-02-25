@@ -26,7 +26,9 @@ Game::Game(const std::function<bool(Window *window)> &switchWindow) : Window(swi
     this->entityRotationRing->setVisible(false);
     this->entityRotationRing->setAngle(2);
     this->guiElements.push_back(this->entityRotationRing);
-    GuiButton *b = new GuiButton(GUI_TOP_RIGHT, 15, 15, 75, 75, 0);
+    GuiElement *b = new GuiElement(GUI_TOP_RIGHT, 0, 50, 150, 150, 0);
+    this->guiElements.push_back(b);
+    b = new GuiElement(GUI_TOP_RIGHT, 160, 60, 400, 170, 9);
     this->guiElements.push_back(b);
     GuiText *t = new GuiText(string("Dev Build: ") + __DATE__ + " " + __TIME__, 15, 15, GUI_BOTTOM_LEFT, 32, 0, 0);
     this->guiElements.push_back(t);
