@@ -17,29 +17,19 @@
 Game::Game(const std::function<bool(Window *window)> &switchWindow) : Window(switchWindow) {
     LOGD("Loading game...\n");
     MapLoader *mapLoader = new TiledTxtMapLoader("test_map");
-    LOGD("Maploader initialized.\n");
     Map *bmap = mapLoader->loadMap();
-    LOGD("Map initialized.\n");
     this->core = new Core(bmap);
-    LOGD("Core initialized.\n");
     delete mapLoader;
-    LOGD("MapLoader deleted.\n");
 
     double ringScale = 2 * this->core->getBlockSize();
     this->entityRotationRing = new GuiElement(GUI_TOP_LEFT, 0, 0, ringScale, ringScale, 6);
-    LOGD("EntityRotationRing initialized.\n");
     this->entityRotationRing->setVisible(false);
     this->entityRotationRing->setAngle(2);
     this->guiElements.push_back(this->entityRotationRing);
-    LOGD("EntityRotationRing registered.\n");
     GuiButton *b = new GuiButton(GUI_TOP_RIGHT, 15, 15, 75, 75, 0);
-    LOGD("BackButton initialized.\n");
     this->guiElements.push_back(b);
-    LOGD("BackButton registered.\n");
     GuiText *t = new GuiText(string("Dev Build: ") + __DATE__ + " " + __TIME__, 15, 15, GUI_BOTTOM_LEFT, 32, 0, 0);
-    LOGD("Version text initialized.\n");
     this->guiElements.push_back(t);
-    LOGD("Version text registered.\n");
     LOGD("Game loaded successfully.\n");
 }
 
@@ -58,9 +48,7 @@ void Game::reload(unsigned int windowWidth, unsigned int windowHeight) {
 void Game::tick(double deltaTime) {
     LOGD("Game tick starting..\n");
     this->core->getMap()->update();
-    LOGD("Word updated.\n");
     this->core->getMap()->getWorld()->Step(deltaTime, 8, 3);
-    LOGD("Physics step done.\n");
     for (int i = 0; i < this->core->getMap()->getEntities().size(); i++) {
         Entity *entity = this->core->getMap()->getEntities().at(i);
         if (entity->isToBeDeleted()) {
@@ -68,13 +56,11 @@ void Game::tick(double deltaTime) {
             i--;
         }
     }
-    LOGD("Unused entities deleted.\n");
 
     double dx = (this->core->getPlayer()->getX() + this->core->getPlayer()->getWidth() / 2 - 1) * this->core->getBlockSize() * this->core->getGeneralScale() + this->core->getCamX();
     double dy = (this->core->getPlayer()->getY() + this->core->getPlayer()->getHeight() / 2 - 1) * this->core->getBlockSize() * this->core->getGeneralScale() + this->core->getCamY();
     if (abs(dx) > 2) this->core->setCamX(-this->core->getCamX() + (dx) * 0.05);
     if (abs(dy) > 2) this->core->setCamY(-this->core->getCamY() + (dy) * 0.05);
-    LOGD("Initial camera position set.\n");
 
     double camX = this->core->getCamX(), camY = this->core->getCamY();
     if (-camX < this->windowWidth / 2 - this->core->getBlockSize() * this->core->getGeneralScale()) {
@@ -89,7 +75,6 @@ void Game::tick(double deltaTime) {
     if (-camY > -(signed) this->windowHeight / 2 + (this->core->getMap()->getHeight() - 1) * this->core->getBlockSize() * this->core->getGeneralScale()) {
         this->core->setCamY(-(signed) this->windowHeight / 2 + (this->core->getMap()->getHeight() - 1) * this->core->getBlockSize() * this->core->getGeneralScale());
     }
-    LOGD("Camera fully set.\n");
     LOGD("Game ticked successfully.\n");
 }
 
