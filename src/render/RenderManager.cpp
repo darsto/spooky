@@ -6,6 +6,7 @@
 #include <Application.h>
 #include <render/window/GameRender.h>
 #include <render/window/MenuRender.h>
+#include <logging.h>
 #include "../window/Game.h"
 #include "../window/MainMenu.h"
 #include "../window/Settings.h"
@@ -117,5 +118,7 @@ WindowRender *RenderManager::getWindowRender(const Window *const window) {
 }
 
 void RenderManager::initWindow(Window *window) {
+    LOGD("Initializing window...\n");
     this->getWindowRender(window)->init(this->renderContext);
+    LOGD("Window initialized successfully.\n");
 }

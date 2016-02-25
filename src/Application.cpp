@@ -12,10 +12,12 @@
 Application::Application() {
     this->renderer = new RenderManager();
     auto switchVideo = [=](Window *window) {
+        LOGD("Switching window...\n");
         this->previousWindow = this->window;
         this->window = window;
         this->renderer->initWindow(this->window);
         this->resize(this->renderer->getRenderContext()->getWindowWidth(), this->renderer->getRenderContext()->getWindowHeight());
+        LOGD("Window switched successfully.\n");
         return true;
     };
     this->window = new MainMenu(switchVideo);
@@ -26,16 +28,21 @@ Application::Application() {
 }
 
 void Application::reinit() {
+    LOGD("Reinitializing application...\n");
     this->renderer->init();
     this->renderer->initWindow(this->window); //TODO
     timer->GetDelta(); //if not called right now, first call in game loop would return a very huge value
     this->inputManager->reload();
+    LOGD("Application reiitialized successfully.\n");
 }
 
 void Application::update(bool dynamic) {
+    LOGD("Updating application..\n");
     if (this->previousWindow != nullptr) {
+        LOGD("Deleting previous window...\n");
         delete this->previousWindow;
         this->previousWindow = nullptr;
+        LOGD("Previous window deleted successfully.\n");
     }
     if (dynamic) {
         double deltaTime = timer->GetDelta();
@@ -50,6 +57,7 @@ void Application::update(bool dynamic) {
     this->renderer->render(this->getCurrentWindow());
     if (!MOBILE) this->handleEvents();
     this->inputManager->tick(this->getCurrentWindow());
+    LOGD("Application updated successfully.\n");
 }
 
 Application::~Application() {
@@ -98,11 +106,14 @@ JNIEXPORT void JNICALL Java_tk_approach_android_spookytom_JniBridge_handleTouch(
 #endif //__ANDROID__
 
 void Application::resize(int width, int height) {
+    LOGD("Resizing application.\n");
     this->getCurrentWindow()->reload(width, height);
     this->renderer->resize(this->getCurrentWindow(), width, height);
+    LOGD("Application resized successfully.\n");
 }
 
 void Application::handleClick(int i, int action, float x, float y) {
+    LOGD("Click #%d:%d at %d:%d.\n", i , action, x, y);
     this->inputManager->handleClick(i, action, x, y);
 }
 
@@ -127,7 +138,7 @@ void Application::handleEvents() {
                 if (e.button.button >= 0 && e.button.button < 5) this->isMouseDown[e.button.button] = (e.type == SDL_MOUSEBUTTONDOWN);
                 LOGD("%s button with id %d\n", e.type == SDL_MOUSEBUTTONDOWN ? "Pressed" : "Unpressed", e.button.button);
             case SDL_MOUSEMOTION: {
-                int button = (int) round(log(e.button.button) / log(2)) + 1;
+                int button = (int) round(log((double)e.button.button) / log(2.0)) + 1;
                 if (button < 0 || button >= 5) break;
                 if (this->isMouseDown[button] || e.type == SDL_MOUSEBUTTONUP) {
                     int x, y;

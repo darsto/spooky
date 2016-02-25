@@ -12,8 +12,10 @@
 #include <core/map/entity/EntityBullet.h>
 #include <core/map/entity/EntityFather.h>
 #include <core/map/block/SimpleBlock.h>
+#include <logging.h>
 
 void GameRender::render(Window *window, RenderContext *const renderContext) {
+    LOGD("Rendering game...\n");
     Game *game = ((Game *) window);
     Core *core = game->getCore();
 
@@ -71,20 +73,25 @@ void GameRender::render(Window *window, RenderContext *const renderContext) {
             (int) ((signed) windowHeight),
             0.0f)), core->getGeneralScale());
     }
+    LOGD("Game rendered successfully.\n");
 }
 
 void GameRender::resize(RenderContext *const renderContext) {
+    LOGD("Resizing game render.\n");
     viewMatrix = glm::lookAt(glm::vec3(0, 0, 0.0f), glm::vec3(0, 0, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
     this->projectionMatrix = glm::ortho(0.0f, float(renderContext->getWindowWidth()), 0.0f, float(renderContext->getWindowHeight()));
     this->fbo.resize(renderContext->getWindowWidth(), renderContext->getWindowHeight());
+    LOGD("Game render resized successfully.\n");
 }
 
 void GameRender::init(RenderContext *const renderContext) {
+    LOGD("Initializing game render...\n");
     this->initRenders();
     fbo.init(3, renderContext->getWindowWidth(), renderContext->getWindowHeight(), new float[4]{0.9, 0.9, 0.9, 1.0}, "fboshader");
     glEnable(GL_BLEND);
     glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
     this->resize(renderContext);
+    LOGD("Game render initialized successfully.\n");
 }
 
 GameRender::GameRender() : WindowRender() { }
@@ -98,6 +105,7 @@ EntityRender *GameRender::getEntityRender(const Entity *const entity) {
 }
 
 void GameRender::initRenders() {
+    LOGD("Initializing entity/block renders.\n");
     for (std::pair<const char *, BlockRender *> renderPair : blockRenders) {
         delete renderPair.second;
     }
@@ -114,4 +122,5 @@ void GameRender::initRenders() {
     entityRenders.insert(std::make_pair(typeid(EntityBullet).name(), new DefaultEntityRender("bullet", "shader")));
     entityRenders.insert(std::make_pair(typeid(SimpleShape).name(), new SimpleShapeRender()));
     entityRenders.insert(std::make_pair(typeid(EntityFather).name(), new DefaultEntityRender("parents", "shader")));
+    LOGD("Entity/block renders initialized successfully.\n");
 }
