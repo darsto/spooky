@@ -45,4 +45,7 @@ endif ()
 
 if (MINGW)
     TARGET_LINK_LIBRARIES(${PROJECT_NAME} m dinput8 dxguid dxerr8 gdi32 winmm imm32 ole32 oleaut32 shell32 version uuid)
+    IF(DEBUG)
+        SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mwindows")
+    ENDIF()
 endif (MINGW)
