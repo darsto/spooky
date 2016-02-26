@@ -22,6 +22,7 @@ public:
     GuiText(const std::string &string, int x, int y, char position, float scale, int color, char flags) : GuiElement(position, x, y, 0, 0, 0) {
         this->string = string;
         this->scale = scale;
+        this->color = color;
         this->flags = flags;
         this->recalculateSize();
     }
