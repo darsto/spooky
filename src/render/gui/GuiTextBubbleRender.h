@@ -39,7 +39,7 @@ public:
                     this->tmpModelMatrix = glm::scale(this->tmpModelMatrix, glm::vec3(scale * b->resolution * singularWidth, scale * b->resolution * singularHeight, 1.0f));
 
                     shaderProgram.setUniform("modelViewMatrix", viewMatrix * this->tmpModelMatrix);
-                    int texId = 0; //TODO select by x, y
+                    int texId = 0;
                     if (y == 0 && x == 0) texId = 0;
                     else if (y == 0 && x == (int) xPieces - 1) texId = 2;
                     else if (y == 0) texId = 1;
@@ -50,8 +50,8 @@ public:
                     else if (x == (int) xPieces - 1) texId = 10;
                     else texId = 9;
 
-                    float texX = (float) ((this->getTexPos(b) + texId + 21) % atlasSize);
-                    float texY = (float) ((this->getTexPos(b) + texId + 21) / atlasSize);
+                    float texX = (float) ((this->getTexPos(b) + texId + 20) % atlasSize);
+                    float texY = (float) ((this->getTexPos(b) + texId + 20) / atlasSize);
                     shaderProgram.setUniform("texPosX", texX / atlasSize + 0.5f / texture.getWidth());
                     shaderProgram.setUniform("texPosY", texY / atlasSize + 0.5f / texture.getHeight());
 
@@ -59,6 +59,20 @@ public:
                     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
                 }
             }
+            this->tmpModelMatrix = glm::translate(this->modelMatrix, glm::vec3(-(element->getX() + b->resolution * singularWidth + xPieces * b->resolution * singularWidth) * scale,
+                                                                               -(element->getY() + b->resolution * singularHeight + 0 * b->resolution * singularHeight) * scale, 0.0f));
+            this->tmpModelMatrix = glm::scale(this->tmpModelMatrix, glm::vec3(scale * b->resolution * singularWidth, scale * b->resolution * singularHeight, 1.0f));
+
+            shaderProgram.setUniform("modelViewMatrix", viewMatrix * this->tmpModelMatrix);
+            int texId = 23;
+
+            float texX = (float) (texId % atlasSize);
+            float texY = (float) (texId / atlasSize);
+            shaderProgram.setUniform("texPosX", texX / atlasSize + 0.5f / texture.getWidth());
+            shaderProgram.setUniform("texPosY", texY / atlasSize + 0.5f / texture.getHeight());
+
+            glBindVertexArray(this->vao);
+            glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
         }
     }
 };
