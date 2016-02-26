@@ -28,17 +28,17 @@ Game::Game(const std::function<bool(Window *window)> &switchWindow) : Window(swi
     this->entityRotationRing->setAngle(2);
     this->guiElements.push_back(this->entityRotationRing);
 
-    GuiElement *character = new GuiElement(GUI_TOP_RIGHT, 0, 50, 150, 150, 0);
+    GuiElement *character = new GuiElement(GUI_TOP_RIGHT, 0, 50, 150, 150, 7);
     this->guiElements.push_back(character);
     GuiElement *window = new GuiTextBubble(GUI_TOP_RIGHT, 160, 60, 400, 170);
     this->guiElements.push_back(window);
-    GuiText *text = new GuiText(string("Test test"), 170, 70, GUI_TOP_RIGHT, 32, 0, 0);
+    GuiText *text = new GuiText(string("Hey, I am Willy. I will \nguide you around this \nplace. I am the \nghost from the blah \nblah blah blah..."), -500, 70, GUI_TOP_LEFT, 24, 0x666666FF, 0);
     this->guiElements.push_back(text);
     this->popup[0] = character;
     this->popup[1] = window;
     this->popup[2] = text
     LOGD("Game loaded successfully.\n");
-    GuiText *t = new GuiText(string("Dev Build: ") + __DATE__ + " " + __TIME__, 15, 15, GUI_BOTTOM_LEFT, 32, 0, 0);
+    GuiText *t = new GuiText(string("Dev Build: ") + __DATE__ + " " + __TIME__, 15, 15, GUI_BOTTOM_LEFT, 32, 0xFFFFFFFF, 0);
     this->guiElements.push_back(t);
 }
 
@@ -71,6 +71,7 @@ void Game::tick(double deltaTime) {
     for (int i = 0; i < 3; i++) {
         this->popup[i]->setVisible(popupVisible);
     }
+    this->popup[2]->setX(this->popup[1]->getX() + 10);
 
     double dx = (this->core->getPlayer()->getX() + this->core->getPlayer()->getWidth() / 2 - 1) * this->core->getBlockSize() * this->core->getGeneralScale() + this->core->getCamX();
     double dy = (this->core->getPlayer()->getY() + this->core->getPlayer()->getHeight() / 2 - 1) * this->core->getBlockSize() * this->core->getGeneralScale() + this->core->getCamY();
