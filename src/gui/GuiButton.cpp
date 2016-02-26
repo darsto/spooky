@@ -8,7 +8,7 @@
 
 GuiButton::GuiButton(const std::string &string, char positionFlag, double x, double y, double width, double height, int *texturePos, int texturesNum) : GuiElement(positionFlag, x, y, width, height, texturePos, texturesNum) {
     if (string.length() > 0) {
-        this->text = new GuiText(string, x, y, positionFlag, height / 2.5, 0, 0);
+        this->text = new GuiText(string, x, y, positionFlag, height / 2.5, 0xFFFFFFFF, 0);
     }
 }
 
