@@ -17,13 +17,19 @@ void TextRender::render(const GuiElement *const element, glm::mat4 projectionMat
     scale *= text->getScale();
 
     double x = text->getX();
+    double y = text->getY();
     for (int i = 0; i < text->getString().length(); i++) {
+        if (text->getString().at(i) == '\n') {
+            x = text->getX();
+            y += scale + 2 * text->SPACING_PX;
+            continue;
+        }
         int texId = text->getTexPos(i);
         if (texId == -1) {
             x += text->TEXT_SPACESIZE * scale + text->SPACING_PX;
             continue;
         }
-        this->tmpModelMatrix = glm::translate(this->modelMatrix, glm::vec3(-(x + scale), -(text->getY() + scale), 0.0f));
+        this->tmpModelMatrix = glm::translate(this->modelMatrix, glm::vec3(-(x + scale), -(y + scale), 0.0f));
         this->tmpModelMatrix = glm::scale(this->tmpModelMatrix, glm::vec3(scale, scale, 1.0f));
 
         shaderProgram.setUniform("modelViewMatrix", viewMatrix * this->tmpModelMatrix);
