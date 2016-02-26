@@ -26,13 +26,19 @@ Game::Game(const std::function<bool(Window *window)> &switchWindow) : Window(swi
     this->entityRotationRing->setVisible(false);
     this->entityRotationRing->setAngle(2);
     this->guiElements.push_back(this->entityRotationRing);
-    GuiElement *b = new GuiElement(GUI_TOP_RIGHT, 0, 50, 150, 150, 0);
-    this->guiElements.push_back(b);
-    b = new GuiElement(GUI_TOP_RIGHT, 160, 60, 400, 170, 9);
-    this->guiElements.push_back(b);
+
+    GuiElement *character = new GuiElement(GUI_TOP_RIGHT, 0, 50, 150, 150, 0);
+    this->guiElements.push_back(character);
+    GuiElement *window = new GuiElement(GUI_TOP_RIGHT, 160, 60, 400, 170, 9);
+    this->guiElements.push_back(window);
+    GuiText *text = new GuiText(string("Test test"), 170, 70, GUI_TOP_RIGHT, 32, 0, 0);
+    this->guiElements.push_back(text);
+    this->popup[0] = character;
+    this->popup[1] = window;
+    this->popup[2] = text
+    LOGD("Game loaded successfully.\n");
     GuiText *t = new GuiText(string("Dev Build: ") + __DATE__ + " " + __TIME__, 15, 15, GUI_BOTTOM_LEFT, 32, 0, 0);
     this->guiElements.push_back(t);
-    LOGD("Game loaded successfully.\n");
 }
 
 void Game::reload(unsigned int windowWidth, unsigned int windowHeight) {
@@ -40,6 +46,7 @@ void Game::reload(unsigned int windowWidth, unsigned int windowHeight) {
     for (GuiElement *e : this->guiElements) {
         e->reinit(windowWidth, windowHeight);
     }
+
     LOGD("Reinitialized GuiElements.\n");
     this->windowWidth = windowWidth;
     this->windowHeight = windowHeight;
@@ -57,6 +64,11 @@ void Game::tick(double deltaTime) {
             this->core->getMap()->removeEntity(entity);
             i--;
         }
+    }
+
+    bool popupVisible = ((GuiText *)this->popup[2])->getString().size() > 0;
+    for (int i = 0; i < 2; i++) {
+        this->popup[i]->setVisible(popupVisible);
     }
 
     double dx = (this->core->getPlayer()->getX() + this->core->getPlayer()->getWidth() / 2 - 1) * this->core->getBlockSize() * this->core->getGeneralScale() + this->core->getCamX();

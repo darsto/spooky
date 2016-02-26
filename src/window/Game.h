@@ -7,6 +7,7 @@
 #pragma once
 
 #include <vector>
+#include <gui/GuiText.h>
 #include "Window.h"
 
 class Core;
@@ -61,6 +62,8 @@ private:
     GuiElement *entityRotationRing;
     int mouseLockX, mouseLockY;
 #endif //__ANDROID__
+
+    GuiElement *popup[3];
 
     unsigned int windowWidth, windowHeight;
 };
