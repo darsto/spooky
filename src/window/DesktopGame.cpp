@@ -12,6 +12,7 @@
 #include "render/RenderManager.h"
 #include "InputManager.h"
 #include <core/map/entity/EntityBullet.h>
+#include <gui/GuiTextBubble.h>
 #include "../logging.h"
 
 Game::Game(const std::function<bool(Window *window)> &switchWindow) : Window(switchWindow) {
@@ -29,7 +30,7 @@ Game::Game(const std::function<bool(Window *window)> &switchWindow) : Window(swi
 
     GuiElement *character = new GuiElement(GUI_TOP_RIGHT, 0, 50, 150, 150, 0);
     this->guiElements.push_back(character);
-    GuiElement *window = new GuiElement(GUI_TOP_RIGHT, 160, 60, 400, 170, 9);
+    GuiElement *window = new GuiTextBubble(GUI_TOP_RIGHT, 160, 60, 400, 170);
     this->guiElements.push_back(window);
     GuiText *text = new GuiText(string("Test test"), 170, 70, GUI_TOP_RIGHT, 32, 0, 0);
     this->guiElements.push_back(text);

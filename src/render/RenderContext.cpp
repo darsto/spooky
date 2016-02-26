@@ -7,6 +7,7 @@
 #include <render/font/TextRender.h>
 #include "RenderContext.h"
 #include <gui/GuiText.h>
+#include <render/gui/GuiTextBubbleRender.h>
 
 GuiElementRender *RenderContext::getGuiElementRender(const GuiElement *const element) {
     GuiElementRender *render = this->guiRenders[typeid(*element).name()];
@@ -18,6 +19,7 @@ void RenderContext::initGuiRenders() {
     guiRenders.insert(std::make_pair(typeid(GuiElement).name(), new GuiElementRender("gui", "shader")));
     guiRenders.insert(std::make_pair(typeid(GuiButton).name(), new GuiButtonRender("gui", "shader")));
     guiRenders.insert(std::make_pair(typeid(GuiText).name(), new TextRender()));
+    guiRenders.insert(std::make_pair(typeid(GuiTextBubble).name(), new GuiTextBubbleRender("gui", "shader")));
 }
 
 RenderContext::RenderContext(unsigned int windowWidth, unsigned int windowHeight) {
