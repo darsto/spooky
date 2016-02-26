@@ -67,7 +67,7 @@ void Game::tick(double deltaTime) {
     }
 
     bool popupVisible = ((GuiText *)this->popup[2])->getString().size() > 0;
-    for (int i = 0; i < 2; i++) {
+    for (int i = 0; i < 3; i++) {
         this->popup[i]->setVisible(popupVisible);
     }
 
