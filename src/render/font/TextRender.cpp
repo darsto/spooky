@@ -14,6 +14,18 @@ void TextRender::render(const GuiElement *const element, glm::mat4 projectionMat
     this->shaderProgram.setUniform("projectionMatrix", projectionMatrix);
     this->shaderProgram.setUniform("gSampler", texture.getBoundId());
 
+    int color = element->getColor();
+    float cr = ((color & 0xFF000000) >> 24) / 255.0f;
+    float cg = ((color & 0x00FF0000) >> 16) / 255.0f;
+    float cb = ((color & 0x0000FF00) >> 8) / 255.0f;
+    float ca = (color & 0x000000FF) / 255.0f;
+
+    shaderProgram.setUniform("colorMod", glm::vec4(cr, cg, cb, ca));
+
+    if (ca != 1.0f) {
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    }
+
     scale *= text->getScale();
 
     double x = text->getX();
@@ -38,17 +50,13 @@ void TextRender::render(const GuiElement *const element, glm::mat4 projectionMat
         shaderProgram.setUniform("texPosX", 0.5f / texture.getWidth() + (float) texX / atlasSize);
         shaderProgram.setUniform("texPosY", 0.5f / texture.getHeight() + (float) texY / atlasSize);
 
-        int color = text->getColor();
-        float r = ((color & 0xFF000000) >> 24) / 255.0f;
-        float g = ((color & 0x00FF0000) >> 16) / 255.0f;
-        float b = ((color & 0x0000FF00) >> 8) / 255.0f;
-        float a = (color & 0x000000FF) / 255.0f;
-
-        shaderProgram.setUniform("colorMod", glm::vec4(r, g, b, a));
-
         glBindVertexArray(this->vao);
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
         x += text->getGlyphSize(texId) * scale + text->SPACING_PX;
+    }
+
+    if (ca != 1.0f) {
+        glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
     }
 }

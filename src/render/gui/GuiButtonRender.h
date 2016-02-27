@@ -22,6 +22,18 @@ public:
             this->shaderProgram.setUniform("projectionMatrix", projectionMatrix);
             this->shaderProgram.setUniform("gSampler", texture.getBoundId());
 
+            int color = element->getColor();
+            float cr = ((color & 0xFF000000) >> 24) / 255.0f;
+            float cg = ((color & 0x00FF0000) >> 16) / 255.0f;
+            float cb = ((color & 0x0000FF00) >> 8) / 255.0f;
+            float ca = (color & 0x000000FF) / 255.0f;
+
+            shaderProgram.setUniform("colorMod", glm::vec4(cr, cg, cb, ca));
+
+            if (ca != 1.0f) {
+                glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            }
+
             double ratio = b->getWidth()/b->getHeight();
             double singular_ratio = ratio - (int)ratio;
             if (singular_ratio - (int)singular_ratio == 0) singular_ratio++;
@@ -38,16 +50,12 @@ public:
                 shaderProgram.setUniform("texPosX", x / atlasSize + 0.5f / texture.getWidth());
                 shaderProgram.setUniform("texPosY", y / atlasSize + 0.5f / texture.getHeight());
 
-                int color = element->getColor();
-                float r = ((color & 0xFF000000) >> 24) / 255.0f;
-                float g = ((color & 0x00FF0000) >> 16) / 255.0f;
-                float b = ((color & 0x0000FF00) >> 8) / 255.0f;
-                float a = (color & 0x000000FF) / 255.0f;
-
-                shaderProgram.setUniform("colorMod", glm::vec4(r, g, b, a));
-
                 glBindVertexArray(this->vao);
                 glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+            }
+
+            if (ca != 1.0f) {
+                glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
             }
         }
     }
