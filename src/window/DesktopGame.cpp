@@ -36,10 +36,11 @@ Game::Game(const std::function<bool(Window *window)> &switchWindow) : Window(swi
     this->guiElements.push_back(text);
     this->popup[0] = character;
     this->popup[1] = window;
-    this->popup[2] = text
-        LOGD("Game loaded successfully.\n");
+    this->popup[2] = text;
+
     GuiText *t = new GuiText(string("Dev Build: ") + __DATE__ + " " + __TIME__, 15, 15, GUI_BOTTOM_LEFT, 32, 0xFFFFFFFF, 0);
     this->guiElements.push_back(t);
+    LOGD("Game loaded successfully.\n");
 }
 
 void Game::reload(unsigned int windowWidth, unsigned int windowHeight) {
