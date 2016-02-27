@@ -16,10 +16,10 @@ GuiElementRender *RenderContext::getGuiElementRender(const GuiElement *const ele
 }
 
 void RenderContext::initGuiRenders() {
-    guiRenders.insert(std::make_pair(typeid(GuiElement).name(), new GuiElementRender("gui", "shader")));
-    guiRenders.insert(std::make_pair(typeid(GuiButton).name(), new GuiButtonRender("gui", "shader")));
+    guiRenders.insert(std::make_pair(typeid(GuiElement).name(), new GuiElementRender("gui", "gui")));
+    guiRenders.insert(std::make_pair(typeid(GuiButton).name(), new GuiButtonRender("gui", "gui")));
     guiRenders.insert(std::make_pair(typeid(GuiText).name(), new TextRender()));
-    guiRenders.insert(std::make_pair(typeid(GuiTextBubble).name(), new GuiTextBubbleRender("gui", "shader")));
+    guiRenders.insert(std::make_pair(typeid(GuiTextBubble).name(), new GuiTextBubbleRender("gui", "gui")));
 }
 
 RenderContext::RenderContext(unsigned int windowWidth, unsigned int windowHeight) {

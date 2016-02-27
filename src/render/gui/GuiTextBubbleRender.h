@@ -55,6 +55,14 @@ public:
                     shaderProgram.setUniform("texPosX", texX / atlasSize + 0.5f / texture.getWidth());
                     shaderProgram.setUniform("texPosY", texY / atlasSize + 0.5f / texture.getHeight());
 
+                    int color = element->getColor();
+                    float r = ((color & 0xFF000000) >> 24) / 255.0f;
+                    float g = ((color & 0x00FF0000) >> 16) / 255.0f;
+                    float b = ((color & 0x0000FF00) >> 8) / 255.0f;
+                    float a = (color & 0x000000FF) / 255.0f;
+
+                    shaderProgram.setUniform("colorMod", glm::vec4(r, g, b, a));
+
                     glBindVertexArray(this->vao);
                     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
                 }
