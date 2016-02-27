@@ -32,12 +32,12 @@ Game::Game(const std::function<bool(Window *window)> &switchWindow) : Window(swi
     this->guiElements.push_back(character);
     GuiElement *window = new GuiTextBubble(GUI_TOP_RIGHT, 160, 60, 400, 170);
     this->guiElements.push_back(window);
-    GuiText *text = new GuiText(string("Hey, I am Willy. I will \nguide you around this \nplace. I am the \nghost from the blah \nblah blah blah..."), -500, 70, GUI_TOP_LEFT, 24, 0x666666FF, 0);
+    GuiText *text = new GuiText(string("Hey, I am Willy. I will \nguide you around this \nplace. I am the \nghost from the blah \nblah blah blah..."), -500, 73, GUI_TOP_LEFT, 24, 0x666666FF, 0);
     this->guiElements.push_back(text);
     this->popup[0] = character;
     this->popup[1] = window;
     this->popup[2] = text
-    LOGD("Game loaded successfully.\n");
+        LOGD("Game loaded successfully.\n");
     GuiText *t = new GuiText(string("Dev Build: ") + __DATE__ + " " + __TIME__, 15, 15, GUI_BOTTOM_LEFT, 32, 0xFFFFFFFF, 0);
     this->guiElements.push_back(t);
 }
@@ -67,9 +67,15 @@ void Game::tick(double deltaTime) {
         }
     }
 
-    bool popupVisible = ((GuiText *)this->popup[2])->getString().size() > 0;
+    bool popupVisible = ((GuiText *) this->popup[2])->getString().size() > 0;
+    static float alpha = 0.0f;
+    alpha += deltaTime * 0.75;
+    if (alpha > 1) alpha = 1;
     for (int i = 0; i < 3; i++) {
         this->popup[i]->setVisible(popupVisible);
+        int color = this->popup[i]->getColor() & 0xFFFFFF00;
+        color |= (int) (alpha * 255);
+        this->popup[i]->setColor(color);
     }
     this->popup[2]->setX(this->popup[1]->getX() + 10);
 
