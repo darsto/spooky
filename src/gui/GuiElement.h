@@ -17,9 +17,9 @@
 
 class GuiElement {
 public:
-    GuiElement(char positionFlag, double x, double y, double width, double height, int *texturePos, int texturesNum);
+    GuiElement(char positionFlag, double x, double y, double width, double height, int *texturePos, int texturesNum, int color = 0xFFFFFFFF);
 
-    GuiElement(char positionFlag, double x, double y, double width, double height, int texturePos) : GuiElement(positionFlag, x, y, width, height, new int[1]{texturePos}, 1) { };
+    GuiElement(char positionFlag, double x, double y, double width, double height, int texturePos, int color = 0xFFFFFFFF) : GuiElement(positionFlag, x, y, width, height, new int[1]{texturePos}, 1, color) { };
 
     char getPositionFlag() const {
         return positionFlag;
@@ -134,6 +134,14 @@ public:
         this->texturePos[i] = texturePos;
     }
 
+    int getColor() const {
+        return color;
+    }
+
+    void setColor(int color) {
+        this->color = color;
+    }
+
     virtual ~GuiElement() { };
 
 protected:
@@ -145,6 +153,7 @@ protected:
     bool visible = true;
     int texturesNum;
     int *texturePos;
+    int color;
 };
 
 #endif //C003_GUIELEMENT_H
