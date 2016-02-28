@@ -9,6 +9,10 @@
 #include "InputManager.h"
 #include "os.h"
 
+#ifdef __DEBUG__
+#include "KxStackTrace.h"
+#endif //__DEBUG__
+
 class Window;
 
 class RenderManager;
@@ -34,6 +38,9 @@ public:
     ~Application();
 
 private:
+#ifdef __DEBUG__
+    KxStackTrace  mStackTrace;
+#endif //__DEBUG__
     bool running = true;
     Window *previousWindow = nullptr;
     Window *window = nullptr;
