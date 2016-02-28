@@ -30,7 +30,7 @@ protected:
     Texture texture;
     glm::mat4 modelMatrix = glm::mat4(1.0);
 
-    int getTexPos();
+    virtual int getTexPos(const Entity *const entity);
 
     /* -- tmp -- */
     glm::mat4 tmpModelMatrix;

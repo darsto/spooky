@@ -29,8 +29,8 @@ public:
             this->tmpModelMatrix = glm::scale(this->tmpModelMatrix, glm::vec3(scale, scale, 1.0f));
 
             shaderProgram.setUniform("modelViewMatrix", viewMatrix * this->tmpModelMatrix);
-            shaderProgram.setUniform("texPosX", 1.0f / this->texture.getWidth() + (float) (this->getTexPos() % atlasSize) / atlasSize);
-            shaderProgram.setUniform("texPosY", 1.0f / this->texture.getWidth() + (float) (this->getTexPos() / atlasSize) / atlasSize);
+            shaderProgram.setUniform("texPosX", 1.0f / this->texture.getWidth() + (float) (this->getTexPos(entity) % atlasSize) / atlasSize);
+            shaderProgram.setUniform("texPosY", 1.0f / this->texture.getWidth() + (float) (this->getTexPos(entity) / atlasSize) / atlasSize);
 
             glBindVertexArray(this->vao);
             glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
