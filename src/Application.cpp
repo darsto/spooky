@@ -20,7 +20,7 @@ Application::Application() {
         LOGD("Window switched successfully.\n");
         return true;
     };
-    this->window = new MainMenu(switchVideo);
+    this->window = new Game(switchVideo);
     this->timer = new Timer();
     this->inputManager = new InputManager();
     this->reinit();

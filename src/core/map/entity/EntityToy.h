@@ -12,19 +12,9 @@ class Player;
 class EntityToy : public EntityMoving {
 
 public:
-    EntityToy(Map *map) : EntityMoving(map, 0.5, 0.5) {
-        b2PolygonShape shape;
-        shape.SetAsBox(0.34, 0.17);
-        b2FixtureDef fixDef;
-        fixDef.shape = &shape;
-        fixDef.density = 6.0f;
-        fixDef.friction = 0.1f;
-        this->body->CreateFixture(&fixDef);
-    }
+    EntityToy(Map *map, double width, double height) : EntityMoving(map, width, height) { };
 
-    double getSpeed() override {
-        return 1.0;
-    }
+    virtual double getSpeed() override = 0;
 
     void onCollision(IPositionable *object, char state) override { }
 

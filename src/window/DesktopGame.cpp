@@ -110,7 +110,7 @@ void Game::handleKeyboard(const Keypress *const keypress) {
         this->core->getMap()->addEntity(p);
     }
     if (keypress[SDLK_n].isPressed()) {
-        EntityToy *p = new EntityToy(this->core->getMap());
+        EntityToy *p = new EntityBulldozer(this->core->getMap());
         p->setX(this->core->getPlayer()->getX() - this->core->getPlayer()->getWidth() / 2);
         p->setY(this->core->getPlayer()->getY() - this->core->getPlayer()->getHeight() / 2);
         this->core->getMap()->addEntity(p);

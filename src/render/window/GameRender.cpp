@@ -11,8 +11,10 @@
 #include "../../core/Core.h"
 #include <core/map/entity/EntityBullet.h>
 #include <core/map/entity/EntityFather.h>
+#include <core/map/entity/EntityMachinery.h>
 #include <core/map/block/SimpleBlock.h>
 #include <logging.h>
+#include <render/entity/EntityMachineryRender.h>
 
 void GameRender::render(Window *window, RenderContext *const renderContext) {
     LOGD("Rendering game...\n");
@@ -118,7 +120,8 @@ void GameRender::initRenders() {
 
     blockRenders.insert(std::make_pair(typeid(SimpleBlock).name(), new SimpleBlockRender()));
     entityRenders.insert(std::make_pair(typeid(Player).name(), new PlayerRender()));
-    entityRenders.insert(std::make_pair(typeid(EntityToy).name(), new DefaultEntityRender("toy", "shader")));
+    entityRenders.insert(std::make_pair(typeid(EntityTruck).name(), new EntityTruckRender()));
+    entityRenders.insert(std::make_pair(typeid(EntityBulldozer).name(), new EntityBulldozerRender()));
     entityRenders.insert(std::make_pair(typeid(EntityBullet).name(), new DefaultEntityRender("bullet", "shader")));
     entityRenders.insert(std::make_pair(typeid(SimpleShape).name(), new SimpleShapeRender()));
     entityRenders.insert(std::make_pair(typeid(EntityFather).name(), new DefaultEntityRender("parents", "shader")));

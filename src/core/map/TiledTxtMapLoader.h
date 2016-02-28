@@ -8,6 +8,7 @@
 #include <fstream>
 #include <sstream>
 #include <core/map/entity/EntityFather.h>
+#include <core/map/entity/EntityMachinery.h>
 #include "Map.h"
 #include "../map/block/SimpleBlock.h"
 #include "../map/entity/EntityPlayer.h"
@@ -91,7 +92,7 @@ TiledTxtMapLoader::TiledTxtMapLoader(const std::string &fileName) {
                         sshape = new Player(this->map);
                         break;
                     case 1:
-                        sshape = new EntityToy(this->map);
+                        sshape = new EntityTruck(this->map);
                         break;
                     case 2:
                         sshape = new EntityFather(this->map);
