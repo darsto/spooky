@@ -46,6 +46,17 @@ public:
         this->texPos = shapeId;
     }
 
+    SimpleShape(Map *map, unsigned int shapeId, double width, double height) : EntityMoving(map, width, height) {
+        b2FixtureDef *fixtureDef = new b2FixtureDef();
+        b2PolygonShape *shape = new b2PolygonShape();
+        shape->SetAsBox((float) width / 2, (float) height / 2);
+        fixtureDef->density = 10.0f;
+        fixtureDef->friction = 0.6f;
+        fixtureDef->shape = shape;
+        this->body->CreateFixture(fixtureDef);
+        this->texPos = 0;
+    }
+
     unsigned int getTexPos() const {
         return texPos;
     }
