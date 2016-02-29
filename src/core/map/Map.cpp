@@ -4,6 +4,8 @@
 
 #include <core/map/entity/EntityPlayer.h>
 #include <core/map/entity/EntityFather.h>
+#include <core/map/entity/EntityMachinery.h>
+#include <core/map/entity/EntityDoor.h>
 #include "Map.h"
 
 Map::~Map() {
@@ -45,8 +47,10 @@ void Map::saveEntities() {
             Entity *e = this->getEntities().at(i);
             int id = -1;
             if (Player *p = dynamic_cast<Player *>(e)) id = 0;
-            else if (EntityToy *p = dynamic_cast<EntityToy *>(e)) id = 1;
+            else if (EntityTruck *p = dynamic_cast<EntityTruck *>(e)) id = 1;
             else if (EntityFather *p = dynamic_cast<EntityFather *>(e)) id = 2;
+            else if (EntityBulldozer *p = dynamic_cast<EntityBulldozer *>(e)) id = 3;
+            else if (EntityDoor *p = dynamic_cast<EntityDoor *>(e)) id = 4;
             else continue;
             myfile << id << "," << e->getX() << "," << e->getY() << "," << e->getAngle();
             if (i != this->getEntities().size() - 1) {

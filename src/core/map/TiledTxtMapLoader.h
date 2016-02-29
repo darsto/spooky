@@ -9,6 +9,7 @@
 #include <sstream>
 #include <core/map/entity/EntityFather.h>
 #include <core/map/entity/EntityMachinery.h>
+#include <core/map/entity/EntityDoor.h>
 #include "Map.h"
 #include "../map/block/SimpleBlock.h"
 #include "../map/entity/EntityPlayer.h"
@@ -97,8 +98,14 @@ TiledTxtMapLoader::TiledTxtMapLoader(const std::string &fileName) {
                     case 2:
                         sshape = new EntityFather(this->map);
                         break;
+                    case 3:
+                        sshape = new EntityBulldozer(this->map);
+                        break;
+                    case 4:
+                        sshape = new EntityDoor(this->map);
                     default:
                         break;
+
                 }
                 sshape->setX(atof(blockRow.at(1).c_str()));
                 sshape->setY(atof(blockRow.at(2).c_str()));
