@@ -215,8 +215,8 @@ void Game::handleClick(const TouchPoint *const p) {
 
 Entity *Game::getEntityAt(float x, float y) {
     for (Entity *e : this->core->getMap()->getEntities()) {
-        if (x >= e->getX() - e->getWidth() && x <= e->getX() &&
-            y >= e->getY() - e->getHeight() && y <= e->getY()) {
+        if (x >= e->getX() - e->getWidth() - 0.25 && x <= e->getX() + 0.25 &&
+            y >= e->getY() - e->getHeight() - 0.25 && y <= e->getY() + 0.25) {
             return e;
         }
     }
