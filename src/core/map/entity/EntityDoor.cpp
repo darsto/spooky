@@ -25,11 +25,21 @@ EntityDoor::EntityDoor(Map *map) : EntityMoving(map, 1.0, 0.25) {
 
     b2RevoluteJointDef revoluteJointDef;
 
-    revoluteJointDef.localAnchorA.Set(-0.375, -0.125); //-0.125 for hinge on top, 0.125 on bottom
+    revoluteJointDef.localAnchorA.Set(-0.5, -0.125); //-0.125 for hinge on top, 0.125 on bottom
     revoluteJointDef.localAnchorB.Set(0, 0);
 
     //inside the loop, only need to change the bodies to be joined
     revoluteJointDef.bodyA = this->body;
     revoluteJointDef.bodyB = this->hinge;
     this->map->getWorld()->CreateJoint(&revoluteJointDef);
+}
+
+void EntityDoor::setX(double x) {
+    Entity::setX(x);
+    this->hinge->SetTransform(b2Vec2((float32) (x - this->width * 0.5 - 0.5), this->hinge->GetPosition().y), this->hinge->GetAngle());
+}
+
+void EntityDoor::setY(double y) {
+    Entity::setY(y);
+    this->hinge->SetTransform(b2Vec2(this->hinge->GetPosition().x, (float32) (y - this->height * 0.5 - 0.125/*TODO +-*/)), this->hinge->GetAngle());
 }
