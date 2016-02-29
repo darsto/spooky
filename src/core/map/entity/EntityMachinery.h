@@ -10,9 +10,9 @@
 class EntityTruck : public EntityToy {
 
 public:
-    EntityTruck(Map *map) : EntityToy(map, 0.95, 0.7) {
+    EntityTruck(Map *map) : EntityToy(map, 0.68, 0.32) {
         b2PolygonShape shape;
-        shape.SetAsBox(0.47, 0.35);
+        shape.SetAsBox(this->width / 2, this->height / 2);
         b2FixtureDef fixDef;
         fixDef.shape = &shape;
         fixDef.density = 6.0f;
