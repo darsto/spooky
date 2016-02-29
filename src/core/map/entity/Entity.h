@@ -22,13 +22,13 @@ public:
         return x;
     }
 
-    void setX(double x);
+    virtual void setX(double x);
 
     virtual double getY() const override {
         return y;
     }
 
-    void setY(double y);
+    virtual void setY(double y);
 
     virtual void update();
 

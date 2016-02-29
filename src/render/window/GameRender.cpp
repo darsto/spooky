@@ -12,9 +12,11 @@
 #include <core/map/entity/EntityBullet.h>
 #include <core/map/entity/EntityFather.h>
 #include <core/map/entity/EntityMachinery.h>
+#include <core/map/entity/EntityDoor.h>
 #include <core/map/block/SimpleBlock.h>
 #include <logging.h>
 #include <render/entity/EntityMachineryRender.h>
+#include <render/entity/EntityFurnitureRender.h>
 
 void GameRender::render(Window *window, RenderContext *const renderContext) {
     LOGD("Rendering game...\n");
@@ -123,6 +125,7 @@ void GameRender::initRenders() {
     entityRenders.insert(std::make_pair(typeid(EntityTruck).name(), new EntityTruckRender()));
     entityRenders.insert(std::make_pair(typeid(EntityBulldozer).name(), new EntityBulldozerRender()));
     entityRenders.insert(std::make_pair(typeid(EntityBullet).name(), new DefaultEntityRender("bullet", "shader")));
+    entityRenders.insert(std::make_pair(typeid(EntityDoor).name(), new EntityDoorRender()));
     entityRenders.insert(std::make_pair(typeid(SimpleShape).name(), new SimpleShapeRender()));
     entityRenders.insert(std::make_pair(typeid(EntityFather).name(), new DefaultEntityRender("parents", "shader")));
     LOGD("Entity/block renders initialized successfully.\n");
