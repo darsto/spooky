@@ -30,6 +30,7 @@ inline static void initShapeDefinitions() {
     shapeDefs.push_back(ShapeDef::createShapeDef(0.25, 0.5));
     shapeDefs.push_back(ShapeDef::createShapeDef(0.25, 0.25));
     shapeDefs.push_back(ShapeDef::createShapeDef(0.5, 0.75));
+    shapeDefs.push_back(ShapeDef::createShapeDef(1.0, 0.25));
 }
 
 class SimpleShape : public EntityMoving {
@@ -40,6 +41,7 @@ public:
      * 0  :  0.25     0.5
      * 1  :  0.25    0.25
      * 2  :  0.5     0.75
+     * 3  :  1.0     0.25
      */
     SimpleShape(Map *map, unsigned int shapeId) : EntityMoving(map, shapeDefs.at(shapeId)->width, shapeDefs.at(shapeId)->height) {
         this->body->CreateFixture(shapeDefs.at(shapeId)->fixtureDef);
