@@ -17,7 +17,6 @@
 #include "../logging.h"
 
 Game::Game(const std::function<bool(Window *window)> &switchWindow) : Window(switchWindow) {
-    LOGD("Loading game...\n");
     MapLoader *mapLoader = new TiledTxtMapLoader("test_map");
     Map *bmap = mapLoader->loadMap();
     this->core = new Core(bmap);
@@ -41,24 +40,19 @@ Game::Game(const std::function<bool(Window *window)> &switchWindow) : Window(swi
 
     GuiText *t = new GuiText(string("Dev Build: ") + __DATE__ + " " + __TIME__, 15, 15, GUI_BOTTOM_LEFT, 32, 0xFFFFFFFF, 0);
     this->guiElements.push_back(t);
-    LOGD("Game loaded successfully.\n");
 }
 
 void Game::reload(unsigned int windowWidth, unsigned int windowHeight) {
-    LOGD("Reloading game..\n");
     for (GuiElement *e : this->guiElements) {
         e->reinit(windowWidth, windowHeight);
     }
 
-    LOGD("Reinitialized GuiElements.\n");
     this->windowWidth = windowWidth;
     this->windowHeight = windowHeight;
     SDL_StartTextInput();
-    LOGD("Game reloaded successfully.\n");
 }
 
 void Game::tick(double deltaTime) {
-    LOGD("Game tick starting..\n");
     this->core->getMap()->update();
     this->core->getMap()->getWorld()->Step(deltaTime, 8, 3);
     for (int i = 0; i < this->core->getMap()->getEntities().size(); i++) {
@@ -99,7 +93,6 @@ void Game::tick(double deltaTime) {
     if (-camY > -(signed) this->windowHeight / 2 + (this->core->getMap()->getHeight() - 1) * this->core->getBlockSize() * this->core->getGeneralScale()) {
         this->core->setCamY(-(signed) this->windowHeight / 2 + (this->core->getMap()->getHeight() - 1) * this->core->getBlockSize() * this->core->getGeneralScale());
     }
-    LOGD("Game ticked successfully.\n");
 }
 
 void Game::handleKeyboard(const Keypress *const keypress) {

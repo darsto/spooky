@@ -118,7 +118,5 @@ WindowRender *RenderManager::getWindowRender(const Window *const window) {
 }
 
 void RenderManager::initWindow(Window *window) {
-    LOGD("Initializing window...\n");
     this->getWindowRender(window)->init(this->renderContext);
-    LOGD("Window initialized successfully.\n");
 }

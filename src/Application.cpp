@@ -12,12 +12,10 @@
 Application::Application() {
     this->renderer = new RenderManager();
     auto switchVideo = [=](Window *window) {
-        LOGD("Switching window...\n");
         this->previousWindow = this->window;
         this->window = window;
         this->renderer->initWindow(this->window);
         this->resize(this->renderer->getRenderContext()->getWindowWidth(), this->renderer->getRenderContext()->getWindowHeight());
-        LOGD("Window switched successfully.\n");
         return true;
     };
     this->window = new Game(switchVideo);
@@ -28,21 +26,16 @@ Application::Application() {
 }
 
 void Application::reinit() {
-    LOGD("Reinitializing application...\n");
     this->renderer->init();
     this->renderer->initWindow(this->window); //TODO
     timer->GetDelta(); //if not called right now, first call in game loop would return a very huge value
     this->inputManager->reload();
-    LOGD("Application reiitialized successfully.\n");
 }
 
 void Application::update(bool dynamic) {
-    LOGD("Updating application..\n");
     if (this->previousWindow != nullptr) {
-        LOGD("Deleting previous window...\n");
         delete this->previousWindow;
         this->previousWindow = nullptr;
-        LOGD("Previous window deleted successfully.\n");
     }
     if (dynamic) {
         double deltaTime = timer->GetDelta();
@@ -57,7 +50,6 @@ void Application::update(bool dynamic) {
     this->renderer->render(this->getCurrentWindow());
     if (!MOBILE) this->handleEvents();
     this->inputManager->tick(this->getCurrentWindow());
-    LOGD("Application updated successfully.\n");
 }
 
 Application::~Application() {
@@ -106,10 +98,8 @@ JNIEXPORT void JNICALL Java_tk_approach_android_spookytom_JniBridge_handleTouch(
 #endif //__ANDROID__
 
 void Application::resize(int width, int height) {
-    LOGD("Resizing application.\n");
     this->getCurrentWindow()->reload(width, height);
     this->renderer->resize(this->getCurrentWindow(), width, height);
-    LOGD("Application resized successfully.\n");
 }
 
 void Application::handleClick(int i, int action, float x, float y) {

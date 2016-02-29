@@ -38,9 +38,6 @@ public:
     ~Application();
 
 private:
-#ifdef __DEBUG__
-    KxStackTrace  mStackTrace;
-#endif //__DEBUG__
     bool running = true;
     Window *previousWindow = nullptr;
     Window *window = nullptr;
