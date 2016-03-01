@@ -87,7 +87,9 @@ TiledTxtMapLoader::TiledTxtMapLoader(const std::string &fileName) {
             while (getline(myfile2, line) && line.size() > 0) {
                 std::vector<std::string> blockRow = split(line, ',');
                 Entity *sshape;
-                int id = atoi(blockRow.at(0).c_str());
+                int i = 0;
+                int id = atoi(blockRow.at(i).c_str());
+                i++;
                 switch (id) {
                     case 0:
                         sshape = new Player(this->map);
@@ -102,14 +104,18 @@ TiledTxtMapLoader::TiledTxtMapLoader(const std::string &fileName) {
                         sshape = new EntityBulldozer(this->map);
                         break;
                     case 4:
-                        sshape = new EntityDoor(this->map);
+                        sshape = new EntityDoor(this->map, atof(blockRow.at(i).c_str()));
+                        i++;
                     default:
                         break;
 
                 }
-                sshape->setX(atof(blockRow.at(1).c_str()));
-                sshape->setY(atof(blockRow.at(2).c_str()));
-                sshape->setAngle(atof(blockRow.at(3).c_str()));
+                sshape->setX(atof(blockRow.at(i).c_str()));
+                i++;
+                sshape->setY(atof(blockRow.at(i).c_str()));
+                i++;
+                sshape->setAngle(atof(blockRow.at(i).c_str()));
+                i++;
                 this->map->addEntity(sshape);
             }
             myfile2.close();

@@ -50,7 +50,14 @@ void Map::saveEntities() {
             else if (EntityTruck *p = dynamic_cast<EntityTruck *>(e)) id = 1;
             else if (EntityFather *p = dynamic_cast<EntityFather *>(e)) id = 2;
             else if (EntityBulldozer *p = dynamic_cast<EntityBulldozer *>(e)) id = 3;
-            else if (EntityDoor *p = dynamic_cast<EntityDoor *>(e)) id = 4;
+            else if (EntityDoor *p = dynamic_cast<EntityDoor *>(e)) {
+                id = 4;
+                myfile << id << "," << (int)p->getType() << "," << e->getX() << "," << e->getY() << "," << e->getAngle();
+                if (i != this->getEntities().size() - 1) {
+                    myfile << "\n";
+                }
+                continue;
+            }
             else continue;
             myfile << id << "," << e->getX() << "," << e->getY() << "," << e->getAngle();
             if (i != this->getEntities().size() - 1) {
