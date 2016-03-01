@@ -10,6 +10,7 @@
 #include <core/map/entity/EntityFather.h>
 #include <core/map/entity/EntityMachinery.h>
 #include <core/map/entity/EntityDoor.h>
+#include <core/map/entity/EntityFurniture.h>
 #include "Map.h"
 #include "../map/block/SimpleBlock.h"
 #include "../map/entity/EntityPlayer.h"
@@ -110,6 +111,9 @@ TiledTxtMapLoader::TiledTxtMapLoader(const std::string &fileName) {
                     case 5:
                         sshape = new SimpleShape(this->map, atoi(blockRow.at(i).c_str()));
                         i++;
+                        break;
+                    case 6:
+                        sshape = new EntityFridge(this->map);
                         break;
                     default:
                         break;
