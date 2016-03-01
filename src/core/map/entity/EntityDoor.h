@@ -22,7 +22,7 @@ public:
     }
 
     virtual ~EntityDoor() override {
-        Entity::~Entity();
+        this->map->getWorld()->DestroyBody(this->body);
         this->map->getWorld()->DestroyBody(this->hinge);
     }
 
