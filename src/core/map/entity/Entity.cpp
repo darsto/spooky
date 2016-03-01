@@ -6,8 +6,8 @@
 #include "core/map/Map.h"
 
 Entity::Entity(Map *map, double width, double height) : map(map) {
-    this->width = width;
-    this->height = height;
+    this->width = width - 0.05;
+    this->height = height - 0.05;
     bodyDef.type = b2_staticBody;
     bodyDef.position.Set(this->getX(), this->getY());
     body = this->map->getWorld()->CreateBody(&bodyDef);
