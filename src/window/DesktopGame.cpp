@@ -14,6 +14,7 @@
 #include <core/map/entity/EntityBullet.h>
 #include <gui/GuiTextBubble.h>
 #include <core/map/entity/EntityDoor.h>
+#include <core/map/entity/EntityFurniture.h>
 #include "../logging.h"
 
 Game::Game(const std::function<bool(Window *window)> &switchWindow) : Window(switchWindow) {
@@ -105,7 +106,21 @@ void Game::handleKeyboard(const Keypress *const keypress) {
         this->core->getMap()->addEntity(p);
     }
     if (keypress[SDLK_n].isPressed()) {
-        EntityDoor *p = new EntityDoor(this->core->getMap(), 0);
+        Entity *p;
+        switch (rand() % 3) {
+            case 0:
+                p = new EntityFridge(this->core->getMap());
+                break;
+            case 1:
+                p = new EntityTruck(this->core->getMap());
+                break;
+            case 2:
+                p = new EntityBulldozer(this->core->getMap());
+                break;
+            default:
+                p = new EntityDoor(this->core->getMap(), 0);
+                break;
+        }
         p->setX(this->core->getPlayer()->getX() - this->core->getPlayer()->getWidth() / 2);
         p->setY(this->core->getPlayer()->getY() - this->core->getPlayer()->getHeight() / 2);
         this->core->getMap()->addEntity(p);
