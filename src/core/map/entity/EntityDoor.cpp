@@ -4,13 +4,14 @@
 
 #include "EntityDoor.h"
 
-EntityDoor::EntityDoor(Map *map) : EntityMoving(map, 1.0, 0.25) {
+EntityDoor::EntityDoor(Map *map, char type) : EntityMoving(map, 1.0, 0.25), type(type) {
     b2PolygonShape shape;
-    shape.SetAsBox(0.5, 0.125);
+    shape.SetAsBox(0.5 - 0.05, 0.125);
     b2FixtureDef fixDef;
     fixDef.shape = &shape;
     fixDef.density = 6.0f;
     fixDef.friction = 0.1f;
+
     this->body->CreateFixture(&fixDef);
 
     this->hinge = this->map->getWorld()->CreateBody(&bodyDef);
@@ -25,7 +26,7 @@ EntityDoor::EntityDoor(Map *map) : EntityMoving(map, 1.0, 0.25) {
 
     b2RevoluteJointDef revoluteJointDef;
 
-    revoluteJointDef.localAnchorA.Set(-0.5, -0.125); //-0.125 for hinge on top, 0.125 on bottom
+    revoluteJointDef.localAnchorA.Set(this->getHingeOffsetX(), this->getHingeOffsetY()); //-0.125 for hinge on top, 0.125 on bottom
     revoluteJointDef.localAnchorB.Set(0, 0);
 
     //inside the loop, only need to change the bodies to be joined
@@ -36,10 +37,10 @@ EntityDoor::EntityDoor(Map *map) : EntityMoving(map, 1.0, 0.25) {
 
 void EntityDoor::setX(double x) {
     Entity::setX(x);
-    this->hinge->SetTransform(b2Vec2((float32) (x - this->width * 0.5 - 0.5), this->hinge->GetPosition().y), this->hinge->GetAngle());
+    this->hinge->SetTransform(b2Vec2((float32) (x - this->width * 0.5 + this->getHingeOffsetX()), this->hinge->GetPosition().y), this->hinge->GetAngle());
 }
 
 void EntityDoor::setY(double y) {
     Entity::setY(y);
-    this->hinge->SetTransform(b2Vec2(this->hinge->GetPosition().x, (float32) (y - this->height * 0.5 - 0.125/*TODO +-*/)), this->hinge->GetAngle());
+    this->hinge->SetTransform(b2Vec2(this->hinge->GetPosition().x, (float32) (y - this->height * 0.5 + this->getHingeOffsetY())), this->hinge->GetAngle());
 }

@@ -11,7 +11,7 @@
 class EntityDoor : public EntityMoving {
 
 public:
-    EntityDoor(Map *map);
+    EntityDoor(Map *map, char type);
 
     virtual void setY(double y);
 
@@ -25,8 +25,23 @@ public:
         this->map->getWorld()->DestroyBody(this->body);
     }
 
+    const char getType() const {
+        return type;
+    }
+
 private:
     b2Body *hinge;
+    const char type;
+
+    double getHingeOffsetX() {
+        if (this->type & 0xF) return 0.5;
+        else return -0.5;
+    }
+
+    double getHingeOffsetY() {
+        if ((this->type & 0xF0) >> 1) return 0.125;
+        else return -0.125;
+    }
 };
 
 #endif //C003_ENTITYDOOR_H
