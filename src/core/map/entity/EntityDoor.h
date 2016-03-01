@@ -22,7 +22,8 @@ public:
     }
 
     virtual ~EntityDoor() override {
-        this->map->getWorld()->DestroyBody(this->body);
+        Entity::~Entity();
+        this->map->getWorld()->DestroyBody(this->hinge);
     }
 
     const char getType() const {
