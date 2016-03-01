@@ -14,10 +14,10 @@ class ContactFilter : public b2ContactFilter {
     bool doesCollide(void *a, void *b) {
         bool collisionAwithB = true, collisionBwithA = true;
         if (Entity *entity = reinterpret_cast<Entity *>(a)) {
-            collisionAwithB = entity->doesCollide(reinterpret_cast<IPositionable *>(b));
+            collisionAwithB = entity->doesCollide(static_cast<IPositionable *>(b));
         }
         if (Entity *entity = reinterpret_cast<Entity *>(b)) {
-            collisionBwithA = entity->doesCollide(reinterpret_cast<IPositionable *>(a));
+            collisionBwithA = entity->doesCollide(static_cast<IPositionable *>(a));
         }
         return collisionAwithB && collisionBwithA;
     }
