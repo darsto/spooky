@@ -14,7 +14,6 @@ class Core {
 
 public:
     Core(Map *map) : map(map) {
-        initShapeDefinitions();
         if (this->player == nullptr) {
             for (Entity *e : map->getEntities()) {
                 if (Player *p = dynamic_cast<Player *>(e)) {

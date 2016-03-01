@@ -14,6 +14,7 @@
 #include <window/MainMenu.h>
 
 Game::Game(const std::function<bool(Window *window)> &switchWindow) : Window(switchWindow) {
+    initShapeDefinitions();
     MapLoader *mapLoader = new TiledTxtMapLoader("test_map");
     Map *bmap = mapLoader->loadMap();
     this->core = new Core(bmap);
