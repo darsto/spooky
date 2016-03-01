@@ -17,7 +17,7 @@ public:
 
 protected:
     virtual int getTexPos(const Entity *const entity) override {
-        if (this->id > 0) return this->id;
+        if (this->id >= 0) return this->id;
         if (const EntityFurniture *const f = dynamic_cast<const EntityFurniture *const>(entity)) {
             return f->getTexId();
         }
