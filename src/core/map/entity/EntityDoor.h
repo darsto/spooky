@@ -30,6 +30,16 @@ public:
         return type;
     }
 
+    virtual bool doesCollide(IPositionable *obj) override {
+        if (Block *b = dynamic_cast<Block*>(obj)) {
+            return b->doesCollide(this);
+        } else if (EntityDoor *e = dynamic_cast<EntityDoor *>(obj)){
+            return false;
+        } else {
+            return true;
+        }
+    }
+
 private:
     b2Body *hinge;
     const char type;
