@@ -6,6 +6,7 @@
 #include <core/map/entity/EntityFather.h>
 #include <core/map/entity/EntityMachinery.h>
 #include <core/map/entity/EntityDoor.h>
+#include <core/map/entity/SimpleShape.h>
 #include "Map.h"
 
 Map::~Map() {
@@ -53,6 +54,14 @@ void Map::saveEntities() {
             else if (EntityDoor *p = dynamic_cast<EntityDoor *>(e)) {
                 id = 4;
                 myfile << id << "," << (int)p->getType() << "," << e->getX() << "," << e->getY() << "," << e->getAngle();
+                if (i != this->getEntities().size() - 1) {
+                    myfile << "\n";
+                }
+                continue;
+            }
+            else if (SimpleShape *p = dynamic_cast<SimpleShape *>(e)) {
+                id = 5;
+                myfile << id << "," << (int)p->getTexPos() << "," << e->getX() << "," << e->getY() << "," << e->getAngle();
                 if (i != this->getEntities().size() - 1) {
                     myfile << "\n";
                 }

@@ -104,8 +104,13 @@ TiledTxtMapLoader::TiledTxtMapLoader(const std::string &fileName) {
                         sshape = new EntityBulldozer(this->map);
                         break;
                     case 4:
-                        sshape = new EntityDoor(this->map, atof(blockRow.at(i).c_str()));
+                        sshape = new EntityDoor(this->map, atoi(blockRow.at(i).c_str()));
                         i++;
+                        break;
+                    case 5:
+                        sshape = new SimpleShape(this->map, atoi(blockRow.at(i).c_str()));
+                        i++;
+                        break;
                     default:
                         break;
 
