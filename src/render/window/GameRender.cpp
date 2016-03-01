@@ -13,6 +13,7 @@
 #include <core/map/entity/EntityFather.h>
 #include <core/map/entity/EntityMachinery.h>
 #include <core/map/entity/EntityDoor.h>
+#include <core/map/entity/EntityFurniture.h>
 #include <core/map/block/SimpleBlock.h>
 #include <logging.h>
 #include <render/entity/EntityMachineryRender.h>
@@ -99,7 +100,15 @@ BlockRender *GameRender::getBlockRender(const Block *const block) {
 }
 
 EntityRender *GameRender::getEntityRender(const Entity *const entity) {
-    return entityRenders[typeid(*entity).name()];
+    EntityRender *r = entityRenders[typeid(*entity).name()];
+    if (r == nullptr) {
+        if (const EntityFurniture *const f = dynamic_cast<const EntityFurniture *const>(entity)) {
+            return entityRenders[typeid(EntityFurniture).name()];
+        } else {
+            return nullptr;
+        }
+    }
+    return r;
 }
 
 void GameRender::initRenders() {
@@ -118,7 +127,8 @@ void GameRender::initRenders() {
     entityRenders.insert(std::make_pair(typeid(EntityTruck).name(), new EntityTruckRender()));
     entityRenders.insert(std::make_pair(typeid(EntityBulldozer).name(), new EntityBulldozerRender()));
     entityRenders.insert(std::make_pair(typeid(EntityBullet).name(), new DefaultEntityRender("bullet", "shader")));
-    entityRenders.insert(std::make_pair(typeid(EntityDoor).name(), new EntityDoorRender()));
+    entityRenders.insert(std::make_pair(typeid(EntityDoor).name(), new EntityFurnitureRender(0)));
+    entityRenders.insert(std::make_pair(typeid(EntityFurniture).name(), new EntityFurnitureRender()));
     entityRenders.insert(std::make_pair(typeid(SimpleShape).name(), new SimpleShapeRender()));
     entityRenders.insert(std::make_pair(typeid(EntityFather).name(), new DefaultEntityRender("parents", "shader")));
 }
