@@ -42,7 +42,7 @@ GuiElementRender::GuiElementRender(const string &textureFile, const string &shad
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
-    float size = 1.0f / atlasSize;
+    float size = 1.0f / atlasSize - 1.0f / texture.getWidth();
     float tCoords[] = {
         size, 0.0f,
         size, size,
