@@ -16,7 +16,7 @@ EntityDoor::EntityDoor(Map *map, char type) : EntityMoving(map, 1.0, 0.25), type
 
     this->hinge = this->map->getWorld()->CreateBody(&bodyDef);
     b2CircleShape circleShape;
-    circleShape.m_radius = 0.125;
+    circleShape.m_radius = 0.001;
     fixDef.shape = &circleShape;
     this->hinge->CreateFixture(&fixDef);
     this->hinge->SetUserData(this);
