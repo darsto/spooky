@@ -26,7 +26,7 @@ public:
         this->map->getWorld()->DestroyBody(this->hinge);
     }
 
-    const char getType() const {
+    const unsigned char getType() const {
         return type;
     }
 
