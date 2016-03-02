@@ -4,7 +4,7 @@
 
 #include "EntityDoor.h"
 
-EntityDoor::EntityDoor(Map *map, char type) : EntityMoving(map, 1.0, 0.25), type(type) {
+EntityDoor::EntityDoor(Map *map, unsigned char type) : EntityMoving(map, 1.0, 0.25), type(type) {
     b2PolygonShape shape;
     shape.SetAsBox(0.5 - 0.05, 0.125);
     b2FixtureDef fixDef;

@@ -11,7 +11,7 @@
 class EntityDoor : public EntityMoving {
 
 public:
-    EntityDoor(Map *map, char type);
+    EntityDoor(Map *map, unsigned char type);
 
     virtual void setY(double y);
 
@@ -42,7 +42,7 @@ public:
 
 private:
     b2Body *hinge;
-    const char type;
+    const unsigned char type;
 
     double getHingeOffsetX() {
         if (this->type & 0xF) return 0.5;
