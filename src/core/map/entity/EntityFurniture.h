@@ -29,4 +29,12 @@ public:
 
 };
 
+class EntityWardrobe : public EntityFurniture {
+public:
+    EntityWardrobe(Map *map) : EntityFurniture(map, 1.0, 0.5, 2) { }
+
+    virtual ~EntityFridge() override { }
+
+};
+
 #endif //C003_ENTITYFURNITURE_H
