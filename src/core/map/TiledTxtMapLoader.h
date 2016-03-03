@@ -115,6 +115,9 @@ TiledTxtMapLoader::TiledTxtMapLoader(const std::string &fileName) {
                     case 6:
                         sshape = new EntityFridge(this->map);
                         break;
+                    case 7:
+                        sshape = new EntityWardrobe(this->map);
+                        break;
                     default:
                         break;
 

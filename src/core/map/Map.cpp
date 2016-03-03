@@ -69,6 +69,7 @@ void Map::saveEntities() {
                 continue;
             }
             else if (EntityFridge *p = dynamic_cast<EntityFridge *>(e)) id = 6;
+            else if (EntityWardrobe *p = dynamic_cast<EntityWardrobe *>(e)) id = 7;
             else continue;
             myfile << id << "," << e->getX() << "," << e->getY() << "," << e->getAngle();
             if (i != this->getEntities().size() - 1) {
