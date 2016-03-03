@@ -14,10 +14,13 @@
 #include <core/map/entity/EntityMachinery.h>
 #include <core/map/entity/EntityDoor.h>
 #include <core/map/entity/EntityFurniture.h>
+#include <core/map/entity/EntityTable.h>
+#include <core/map/entity/EntityChair.h>
 #include <core/map/block/SimpleBlock.h>
 #include <logging.h>
 #include <render/entity/EntityMachineryRender.h>
 #include <render/entity/EntityFurnitureRender.h>
+#include <render/entity/EntityTableRender.h>
 
 void GameRender::render(Window *window, RenderContext *const renderContext) {
     Game *game = ((Game *) window);
@@ -128,6 +131,8 @@ void GameRender::initRenders() {
     entityRenders.insert(std::make_pair(typeid(EntityBulldozer).name(), new EntityBulldozerRender()));
     entityRenders.insert(std::make_pair(typeid(EntityBullet).name(), new DefaultEntityRender("bullet", "shader")));
     entityRenders.insert(std::make_pair(typeid(EntityDoor).name(), new EntityFurnitureRender(0)));
+    entityRenders.insert(std::make_pair(typeid(EntityChair).name(), new EntityFurnitureRender(3)));
+    entityRenders.insert(std::make_pair(typeid(EntityTable).name(), new EntityTableRender()));
     entityRenders.insert(std::make_pair(typeid(EntityFurniture).name(), new EntityFurnitureRender()));
     entityRenders.insert(std::make_pair(typeid(SimpleShape).name(), new SimpleShapeRender()));
     entityRenders.insert(std::make_pair(typeid(EntityFather).name(), new DefaultEntityRender("parents", "shader")));
