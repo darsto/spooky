@@ -42,8 +42,12 @@ void Player::onCollision(IPositionable *object, char state) {
     if (object != nullptr) if (EntityToy *toy = dynamic_cast<EntityToy *>(object)) {
         if (state == 0 && this->toy == nullptr && this->toyToMerge == nullptr) {
             this->toyToMerge = toy;
+            this->toysToMerge++;
         } else if (state == 1 && this->toy == nullptr && this->toyToMerge == toy) {
-            this->toyToMerge = nullptr;
+            this->toysToMerge--;
+            if (this->toysToMerge <= 0) {
+                this->toyToMerge = nullptr;
+            }
         }
     }
 }

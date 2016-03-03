@@ -45,6 +45,7 @@ public:
     void eject();
 
 private:
+    int toysToMerge = 0;
     EntityToy *toyToMerge = nullptr;
     EntityToy *toy = nullptr;
 public:
