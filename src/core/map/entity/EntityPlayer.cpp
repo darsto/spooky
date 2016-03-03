@@ -69,12 +69,20 @@ double Player::getY() const {
 }
 
 void Player::applyImpulse(double x, double y) {
-    if (this->toy != nullptr) this->toy->applyImpulse(x, y);
+    if (this->toy != nullptr) {
+        x *= this->toy->getSpeed();
+        y *= this->toy->getSpeed();
+        this->toy->applyImpulse(x, y);
+    }
     else EntityMoving::applyImpulse(x, y);
 }
 
 void Player::applyForce(double x, double y) {
-    if (this->toy != nullptr) this->toy->applyImpulse(x, y);
+    if (this->toy != nullptr) {
+        x *= this->toy->getSpeed();
+        y *= this->toy->getSpeed();
+        this->toy->applyImpulse(x, y);
+    }
     else EntityMoving::applyImpulse(x, y);
 }
 

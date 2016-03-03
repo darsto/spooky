@@ -15,13 +15,13 @@ public:
         shape.SetAsBox(this->width / 2, this->height / 2);
         b2FixtureDef fixDef;
         fixDef.shape = &shape;
-        fixDef.density = 6.0f;
+        fixDef.density = 0.1f;
         fixDef.friction = 0.1f;
         this->body->CreateFixture(&fixDef);
     }
 
     double getSpeed() override {
-        return 1.0;
+        return 0.02;
     }
 };
 
@@ -33,7 +33,7 @@ public:
         shape.SetAsBox(0.47, 0.35);
         b2FixtureDef fixDef;
         fixDef.shape = &shape;
-        fixDef.density = 6.0f;
+        fixDef.density = 3.0f;
         fixDef.friction = 0.1f;
         this->body->CreateFixture(&fixDef);
     }
