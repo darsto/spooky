@@ -107,7 +107,7 @@ void Game::handleKeyboard(const Keypress *const keypress) {
     }
     if (keypress[SDLK_n].isPressed()) {
         Entity *p;
-        switch (rand() % 4) {
+        switch (rand() % 6) {
             case 0:
                 p = new EntityFridge(this->core->getMap());
                 break;
@@ -119,6 +119,12 @@ void Game::handleKeyboard(const Keypress *const keypress) {
                 break;
             case 3:
                 p = new EntityWardrobe(this->core->getMap());
+                break;
+            case 4:
+                p = new EntityTable(this->core->getMap());
+                break;
+            case 5:
+                p = new EntityChair(this->core->getMap());
                 break;
             default:
                 p = new EntityDoor(this->core->getMap(), 0);
