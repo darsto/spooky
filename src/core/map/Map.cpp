@@ -8,6 +8,7 @@
 #include <core/map/entity/EntityDoor.h>
 #include <core/map/entity/SimpleShape.h>
 #include <core/map/entity/EntityFurniture.h>
+#include <core/map/entity/EntityChair.h>
 #include "Map.h"
 
 Map::~Map() {
@@ -70,6 +71,8 @@ void Map::saveEntities() {
             }
             else if (EntityFridge *p = dynamic_cast<EntityFridge *>(e)) id = 6;
             else if (EntityWardrobe *p = dynamic_cast<EntityWardrobe *>(e)) id = 7;
+            else if (EntityChair *p = dynamic_cast<EntityChair *>(e)) id = 8;
+            else if (EntityTable *p = dynamic_cast<EntityTable *>(e)) id = 9;
             else continue;
             myfile << id << "," << e->getX() << "," << e->getY() << "," << e->getAngle();
             if (i != this->getEntities().size() - 1) {

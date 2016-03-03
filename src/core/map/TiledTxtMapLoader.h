@@ -11,6 +11,8 @@
 #include <core/map/entity/EntityMachinery.h>
 #include <core/map/entity/EntityDoor.h>
 #include <core/map/entity/EntityFurniture.h>
+#include <core/map/entity/EntityTable.h>
+#include <core/map/entity/EntityChair.h>
 #include "Map.h"
 #include "../map/block/SimpleBlock.h"
 #include "../map/entity/EntityPlayer.h"
@@ -117,6 +119,12 @@ TiledTxtMapLoader::TiledTxtMapLoader(const std::string &fileName) {
                         break;
                     case 7:
                         sshape = new EntityWardrobe(this->map);
+                        break;
+                    case 8:
+                        sshape = new EntityChair(this->map);
+                        break;
+                    case 9:
+                        sshape = new EntityTable(this->map);
                         break;
                     default:
                         break;
