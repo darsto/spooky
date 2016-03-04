@@ -16,6 +16,7 @@
 #include <core/map/entity/EntityFurniture.h>
 #include <core/map/entity/EntityTable.h>
 #include <core/map/entity/EntityChair.h>
+#include <core/map/entity/EntityStain.h>
 #include <core/map/block/SimpleBlock.h>
 #include <logging.h>
 #include <render/entity/EntityMachineryRender.h>
@@ -134,6 +135,8 @@ void GameRender::initRenders() {
     entityRenders.insert(std::make_pair(typeid(EntityChair).name(), new EntityFurnitureRender(3)));
     entityRenders.insert(std::make_pair(typeid(EntityTable).name(), new EntityTableRender()));
     entityRenders.insert(std::make_pair(typeid(EntityFurniture).name(), new EntityFurnitureRender()));
+    entityRenders.insert(std::make_pair(typeid(EntityStain).name(), new DefaultEntityRender("gui", "shader")));
+    entityRenders.insert(std::make_pair(typeid(EntityHoover).name(), new DefaultEntityRender("shapes", "shader")));
     entityRenders.insert(std::make_pair(typeid(SimpleShape).name(), new SimpleShapeRender()));
     entityRenders.insert(std::make_pair(typeid(EntityFather).name(), new DefaultEntityRender("parents", "shader")));
 }

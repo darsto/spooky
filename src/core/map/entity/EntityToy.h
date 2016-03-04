@@ -16,7 +16,7 @@ public:
 
     virtual double getSpeed() override = 0;
 
-    void onCollision(IPositionable *object, char state) override { }
+    virtual void onCollision(IPositionable *object, char state) override { }
 
     Player *getHost() const {
         return host;

@@ -43,4 +43,22 @@ public:
     }
 };
 
+class EntityHoover : public EntityToy {
+
+public:
+    EntityHoover(Map *map) : EntityToy(map, 1.0, 1.0) {
+        b2PolygonShape shape;
+        shape.SetAsBox(this->width / 2, this->height / 2);
+        b2FixtureDef fixDef;
+        fixDef.shape = &shape;
+        fixDef.density = 3.0f;
+        fixDef.friction = 0.1f;
+        this->body->CreateFixture(&fixDef);
+    }
+
+    virtual double getSpeed() override {
+        return 1.0;
+    }
+};
+
 #endif //C003_ENTITYMACHINERY_H
