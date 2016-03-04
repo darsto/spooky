@@ -14,6 +14,11 @@ class Core {
 
 public:
     Core(Map *map) : map(map) {
+#ifdef __ANDROID__
+        blockSize = 96.0f;
+#else
+        blockSize = 64.0f;
+#endif //__ANDROID__
         if (this->player == nullptr) {
             for (Entity *e : map->getEntities()) {
                 if (Player *p = dynamic_cast<Player *>(e)) {
@@ -82,7 +87,7 @@ private:
     Player *player = nullptr;
     double camX = 0, camY = 0;
     double generalScale = 1.0;
-    double blockSize = 64.0;
+    double blockSize;
 };
 
 #endif //C003_CORE_H
