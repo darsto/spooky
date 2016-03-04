@@ -6,7 +6,7 @@
 #include "../../core/map/block/Block.h"
 #include <string>
 
-DefaultEntityRender::DefaultEntityRender(const string &textureFile, const string &shader) {
+DefaultEntityRender::DefaultEntityRender(const string &textureFile, const string &shader, int texId) : texId(texId) {
     texture.loadTexture2D(textureFile + string(".png"), true);
     texture.setFiltering(TEXTURE_FILTER_MAG_BILINEAR, TEXTURE_FILTER_MIN_BILINEAR_MIPMAP);
 
@@ -87,7 +87,7 @@ void DefaultEntityRender::render(const Entity *const entity, glm::mat4 projectio
 }
 
 int DefaultEntityRender::getTexPos(const Entity *const entity) {
-    return 0;
+    return this->texId;
 }
 
 DefaultEntityRender::~DefaultEntityRender() {

@@ -16,7 +16,7 @@
 
 class DefaultEntityRender : public EntityRender {
 public:
-    DefaultEntityRender(const string &textureFile, const string &shader);
+    DefaultEntityRender(const string &textureFile, const string &shader, int texId = 0);
     ~DefaultEntityRender();
     virtual void render(const Entity *const entity, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, double scale) override;
 
@@ -29,6 +29,7 @@ protected:
     ShaderProgram shaderProgram;
     Texture texture;
     glm::mat4 modelMatrix = glm::mat4(1.0);
+    int texId;
 
     virtual int getTexPos(const Entity *const entity);
 
