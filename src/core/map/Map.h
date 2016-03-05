@@ -71,7 +71,18 @@ public:
         return worldTime;
     }
 
-    Entity * getEntityAt(float x, float y);
+    template<class T>
+    T *getEntityAt(float x, float y) {
+        for (Entity *e : this->getEntities()) {
+            if (x >= e->getX() - e->getWidth() - 0.25 && x <= e->getX() + 0.25 &&
+                y >= e->getY() - e->getHeight() - 0.25 && y <= e->getY() + 0.25) {
+                if (T *t = dynamic_cast<T *>(e)) {
+                    return t;
+                }
+            }
+        }
+        return nullptr;
+    }
 
 private:
     const std::string fileName;
