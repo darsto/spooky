@@ -76,6 +76,10 @@ void Game::tick(double deltaTime) {
         double gy = (this->windowHeight / 2) * (1 - ghostMovement * ghostMovement) + (this->popup[0]->getHeight() / 2 + 50) * ghostMovement;
         this->popup[0]->setX(gx - this->popup[0]->getWidth() / 2);
         this->popup[0]->setY(gy - this->popup[0]->getHeight() / 2);
+        int color = this->popup[0]->getColor() & 0xFFFFFF00;
+        double ghostAlpha = std::min(ghostMovement * 2.0f, 1.0f);
+        color |= (int) (ghostAlpha * 255);
+        this->popup[0]->setColor(color);
         this->popup[2]->setX(this->popup[1]->getX() + 10);
 
         static float tutorialTextAlpha = -0.2f;
