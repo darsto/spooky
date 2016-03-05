@@ -57,7 +57,6 @@ private:
     }
 #else
     Entity *heldEntity = nullptr;
-    Entity *getEntityAt(float x, float y);
 
     GuiElement *entityRotationRing;
     int mouseLockX, mouseLockY;
