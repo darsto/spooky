@@ -65,31 +65,35 @@ void Game::tick(double deltaTime) {
         }
     }
 
-    bool popupVisible = ((GuiText *) this->popup[2])->getString().size() > 0;
-    static float ghostMovement = 0.0f;
+    static float ghostMovement = -1.5f;
     ghostMovement += deltaTime * 0.8;
-    if (ghostMovement > 1) ghostMovement = 1;
-    double gx = (this->windowWidth / 2 - this->popup[0]->getWidth() / 4) * (1 + ghostMovement);
-    double gy = (this->windowHeight / 2) * (1 - ghostMovement * ghostMovement) + (this->popup[0]->getHeight() / 2 + 50) * ghostMovement;
-    this->popup[0]->setX(gx - this->popup[0]->getWidth() / 2);
-    this->popup[0]->setY(gy - this->popup[0]->getHeight() / 2);
-    this->popup[2]->setX(this->popup[1]->getX() + 10);
-
-    static float tutorialTextAlpha = -0.2f;
-
-    this->popup[0]->setVisible(true);
-    for (int i = 1; i < 3; i++) {
-        this->popup[i]->setVisible(popupVisible && tutorialTextAlpha > 0);
+    for (int i = 0; i < 3; i++) {
+        this->popup[i]->setVisible(false);
     }
+    if (ghostMovement >= 0) {
+        if (ghostMovement > 1) ghostMovement = 1;
+        double gx = (this->windowWidth / 2 - this->popup[0]->getWidth() / 4) * (1 + ghostMovement);
+        double gy = (this->windowHeight / 2) * (1 - ghostMovement * ghostMovement) + (this->popup[0]->getHeight() / 2 + 50) * ghostMovement;
+        this->popup[0]->setX(gx - this->popup[0]->getWidth() / 2);
+        this->popup[0]->setY(gy - this->popup[0]->getHeight() / 2);
+        this->popup[2]->setX(this->popup[1]->getX() + 10);
 
-    if (ghostMovement == 1) {
-        tutorialTextAlpha += deltaTime * 0.6;
-        if (tutorialTextAlpha > 1) tutorialTextAlpha = 1;
-        if (tutorialTextAlpha > 0) {
-            for (int i = 1; i < 3; i++) {
-                int color = this->popup[i]->getColor() & 0xFFFFFF00;
-                color |= (int) (tutorialTextAlpha * 255);
-                this->popup[i]->setColor(color);
+        static float tutorialTextAlpha = -0.2f;
+
+        this->popup[0]->setVisible(true);
+        for (int i = 1; i < 3; i++) {
+            this->popup[i]->setVisible(tutorialTextAlpha > 0);
+        }
+
+        if (ghostMovement == 1) {
+            tutorialTextAlpha += deltaTime * 0.6;
+            if (tutorialTextAlpha > 1) tutorialTextAlpha = 1;
+            if (tutorialTextAlpha > 0) {
+                for (int i = 1; i < 3; i++) {
+                    int color = this->popup[i]->getColor() & 0xFFFFFF00;
+                    color |= (int) (tutorialTextAlpha * 255);
+                    this->popup[i]->setColor(color);
+                }
             }
         }
     }
