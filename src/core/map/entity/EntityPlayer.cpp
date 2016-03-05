@@ -40,10 +40,10 @@ bool Player::teleport(double x, double y) {
 
 void Player::onCollision(IPositionable *object, char state) {
     if (object != nullptr) if (EntityToy *toy = dynamic_cast<EntityToy *>(object)) {
-        if (state == 0 && this->toy == nullptr && this->toyToMerge == nullptr) {
-            this->toyToMerge = toy;
+        if (state == 0 && this->toy == nullptr) {
             this->toysToMerge++;
-        } else if (state == 1 && this->toy == nullptr && this->toyToMerge == toy) {
+            this->toyToMerge = toy;
+        } else if (state == 1 && this->toy == nullptr) {
             this->toysToMerge--;
             if (this->toysToMerge <= 0) {
                 this->toyToMerge = nullptr;
@@ -59,6 +59,7 @@ void Player::eject() {
         toy->setHost(nullptr);
         this->toyToMerge = toy;
         this->toy = nullptr;
+        this->toysToMerge = 0;
     }
 }
 
@@ -100,4 +101,18 @@ void Player::setAngle(double angle) {
 
 bool Player::doesCollide(IPositionable *obj) {
     return true;
+}
+
+void Player::setToy() {
+    if (this->toyToMerge != nullptr) {
+        this->toy = this->toyToMerge;
+        this->toy->setHost(this);
+        this->toyToMerge = nullptr;
+    } else {
+        Entity *e = this->map->getEntityAt<EntityToy>(this->getX(), this->getY());
+        if (e != nullptr) if (EntityToy *t = dynamic_cast<EntityToy *>(e)) {
+            this->toyToMerge = t;
+            this->setToy();
+        }
+    }
 }

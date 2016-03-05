@@ -34,13 +34,7 @@ public:
         return toyToMerge;
     }
 
-    void setToy() {
-        if (this->toyToMerge != nullptr) {
-            this->toy = this->toyToMerge;
-            this->toy->setHost(this);
-            this->toyToMerge = nullptr;
-        }
-    }
+    void setToy();
 
     void eject();
 
