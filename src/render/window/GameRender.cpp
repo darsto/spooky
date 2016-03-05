@@ -48,9 +48,9 @@ void GameRender::render(Window *window, RenderContext *const renderContext) {
     for (int i = core->getMap()->getEntities().size() - 1; i >= 0; i--) {
         Entity *entity = core->getMap()->getEntities().at(i);
         if (entity->getX() * scale > -(signed) windowWidth / 2.0f - core->getCamX() &&
-            (entity->getX() - 1) * scale < -(signed) windowWidth / 2.0f - core->getCamX() + (signed) windowWidth &&
+            (entity->getX() - 2.42) * scale < -(signed) windowWidth / 2.0f - core->getCamX() + (signed) windowWidth &&
             entity->getY() * scale > -(signed) windowHeight / 2.0f - core->getCamY() &&
-            (entity->getY() - 1) * scale < -(signed) windowHeight / 2.0f - core->getCamY() + (signed) windowHeight) {
+            (entity->getY() - 2.42) * scale < -(signed) windowHeight / 2.0f - core->getCamY() + (signed) windowHeight) {
             getEntityRender(entity)->render(entity, projectionMatrix, glm::translate(viewMatrix, glm::vec3(
                 -(signed) windowWidth / 2.0f - core->getCamX(),
                 (signed) windowHeight / 2.0f - core->getCamY(),
