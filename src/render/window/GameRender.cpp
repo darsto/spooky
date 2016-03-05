@@ -69,6 +69,42 @@ void GameRender::render(Window *window, RenderContext *const renderContext) {
         }
     }
 
+    //TODO
+    this->voidRender->render(9, 3, 5, 6, projectionMatrix, glm::translate(viewMatrix, glm::vec3(
+        -(signed) windowWidth / 2.0f - core->getCamX(),
+        (signed) windowHeight / 2.0f - core->getCamY(),
+        0.0f)), core->getBlockSize() * core->getGeneralScale());
+
+    this->voidRender->render(15, 3, 4, 6, projectionMatrix, glm::translate(viewMatrix, glm::vec3(
+        -(signed) windowWidth / 2.0f - core->getCamX(),
+        (signed) windowHeight / 2.0f - core->getCamY(),
+        0.0f)), core->getBlockSize() * core->getGeneralScale());
+
+    this->voidRender->render(25, 3, 5, 3, projectionMatrix, glm::translate(viewMatrix, glm::vec3(
+        -(signed) windowWidth / 2.0f - core->getCamX(),
+        (signed) windowHeight / 2.0f - core->getCamY(),
+        0.0f)), core->getBlockSize() * core->getGeneralScale());
+
+    this->voidRender->render(30, 3, 1, 1, projectionMatrix, glm::translate(viewMatrix, glm::vec3(
+        -(signed) windowWidth / 2.0f - core->getCamX(),
+        (signed) windowHeight / 2.0f - core->getCamY(),
+        0.0f)), core->getBlockSize() * core->getGeneralScale());
+
+    this->voidRender->render(31, 3, 4, 3, projectionMatrix, glm::translate(viewMatrix, glm::vec3(
+        -(signed) windowWidth / 2.0f - core->getCamX(),
+        (signed) windowHeight / 2.0f - core->getCamY(),
+        0.0f)), core->getBlockSize() * core->getGeneralScale());
+
+    this->voidRender->render(35, 4, 1, 1, projectionMatrix, glm::translate(viewMatrix, glm::vec3(
+        -(signed) windowWidth / 2.0f - core->getCamX(),
+        (signed) windowHeight / 2.0f - core->getCamY(),
+        0.0f)), core->getBlockSize() * core->getGeneralScale());
+
+    this->voidRender->render(34, 6, 1, 1, projectionMatrix, glm::translate(viewMatrix, glm::vec3(
+        -(signed) windowWidth / 2.0f - core->getCamX(),
+        (signed) windowHeight / 2.0f - core->getCamY(),
+        0.0f)), core->getBlockSize() * core->getGeneralScale());
+
     fbo.unbind();
     fbo.getShaderProgram()->useProgram();
     fbo.getShaderProgram()->setUniform("lightPointsNum", entitiesNum);
@@ -116,6 +152,9 @@ EntityRender *GameRender::getEntityRender(const Entity *const entity) {
 }
 
 void GameRender::initRenders() {
+    delete this->voidRender;
+    this->voidRender = new VoidRender();
+
     for (std::pair<const char *, BlockRender *> renderPair : blockRenders) {
         delete renderPair.second;
     }

@@ -16,6 +16,7 @@
 #include <render/entity/EntityRender.h>
 #include <core/map/block/Block.h>
 #include <core/map/entity/Entity.h>
+#include <render/block/VoidRender.h>
 #include "WindowRender.h"
 
 class Game;
@@ -35,6 +36,7 @@ private:
     glm::mat4 projectionMatrix;
     std::map<const char *, BlockRender *> blockRenders;
     std::map<const char *, EntityRender *> entityRenders;
+    VoidRender *voidRender = nullptr;
 
     void initRenders();
     BlockRender *getBlockRender(const Block *const block);
