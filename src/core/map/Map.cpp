@@ -29,7 +29,9 @@ Block *Map::getBlock(int x, int y) {
     return nullptr;
 }
 
-void Map::update() {
+void Map::update(double deltaTime) {
+    this->worldTime += deltaTime;
+
     for (Block *block : this->blocks) {
         block->update();
     }

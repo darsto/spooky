@@ -19,6 +19,7 @@ class Map {
 
 public:
     Map(const std::string &fileName, unsigned int width, unsigned int height) : fileName(fileName), world(new b2World(b2Vec2(0.0, 0.0))), width(width), height(height) {
+        this->worldTime = 0;
         world->SetContactFilter(&contactFilter);
         world->SetContactListener(&contactListener);
     };
@@ -53,7 +54,7 @@ public:
 
     }
 
-    void update();
+    void update(double deltaTime);
 
     b2World *getWorld() const {
         return world;
@@ -66,9 +67,14 @@ public:
 
     void saveEntities();
 
+    double getWorldTime() const {
+        return worldTime;
+    }
+
 private:
     const std::string fileName;
     const unsigned int width, height;
+    double worldTime;
     b2World *const world;
     std::vector<Block *> blocks;
     std::vector<Entity *> entities;
