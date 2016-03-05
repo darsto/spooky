@@ -45,7 +45,7 @@ void Application::update(bool dynamic) {
             this->accumulator -= TIME_STEP;
         }
     } else {
-        this->getCurrentWindow()->tick(1.0 / 30);
+        this->getCurrentWindow()->tick(TIME_STEP * 1.5);
     }
     this->renderer->render(this->getCurrentWindow());
     if (!MOBILE) this->handleEvents();
