@@ -71,6 +71,8 @@ public:
         return worldTime;
     }
 
+    Entity * getEntityAt(float x, float y);
+
 private:
     const std::string fileName;
     const unsigned int width, height;

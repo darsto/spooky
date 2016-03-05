@@ -84,3 +84,13 @@ void Map::saveEntities() {
         myfile.close();
     }
 }
+
+Entity *Map::getEntityAt(float x, float y) {
+    for (Entity *e : this->getEntities()) {
+        if (x >= e->getX() - e->getWidth() - 0.25 && x <= e->getX() + 0.25 &&
+            y >= e->getY() - e->getHeight() - 0.25 && y <= e->getY() + 0.25) {
+            return e;
+        }
+    }
+    return nullptr;
+}
