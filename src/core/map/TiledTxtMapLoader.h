@@ -140,6 +140,12 @@ TiledTxtMapLoader::TiledTxtMapLoader(const std::string &fileName) {
                     case 13:
                         sshape = new EntityCouch(this->map);
                         break;
+                    case 14:
+                        sshape = new EntityArmchair(this->map);
+                        break;
+                    case 15:
+                        sshape = new EntityPouf(this->map);
+                        break;
                     default:
                         break;
 
