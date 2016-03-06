@@ -76,10 +76,10 @@ void Map::saveEntities() {
             else if (EntityFridge *p = dynamic_cast<EntityFridge *>(e)) id = 6;
             else if (EntityWardrobe *p = dynamic_cast<EntityWardrobe *>(e)) id = 7;
             else if (EntityChair *p = dynamic_cast<EntityChair *>(e)) id = 8;
+            else if (EntityCoffeeTable *p = dynamic_cast<EntityCoffeeTable *>(e)) id = 12;
             else if (EntityTable *p = dynamic_cast<EntityTable *>(e)) id = 9;
             else if (EntityStain *p = dynamic_cast<EntityStain *>(e)) id = 10;
             else if (EntityHoover *p = dynamic_cast<EntityHoover *>(e)) id = 11;
-            else if (EntityCoffeeTable *p = dynamic_cast<EntityCoffeeTable *>(e)) id = 12;
             else if (EntityCouch *p = dynamic_cast<EntityCouch *>(e)) id = 13;
             else continue;
             myfile << id << "," << e->getX() << "," << e->getY() << "," << e->getAngle();
