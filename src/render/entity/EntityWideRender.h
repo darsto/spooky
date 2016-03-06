@@ -7,10 +7,10 @@
 
 #include "DefaultEntityRender.h"
 
-class EntityTableRender : public DefaultEntityRender {
+class EntityWideRender : public DefaultEntityRender {
 
 public:
-    EntityTableRender() : DefaultEntityRender("furniture", "shader") {
+    EntityWideRender(int texId = 0) : DefaultEntityRender("furniture", "shader", texId) {
         /* initializing square's vertices */
         this->vertices[0] = -1.0f;
         this->vertices[1] = 1.0f;
@@ -44,12 +44,6 @@ public:
     virtual void render(const Entity *const entity, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, double scale) override {
         DefaultEntityRender::render(entity, projectionMatrix, viewMatrix, scale);
     }
-
-protected:
-    virtual int getTexPos(const Entity *const entity) override {
-        return 4;
-    }
-
 };
 
 #endif //C003_ENTITYTABLERENDER_H
