@@ -21,4 +21,9 @@ public:
     }
 };
 
+class EntityCoffeeTable : public EntityTable {
+public:
+    EntityCoffeeTable(Map *map) : EntityTable(map) { };
+};
+
 #endif //C003_ENTITYTABLE_H
