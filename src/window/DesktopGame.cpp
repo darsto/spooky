@@ -66,7 +66,7 @@ void Game::tick(double deltaTime) {
     }
 
     static float ghostMovement = -1.5f;
-    ghostMovement += deltaTime * 0.95s;
+    ghostMovement += deltaTime * 0.95;
     for (int i = 0; i < 3; i++) {
         this->popup[i]->setVisible(false);
     }

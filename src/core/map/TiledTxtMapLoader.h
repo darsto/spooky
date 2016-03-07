@@ -146,6 +146,9 @@ TiledTxtMapLoader::TiledTxtMapLoader(const std::string &fileName) {
                     case 15:
                         sshape = new EntityPouf(this->map);
                         break;
+                    case 16:
+                        sshape = new EntityFlowerPot(this->map);
+                        break;
                     default:
                         break;
 

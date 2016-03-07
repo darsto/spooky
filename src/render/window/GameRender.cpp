@@ -179,6 +179,7 @@ void GameRender::initRenders() {
     entityRenders.insert(std::make_pair(typeid(EntityCoffeeTable).name(), new EntityWideRender(8)));
     entityRenders.insert(std::make_pair(typeid(EntityCouch).name(), new EntityWideRender(13)));
     entityRenders.insert(std::make_pair(typeid(EntityFurniture).name(), new EntityFurnitureRender()));
+    entityRenders.insert(std::make_pair(typeid(EntityFlowerPot).name(), new EntityFurnitureRender(16)));
     entityRenders.insert(std::make_pair(typeid(EntityStain).name(), new DefaultEntityRender("gui", "shader")));
     entityRenders.insert(std::make_pair(typeid(EntityHoover).name(), new DefaultEntityRender("shapes", "shader")));
     entityRenders.insert(std::make_pair(typeid(SimpleShape).name(), new SimpleShapeRender()));
