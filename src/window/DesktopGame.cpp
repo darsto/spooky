@@ -30,7 +30,7 @@ Game::Game(const std::function<bool(Window *window)> &switchWindow) : Window(swi
     this->entityRotationRing->setAngle(2);
     this->guiElements.push_back(this->entityRotationRing);
 
-    GuiElement *character = new GuiElement(GUI_TOP_RIGHT, 0, 50, 150, 150, 7);
+    GuiElement *character = new GuiElement(GUI_TOP_RIGHT, 0, 50, 150, 150, 17);
     this->guiElements.push_back(character);
     GuiElement *window = new GuiTextBubble(GUI_TOP_RIGHT, 160, 60, 400, 170);
     this->guiElements.push_back(window);
@@ -66,7 +66,7 @@ void Game::tick(double deltaTime) {
     }
 
     static float ghostMovement = -1.5f;
-    ghostMovement += deltaTime * 0.8;
+    ghostMovement += deltaTime * 0.95s;
     for (int i = 0; i < 3; i++) {
         this->popup[i]->setVisible(false);
     }
@@ -79,6 +79,7 @@ void Game::tick(double deltaTime) {
         int color = this->popup[0]->getColor() & 0xFFFFFF00;
         double ghostAlpha = std::min(ghostMovement * 2.0f, 1.0f);
         color |= (int) (ghostAlpha * 255);
+        this->popup[0]->setAngle(M_PI_2 * (1 - ghostMovement * ghostMovement));
         this->popup[0]->setColor(color);
         this->popup[2]->setX(this->popup[1]->getX() + 10);
 
