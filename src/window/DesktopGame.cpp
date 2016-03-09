@@ -32,9 +32,9 @@ Game::Game(const std::function<bool(Window *window)> &switchWindow) : Window(swi
 
     GuiElement *character = new GuiElement(GUI_TOP_RIGHT, 0, 50, 150, 150, 17);
     this->guiElements.push_back(character);
-    GuiElement *window = new GuiTextBubble(GUI_TOP_RIGHT, 160, 60, 400, 170);
+    GuiElement *window = new GuiTextBubble(GUI_TOP_RIGHT, 160, 60, 280, 51);
     this->guiElements.push_back(window);
-    GuiText *text = new GuiText(string("Hey, I am Willy. I will \nguide you around this \nplace. I am the \nghost from the blah \nblah blah blah..."), -500, 73, GUI_TOP_LEFT, 24, 0x666666FF, 0);
+    GuiText *text = new GuiText(string("Oh... Em... Hello!"), -500, 76, GUI_TOP_LEFT, 24, 0x666666FF, 0);
     this->guiElements.push_back(text);
     this->popup[0] = character;
     this->popup[1] = window;
@@ -65,7 +65,7 @@ void Game::tick(double deltaTime) {
         }
     }
 
-    static float ghostMovement = -1.5f;
+    static float ghostMovement = -1.0f;
     ghostMovement += deltaTime * 0.95;
     for (int i = 0; i < 3; i++) {
         this->popup[i]->setVisible(false);
@@ -83,23 +83,61 @@ void Game::tick(double deltaTime) {
         this->popup[0]->setColor(color);
         this->popup[2]->setX(this->popup[1]->getX() + 10);
 
-        static float tutorialTextAlpha = -0.2f;
+        static float dialogueAlpha = -0.2f;
 
         this->popup[0]->setVisible(true);
         for (int i = 1; i < 3; i++) {
-            this->popup[i]->setVisible(tutorialTextAlpha > 0);
+            this->popup[i]->setVisible(dialogueAlpha > 0);
         }
 
         if (ghostMovement == 1) {
-            tutorialTextAlpha += deltaTime * 0.6;
-            if (tutorialTextAlpha > 1) tutorialTextAlpha = 1;
-            if (tutorialTextAlpha > 0) {
+            static int dialogueNum = 1;
+            static float dialogueDuration = 3.0f;
+            dialogueAlpha += deltaTime * 0.9;
+            if (dialogueAlpha > 0) {
                 for (int i = 1; i < 3; i++) {
                     int color = this->popup[i]->getColor() & 0xFFFFFF00;
-                    color |= (int) (tutorialTextAlpha * 255);
+                    float alpha = (dialogueAlpha < dialogueDuration) ? dialogueAlpha : std::max(dialogueDuration + 1.0f - dialogueAlpha, 0.0f);
+                    color |= (int) (std::min(1.0f, alpha) * 255);
                     this->popup[i]->setColor(color);
                 }
             }
+
+            if (dialogueAlpha > dialogueDuration + 1.0f) {
+                dialogueNum++;
+                switch (dialogueNum) {
+                    case 2: {
+                        this->popup[1]->setWidth(407);
+                        this->popup[1]->setHeight(75);
+                        this->popup[1]->reinit(this->windowWidth, this->windowHeight);
+                        ((GuiText *) this->popup[2])->updateString("I'm Willy. I'm the\nchildren guardian ghost.");
+                        ((GuiText *) this->popup[2])->setY(73);
+                        dialogueAlpha = -0.2f;
+                        dialogueDuration = 4.5f;
+                        break;
+                    }
+                    case 3: {
+                        this->popup[1]->setWidth(250);
+                        this->popup[1]->setHeight(51);
+                        this->popup[1]->reinit(this->windowWidth, this->windowHeight);
+                        ((GuiText *) this->popup[2])->updateString("And you are...?");
+                        ((GuiText *) this->popup[2])->setY(76);
+                        dialogueAlpha = -0.2f;
+                        dialogueDuration = 3.0f;
+                        break;
+                    }
+                    default:
+                        break;
+                }
+                dialogueAlpha = -0.2f;
+            }
+
+            /*if (tutorialTextAlpha == 1) {
+                static float dialogue1Alpha = -1.5f;
+                dialogue1Alpha += deltaTime * 0.6;
+                if (dialogue1Alpha > 1) dialogue1Alpha = 1;
+
+            }*/
         }
     }
 
