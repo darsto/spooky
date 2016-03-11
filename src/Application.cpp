@@ -103,7 +103,6 @@ void Application::resize(int width, int height) {
 }
 
 void Application::handleClick(int i, int action, float x, float y) {
-    LOGD("Click #%d:%d at %d:%d.\n", i , action, x, y);
     this->inputManager->handleClick(i, action, x, y);
 }
 
@@ -125,16 +124,13 @@ void Application::handleEvents() {
                 break;
             case SDL_MOUSEBUTTONDOWN:
             case SDL_MOUSEBUTTONUP:
-                if (e.button.button >= 0 && e.button.button < 5) this->isMouseDown[e.button.button] = (e.type == SDL_MOUSEBUTTONDOWN);
                 LOGD("%s button with id %d\n", e.type == SDL_MOUSEBUTTONDOWN ? "Pressed" : "Unpressed", e.button.button);
             case SDL_MOUSEMOTION: {
-                int button = (int) round(log((double)e.button.button) / log(2.0)) + 1;
+                int button = (int) round(log((double) e.button.button) / log(2.0)) + 1;
                 if (button < 0 || button >= 5) break;
-                if (this->isMouseDown[button] || e.type == SDL_MOUSEBUTTONUP) {
-                    int x, y;
-                    SDL_GetMouseState(&x, &y);
-                    this->inputManager->handleClick(button, e.type == SDL_MOUSEBUTTONDOWN ? 0 : (e.type == SDL_MOUSEBUTTONUP ? 1 : 2), x, y);
-                }
+                int x, y;
+                SDL_GetMouseState(&x, &y);
+                this->handleClick(button, e.type == SDL_MOUSEBUTTONDOWN ? 0 : (e.type == SDL_MOUSEBUTTONUP ? 1 : 2), x, y);
                 break;
             }
         }
