@@ -113,6 +113,16 @@ void GameRender::render(Window *window, RenderContext *const renderContext) {
     fbo.getShaderProgram()->setUniform("scale", (float) (core->getBlockSize() * core->getGeneralScale()));
     fbo.render(0);
 
+    float voidAlpha = 1.0f;
+    if (game->getCore()->getMap()->getWorldTime() > 17.0f) {
+        voidAlpha = (float) std::max(0.0, 18.0 - game->getCore()->getMap()->getWorldTime());
+    }
+
+    this->voidRender->render(0, 0, windowWidth + 1, windowHeight + 1, projectionMatrix, glm::translate(viewMatrix, glm::vec3(
+        0,
+        (int) ((signed) windowHeight),
+        0.0f)), 1.0f, 0.7f, 0.7f, 0.7f, voidAlpha);
+
     for (GuiElement *guiElement : game->getGuiElements()) {
         renderContext->getGuiElementRender(guiElement)->render(guiElement, projectionMatrix, glm::translate(viewMatrix, glm::vec3(
             0,

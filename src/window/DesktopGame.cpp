@@ -30,11 +30,14 @@ Game::Game(const std::function<bool(Window *window)> &switchWindow) : Window(swi
     this->entityRotationRing->setAngle(2);
     this->guiElements.push_back(this->entityRotationRing);
 
-    GuiElement *character = new GuiElement(GUI_TOP_RIGHT, 0, 50, 150, 150, 17);
+    GuiElement *character = new GuiElement(GUI_TOP_RIGHT, 0, 50, 225, 225, 17);
+    character->setVisible(false);
     this->guiElements.push_back(character);
-    GuiElement *window = new GuiTextBubble(GUI_TOP_RIGHT, 160, 60, 280, 51);
+    GuiElement *window = new GuiTextBubble(GUI_TOP_RIGHT, -500, 0, 280, 51);
+    window->setVisible(false);
     this->guiElements.push_back(window);
     GuiText *text = new GuiText(string("Oh... Em... Hello!"), -500, 76, GUI_TOP_LEFT, 24, 0x666666FF, 0);
+    text->setVisible(false);
     this->guiElements.push_back(text);
     this->popup[0] = character;
     this->popup[1] = window;
@@ -65,25 +68,47 @@ void Game::tick(double deltaTime) {
         }
     }
 
-    static float ghostMovement = -1.0f;
+    static float ghostMovement = -0.2f;
+    static float dialogueAlpha = -0.2f;
+    static int dialogueNum = 1;
+    static float dialogueDuration = 1.5f;
     ghostMovement += deltaTime * 0.95;
-    for (int i = 0; i < 3; i++) {
-        this->popup[i]->setVisible(false);
-    }
+
     if (ghostMovement >= 0) {
         if (ghostMovement > 1) ghostMovement = 1;
-        double gx = (this->windowWidth / 2 - this->popup[0]->getWidth() / 4) * (1 + ghostMovement);
-        double gy = (this->windowHeight / 2) * (1 - ghostMovement * ghostMovement) + (this->popup[0]->getHeight() / 2 + 50) * ghostMovement;
+
+        double gx;
+        double gy;
+        double ghostAlpha;
+        double ghostAngle;
+        double ghostSize;
+
+        if (dialogueNum >= 5) {
+            gx = (this->windowWidth * 0.7 - this->popup[0]->getWidth() / 2) + this->windowWidth * 0.3 * ghostMovement;
+            gy = (this->windowHeight / 4) + this->popup[0]->getHeight() / 2 - ghostMovement * ghostMovement * (this->windowHeight / 4 - 50);
+            ghostAlpha = 1.0f;
+            ghostAngle = 0.3f * M_PI_2 * (1 - (2 * ghostMovement - 1) * (2 * ghostMovement - 1)) * (1.5 - ghostMovement);
+            ghostSize = 225 - 75 * ghostMovement;
+        } else {
+            gx = (this->windowWidth * 0.7 - this->popup[0]->getWidth() / 2) * (ghostMovement);
+            gy = (this->windowHeight / 2) * (1.5 - ghostMovement * ghostMovement) + (this->popup[0]->getHeight() / 2);
+            ghostAlpha = std::min(ghostMovement * 2.0f, 1.0f);
+            ghostAngle = M_PI_2 * (1 - ghostMovement * ghostMovement);
+            ghostSize = 225;
+        }
+
         this->popup[0]->setX(gx - this->popup[0]->getWidth() / 2);
         this->popup[0]->setY(gy - this->popup[0]->getHeight() / 2);
         int color = this->popup[0]->getColor() & 0xFFFFFF00;
-        double ghostAlpha = std::min(ghostMovement * 2.0f, 1.0f);
         color |= (int) (ghostAlpha * 255);
-        this->popup[0]->setAngle(M_PI_2 * (1 - ghostMovement * ghostMovement));
+        this->popup[0]->setAngle(ghostAngle);
+        this->popup[0]->setWidth(ghostSize);
+        this->popup[0]->setHeight(ghostSize);
+        this->popup[1]->setX(this->popup[0]->getX() - this->popup[1]->getWidth() - 15);
+        this->popup[1]->setY(this->popup[0]->getY() + this->popup[0]->getHeight() * 0.3);
         this->popup[0]->setColor(color);
         this->popup[2]->setX(this->popup[1]->getX() + 10);
-
-        static float dialogueAlpha = -0.2f;
+        this->popup[2]->setY(this->popup[1]->getY() + 17);
 
         this->popup[0]->setVisible(true);
         for (int i = 1; i < 3; i++) {
@@ -91,8 +116,6 @@ void Game::tick(double deltaTime) {
         }
 
         if (ghostMovement == 1) {
-            static int dialogueNum = 1;
-            static float dialogueDuration = 3.0f;
             dialogueAlpha += deltaTime * 0.9;
             if (dialogueAlpha > 0) {
                 for (int i = 1; i < 3; i++) {
@@ -107,37 +130,46 @@ void Game::tick(double deltaTime) {
                 dialogueNum++;
                 switch (dialogueNum) {
                     case 2: {
-                        this->popup[1]->setWidth(407);
-                        this->popup[1]->setHeight(75);
+                        this->popup[1]->setWidth(415);
+                        this->popup[1]->setHeight(80);
                         this->popup[1]->reinit(this->windowWidth, this->windowHeight);
-                        ((GuiText *) this->popup[2])->updateString("I'm Willy. I'm the\nchildren guardian ghost.");
-                        ((GuiText *) this->popup[2])->setY(73);
+                        ((GuiText *) this->popup[2])->updateString("My name is Willy. I'm the\nchildren guardian ghost.");
                         dialogueAlpha = -0.2f;
-                        dialogueDuration = 4.5f;
+                        dialogueDuration = 2.8f;
                         break;
                     }
                     case 3: {
-                        this->popup[1]->setWidth(250);
+                        this->popup[1]->setWidth(278);
+                        this->popup[1]->setHeight(80);
+                        this->popup[1]->reinit(this->windowWidth, this->windowHeight);
+                        ((GuiText *) this->popup[2])->updateString("And you must be\n<Player>");
+                        dialogueAlpha = -0.2f;
+                        dialogueDuration = 2.0f;
+                        break;
+                    }
+                    case 4: {
+                        this->popup[1]->setWidth(290);
                         this->popup[1]->setHeight(51);
                         this->popup[1]->reinit(this->windowWidth, this->windowHeight);
-                        ((GuiText *) this->popup[2])->updateString("And you are...?");
-                        ((GuiText *) this->popup[2])->setY(76);
+                        ((GuiText *) this->popup[2])->updateString("Nice to meet you!");
                         dialogueAlpha = -0.2f;
-                        dialogueDuration = 3.0f;
+                        dialogueDuration = 2.0f;
+                        break;
+                    }
+                    case 5: {
+                        this->popup[1]->setWidth(450);
+                        this->popup[1]->setHeight(175);
+                        this->popup[1]->reinit(this->windowWidth, this->windowHeight);
+                        ((GuiText *) this->popup[2])->updateString("See? That's me over there!\nYou can move my body by\npushing the screen and\nheading in the direction\nyou want me to move.");
+                        dialogueAlpha = -1.6f;
+                        dialogueDuration = 6.5f;
+                        ghostMovement = -0.2f;
                         break;
                     }
                     default:
                         break;
                 }
-                dialogueAlpha = -0.2f;
             }
-
-            /*if (tutorialTextAlpha == 1) {
-                static float dialogue1Alpha = -1.5f;
-                dialogue1Alpha += deltaTime * 0.6;
-                if (dialogue1Alpha > 1) dialogue1Alpha = 1;
-
-            }*/
         }
     }
 
