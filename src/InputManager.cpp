@@ -12,7 +12,10 @@ InputManager::InputManager() {
 
 void InputManager::handleClick(int i, int action, float x, float y) {
     TouchPoint *p = this->touchPoints[i];
-    if (action == 2 && p->state == 0) return;
+    if (p != nullptr && p->state == 0) {
+        if (action == 2) return;
+        else if (action == 1) action = 3;
+    }
     if (p == nullptr) this->touchPoints[i] = p = new TouchPoint((char) i);
     p->x = x;
     p->y = y;
@@ -56,15 +59,21 @@ void InputManager::handleKeyboard(Window *window) {
 void InputManager::handleTouch(Window *window) {
     for (auto it = touchPoints.begin(); it != touchPoints.end(); it++) {
         TouchPoint *p = it->second;
-        if (p != nullptr && p->state >= 0) {
-            window->handleClick(p);
-            if (p->state == 0) p->state = 2;
-            if (p->state == 1) {
-                if (MOBILE) {
-                    delete p;
-                    this->touchPoints[it->first] = nullptr;
-                } else {
-                    this->touchPoints[it->first]->state = -1;
+        if (p != nullptr) {
+            if (p->state == 3) {
+                p->state = 0;
+                window->handleClick(p);
+                p->state = 1;
+            } else if (p->state >= 0) {
+                window->handleClick(p);
+                if (p->state == 0) p->state = 2;
+                if (p->state == 1) {
+                    if (MOBILE) {
+                        delete p;
+                        this->touchPoints[it->first] = nullptr;
+                    } else {
+                        this->touchPoints[it->first]->state = -1;
+                    }
                 }
             }
         }
