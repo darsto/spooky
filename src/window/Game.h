@@ -61,6 +61,7 @@ private:
     GuiElement *entityRotationRing;
     int mouseLockX, mouseLockY;
 #endif //__ANDROID__
+    int tutorialDialogueNum = 1;
 
     GuiElement *popup[3];
 
