@@ -14,7 +14,7 @@ class VoidRender{
 public:
     VoidRender();
     ~VoidRender();
-    virtual void render(double x, double y, double width, double height, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, double scale);
+    virtual void render(double x, double y, double width, double height, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, double scale, float r = 0.0f, float g = 0.0f, float b = 0.0f, float a = 0.65f);
 private:
     float vertices[12];
     GLuint vbo[1];

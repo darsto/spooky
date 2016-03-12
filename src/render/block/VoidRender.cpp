@@ -50,7 +50,7 @@ VoidRender::VoidRender() {
     this->shaderProgram.useProgram();
 }
 
-void VoidRender::render(double x, double y, double width, double height, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, double scale) {
+void VoidRender::render(double x, double y, double width, double height, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, double scale, float r, float g, float b, float a) {
     this->shaderProgram.useProgram();
     this->shaderProgram.setUniform("projectionMatrix", projectionMatrix);
 
@@ -58,6 +58,9 @@ void VoidRender::render(double x, double y, double width, double height, glm::ma
     this->tmpModelMatrix = glm::scale(this->tmpModelMatrix, glm::vec3(width * scale, height * scale, 1.0f));
 
     shaderProgram.setUniform("modelViewMatrix", viewMatrix * this->tmpModelMatrix);
+
+    shaderProgram.setUniform("color", glm::vec3(r, g, b));
+    shaderProgram.setUniform("alpha", a);
 
     glBindVertexArray(this->vao);
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
