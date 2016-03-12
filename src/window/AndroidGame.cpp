@@ -252,7 +252,7 @@ void Game::handleClick(const TouchPoint *const p) {
 
     if (!clicked) {
         if (p->state == 0) {
-            if (!controller->isVisible()) {
+            if (this->tutorialDialogueNum >= 5 && !controller->isVisible()) {
                 controller->setVisible(true), joystick->setVisible(true);
                 controller->setX(p->x - controller->getWidth() / 2);
                 controller->setY(p->y - controller->getHeight() / 2);
@@ -265,7 +265,7 @@ void Game::handleClick(const TouchPoint *const p) {
         }
     }
 
-    if (p->state == 2) {
+    if (this->tutorialDialogueNum >= 5 && p->state == 2) {
         if (controller->isVisible() && controller->getTouchedBy() == p->id) {
             double x = p->x - controller->getX() - controller->getWidth() / 2;
             double y = p->y - controller->getY() - controller->getHeight() / 2;
