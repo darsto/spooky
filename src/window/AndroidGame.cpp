@@ -223,7 +223,7 @@ void Game::resetButtons(const TouchPoint *const p, const GuiButton *const b) {
 }
 
 void Game::handleKeyboard(const Keypress *const keypress) {
-    LOGW("Keyboard input is unsupported on current platform\n");
+    //Keyboard input is unsupported on current platform
 }
 
 Game::~Game() {
