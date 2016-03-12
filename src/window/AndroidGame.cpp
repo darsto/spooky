@@ -37,6 +37,9 @@ Game::Game(const std::function<bool(Window *window)> &switchWindow) : Window(swi
             if (possessButton->canBeClicked(p)) {
                 if (this->core->getPlayer()->getToy() == nullptr) {
                     this->core->getPlayer()->setToy();
+                    if (this->tutorialDialogueNum == 8) {
+                        this->proceedTutorialDialogue();
+                    }
                 } else {
                     this->core->getPlayer()->eject();
                 }
@@ -97,7 +100,10 @@ void Game::tick(double deltaTime) {
         }
     }
 
-    possessButton->setVisible(this->core->getPlayer()->getToyToMerge() != nullptr || this->core->getPlayer()->getToy() != nullptr);
+    possessButton->setVisible((this->core->getPlayer()->getToyToMerge() != nullptr || this->core->getPlayer()->getToy() != nullptr) && this->tutorialDialogueNum >= 8);
+    if (this->tutorialDialogueNum == 7 && this->core->getPlayer()->getToyToMerge() != nullptr) {
+        this->proceedTutorialDialogue();
+    }
 
     if (controller->isVisible()) {
         double playerSpeed = this->core->getPlayer()->getSpeed();
@@ -108,13 +114,10 @@ void Game::tick(double deltaTime) {
         this->core->getPlayer()->setAngle(angle);
     }
 
-    static float ghostMovement = -0.2f;
-    static float dialogueAlpha = -0.2f;
-    static float dialogueDuration = 1.5f;
-    ghostMovement += deltaTime * 0.95;
+    tutorialGhostMovement += deltaTime * 0.95;
 
-    if (ghostMovement >= 0) {
-        if (ghostMovement > 1) ghostMovement = 1;
+    if (tutorialGhostMovement >= 0) {
+        if (tutorialGhostMovement > 1) tutorialGhostMovement = 1;
 
         double gx;
         double gy;
@@ -123,16 +126,16 @@ void Game::tick(double deltaTime) {
         double ghostSize;
 
         if (this->tutorialDialogueNum >= 5) {
-            gx = (this->windowWidth * 0.7 - this->popup[0]->getWidth() / 2) + this->windowWidth * 0.3 * ghostMovement;
-            gy = (this->windowHeight / 4) + this->popup[0]->getHeight() / 2 - ghostMovement * ghostMovement * (this->windowHeight / 4 - 50);
+            gx = (this->windowWidth * 0.7 - this->popup[0]->getWidth() / 2) + this->windowWidth * 0.3 * tutorialGhostMovement;
+            gy = (this->windowHeight / 4) + this->popup[0]->getHeight() / 2 - tutorialGhostMovement * tutorialGhostMovement * (this->windowHeight / 4 - 50);
             ghostAlpha = 1.0f;
-            ghostAngle = 0.3f * M_PI_2 * (1 - (2 * ghostMovement - 1) * (2 * ghostMovement - 1)) * (1.5 - ghostMovement);
-            ghostSize = 225 - 75 * ghostMovement;
+            ghostAngle = 0.3f * M_PI_2 * (1 - (2 * tutorialGhostMovement - 1) * (2 * tutorialGhostMovement - 1)) * (1.5 - tutorialGhostMovement);
+            ghostSize = 225 - 75 * tutorialGhostMovement;
         } else {
-            gx = (this->windowWidth * 0.7 - this->popup[0]->getWidth() / 2) * (ghostMovement);
-            gy = (this->windowHeight / 2) * (1.5 - ghostMovement * ghostMovement) + (this->popup[0]->getHeight() / 2);
-            ghostAlpha = std::min(ghostMovement * 2.0f, 1.0f);
-            ghostAngle = M_PI_2 * (1 - ghostMovement * ghostMovement);
+            gx = (this->windowWidth * 0.7 - this->popup[0]->getWidth() / 2) * (tutorialGhostMovement);
+            gy = (this->windowHeight / 2) * (1.5 - tutorialGhostMovement * tutorialGhostMovement) + (this->popup[0]->getHeight() / 2);
+            ghostAlpha = std::min(tutorialGhostMovement * 2.0f, 1.0f);
+            ghostAngle = M_PI_2 * (1 - tutorialGhostMovement * tutorialGhostMovement);
             ghostSize = 225;
         }
 
@@ -151,63 +154,106 @@ void Game::tick(double deltaTime) {
 
         this->popup[0]->setVisible(true);
         for (int i = 1; i < 3; i++) {
-            this->popup[i]->setVisible(dialogueAlpha > 0);
+            this->popup[i]->setVisible(tutorialDialogueAlpha > 0);
         }
 
-        if (ghostMovement == 1) {
-            if (this->tutorialDialogueNum != 6);
-            dialogueAlpha += deltaTime * 0.9;
-            if (dialogueAlpha > 0) {
+        if (tutorialGhostMovement == 1) {
+            tutorialDialogueAlpha += deltaTime * 0.9;
+            if (tutorialDialogueAlpha > 0) {
                 for (int i = 1; i < 3; i++) {
                     int color = this->popup[i]->getColor() & 0xFFFFFF00;
-                    float alpha = (dialogueAlpha < dialogueDuration) ? dialogueAlpha : std::max(dialogueDuration + 1.0f - dialogueAlpha, 0.0f);
+                    float alpha = (tutorialDialogueAlpha < tutorialDialogueDuration) ? tutorialDialogueAlpha : std::max(tutorialDialogueDuration + 1.0f - tutorialDialogueAlpha, 0.0f);
                     color |= (int) (std::min(1.0f, alpha) * 255);
                     this->popup[i]->setColor(color);
                 }
             }
 
-            if (dialogueAlpha > dialogueDuration + 1.0f) {
-                this->tutorialDialogueNum++;
-                switch (this->tutorialDialogueNum) {
-                    case 2: {
-                        this->popup[1]->setWidth(415);
-                        this->popup[1]->setHeight(80);
-                        this->popup[1]->reinit(this->windowWidth, this->windowHeight);
-                        ((GuiText *) this->popup[2])->updateString("My name is Willy. I'm the\nchildren guardian ghost.");
-                        dialogueAlpha = -0.2f;
-                        dialogueDuration = 2.8f;
-                        break;
+            if (tutorialDialogueAlpha > tutorialDialogueDuration + 1.0f) {
+                if (this->tutorialProceeding) {
+                    this->tutorialDialogueNum++;
+                    tutorialProceeding = false;
+                    switch (this->tutorialDialogueNum) {
+                        case 2: {
+                            this->popup[1]->setWidth(415);
+                            this->popup[1]->setHeight(80);
+                            this->popup[1]->reinit(this->windowWidth, this->windowHeight);
+                            ((GuiText *) this->popup[2])->updateString("My name is Willy. I'm the\nchildren guardian ghost.");
+                            tutorialDialogueAlpha = -0.2f;
+                            tutorialDialogueDuration = 2.8f;
+                            tutorialProceeding = true;
+                            break;
+                        }
+                        case 3: {
+                            this->popup[1]->setWidth(278);
+                            this->popup[1]->setHeight(80);
+                            this->popup[1]->reinit(this->windowWidth, this->windowHeight);
+                            ((GuiText *) this->popup[2])->updateString("And you must be\n<Player>.");
+                            tutorialDialogueAlpha = -0.2f;
+                            tutorialDialogueDuration = 2.0f;
+                            tutorialProceeding = true;
+                            break;
+                        }
+                        case 4: {
+                            this->popup[1]->setWidth(290);
+                            this->popup[1]->setHeight(51);
+                            this->popup[1]->reinit(this->windowWidth, this->windowHeight);
+                            ((GuiText *) this->popup[2])->updateString("Nice to meet you!");
+                            this->popup[0]->setTexPos(0, 18);
+                            tutorialDialogueAlpha = -0.2f;
+                            tutorialDialogueDuration = 2.0f;
+                            tutorialProceeding = true;
+                            break;
+                        }
+                        case 5: {
+                            this->popup[1]->setWidth(450);
+                            this->popup[1]->setHeight(175);
+                            this->popup[1]->reinit(this->windowWidth, this->windowHeight);
+                            ((GuiText *) this->popup[2])->updateString("See? That's me over there!\nYou can move my body by\npushing the screen and\nheading in the direction\nyou want me to move.");
+                            this->popup[0]->setTexPos(0, 17);
+                            tutorialDialogueAlpha = -1.6f;
+                            tutorialDialogueDuration = 9.5f;
+                            tutorialGhostMovement = -0.2f;
+                            break;
+                        }
+                        case 6: {
+                            this->popup[1]->setWidth(350);
+                            this->popup[1]->setHeight(145);
+                            this->popup[1]->reinit(this->windowWidth, this->windowHeight);
+                            ((GuiText *) this->popup[2])->updateString("Easy? Now, let's fly\nto the kitchen.\nYou can move\nthrough the walls.");
+                            tutorialDialogueAlpha = -0.7f;
+                            tutorialDialogueDuration = 4.5f;
+                            break;
+                        }
+                        case 7: {
+                            this->popup[1]->setWidth(435);
+                            this->popup[1]->setHeight(80);
+                            this->popup[1]->reinit(this->windowWidth, this->windowHeight);
+                            ((GuiText *) this->popup[2])->updateString("Have you seen some toys?\nGo and find one!");
+                            tutorialDialogueAlpha = -0.2f;
+                            tutorialDialogueDuration = 2.5f;
+                            break;
+                        }
+                        case 8: {
+                            this->popup[1]->setWidth(380);
+                            this->popup[1]->setHeight(115);
+                            this->popup[1]->reinit(this->windowWidth, this->windowHeight);
+                            ((GuiText *) this->popup[2])->updateString("Check out what will\nhappen when you click\nthat button.");
+                            tutorialDialogueAlpha = -0.2f;
+                            tutorialDialogueDuration = 3.5f;
+                            break;
+                        }
+                        case 9: {
+                            this->popup[1]->setWidth(400);
+                            this->popup[1]->setHeight(51);
+                            this->popup[1]->reinit(this->windowWidth, this->windowHeight);
+                            ((GuiText *) this->popup[2])->updateString("Now you're inside a toy!");
+                            tutorialDialogueAlpha = -0.2f;
+                            tutorialDialogueDuration = 2.5f;
+                            break;
+                        }
+                        default:
+                            break;
                     }
-                    case 3: {
-                        this->popup[1]->setWidth(278);
-                        this->popup[1]->setHeight(80);
-                        this->popup[1]->reinit(this->windowWidth, this->windowHeight);
-                        ((GuiText *) this->popup[2])->updateString("And you must be\n<Player>");
-                        dialogueAlpha = -0.2f;
-                        dialogueDuration = 2.0f;
-                        break;
-                    }
-                    case 4: {
-                        this->popup[1]->setWidth(290);
-                        this->popup[1]->setHeight(51);
-                        this->popup[1]->reinit(this->windowWidth, this->windowHeight);
-                        ((GuiText *) this->popup[2])->updateString("Nice to meet you!");
-                        dialogueAlpha = -0.2f;
-                        dialogueDuration = 2.0f;
-                        break;
-                    }
-                    case 5: {
-                        this->popup[1]->setWidth(450);
-                        this->popup[1]->setHeight(175);
-                        this->popup[1]->reinit(this->windowWidth, this->windowHeight);
-                        ((GuiText *) this->popup[2])->updateString("See? That's me over there!\nYou can move my body by\npushing the screen and\nheading in the direction\nyou want me to move.");
-                        dialogueAlpha = -1.6f;
-                        dialogueDuration = 6.5f;
-                        ghostMovement = -0.2f;
-                        break;
-                    }
-                    default:
-                        break;
                 }
             }
         }
@@ -218,18 +264,22 @@ void Game::tick(double deltaTime) {
     if (abs(dx) > 2) this->core->setCamX(-this->core->getCamX() + (dx) * 0.05);
     if (abs(dy) > 2) this->core->setCamY(-this->core->getCamY() + (dy) * 0.05);
 
+    if (this->tutorialDialogueNum == 6 && this->core->getPlayer()->getX() < 8 && this->core->getPlayer()->getY() < 9) {
+        this->proceedTutorialDialogue();
+    }
+
     double camX = this->core->getCamX(), camY = this->core->getCamY();
-    if (-camX < this->windowWidth/2 - this->core->getBlockSize() * this->core->getGeneralScale()) {
-        this->core->setCamX(this->windowWidth/2 - this->core->getBlockSize() * this->core->getGeneralScale());
+    if (-camX < this->windowWidth / 2 - this->core->getBlockSize() * this->core->getGeneralScale()) {
+        this->core->setCamX(this->windowWidth / 2 - this->core->getBlockSize() * this->core->getGeneralScale());
     }
-    if (-camY < this->windowHeight/2 - this->core->getBlockSize() * this->core->getGeneralScale()) {
-        this->core->setCamY(this->windowHeight/2 - this->core->getBlockSize() * this->core->getGeneralScale());
+    if (-camY < this->windowHeight / 2 - this->core->getBlockSize() * this->core->getGeneralScale()) {
+        this->core->setCamY(this->windowHeight / 2 - this->core->getBlockSize() * this->core->getGeneralScale());
     }
-    if (-camX > -(signed)this->windowWidth/2 + (this->core->getMap()->getWidth() - 1) * this->core->getBlockSize() * this->core->getGeneralScale()) {
-        this->core->setCamX(-(signed)this->windowWidth/2 + (this->core->getMap()->getWidth() - 1) * this->core->getBlockSize() * this->core->getGeneralScale());
+    if (-camX > -(signed) this->windowWidth / 2 + (this->core->getMap()->getWidth() - 1) * this->core->getBlockSize() * this->core->getGeneralScale()) {
+        this->core->setCamX(-(signed) this->windowWidth / 2 + (this->core->getMap()->getWidth() - 1) * this->core->getBlockSize() * this->core->getGeneralScale());
     }
-    if (-camY > -(signed)this->windowHeight/2 + (this->core->getMap()->getHeight() - 1) * this->core->getBlockSize() * this->core->getGeneralScale()) {
-        this->core->setCamY(-(signed)this->windowHeight/2 + (this->core->getMap()->getHeight() - 1) * this->core->getBlockSize() * this->core->getGeneralScale());
+    if (-camY > -(signed) this->windowHeight / 2 + (this->core->getMap()->getHeight() - 1) * this->core->getBlockSize() * this->core->getGeneralScale()) {
+        this->core->setCamY(-(signed) this->windowHeight / 2 + (this->core->getMap()->getHeight() - 1) * this->core->getBlockSize() * this->core->getGeneralScale());
     }
 }
 
@@ -275,6 +325,7 @@ void Game::handleClick(const TouchPoint *const p) {
                 y = sin(angle) * controller->getHeight() / 2;
             }
             joystick->setX(controller->getX() + x), joystick->setY(controller->getY() + y);
+            if (this->tutorialDialogueNum == 5) this->proceedTutorialDialogue();
         }
     }
 }

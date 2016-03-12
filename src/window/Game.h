@@ -45,7 +45,7 @@ private:
     Core *core = nullptr;
     std::vector<GuiElement *> guiElements;
 
-#ifdef __ANDROID__
+#ifndef __ANDROID__
     GuiButton *controller;
     GuiButton *joystick;
     GuiButton *possessButton;
@@ -61,11 +61,19 @@ private:
     GuiElement *entityRotationRing;
     int mouseLockX, mouseLockY;
 #endif //__ANDROID__
+    bool tutorialProceeding = true;
     int tutorialDialogueNum = 1;
+    float tutorialGhostMovement = -0.2f;
+    float tutorialDialogueAlpha = -0.2f;
+    float tutorialDialogueDuration = 1.5f;
 
     GuiElement *popup[3];
 
     unsigned int windowWidth, windowHeight;
+
+    void proceedTutorialDialogue() {
+        this->tutorialProceeding = true;
+    }
 };
 
 #endif //C003_GAME_H

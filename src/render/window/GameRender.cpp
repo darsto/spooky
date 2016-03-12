@@ -114,8 +114,8 @@ void GameRender::render(Window *window, RenderContext *const renderContext) {
     fbo.render(0);
 
     float voidAlpha = 1.0f;
-    if (game->getCore()->getMap()->getWorldTime() > 17.0f) {
-        voidAlpha = (float) std::max(0.0, 18.0 - game->getCore()->getMap()->getWorldTime());
+    if (game->getCore()->getMap()->getWorldTime() > 15.95f) {
+        voidAlpha = std::max(0.0f, 16.95f - (float)game->getCore()->getMap()->getWorldTime());
     }
 
     this->voidRender->render(0, 0, windowWidth + 1, windowHeight + 1, projectionMatrix, glm::translate(viewMatrix, glm::vec3(
