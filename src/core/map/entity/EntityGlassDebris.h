@@ -23,9 +23,14 @@ public:
     }
 
     virtual void onCollision(IPositionable *object, char state) override {
+        bool sensor = false;
         if (EntityHoover *h = dynamic_cast<EntityHoover *>(object)) {
             this->collidingEntity = state == 0 ? h : nullptr;
+            if (state == 0 && h->getHost() != nullptr) {
+                sensor = true;
+            }
         }
+        this->body->GetFixtureList()[0].SetSensor(sensor);
     }
 
     virtual void update() override {
