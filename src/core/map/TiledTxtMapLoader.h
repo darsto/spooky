@@ -149,6 +149,18 @@ TiledTxtMapLoader::TiledTxtMapLoader(const std::string &fileName) {
                     case 16:
                         sshape = new EntityFlowerPot(this->map);
                         break;
+                    case 17:
+                        sshape = new EntityToaster(this->map);
+                        break;
+                    case 18:
+                        sshape = new EntityRadio(this->map);
+                        break;
+                    case 19:
+                        sshape = new EntitySink(this->map);
+                        break;
+                    case 20:
+                        sshape = new EntityCuttingBoard(this->map);
+                        break;
                     default:
                         break;
 

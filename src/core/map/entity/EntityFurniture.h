@@ -6,6 +6,7 @@
 #define C003_ENTITYFURNITURE_H
 
 #include "EntityMoving.h"
+#include <core/map/block/SimpleBlock.h>
 
 class EntityFurniture : public EntityMoving {
 public:
@@ -49,6 +50,54 @@ public:
 
         this->body->CreateFixture(&fixDef);
     }
+};
+
+class EntityToaster : public EntityFurniture {
+public:
+    EntityToaster(Map *map) : EntityFurniture(map, 0.25, 0.1875, 23) { }
+
+    virtual bool doesCollide(IPositionable *obj) override {
+        if (SimpleBlock *b = dynamic_cast<SimpleBlock *>(obj)) {
+            if (b->getTexPos() >= 29 && b->getTexPos() <= 31) {
+                return false;
+            }
+        }
+        return Entity::doesCollide(obj);
+    }
+
+    virtual ~EntityToaster() override { }
+};
+
+class EntityRadio : public EntityFurniture {
+public:
+    EntityRadio(Map *map) : EntityFurniture(map, 0.4, 0.2, 22) { }
+
+    virtual ~EntityRadio() override { }
+};
+
+class EntitySink : public EntityFurniture {
+public:
+    EntitySink(Map *map) : EntityFurniture(map, 0.33, 0.4, 21) {
+        this->body->GetFixtureList()[0].SetDensity(100.0f);
+    }
+
+    virtual ~EntitySink() override { }
+};
+
+class EntityCuttingBoard : public EntityFurniture {
+public:
+    EntityCuttingBoard(Map *map) : EntityFurniture(map, 0.23, 0.33, 20) { }
+
+    virtual bool doesCollide(IPositionable *obj) override {
+        if (SimpleBlock *b = dynamic_cast<SimpleBlock *>(obj)) {
+            if (b->getTexPos() >= 29 && b->getTexPos() <= 31) {
+                return false;
+            }
+        }
+        return Entity::doesCollide(obj);
+    }
+
+    virtual ~EntityCuttingBoard() override { }
 };
 
 #endif //C003_ENTITYFURNITURE_H
