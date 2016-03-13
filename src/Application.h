@@ -40,7 +40,7 @@ private:
     RenderManager *renderer = nullptr;
     InputManager *inputManager = nullptr;
     Timer *timer = nullptr;
-    const double TIME_STEP = 0.01;
+    const double TIME_STEP = 0.016;
     double accumulator;
 #ifndef __DEFMOBILE__
     SDL_Event e;
