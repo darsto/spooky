@@ -17,7 +17,7 @@ EntityFather::EntityFather(Map *map) : EntityMoving(map, 0.25, 0.25) {
 
 void EntityFather::update() {
     EntityMoving::update();
-    this->applyImpulse(1.0f * this->getSpeed() * cos(this->getAngle()), 1.0f * this->getSpeed() * sin(this->getAngle()), 0);
+    this->applyImpulse(1.0f * this->getSpeed() * cos(this->getAngle()), 1.0f * this->getSpeed() * sin(this->getAngle()));
 }
 
 double EntityFather::getSpeed() {

@@ -23,7 +23,7 @@ public:
         this->body->CreateFixture(&fixDef);
         double velX = cos(angle) * velocity;
         double velY = sin(angle) * velocity;
-        this->applyImpulse(velX, velY, 0);
+        this->applyImpulse(velX, velY);
 
     }
 
