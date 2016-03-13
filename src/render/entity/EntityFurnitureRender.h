@@ -6,6 +6,7 @@
 #define C003_ENTITYFURNITURERENDER_H
 
 #include <core/map/entity/EntityFurniture.h>
+#include <core/map/entity/EntityGlassDebris.h>
 #include "DefaultEntityRender.h"
 
 class EntityFurnitureRender : public DefaultEntityRender {
@@ -26,6 +27,20 @@ protected:
 
 private:
     int id = -1;
+};
+
+class EntityGlassDebrisRender : public EntityFurnitureRender {
+
+public:
+    EntityGlassDebrisRender() : EntityFurnitureRender() { }
+
+protected:
+    virtual int getTexPos(const Entity *const entity) override {
+        if(const EntityGlassDebris *const d = dynamic_cast<const EntityGlassDebris *const>(entity)) {
+            return 62 + d->getType();
+        }
+        return -1;
+    }
 };
 
 #endif //C003_ENTITYFURNITURERENDER_H

@@ -46,18 +46,18 @@ public:
 class EntityHoover : public EntityToy {
 
 public:
-    EntityHoover(Map *map) : EntityToy(map, 1.0, 1.0) {
+    EntityHoover(Map *map) : EntityToy(map, 0.72, 0.72) {
         b2PolygonShape shape;
         shape.SetAsBox(this->width / 2, this->height / 2);
         b2FixtureDef fixDef;
         fixDef.shape = &shape;
-        fixDef.density = 3.0f;
-        fixDef.friction = 0.1f;
+        fixDef.density = 0.15f;
+        fixDef.friction = 0.01f;
         this->body->CreateFixture(&fixDef);
     }
 
     virtual double getSpeed() override {
-        return 1.0;
+        return 0.05;
     }
 };
 

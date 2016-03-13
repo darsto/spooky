@@ -16,7 +16,7 @@
 #include <core/map/entity/EntityFurniture.h>
 #include <core/map/entity/EntityTable.h>
 #include <core/map/entity/EntityChair.h>
-#include <core/map/entity/EntityStain.h>
+#include <core/map/entity/EntityGlassDebris.h>
 #include <core/map/entity/EntityCouch.h>
 #include <core/map/block/SimpleBlock.h>
 #include <logging.h>
@@ -113,7 +113,7 @@ void GameRender::render(Window *window, RenderContext *const renderContext) {
     fbo.getShaderProgram()->setUniform("scale", (float) (core->getBlockSize() * core->getGeneralScale()));
     fbo.render(0);
 
-    float voidAlpha = 1.0f;
+    float voidAlpha = 0.0f;
     if (game->getCore()->getMap()->getWorldTime() > 15.95f) {
         voidAlpha = std::max(0.0f, 16.95f - (float)game->getCore()->getMap()->getWorldTime());
     }
@@ -191,8 +191,8 @@ void GameRender::initRenders() {
     entityRenders.insert(std::make_pair(typeid(EntityCouch).name(), new EntityWideRender(13)));
     entityRenders.insert(std::make_pair(typeid(EntityFurniture).name(), new EntityFurnitureRender()));
     entityRenders.insert(std::make_pair(typeid(EntityFlowerPot).name(), new EntityFurnitureRender(16)));
-    entityRenders.insert(std::make_pair(typeid(EntityStain).name(), new DefaultEntityRender("gui", "shader")));
-    entityRenders.insert(std::make_pair(typeid(EntityHoover).name(), new DefaultEntityRender("shapes", "shader")));
+    entityRenders.insert(std::make_pair(typeid(EntityGlassDebris).name(), new EntityGlassDebrisRender()));
+    entityRenders.insert(std::make_pair(typeid(EntityHoover).name(), new DefaultEntityRender("toy", "shader", 2)));
     entityRenders.insert(std::make_pair(typeid(SimpleShape).name(), new SimpleShapeRender()));
     entityRenders.insert(std::make_pair(typeid(EntityFather).name(), new DefaultEntityRender("parents", "shader")));
 }

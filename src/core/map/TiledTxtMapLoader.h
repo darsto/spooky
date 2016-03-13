@@ -13,7 +13,7 @@
 #include <core/map/entity/EntityFurniture.h>
 #include <core/map/entity/EntityTable.h>
 #include <core/map/entity/EntityChair.h>
-#include <core/map/entity/EntityStain.h>
+#include <core/map/entity/EntityGlassDebris.h>
 #include <core/map/entity/EntityCouch.h>
 #include "Map.h"
 #include "../map/block/SimpleBlock.h"
@@ -129,7 +129,7 @@ TiledTxtMapLoader::TiledTxtMapLoader(const std::string &fileName) {
                         sshape = new EntityTable(this->map);
                         break;
                     case 10:
-                        sshape = new EntityStain(this->map);
+                        sshape = new EntityGlassDebris(this->map);
                         break;
                     case 11:
                         sshape = new EntityHoover(this->map);

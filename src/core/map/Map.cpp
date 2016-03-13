@@ -9,7 +9,7 @@
 #include <core/map/entity/SimpleShape.h>
 #include <core/map/entity/EntityFurniture.h>
 #include <core/map/entity/EntityChair.h>
-#include <core/map/entity/EntityStain.h>
+#include <core/map/entity/EntityGlassDebris.h>
 #include <core/map/entity/EntityCouch.h>
 #include "Map.h"
 
@@ -78,7 +78,7 @@ void Map::saveEntities() {
             else if (EntityChair *p = dynamic_cast<EntityChair *>(e)) id = 8;
             else if (EntityCoffeeTable *p = dynamic_cast<EntityCoffeeTable *>(e)) id = 12;
             else if (EntityTable *p = dynamic_cast<EntityTable *>(e)) id = 9;
-            else if (EntityStain *p = dynamic_cast<EntityStain *>(e)) id = 10;
+            else if (EntityGlassDebris *p = dynamic_cast<EntityGlassDebris *>(e)) id = 10;
             else if (EntityHoover *p = dynamic_cast<EntityHoover *>(e)) id = 11;
             else if (EntityCouch *p = dynamic_cast<EntityCouch *>(e)) id = 13;
             else if (EntityArmchair *p = dynamic_cast<EntityArmchair *>(e)) id = 14;
