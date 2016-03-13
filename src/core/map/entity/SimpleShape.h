@@ -45,7 +45,8 @@ public:
      */
     SimpleShape(Map *map, unsigned int shapeId) : EntityMoving(map, shapeDefs.at(shapeId)->width, shapeDefs.at(shapeId)->height) {
         this->body->CreateFixture(shapeDefs.at(shapeId)->fixtureDef);
-        this->texPos = shapeId + 8 * (rand() % 8);
+        this->texPos = shapeId;
+        this->variation = rand() % 8;
     }
 
     SimpleShape(Map *map, unsigned int shapeId, double width, double height) : EntityMoving(map, width, height) {
@@ -60,13 +61,14 @@ public:
     }
 
     unsigned int getTexPos() const {
-        return texPos;
+        return texPos + 8 * variation;
     }
 
     virtual ~SimpleShape() { }
 
 private:
     unsigned int texPos;
+    unsigned int variation;
 };
 
 #endif //C003_SIMPLESHAPE_H
