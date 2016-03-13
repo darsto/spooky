@@ -65,7 +65,7 @@ private:
     int tutorialDialogueNum = 1;
     float tutorialGhostMovement = -0.2f;
     float tutorialDialogueAlpha = -0.2f;
-    float tutorialDialogueDuration = 1.5f;
+    float tutorialDialogueDuration = 2.5f;
 
     GuiElement *popup[3];
 
@@ -73,6 +73,9 @@ private:
 
     void proceedTutorialDialogue() {
         this->tutorialProceeding = true;
+        if (this->tutorialDialogueAlpha < this->tutorialDialogueDuration - 0.1) {
+            this->tutorialDialogueAlpha = this->tutorialDialogueDuration - 0.1;
+        }
     }
 };
 

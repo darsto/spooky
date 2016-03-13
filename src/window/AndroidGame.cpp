@@ -180,7 +180,7 @@ void Game::tick(double deltaTime) {
                             this->popup[1]->reinit(this->windowWidth, this->windowHeight);
                             ((GuiText *) this->popup[2])->updateString("My name is Willy. I'm the\nchildren guardian ghost.");
                             tutorialDialogueAlpha = -0.2f;
-                            tutorialDialogueDuration = 2.8f;
+                            tutorialDialogueDuration = 5.0f;
                             tutorialProceeding = true;
                             break;
                         }
@@ -190,7 +190,7 @@ void Game::tick(double deltaTime) {
                             this->popup[1]->reinit(this->windowWidth, this->windowHeight);
                             ((GuiText *) this->popup[2])->updateString("And you must be\n<Player>.");
                             tutorialDialogueAlpha = -0.2f;
-                            tutorialDialogueDuration = 2.0f;
+                            tutorialDialogueDuration = 3.15f;
                             tutorialProceeding = true;
                             break;
                         }
@@ -201,7 +201,7 @@ void Game::tick(double deltaTime) {
                             ((GuiText *) this->popup[2])->updateString("Nice to meet you!");
                             this->popup[0]->setTexPos(0, 18);
                             tutorialDialogueAlpha = -0.2f;
-                            tutorialDialogueDuration = 2.0f;
+                            tutorialDialogueDuration = 2.65f;
                             tutorialProceeding = true;
                             break;
                         }
@@ -211,8 +211,8 @@ void Game::tick(double deltaTime) {
                             this->popup[1]->reinit(this->windowWidth, this->windowHeight);
                             ((GuiText *) this->popup[2])->updateString("See? That's me over there!\nYou can move my body by\npushing the screen and\nheading in the direction\nyou want me to move.");
                             this->popup[0]->setTexPos(0, 17);
-                            tutorialDialogueAlpha = -1.6f;
-                            tutorialDialogueDuration = 9.5f;
+                            tutorialDialogueAlpha = -0.9f;
+                            tutorialDialogueDuration = 999.9f;
                             tutorialGhostMovement = -0.2f;
                             break;
                         }
@@ -220,18 +220,18 @@ void Game::tick(double deltaTime) {
                             this->popup[1]->setWidth(350);
                             this->popup[1]->setHeight(145);
                             this->popup[1]->reinit(this->windowWidth, this->windowHeight);
-                            ((GuiText *) this->popup[2])->updateString("Easy? Now, let's fly\nto the kitchen.\nYou can move\nthrough the walls.");
+                            ((GuiText *) this->popup[2])->updateString("Easy? Let's fly\nto the bathroom.\nYou can move\nthrough the walls.");
                             tutorialDialogueAlpha = -0.7f;
-                            tutorialDialogueDuration = 4.5f;
+                            tutorialDialogueDuration = 999.9f;
                             break;
                         }
                         case 7: {
-                            this->popup[1]->setWidth(435);
+                            this->popup[1]->setWidth(395);
                             this->popup[1]->setHeight(80);
                             this->popup[1]->reinit(this->windowWidth, this->windowHeight);
-                            ((GuiText *) this->popup[2])->updateString("Have you seen some toys?\nGo and find one!");
+                            ((GuiText *) this->popup[2])->updateString("Now, have you seen any\ntoys? Go and find one!");
                             tutorialDialogueAlpha = -0.2f;
-                            tutorialDialogueDuration = 2.5f;
+                            tutorialDialogueDuration = 999.9f;
                             break;
                         }
                         case 8: {
@@ -240,7 +240,7 @@ void Game::tick(double deltaTime) {
                             this->popup[1]->reinit(this->windowWidth, this->windowHeight);
                             ((GuiText *) this->popup[2])->updateString("Check out what will\nhappen when you click\nthat button.");
                             tutorialDialogueAlpha = -0.2f;
-                            tutorialDialogueDuration = 3.5f;
+                            tutorialDialogueDuration = 999.9f;
                             break;
                         }
                         case 9: {
@@ -249,7 +249,7 @@ void Game::tick(double deltaTime) {
                             this->popup[1]->reinit(this->windowWidth, this->windowHeight);
                             ((GuiText *) this->popup[2])->updateString("Now you're inside a toy!");
                             tutorialDialogueAlpha = -0.2f;
-                            tutorialDialogueDuration = 2.5f;
+                            tutorialDialogueDuration = 2.35f;
                             tutorialProceeding = true;
                             break;
                         }
@@ -259,7 +259,7 @@ void Game::tick(double deltaTime) {
                             this->popup[1]->reinit(this->windowWidth, this->windowHeight);
                             ((GuiText *) this->popup[2])->updateString("You can't pass through\nwalls anymore. But\nyou can interact with\nthe environment.");
                             tutorialDialogueAlpha = -0.2f;
-                            tutorialDialogueDuration = 4.5f;
+                            tutorialDialogueDuration = 5.5f;
                             tutorialProceeding = true;
                             break;
                         }
@@ -267,9 +267,40 @@ void Game::tick(double deltaTime) {
                             this->popup[1]->setWidth(350);
                             this->popup[1]->setHeight(115);
                             this->popup[1]->reinit(this->windowWidth, this->windowHeight);
-                            ((GuiText *) this->popup[2])->updateString("Different toys have\ndifferent abilities.\nCheck them out!");
+                            ((GuiText *) this->popup[2])->updateString("Different toys have\ndifferent abilities.\nKeep that in mind!");
                             tutorialDialogueAlpha = -0.2f;
-                            tutorialDialogueDuration = 3.5f;
+                            tutorialDialogueDuration = 4.5f;
+                            tutorialProceeding = true;
+                            break;
+                        }
+                        case 12: {
+                            this->popup[1]->setWidth(288);
+                            this->popup[1]->setHeight(80);
+                            this->popup[1]->reinit(this->windowWidth, this->windowHeight);
+                            ((GuiText *) this->popup[2])->updateString("Oh no! A glass\nhas shattered!");
+                            tutorialDialogueAlpha = -2.5f;
+                            tutorialDialogueDuration = 3.0f;
+                            tutorialProceeding = true;
+                            break;
+                        }
+                        case 13: {
+                            this->popup[1]->setWidth(435);
+                            this->popup[1]->setHeight(80);
+                            this->popup[1]->reinit(this->windowWidth, this->windowHeight);
+                            ((GuiText *) this->popup[2])->updateString("You have to clean it up\nbefore anyone gets hurt!");
+                            tutorialDialogueAlpha = -0.2f;
+                            tutorialDialogueDuration = 4.5f;
+                            tutorialProceeding = true;
+                            break;
+                        }
+                        case 14: {
+                            this->popup[1]->setWidth(425);
+                            this->popup[1]->setHeight(115);
+                            this->popup[1]->reinit(this->windowWidth, this->windowHeight);
+                            ((GuiText *) this->popup[2])->updateString("There is a hoover toy\non the other side of the\nhouse. Go take it.");
+                            tutorialDialogueAlpha = -0.2f;
+                            tutorialDialogueDuration = 4.5f;
+                            tutorialProceeding = true;
                             break;
                         }
                         default:
@@ -280,27 +311,57 @@ void Game::tick(double deltaTime) {
         }
     }
 
-    double dx = (this->core->getPlayer()->getX() + this->core->getPlayer()->getWidth() / 2 - 1) * this->core->getBlockSize() * this->core->getGeneralScale() + this->core->getCamX();
-    double dy = (this->core->getPlayer()->getY() + this->core->getPlayer()->getHeight() / 2 - 1) * this->core->getBlockSize() * this->core->getGeneralScale() + this->core->getCamY();
-    if (abs(dx) > 2) this->core->setCamX(-this->core->getCamX() + (dx) * 0.05);
-    if (abs(dy) > 2) this->core->setCamY(-this->core->getCamY() + (dy) * 0.05);
+    double px, py;
+    char pos = 0;
+    if (this->tutorialDialogueNum < 5) {
+        this->core->setBlockSize(this->core->getDefaultBlockSize() * 1.5);
+    } else if (this->tutorialDialogueNum == 5) {
+        double blockScale = 1.5f - 0.5f * std::min(1.0f, this->tutorialDialogueAlpha + 0.9f);
+        this->core->setBlockSize(this->core->getDefaultBlockSize() * blockScale);
+    } else if (this->tutorialDialogueNum == 12 || this->tutorialDialogueNum == 13) {
+        pos = 1;
+        if (this->tutorialDialogueNum == 12 && this->tutorialDialogueAlpha >= -2.5f) {
+            double blockScale = std::min(1.25f, 1.75f + this->tutorialDialogueAlpha * 0.3f);
+            this->core->setBlockSize(this->core->getDefaultBlockSize() * blockScale);
+        } else if (this->tutorialDialogueNum == 13 && this->tutorialDialogueAlpha >= this->tutorialDialogueDuration) {
+            double blockScale = 1.0f + 0.25f * std::max(0.0f, this->tutorialDialogueDuration + 1.0f - this->tutorialDialogueAlpha);
+            this->core->setBlockSize(this->core->getDefaultBlockSize() * blockScale);
+            pos = 0;
+        }
+    } else {
+        this->core->setBlockSize(this->core->getDefaultBlockSize());
+    }
+    switch (pos) {
+        default:
+            px = this->core->getPlayer()->getX() + this->core->getPlayer()->getWidth() / 2;
+            py = this->core->getPlayer()->getY() + this->core->getPlayer()->getHeight() / 2;
+            break;
+        case 1:
+            px = 29.5;
+            py = 17.5;
+            break;
+    }
+    double dx = (px - 1 + this->core->getCamX());
+    double dy = (py - 1 + this->core->getCamY());
+    if (abs(dx) > 0.00001) this->core->setCamX(-this->core->getCamX() + (dx) * 0.05);
+    if (abs(dy) > 0.00001) this->core->setCamY(-this->core->getCamY() + (dy) * 0.05);
 
-    if (this->tutorialDialogueNum == 6 && this->core->getPlayer()->getX() < 8 && this->core->getPlayer()->getY() < 9) {
+    if (this->tutorialDialogueNum == 6 && this->core->getPlayer()->getX() >= 27 && this->core->getPlayer()->getX() <= 29 && this->core->getPlayer()->getY() >= 10 && this->core->getPlayer()->getY() <= 15) {
         this->proceedTutorialDialogue();
     }
 
     double camX = this->core->getCamX(), camY = this->core->getCamY();
-    if (-camX < this->windowWidth / 2 - this->core->getBlockSize() * this->core->getGeneralScale()) {
-        this->core->setCamX(this->windowWidth / 2 - this->core->getBlockSize() * this->core->getGeneralScale());
+    if (-camX < this->windowWidth / (2.0 * this->core->getBlockSize() * this->core->getGeneralScale()) - 1) {
+        this->core->setCamX(this->windowWidth / (2.0 * this->core->getBlockSize() * this->core->getGeneralScale()) - 1);
     }
-    if (-camY < this->windowHeight / 2 - this->core->getBlockSize() * this->core->getGeneralScale()) {
-        this->core->setCamY(this->windowHeight / 2 - this->core->getBlockSize() * this->core->getGeneralScale());
+    if (-camY < this->windowHeight / (2.0 * this->core->getBlockSize() * this->core->getGeneralScale()) - 1) {
+        this->core->setCamY(this->windowHeight / (2.0 * this->core->getBlockSize() * this->core->getGeneralScale()) - 1);
     }
-    if (-camX > -(signed) this->windowWidth / 2 + (this->core->getMap()->getWidth() - 1) * this->core->getBlockSize() * this->core->getGeneralScale()) {
-        this->core->setCamX(-(signed) this->windowWidth / 2 + (this->core->getMap()->getWidth() - 1) * this->core->getBlockSize() * this->core->getGeneralScale());
+    if (-camX > -(signed) this->windowWidth / (2.0 * this->core->getBlockSize() * this->core->getGeneralScale()) + (this->core->getMap()->getWidth() - 1)) {
+        this->core->setCamX(-(signed) this->windowWidth / (2.0 * this->core->getBlockSize() * this->core->getGeneralScale()) + (this->core->getMap()->getWidth() - 1));
     }
-    if (-camY > -(signed) this->windowHeight / 2 + (this->core->getMap()->getHeight() - 1) * this->core->getBlockSize() * this->core->getGeneralScale()) {
-        this->core->setCamY(-(signed) this->windowHeight / 2 + (this->core->getMap()->getHeight() - 1) * this->core->getBlockSize() * this->core->getGeneralScale());
+    if (-camY > -(signed) this->windowHeight / (2.0 * this->core->getBlockSize() * this->core->getGeneralScale()) + (this->core->getMap()->getHeight() - 1)) {
+        this->core->setCamY(-(signed) this->windowHeight / (2.0 * this->core->getBlockSize() * this->core->getGeneralScale()) + (this->core->getMap()->getHeight() - 1));
     }
 }
 
@@ -323,7 +384,10 @@ void Game::handleClick(const TouchPoint *const p) {
 
     if (!clicked) {
         if (p->state == 0) {
-            if (this->tutorialDialogueNum >= 5 && !controller->isVisible()) {
+            if (this->tutorialDialogueNum >= 5 &&
+                this->tutorialDialogueNum != 12 &&
+                this->tutorialDialogueNum != 13 &&
+                !controller->isVisible()) {
                 controller->setVisible(true), joystick->setVisible(true);
                 controller->setX(p->x - controller->getWidth() / 2);
                 controller->setY(p->y - controller->getHeight() / 2);
@@ -336,7 +400,10 @@ void Game::handleClick(const TouchPoint *const p) {
         }
     }
 
-    if (this->tutorialDialogueNum >= 5 && p->state == 2) {
+    if (this->tutorialDialogueNum >= 5 &&
+        this->tutorialDialogueNum != 12 &&
+        this->tutorialDialogueNum != 13 &&
+        p->state == 2) {
         if (controller->isVisible() && controller->getTouchedBy() == p->id) {
             double x = p->x - controller->getX() - controller->getWidth() / 2;
             double y = p->y - controller->getY() - controller->getHeight() / 2;
