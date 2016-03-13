@@ -47,8 +47,8 @@ class EntityHoover : public EntityToy {
 
 public:
     EntityHoover(Map *map) : EntityToy(map, 0.72, 0.72) {
-        b2PolygonShape shape;
-        shape.SetAsBox(this->width / 2, this->height / 2);
+        b2CircleShape shape;
+        shape.m_radius = this->height / 2;
         b2FixtureDef fixDef;
         fixDef.shape = &shape;
         fixDef.density = 0.15f;
