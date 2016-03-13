@@ -8,16 +8,15 @@
 #include "Entity.h"
 #include "EntityMachinery.h"
 
-class EntityGlassDebris : public Entity {
+class EntityGlassDebris : public EntityMoving {
 
 public:
-    EntityGlassDebris(Map *map) : Entity(map, 0.15, 0.11) {
+    EntityGlassDebris(Map *map) : EntityMoving(map, 0.3, 0.2) {
         b2PolygonShape shape;
         shape.SetAsBox(this->width / 2, this->height / 2);
         b2FixtureDef fixDef;
         fixDef.shape = &shape;
-        fixDef.isSensor = true;
-        fixDef.density = 3.0f;
+        fixDef.density = 0.25f;
         fixDef.friction = 0.1f;
         this->body->CreateFixture(&fixDef);
         this->type = (char) (rand() % 2);
