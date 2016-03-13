@@ -54,7 +54,7 @@ public:
 
 class EntityToaster : public EntityFurniture {
 public:
-    EntityToaster(Map *map) : EntityFurniture(map, 0.25, 0.1875, 23) { }
+    EntityToaster(Map *map) : EntityFurniture(map, 0.5, 0.375, 23) { }
 
     virtual bool doesCollide(IPositionable *obj) override {
         if (SimpleBlock *b = dynamic_cast<SimpleBlock *>(obj)) {
@@ -70,14 +70,14 @@ public:
 
 class EntityRadio : public EntityFurniture {
 public:
-    EntityRadio(Map *map) : EntityFurniture(map, 0.4, 0.2, 22) { }
+    EntityRadio(Map *map) : EntityFurniture(map, 0.8, 0.4, 22) { }
 
     virtual ~EntityRadio() override { }
 };
 
 class EntitySink : public EntityFurniture {
 public:
-    EntitySink(Map *map) : EntityFurniture(map, 0.33, 0.4, 21) {
+    EntitySink(Map *map) : EntityFurniture(map, 0.66, 0.8, 21) {
         this->body->GetFixtureList()[0].SetDensity(100.0f);
     }
 
@@ -86,7 +86,7 @@ public:
 
 class EntityCuttingBoard : public EntityFurniture {
 public:
-    EntityCuttingBoard(Map *map) : EntityFurniture(map, 0.23, 0.33, 20) { }
+    EntityCuttingBoard(Map *map) : EntityFurniture(map, 0.46, 0.66, 20) { }
 
     virtual bool doesCollide(IPositionable *obj) override {
         if (SimpleBlock *b = dynamic_cast<SimpleBlock *>(obj)) {
