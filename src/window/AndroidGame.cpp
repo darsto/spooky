@@ -254,6 +254,16 @@ void Game::tick(double deltaTime) {
                             break;
                         }
                         case 10: {
+                            this->popup[1]->setWidth(395);
+                            this->popup[1]->setHeight(145);
+                            this->popup[1]->reinit(this->windowWidth, this->windowHeight);
+                            ((GuiText *) this->popup[2])->updateString("You can't pass through\nwalls anymore. But\nyou can interact with\nthe environment.");
+                            tutorialDialogueAlpha = -0.2f;
+                            tutorialDialogueDuration = 4.5f;
+                            tutorialProceeding = true;
+                            break;
+                        }
+                        case 11: {
                             this->popup[1]->setWidth(350);
                             this->popup[1]->setHeight(115);
                             this->popup[1]->reinit(this->windowWidth, this->windowHeight);
