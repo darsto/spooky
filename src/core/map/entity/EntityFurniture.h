@@ -24,7 +24,9 @@ protected:
 
 class EntityFridge : public EntityFurniture {
 public:
-    EntityFridge(Map *map) : EntityFurniture(map, 1.0, 0.5, 1) { }
+    EntityFridge(Map *map) : EntityFurniture(map, 1.0, 0.5, 1) {
+        this->body->GetFixtureList()[0].SetDensity(15.0f);
+    }
 
     virtual ~EntityFridge() override { }
 
@@ -32,7 +34,9 @@ public:
 
 class EntityWardrobe : public EntityFurniture {
 public:
-    EntityWardrobe(Map *map) : EntityFurniture(map, 1.0, 0.5, 2) { }
+    EntityWardrobe(Map *map) : EntityFurniture(map, 1.0, 0.5, 2) {
+        this->body->GetFixtureList()[0].SetDensity(15.0f);
+    }
 
     virtual ~EntityWardrobe() override { }
 
@@ -58,7 +62,7 @@ public:
 
     virtual bool doesCollide(IPositionable *obj) override {
         if (SimpleBlock *b = dynamic_cast<SimpleBlock *>(obj)) {
-            if (b->getTexPos() >= 29 && b->getTexPos() <= 31) {
+            if (b->getTexPos() >= 20 && b->getTexPos() <= 22) {
                 return false;
             }
         }
@@ -90,7 +94,7 @@ public:
 
     virtual bool doesCollide(IPositionable *obj) override {
         if (SimpleBlock *b = dynamic_cast<SimpleBlock *>(obj)) {
-            if (b->getTexPos() >= 29 && b->getTexPos() <= 31) {
+            if (b->getTexPos() >= 20 && b->getTexPos() <= 22) {
                 return false;
             }
         }

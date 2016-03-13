@@ -18,7 +18,7 @@ public:
     ~SimpleBlockRender();
     virtual void render(const Block *const block, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, double scale) override;
 private:
-    const unsigned int atlasSize = 8;
+    const unsigned int atlasSize = 16;
     float vertices[12];
     GLuint vbo[2];
     GLuint vao;
