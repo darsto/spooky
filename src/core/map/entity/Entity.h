@@ -60,8 +60,12 @@ public:
         return this->body->GetAngle();
     }
 
-    virtual void setAngle(double angle) {
+    virtual void setAngle(double angle, double power = 1.0) {
         this->body->SetTransform(this->body->GetPosition(), (float) angle);
+    }
+
+    b2Body *getBody() const {
+        return body;
     }
 
     void remove() {

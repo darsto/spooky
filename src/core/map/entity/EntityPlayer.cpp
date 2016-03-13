@@ -73,28 +73,44 @@ double Player::getY() const {
     return Entity::getY();
 }
 
-void Player::applyImpulse(double x, double y) {
+void Player::applyImpulse(double x, double y, double power) {
     if (this->toy != nullptr) {
+        double da = this->toy->getAngle() - this->getAngle();
+        double dx = atan2(-sin(da), cos(da));
+        if (dx > 0.1) {
+            if (dx < M_PI * 0.75 && dx > -M_PI * 0.75) {
+                x = power * -sin(this->toy->getAngle() - M_PI_2);
+                y = power * cos(this->toy->getAngle() - M_PI_2);
+            } else {
+                x = power * -sin(this->toy->getAngle() + M_PI_2);
+                y = power * cos(this->toy->getAngle() + M_PI_2);
+            }
+        }
         x *= this->toy->getSpeed();
         y *= this->toy->getSpeed();
-        this->toy->applyImpulse(x, y);
+        this->toy->applyImpulse(x, y, 0);
     }
-    else EntityMoving::applyImpulse(x, y);
+    else EntityMoving::applyImpulse(x, y, 0);
 }
 
 void Player::applyForce(double x, double y) {
     if (this->toy != nullptr) {
         x *= this->toy->getSpeed();
         y *= this->toy->getSpeed();
-        this->toy->applyImpulse(x, y);
+        this->toy->applyImpulse(x, y, 0);
     }
-    else EntityMoving::applyImpulse(x, y);
+    else EntityMoving::applyImpulse(x, y, 0);
 }
 
-void Player::setAngle(double angle) {
+void Player::setAngle(double angle, double power) {
     if (this->toy != nullptr) {
-        double dx = atan2(-sin(angle - this->toy->getAngle()), cos(angle - this->toy->getAngle())) + M_PI;
-        this->toy->setAngle(this->toy->getAngle() - (dx - M_PI) * 0.1);
+        double da = angle - this->toy->getAngle();
+        double dx = atan2(-sin(da), cos(da));
+        if (dx > M_PI * 0.75) dx -= M_PI;
+        if (dx < -M_PI * 0.75) dx += M_PI;
+        dx *= power;
+        double tangle = this->toy->getAngle() - dx / this->toy->getBody()->GetFixtureList()[0].GetDensity() / 100;
+        this->toy->setAngle(tangle);
     }
     Entity::setAngle(angle);
 }

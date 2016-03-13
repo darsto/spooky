@@ -21,6 +21,6 @@ void EntityMoving::applyForce(double x, double y) {
     this->body->ApplyForce(b2Vec2(x, y), this->body->GetWorldCenter(), true);
 }
 
-void EntityMoving::applyImpulse(double x, double y) {
+void EntityMoving::applyImpulse(double x, double y, double power) {
     this->body->ApplyLinearImpulse(b2Vec2(x, y), this->body->GetWorldCenter(), true);
 }

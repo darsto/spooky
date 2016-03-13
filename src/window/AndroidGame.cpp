@@ -109,9 +109,10 @@ void Game::tick(double deltaTime) {
         double playerSpeed = this->core->getPlayer()->getSpeed();
         double x = (joystick->getX() - controller->getX()) / 100.0f * playerSpeed;
         double y = (joystick->getY() - controller->getY()) / 100.0f * playerSpeed;
+        double power = std::sqrt(x * x + y * y);
         double angle = atan2(y, x);
-        this->core->getPlayer()->applyImpulse(x, y);
-        this->core->getPlayer()->setAngle(angle);
+        this->core->getPlayer()->applyImpulse(x, y, power);
+        this->core->getPlayer()->setAngle(angle, power);
     }
 
     tutorialGhostMovement += deltaTime * 0.95;
@@ -249,6 +250,16 @@ void Game::tick(double deltaTime) {
                             ((GuiText *) this->popup[2])->updateString("Now you're inside a toy!");
                             tutorialDialogueAlpha = -0.2f;
                             tutorialDialogueDuration = 2.5f;
+                            tutorialProceeding = true;
+                            break;
+                        }
+                        case 10: {
+                            this->popup[1]->setWidth(350);
+                            this->popup[1]->setHeight(115);
+                            this->popup[1]->reinit(this->windowWidth, this->windowHeight);
+                            ((GuiText *) this->popup[2])->updateString("Different toys have\ndifferent abilities.\nCheck them out!");
+                            tutorialDialogueAlpha = -0.2f;
+                            tutorialDialogueDuration = 3.5f;
                             break;
                         }
                         default:

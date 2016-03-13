@@ -15,7 +15,7 @@ class EntityMoving : public Entity {
 public:
     EntityMoving(Map *map, double width, double height);
 
-    virtual void applyImpulse(double x, double y);
+    virtual void applyImpulse(double x, double y, double power = 1.0);
 
     virtual void applyForce(double x, double y);
 
