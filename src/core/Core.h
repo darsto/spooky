@@ -15,9 +15,9 @@ class Core {
 public:
     Core(Map *map) : map(map) {
 #ifdef __ANDROID__
-        blockSize = 96.0f;
+        defaultBlockSize = blockSize = 96.0f;
 #else
-        blockSize = 64.0f;
+        defaultBlockSize = blockSize = 64.0f;
 #endif //__ANDROID__
         if (this->player == nullptr) {
             for (Entity *e : map->getEntities()) {
@@ -73,6 +73,10 @@ public:
         Core::generalScale = generalScale;
     }
 
+    double getDefaultBlockSize() const {
+        return defaultBlockSize;
+    }
+
     double getBlockSize() const {
         return blockSize;
     }
@@ -87,6 +91,7 @@ private:
     Player *player = nullptr;
     double camX = 0, camY = 0;
     double generalScale = 1.0;
+    double defaultBlockSize;
     double blockSize;
 };
 
