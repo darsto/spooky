@@ -45,7 +45,7 @@ private:
 public:
 
     virtual bool doesCollide(IPositionable *obj) override;
-    virtual void applyImpulse(double x, double y, double power) override;
+    virtual void applyImpulse(double x, double y, double power = 1.0) override;
     virtual void applyForce(double x, double y) override;
     virtual void setAngle(double angle, double power) override;
 };
