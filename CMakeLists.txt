@@ -11,6 +11,7 @@ endif ()
 
 if (ANDROID)
     INCLUDE_DIRECTORIES(${ANDROID_NDK}/platforms/android-8/arch-arm/usr/include)
+    INCLUDE_DIRECTORIES(src)
     ADD_SUBDIRECTORY(src)
 else ()
     if (CMAKE_BUILD_TYPE MATCHES Editor)
