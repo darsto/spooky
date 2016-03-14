@@ -74,6 +74,7 @@ void GameRender::render(Window *window, RenderContext *const renderContext) {
         }
     }
 
+#ifndef EDITOR
     //TODO
     this->voidRender->render(9, 3, 5, 6, projectionMatrix, glm::translate(viewMatrix, glm::vec3(
         -(signed) windowWidth / 2.0f - camX,
@@ -109,6 +110,7 @@ void GameRender::render(Window *window, RenderContext *const renderContext) {
         -(signed) windowWidth / 2.0f - camX,
         (signed) windowHeight / 2.0f - camY,
         0.0f)), core->getBlockSize() * core->getGeneralScale());
+#endif //EDITOR
 
     fbo.unbind();
     fbo.getShaderProgram()->useProgram();
@@ -116,6 +118,7 @@ void GameRender::render(Window *window, RenderContext *const renderContext) {
     fbo.getShaderProgram()->setUniform("scale", (float) (core->getBlockSize() * core->getGeneralScale()));
     fbo.render(0);
 
+#ifndef EDITOR
     float voidAlpha = 1.0f;
     if (game->getCore()->getMap()->getWorldTime() > 21.25f) {
         voidAlpha = std::max(0.0f, 22.25f - (float)game->getCore()->getMap()->getWorldTime());
@@ -125,6 +128,7 @@ void GameRender::render(Window *window, RenderContext *const renderContext) {
         0,
         (int) ((signed) windowHeight),
         0.0f)), 1.0f, 0.7f, 0.7f, 0.7f, voidAlpha);
+#endif
 
     for (GuiElement *guiElement : game->getGuiElements()) {
         renderContext->getGuiElementRender(guiElement)->render(guiElement, projectionMatrix, glm::translate(viewMatrix, glm::vec3(

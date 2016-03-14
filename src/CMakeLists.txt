@@ -1,18 +1,14 @@
 PROJECT(c003_game)
 CMAKE_MINIMUM_REQUIRED(VERSION 3.0)
 
-SET(DEBUG 0)
-
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 if (ANDROID)
-    SET(PLATFORM_SOURCE_FILES window/AndroidGame.cpp)
     SET(TYPE SHARED)
 else ()
-    SET(PLATFORM_SOURCE_FILES window/DesktopGame.cpp)
     SET(TYPE STATIC)
 endif ()
 
-SET(SOURCE_FILES render/Shader.cpp render/Shader.h render/ShaderProgram.cpp render/ShaderProgram.h render/Texture.cpp render/Texture.h render/Fbo.cpp render/Fbo.h core/map/block/Block.h render/block/BlockRender.h render/block/SimpleBlockRender.cpp render/block/SimpleBlockRender.h core/map/block/SimpleBlock.h core/Core.cpp core/Core.h core/map/Map.cpp core/map/Map.h core/map/StringMapLoader.h render/RenderManager.cpp render/RenderManager.h core/Timer.h core/map/entity/Entity.h core/map/entity/EntityPlayer.cpp core/map/entity/EntityPlayer.h render/entity/EntityRender.h render/entity/DefaultEntityRender.cpp render/entity/DefaultEntityRender.h core/map/entity/EntityMoving.cpp core/map/entity/EntityMoving.h core/map/entity/Entity.cpp core/map/block/Block.cpp core/map/entity/EntityProjectile.cpp core/map/entity/EntityProjectile.h core/IPositionable.h core/map/entity/EntityBullet.cpp core/map/entity/EntityBullet.h core/map/CollisionListener.h core/Ray.cpp core/Ray.h core/Utils.h core/map/entity/EntityToy.h core/map/TiledTxtMapLoader.h render/entity/PlayerRender.h core/map/ContactFilter.h core/map/entity/SimpleShape.h render/entity/SimpleShapeRender.h core/map/entity/IEntityLighted.h render/opengl.h render/opengl.cpp logging.h window/Window.h window/Game.h Application.cpp Application.h render/window/GameRender.cpp render/window/GameRender.h render/window/WindowRender.h gui/GuiButton.h gui/GuiButton.cpp render/gui/GuiElementRender.cpp render/gui/GuiElementRender.h gui/GuiElement.h InputManager.cpp InputManager.h os.h render/gui/GuiButtonRender.h render/font/TextRender.cpp render/font/TextRender.h gui/GuiText.h window/MainMenu.cpp window/MainMenu.h render/window/MenuRender.cpp render/window/MenuRender.h render/RenderContext.cpp render/RenderContext.h window/Settings.cpp window/Settings.h window/Menu.h window/Menu.cpp core/map/entity/EntityFather.cpp core/map/entity/EntityFather.h gui/GuiElement.cpp gui/GuiTextBubble.cpp gui/GuiTextBubble.h render/gui/GuiTextBubbleRender.h core/map/entity/EntityMachinery.h render/entity/EntityMachineryRender.h core/map/entity/EntityDoor.cpp core/map/entity/EntityDoor.h render/entity/EntityFurnitureRender.cpp render/entity/EntityFurnitureRender.h core/map/entity/EntityFurniture.cpp core/map/entity/EntityFurniture.h core/map/entity/EntityTable.h core/map/entity/EntityChair.h render/entity/EntityWideRender.h core/map/entity/EntityStain.h render/block/VoidRender.cpp render/block/VoidRender.h core/map/entity/EntityCouch.h)
+SET(SOURCE_FILES render/Shader.cpp render/Shader.h render/ShaderProgram.cpp render/ShaderProgram.h render/Texture.cpp render/Texture.h render/Fbo.cpp render/Fbo.h core/map/block/Block.h render/block/BlockRender.h render/block/SimpleBlockRender.cpp render/block/SimpleBlockRender.h core/map/block/SimpleBlock.h core/Core.cpp core/Core.h core/map/Map.cpp core/map/Map.h core/map/StringMapLoader.h render/RenderManager.cpp render/RenderManager.h core/Timer.h core/map/entity/Entity.h core/map/entity/EntityPlayer.cpp core/map/entity/EntityPlayer.h render/entity/EntityRender.h render/entity/DefaultEntityRender.cpp render/entity/DefaultEntityRender.h core/map/entity/EntityMoving.cpp core/map/entity/EntityMoving.h core/map/entity/Entity.cpp core/map/block/Block.cpp core/map/entity/EntityProjectile.cpp core/map/entity/EntityProjectile.h core/IPositionable.h core/map/entity/EntityBullet.cpp core/map/entity/EntityBullet.h core/map/CollisionListener.h core/Ray.cpp core/Ray.h core/Utils.h core/map/entity/EntityToy.h core/map/TiledTxtMapLoader.h render/entity/PlayerRender.h core/map/ContactFilter.h core/map/entity/SimpleShape.h render/entity/SimpleShapeRender.h core/map/entity/IEntityLighted.h render/opengl.h render/opengl.cpp logging.h window/Window.h window/Game.h Application.cpp Application.h render/window/GameRender.cpp render/window/GameRender.h render/window/WindowRender.h gui/GuiButton.h gui/GuiButton.cpp render/gui/GuiElementRender.cpp render/gui/GuiElementRender.h gui/GuiElement.h InputManager.cpp InputManager.h os.h render/gui/GuiButtonRender.h render/font/TextRender.cpp render/font/TextRender.h gui/GuiText.h window/MainMenu.cpp window/MainMenu.h render/window/MenuRender.cpp render/window/MenuRender.h render/RenderContext.cpp render/RenderContext.h window/Settings.cpp window/Settings.h window/Menu.h window/Menu.cpp core/map/entity/EntityFather.cpp core/map/entity/EntityFather.h gui/GuiElement.cpp gui/GuiTextBubble.cpp gui/GuiTextBubble.h render/gui/GuiTextBubbleRender.h core/map/entity/EntityMachinery.h render/entity/EntityMachineryRender.h core/map/entity/EntityDoor.cpp core/map/entity/EntityDoor.h render/entity/EntityFurnitureRender.cpp render/entity/EntityFurnitureRender.h core/map/entity/EntityFurniture.cpp core/map/entity/EntityFurniture.h core/map/entity/EntityTable.h core/map/entity/EntityChair.h render/entity/EntityWideRender.h core/map/entity/EntityGlassDebris.h render/block/VoidRender.cpp render/block/VoidRender.h core/map/entity/EntityCouch.h)
 SET(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/../cmake)
 
 INCLUDE(FindPkgConfig)
@@ -22,14 +18,20 @@ INCLUDE(${PROJECT_SOURCE_DIR}/../cmake/FindBox2d.cmake REQUIRED)
 FIND_PACKAGE(SOIL REQUIRED)
 FIND_PACKAGE(Box2d REQUIRED)
 
-ADD_LIBRARY(${PROJECT_NAME} ${TYPE} ${SOURCE_FILES} ${PLATFORM_SOURCE_FILES})
+if (EDITOR)
+    SET(PROJECT_NAME ${PROJECT_NAME}_editor)
+    ADD_LIBRARY(${PROJECT_NAME} ${TYPE} ${SOURCE_FILES} window/EditorGame.cpp)
+    TARGET_COMPILE_DEFINITIONS(${PROJECT_NAME} PRIVATE EDITOR=1)
+else ()
+    ADD_LIBRARY(${PROJECT_NAME} ${TYPE} ${SOURCE_FILES} window/TouchGame.cpp)
+endif ()
 
 INCLUDE_DIRECTORIES(${SOIL_INCLUDE_DIR} ${BOX2D_INCLUDE_DIRS})
 TARGET_LINK_LIBRARIES(${PROJECT_NAME} ${SOIL_LIBRARIES} ${BOX2D_LIBRARIES})
 
-IF(DEBUG)
+IF (DEBUG)
     TARGET_COMPILE_DEFINITIONS(${PROJECT_NAME} PRIVATE __DEBUG__=1 DEBUG=1)
-endif()
+endif ()
 
 if (ANDROID)
     TARGET_LINK_LIBRARIES(${PROJECT_NAME} GLESv2 log)
@@ -45,7 +47,7 @@ endif ()
 
 if (MINGW)
     TARGET_LINK_LIBRARIES(${PROJECT_NAME} m dinput8 dxguid dxerr8 gdi32 winmm imm32 ole32 oleaut32 shell32 version uuid)
-    IF(DEBUG)
+    IF (NOT DEBUG)
         SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mwindows")
-    ENDIF()
+    ENDIF ()
 endif (MINGW)

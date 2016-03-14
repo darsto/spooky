@@ -45,7 +45,7 @@ private:
     Core *core = nullptr;
     std::vector<GuiElement *> guiElements;
 
-#ifndef __ANDROID__
+#ifndef EDITOR
     GuiButton *controller;
     GuiButton *joystick;
     GuiButton *possessButton;
