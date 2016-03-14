@@ -73,7 +73,7 @@ private:
 
     void proceedTutorialDialogue(double currentDialogueAlpha = 999.9f) {
         this->tutorialProceeding = true;
-        if (this->tutorialDialogueAlpha < this->tutorialDialogueDuration - currentDialogueAlpha) {
+        if (this->tutorialDialogueAlpha >= 1.5 && this->tutorialDialogueAlpha < this->tutorialDialogueDuration - currentDialogueAlpha) {
             this->tutorialDialogueAlpha = this->tutorialDialogueDuration - currentDialogueAlpha;
         }
     }};
