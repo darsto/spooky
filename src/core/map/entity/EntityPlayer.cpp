@@ -77,14 +77,12 @@ void Player::applyImpulse(double x, double y, double power = 1.0) {
     if (this->toy != nullptr) {
         double da = this->toy->getAngle() - this->getAngle();
         double dx = atan2(-sin(da), cos(da));
-        if (dx > 0.1) {
-            if (dx < M_PI * 0.75 && dx > -M_PI * 0.75) {
-                x = power * -sin(this->toy->getAngle() - M_PI_2);
-                y = power * cos(this->toy->getAngle() - M_PI_2);
-            } else {
-                x = power * -sin(this->toy->getAngle() + M_PI_2);
-                y = power * cos(this->toy->getAngle() + M_PI_2);
-            }
+        if (dx < M_PI * 0.75 && dx > -M_PI * 0.75) {
+            x = power * -sin(this->toy->getAngle() - M_PI_2);
+            y = power * cos(this->toy->getAngle() - M_PI_2);
+        } else {
+            x = power * -sin(this->toy->getAngle() + M_PI_2);
+            y = power * cos(this->toy->getAngle() + M_PI_2);
         }
         x *= this->toy->getSpeed();
         y *= this->toy->getSpeed();
