@@ -113,7 +113,7 @@ TiledTxtMapLoader::TiledTxtMapLoader(const std::string &fileName) {
                         i++;
                         break;
                     case 5:
-                        sshape = new SimpleShape(this->map, atoi(blockRow.at(i).c_str()));
+                        sshape = new SimpleShape(this->map, atoi(blockRow.at(i).c_str()) % 8, atoi(blockRow.at(i).c_str()) / 8);
                         i++;
                         break;
                     case 6:

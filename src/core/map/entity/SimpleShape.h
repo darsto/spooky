@@ -43,11 +43,13 @@ public:
      * 2  :  0.5     0.75
      * 3  :  1.0     0.25
      */
-    SimpleShape(Map *map, unsigned int shapeId) : EntityMoving(map, shapeDefs.at(shapeId)->width, shapeDefs.at(shapeId)->height) {
+    SimpleShape(Map *map, unsigned int shapeId, unsigned int variation) : EntityMoving(map, shapeDefs.at(shapeId)->width, shapeDefs.at(shapeId)->height) {
         this->body->CreateFixture(shapeDefs.at(shapeId)->fixtureDef);
         this->texPos = shapeId;
-        this->variation = rand() % 8;
+        this->variation = variation;
     }
+
+    SimpleShape(Map *map, unsigned int shapeId) : SimpleShape(map, shapeId, rand() % 8) { }
 
     SimpleShape(Map *map, unsigned int shapeId, double width, double height) : EntityMoving(map, width, height) {
         b2FixtureDef *fixtureDef = new b2FixtureDef();
