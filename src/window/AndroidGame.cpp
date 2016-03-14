@@ -37,9 +37,6 @@ Game::Game(const std::function<bool(Window *window)> &switchWindow) : Window(swi
             if (possessButton->canBeClicked(p)) {
                 if (this->core->getPlayer()->getToy() == nullptr) {
                     this->core->getPlayer()->setToy();
-                    if (this->tutorialDialogueNum == 8) {
-                        this->proceedTutorialDialogue();
-                    }
                 } else {
                     this->core->getPlayer()->eject();
                 }
@@ -102,6 +99,8 @@ void Game::tick(double deltaTime) {
 
     possessButton->setVisible((this->core->getPlayer()->getToyToMerge() != nullptr || this->core->getPlayer()->getToy() != nullptr) && this->tutorialDialogueNum >= 7);
     if (this->tutorialDialogueNum == 7 && this->core->getPlayer()->getToyToMerge() != nullptr) {
+        this->proceedTutorialDialogue();
+    } else if (this->tutorialDialogueNum == 8 && this->core->getPlayer()->getToy() != nullptr) {
         this->proceedTutorialDialogue();
     }
 
@@ -278,7 +277,7 @@ void Game::tick(double deltaTime) {
                             this->popup[1]->setHeight(80);
                             this->popup[1]->reinit(this->windowWidth, this->windowHeight);
                             ((GuiText *) this->popup[2])->updateString("Oh no! A glass\nhas shattered!");
-                            tutorialDialogueAlpha = -2.5f;
+                            tutorialDialogueAlpha = -1.0f;
                             tutorialDialogueDuration = 3.0f;
                             tutorialProceeding = true;
                             break;
@@ -287,7 +286,7 @@ void Game::tick(double deltaTime) {
                             this->popup[1]->setWidth(435);
                             this->popup[1]->setHeight(80);
                             this->popup[1]->reinit(this->windowWidth, this->windowHeight);
-                            ((GuiText *) this->popup[2])->updateString("You have to clean it up\nbefore anyone gets hurt!");
+                            ((GuiText *) this->popup[2])->updateString("You have to clean it up\nbefore someone gets hurt!");
                             tutorialDialogueAlpha = -0.2f;
                             tutorialDialogueDuration = 4.5f;
                             tutorialProceeding = true;
@@ -320,8 +319,8 @@ void Game::tick(double deltaTime) {
         this->core->setBlockSize(this->core->getDefaultBlockSize() * blockScale);
     } else if (this->tutorialDialogueNum == 12 || this->tutorialDialogueNum == 13) {
         pos = 1;
-        if (this->tutorialDialogueNum == 12 && this->tutorialDialogueAlpha >= -2.5f) {
-            double blockScale = std::min(1.25f, 1.75f + this->tutorialDialogueAlpha * 0.3f);
+        if (this->tutorialDialogueNum == 12 && this->tutorialDialogueAlpha >= -1.0f) {
+            double blockScale = std::min(1.25f, 1.25f + this->tutorialDialogueAlpha * 0.25f);
             this->core->setBlockSize(this->core->getDefaultBlockSize() * blockScale);
         } else if (this->tutorialDialogueNum == 13 && this->tutorialDialogueAlpha >= this->tutorialDialogueDuration) {
             double blockScale = 1.0f + 0.25f * std::max(0.0f, this->tutorialDialogueDuration + 1.0f - this->tutorialDialogueAlpha);
