@@ -99,9 +99,9 @@ void Game::tick(double deltaTime) {
 
     possessButton->setVisible((this->core->getPlayer()->getToyToMerge() != nullptr || this->core->getPlayer()->getToy() != nullptr) && this->tutorialDialogueNum >= 7);
     if (this->tutorialDialogueNum == 7 && this->core->getPlayer()->getToyToMerge() != nullptr) {
-        this->proceedTutorialDialogue();
+        this->proceedTutorialDialogue(1.0f);
     } else if (this->tutorialDialogueNum == 8 && this->core->getPlayer()->getToy() != nullptr) {
-        this->proceedTutorialDialogue();
+        this->proceedTutorialDialogue(1.0f);
     }
 
     if (controller->isVisible()) {
@@ -283,7 +283,7 @@ void Game::tick(double deltaTime) {
                             break;
                         }
                         case 13: {
-                            this->popup[1]->setWidth(435);
+                            this->popup[1]->setWidth(445);
                             this->popup[1]->setHeight(80);
                             this->popup[1]->reinit(this->windowWidth, this->windowHeight);
                             ((GuiText *) this->popup[2])->updateString("You have to clean it up\nbefore someone gets hurt!");
@@ -346,7 +346,7 @@ void Game::tick(double deltaTime) {
     if (abs(dy) > 0.00001) this->core->setCamY(-this->core->getCamY() + (dy) * 0.05);
 
     if (this->tutorialDialogueNum == 6 && this->core->getPlayer()->getX() >= 27 && this->core->getPlayer()->getX() <= 29 && this->core->getPlayer()->getY() >= 10 && this->core->getPlayer()->getY() <= 15) {
-        this->proceedTutorialDialogue();
+        this->proceedTutorialDialogue(1.0f);
     }
 
     double camX = this->core->getCamX(), camY = this->core->getCamY();
@@ -412,7 +412,7 @@ void Game::handleClick(const TouchPoint *const p) {
                 y = sin(angle) * controller->getHeight() / 2;
             }
             joystick->setX(controller->getX() + x), joystick->setY(controller->getY() + y);
-            if (this->tutorialDialogueNum == 5) this->proceedTutorialDialogue();
+            if (this->tutorialDialogueNum == 5) this->proceedTutorialDialogue(1.0f);
         }
     }
 }

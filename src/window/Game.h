@@ -71,12 +71,11 @@ private:
 
     unsigned int windowWidth, windowHeight;
 
-    void proceedTutorialDialogue() {
+    void proceedTutorialDialogue(double currentDialogueAlpha = 999.9f) {
         this->tutorialProceeding = true;
-        if (this->tutorialDialogueAlpha < this->tutorialDialogueDuration - 0.1) {
-            this->tutorialDialogueAlpha = this->tutorialDialogueDuration - 0.1;
+        if (this->tutorialDialogueAlpha < this->tutorialDialogueDuration - currentDialogueAlpha) {
+            this->tutorialDialogueAlpha = this->tutorialDialogueDuration - currentDialogueAlpha;
         }
-    }
-};
+    }};
 
 #endif //C003_GAME_H
