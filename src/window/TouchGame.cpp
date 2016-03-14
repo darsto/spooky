@@ -283,7 +283,7 @@ void Game::tick(double deltaTime) {
                             break;
                         }
                         case 13: {
-                            this->popup[1]->setWidth(445);
+                            this->popup[1]->setWidth(450);
                             this->popup[1]->setHeight(80);
                             this->popup[1]->reinit(this->windowWidth, this->windowHeight);
                             ((GuiText *) this->popup[2])->updateString("You have to clean it up\nbefore someone gets hurt!");
@@ -327,17 +327,23 @@ void Game::tick(double deltaTime) {
             this->core->setBlockSize(this->core->getDefaultBlockSize() * blockScale);
             pos = 0;
         }
+    } else if (this->tutorialDialogueNum == 14) {
+        pos = 2;
     } else {
         this->core->setBlockSize(this->core->getDefaultBlockSize());
     }
     switch (pos) {
-        default:
-            px = this->core->getPlayer()->getX() + this->core->getPlayer()->getWidth() / 2;
-            py = this->core->getPlayer()->getY() + this->core->getPlayer()->getHeight() / 2;
-            break;
         case 1:
             px = 29.5;
             py = 17.5;
+            break;
+        case 2:
+            px = 23.8;
+            py = 6.86;
+            break;
+        default:
+            px = this->core->getPlayer()->getX() + this->core->getPlayer()->getWidth() / 2;
+            py = this->core->getPlayer()->getY() + this->core->getPlayer()->getHeight() / 2;
             break;
     }
     double dx = (px - 1 + this->core->getCamX());
