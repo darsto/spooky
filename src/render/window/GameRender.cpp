@@ -118,7 +118,7 @@ void GameRender::render(Window *window, RenderContext *const renderContext) {
     fbo.getShaderProgram()->setUniform("scale", (float) (core->getBlockSize() * core->getGeneralScale()));
     fbo.render(0);
 
-#ifndef EDITOR
+#if !defined(EDITOR) && !defined(DEBUG)
     float voidAlpha = 1.0f;
     if (game->getCore()->getMap()->getWorldTime() > 21.25f) {
         voidAlpha = std::max(0.0f, 22.25f - (float)game->getCore()->getMap()->getWorldTime());

@@ -75,6 +75,9 @@ Game::Game(const std::function<bool(Window *window)> &switchWindow) : Window(swi
 
     GuiText *t = new GuiText(string("Dev Build: ") + __DATE__ + " " + __TIME__, 15, 15, GUI_BOTTOM_LEFT, 32, 0xFFFFFFFF, 0);
     this->guiElements.push_back(t);
+#if defined(DEBUG)
+    this->tutorialDialogueNum = 99;
+#endif
 }
 
 void Game::reload(unsigned int windowWidth, unsigned int windowHeight) {
@@ -228,7 +231,7 @@ void Game::tick(double deltaTime) {
                             this->popup[1]->setWidth(395);
                             this->popup[1]->setHeight(80);
                             this->popup[1]->reinit(this->windowWidth, this->windowHeight);
-                            ((GuiText *) this->popup[2])->updateString("Now, have you seen any\ntoys? Go and find one!");
+                            ((GuiText *) this->popup[2])->updateString("Now, do you see that\ncar? Go and fly over it!");
                             tutorialDialogueAlpha = -0.2f;
                             tutorialDialogueDuration = 999.9f;
                             break;
