@@ -76,7 +76,7 @@ Game::Game(const std::function<bool(Window *window)> &switchWindow) : Window(swi
     GuiText *t = new GuiText(string("Dev Build: ") + __DATE__ + " " + __TIME__, 15, 15, GUI_BOTTOM_LEFT, 32, 0xFFFFFFFF, 0);
     this->guiElements.push_back(t);
 #if defined(DEBUG)
-    this->tutorialDialogueNum = 99;
+    this->tutorialDialogueNum = 18;
 #endif
 }
 
@@ -105,16 +105,6 @@ void Game::tick(double deltaTime) {
         this->proceedTutorialDialogue(1.0f);
     } else if (this->tutorialDialogueNum == 8 && this->core->getPlayer()->getToy() != nullptr) {
         this->proceedTutorialDialogue(1.0f);
-    }
-
-    if (controller->isVisible()) {
-        double playerSpeed = this->core->getPlayer()->getSpeed();
-        double x = (joystick->getX() - controller->getX()) / 100.0f * playerSpeed;
-        double y = (joystick->getY() - controller->getY()) / 100.0f * playerSpeed;
-        double power = std::sqrt(x * x + y * y);
-        double angle = atan2(y, x);
-        this->core->getPlayer()->applyImpulse(x, y, power);
-        this->core->getPlayer()->setAngle(angle, power);
     }
 
     tutorialGhostMovement += deltaTime * 0.95;
@@ -304,13 +294,31 @@ void Game::tick(double deltaTime) {
                             break;
                         }
                         case 14: {
-                            this->popup[1]->setWidth(425);
+                            this->popup[1]->setWidth(415);
                             this->popup[1]->setHeight(115);
                             this->popup[1]->reinit(this->windowWidth, this->windowHeight);
                             ((GuiText *) this->popup[2])->updateString("There is a hoover toy\non the other side of the\nhouse. Go take it.");
                             tutorialDialogueAlpha = -0.2f;
                             tutorialDialogueDuration = 4.5f;
+                            break;
+                        }
+                        case 15: {
+                            this->popup[1]->setWidth(410);
+                            this->popup[1]->setHeight(180);
+                            this->popup[1]->reinit(this->windowWidth, this->windowHeight);
+                            ((GuiText *) this->popup[2])->updateString("Oh no! Not only the\ntoy is too light to open\nthe doors, but also\nthese doors open only\nfrom the other side!\n");
+                            tutorialDialogueAlpha = -0.2f;
+                            tutorialDialogueDuration = 9.5f;
                             tutorialProceeding = true;
+                            break;
+                        }
+                        case 16: {
+                            this->popup[1]->setWidth(400);
+                            this->popup[1]->setHeight(115);
+                            this->popup[1]->reinit(this->windowWidth, this->windowHeight);
+                            ((GuiText *) this->popup[2])->updateString("You can probably use\nthis bulldozer to open\nthe doors.");
+                            tutorialDialogueAlpha = -0.2f;
+                            tutorialDialogueDuration = 4.5f;
                             break;
                         }
                         default:
@@ -321,7 +329,7 @@ void Game::tick(double deltaTime) {
         }
     }
 
-    double px, py;
+    double px = 0, py = 0;
     char pos = 0;
     if (this->tutorialDialogueNum < 5) {
         this->core->setBlockSize(this->core->getDefaultBlockSize() * 1.5);
@@ -338,8 +346,10 @@ void Game::tick(double deltaTime) {
             this->core->setBlockSize(this->core->getDefaultBlockSize() * blockScale);
             pos = 0;
         }
-    } else if (this->tutorialDialogueNum == 14) {
+    } else if (this->tutorialDialogueNum == 14 && this->tutorialDialogueAlpha < this->tutorialDialogueDuration + 1.0f) {
         pos = 2;
+    } else if (this->tutorialDialogueNum == 16 && this->tutorialDialogueAlpha < this->tutorialDialogueDuration + 1.0f) {
+        pos = 3;
     } else {
         this->core->setBlockSize(this->core->getDefaultBlockSize());
     }
@@ -349,8 +359,20 @@ void Game::tick(double deltaTime) {
             py = 17.5;
             break;
         case 2:
-            px = 23.8;
-            py = 6.86;
+            for (Entity *e : this->core->getMap()->getEntities()) {
+                if (EntityHoover *h = dynamic_cast<EntityHoover *>(e)) {
+                    px = h->getX() + h->getWidth() / 2;
+                    py = h->getY() + h->getHeight() / 2;
+                }
+            }
+            break;
+        case 3:
+            for (Entity *e : this->core->getMap()->getEntities()) {
+                if (EntityBulldozer *b = dynamic_cast<EntityBulldozer *>(e)) {
+                    px = b->getX() + b->getWidth() / 2;
+                    py = b->getY() + b->getHeight() / 2;
+                }
+            }
             break;
         default:
             px = this->core->getPlayer()->getX() + this->core->getPlayer()->getWidth() / 2;
@@ -362,8 +384,22 @@ void Game::tick(double deltaTime) {
     if (abs(dx) > 0.00001) this->core->setCamX(-this->core->getCamX() + (dx) * 0.05);
     if (abs(dy) > 0.00001) this->core->setCamY(-this->core->getCamY() + (dy) * 0.05);
 
+    if (controller->isVisible() && pos == 0) {
+        double playerSpeed = this->core->getPlayer()->getSpeed();
+        double x = (joystick->getX() - controller->getX()) / 100.0f * playerSpeed;
+        double y = (joystick->getY() - controller->getY()) / 100.0f * playerSpeed;
+        double power = std::sqrt(x * x + y * y);
+        double angle = atan2(y, x);
+        this->core->getPlayer()->applyImpulse(x, y, power);
+        this->core->getPlayer()->setAngle(angle, power);
+    }
+
     if (this->tutorialDialogueNum == 6 && this->core->getPlayer()->getX() >= 27 && this->core->getPlayer()->getX() <= 29 && this->core->getPlayer()->getY() >= 10 && this->core->getPlayer()->getY() <= 15) {
         this->proceedTutorialDialogue(1.0f);
+    } else if (this->tutorialDialogueNum == 14 && (int)this->core->getPlayer()->getX() == 10 && (int)this->core->getPlayer()->getY() == 9) {
+        if (EntityHoover *h = dynamic_cast<EntityHoover *>(this->core->getPlayer()->getToy())) {
+            this->proceedTutorialDialogue(1.0f);
+        }
     }
 
     double camX = this->core->getCamX(), camY = this->core->getCamY();
@@ -400,10 +436,7 @@ void Game::handleClick(const TouchPoint *const p) {
 
     if (!clicked) {
         if (p->state == 0) {
-            if (this->tutorialDialogueNum >= 5 &&
-                this->tutorialDialogueNum != 12 &&
-                this->tutorialDialogueNum != 13 &&
-                !controller->isVisible()) {
+            if (this->tutorialDialogueNum >= 5 && !controller->isVisible()) {
                 controller->setVisible(true), joystick->setVisible(true);
                 controller->setX(p->x - controller->getWidth() / 2);
                 controller->setY(p->y - controller->getHeight() / 2);
@@ -416,10 +449,7 @@ void Game::handleClick(const TouchPoint *const p) {
         }
     }
 
-    if (this->tutorialDialogueNum >= 5 &&
-        this->tutorialDialogueNum != 12 &&
-        this->tutorialDialogueNum != 13 &&
-        p->state == 2) {
+    if (this->tutorialDialogueNum >= 5 && p->state == 2) {
         if (controller->isVisible() && controller->getTouchedBy() == p->id) {
             double x = p->x - controller->getX() - controller->getWidth() / 2;
             double y = p->y - controller->getY() - controller->getHeight() / 2;
