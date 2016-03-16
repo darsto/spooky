@@ -28,9 +28,9 @@ public:
 class EntityBulldozer : public EntityToy {
 
 public:
-    EntityBulldozer(Map *map) : EntityToy(map, 0.95, 0.7) {
+    EntityBulldozer(Map *map) : EntityToy(map, 0.95, 0.64) {
         b2PolygonShape shape;
-        shape.SetAsBox(0.47, 0.35);
+        shape.SetAsBox(0.47, 0.32);
         b2FixtureDef fixDef;
         fixDef.shape = &shape;
         fixDef.density = 3.0f;
@@ -39,7 +39,7 @@ public:
     }
 
     double getSpeed() override {
-        return 0.5;
+        return 0.6;
     }
 };
 
@@ -51,7 +51,7 @@ public:
         shape.m_radius = this->height / 2;
         b2FixtureDef fixDef;
         fixDef.shape = &shape;
-        fixDef.density = 0.15f;
+        fixDef.density = 0.10f;
         fixDef.friction = 0.01f;
         this->body->CreateFixture(&fixDef);
     }

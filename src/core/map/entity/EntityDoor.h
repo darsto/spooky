@@ -6,6 +6,7 @@
 #define C003_ENTITYDOOR_H
 
 #include "EntityMoving.h"
+#include "EntityMachinery.h"
 #include <core/map/Map.h>
 
 class EntityDoor : public EntityMoving {
@@ -24,7 +25,14 @@ public:
     double getHingeY();
 
     virtual void onCollision(IPositionable *object, char state) override {
-        Entity::onCollision(object, state);
+        if (EntityToy *b = dynamic_cast<EntityToy *>(object)) {
+            if (EntityBulldozer *b = dynamic_cast<EntityBulldozer *>(object)) {
+                this->bodyType = b2_dynamicBody;
+            } else {
+                this->bodyType = b2_staticBody;
+            }
+            Entity::onCollision(object, state);
+        }
     }
 
     virtual ~EntityDoor() override {
