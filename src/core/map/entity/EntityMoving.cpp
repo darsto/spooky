@@ -6,6 +6,7 @@
 #include "core/map/Map.h"
 
 EntityMoving::EntityMoving(Map *map, double width, double height) : Entity(map, width, height) {
+    this->bodyType = b2_dynamicBody;
     body->SetType(b2_dynamicBody);
 }
 
@@ -15,6 +16,9 @@ double EntityMoving::getSpeed() {
 
 void EntityMoving::update() {
     Entity::update();
+    if (this->bodyType != this->body->GetType()) {
+        this->body->SetType(this->bodyType);
+    }
 }
 
 void EntityMoving::applyForce(double x, double y) {

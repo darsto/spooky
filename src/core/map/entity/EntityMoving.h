@@ -15,6 +15,8 @@ class EntityMoving : public Entity {
 public:
     EntityMoving(Map *map, double width, double height);
 
+    virtual void update() override;
+
     virtual void applyImpulse(double x, double y, double power = 1.0);
 
     virtual void applyForce(double x, double y);
@@ -22,9 +24,9 @@ public:
     virtual ~EntityMoving() { }
 
 protected:
+    b2BodyType bodyType;
+
     virtual double getSpeed();
-public:
-    virtual void update() override;
 };
 
 #endif //C003_ENTITYMOVING_H
