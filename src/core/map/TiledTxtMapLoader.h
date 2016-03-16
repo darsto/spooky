@@ -110,7 +110,8 @@ TiledTxtMapLoader::TiledTxtMapLoader(const std::string &fileName) {
                         break;
                     case 4:
                         sshape = new EntityDoor(this->map, atoi(blockRow.at(i).c_str()));
-                        i++;
+                        ((EntityDoor *) sshape)->setHingePos(atof(blockRow.at(i + 1).c_str()), atof(blockRow.at(i + 2).c_str()));
+                        i += 3;
                         break;
                     case 5:
                         sshape = new SimpleShape(this->map, atoi(blockRow.at(i).c_str()) % 8, atoi(blockRow.at(i).c_str()) / 8);

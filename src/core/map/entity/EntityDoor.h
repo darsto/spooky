@@ -17,6 +17,12 @@ public:
 
     virtual void setX(double x);
 
+    void setHingePos(double x, double y);
+
+    double getHingeX();
+
+    double getHingeY();
+
     virtual void onCollision(IPositionable *object, char state) override {
         Entity::onCollision(object, state);
     }

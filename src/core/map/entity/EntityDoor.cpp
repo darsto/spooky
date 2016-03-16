@@ -37,10 +37,20 @@ EntityDoor::EntityDoor(Map *map, unsigned char type) : EntityMoving(map, 1.0, 0.
 
 void EntityDoor::setX(double x) {
     Entity::setX(x);
-    this->hinge->SetTransform(b2Vec2((float32) (x - this->width * 0.5 + this->getHingeOffsetX()), this->hinge->GetPosition().y), this->hinge->GetAngle());
 }
 
 void EntityDoor::setY(double y) {
     Entity::setY(y);
-    this->hinge->SetTransform(b2Vec2(this->hinge->GetPosition().x, (float32) (y - this->height * 0.5 + this->getHingeOffsetY())), this->hinge->GetAngle());
+}
+
+double EntityDoor::getHingeX() {
+    return this->hinge->GetPosition().x;
+}
+
+double EntityDoor::getHingeY() {
+    return this->hinge->GetPosition().y;
+}
+
+void EntityDoor::setHingePos(double x, double y) {
+    this->hinge->SetTransform(b2Vec2((float32) x, (float32) y), this->hinge->GetAngle());
 }
