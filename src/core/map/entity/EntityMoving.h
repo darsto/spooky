@@ -21,6 +21,10 @@ public:
 
     virtual void applyForce(double x, double y);
 
+    void setBodyType(b2BodyType bodyType) {
+        EntityMoving::bodyType = bodyType;
+    }
+
     virtual ~EntityMoving() { }
 
 protected:
