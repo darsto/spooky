@@ -76,7 +76,7 @@ Game::Game(const std::function<bool(Window *window)> &switchWindow) : Window(swi
     GuiText *t = new GuiText(string("Dev Build: ") + __DATE__ + " " + __TIME__, 15, 15, GUI_BOTTOM_LEFT, 32, 0xFFFFFFFF, 0);
     this->guiElements.push_back(t);
 #if defined(DEBUG)
-    this->tutorialDialogueNum = 18;
+    this->tutorialDialogueNum = 19;
 #endif
 }
 
@@ -241,7 +241,7 @@ void Game::tick(double deltaTime) {
                             this->popup[1]->reinit(this->windowWidth, this->windowHeight);
                             ((GuiText *) this->popup[2])->updateString("Now you're inside a toy!");
                             tutorialDialogueAlpha = -0.2f;
-                            tutorialDialogueDuration = 2.35f;
+                            tutorialDialogueDuration = 3.05f;
                             tutorialProceeding = true;
                             break;
                         }
@@ -270,6 +270,7 @@ void Game::tick(double deltaTime) {
                             this->popup[1]->setHeight(80);
                             this->popup[1]->reinit(this->windowWidth, this->windowHeight);
                             ((GuiText *) this->popup[2])->updateString("Oh no! A glass\nhas shattered!");
+                            this->popup[0]->setTexPos(0, 19);
                             tutorialDialogueAlpha = -1.0f;
                             tutorialDialogueDuration = 3.0f;
                             tutorialProceeding = true;
@@ -288,6 +289,7 @@ void Game::tick(double deltaTime) {
                             this->popup[1]->setHeight(80);
                             this->popup[1]->reinit(this->windowWidth, this->windowHeight);
                             ((GuiText *) this->popup[2])->updateString("You have to clean it up\nbefore someone gets hurt!");
+                            this->popup[0]->setTexPos(0, 25);
                             tutorialDialogueAlpha = -0.2f;
                             tutorialDialogueDuration = 4.5f;
                             tutorialProceeding = true;
@@ -298,27 +300,98 @@ void Game::tick(double deltaTime) {
                             this->popup[1]->setHeight(115);
                             this->popup[1]->reinit(this->windowWidth, this->windowHeight);
                             ((GuiText *) this->popup[2])->updateString("There is a hoover toy\non the other side of the\nhouse. Go take it.");
+                            this->popup[0]->setTexPos(0, 17);
                             tutorialDialogueAlpha = -0.2f;
-                            tutorialDialogueDuration = 4.5f;
+                            tutorialDialogueDuration = 5.5f;
                             break;
                         }
                         case 15: {
-                            this->popup[1]->setWidth(410);
+                            this->popup[1]->setWidth(365);
+                            this->popup[1]->setHeight(145);
+                            this->popup[1]->reinit(this->windowWidth, this->windowHeight);
+                            ((GuiText *) this->popup[2])->updateString("You can't open the\ndoor with this toy.\nIt's too light.\nTry to fly through.");
+                            tutorialDialogueAlpha = -0.6f;
+                            tutorialDialogueDuration = 6.5f;
+                            break;
+                        }
+                        case 16: {
+                            this->popup[1]->setWidth(435);
                             this->popup[1]->setHeight(180);
                             this->popup[1]->reinit(this->windowWidth, this->windowHeight);
-                            ((GuiText *) this->popup[2])->updateString("Oh no! Not only the\ntoy is too light to open\nthe doors, but also\nthese doors open only\nfrom the other side!\n");
+                            ((GuiText *) this->popup[2])->updateString("It seems like not only the\ntoy is too light to open\nthe door, but also\nthat door open only\nfrom the other side!\n");
+                            this->popup[0]->setTexPos(0, 25);
                             tutorialDialogueAlpha = -0.2f;
                             tutorialDialogueDuration = 9.5f;
                             tutorialProceeding = true;
                             break;
                         }
-                        case 16: {
+                        case 17: {
                             this->popup[1]->setWidth(400);
                             this->popup[1]->setHeight(115);
                             this->popup[1]->reinit(this->windowWidth, this->windowHeight);
-                            ((GuiText *) this->popup[2])->updateString("You can probably use\nthis bulldozer to open\nthe doors.");
+                            ((GuiText *) this->popup[2])->updateString("You can probably use\nthis bulldozer to open\nthe door.");
+                            this->popup[0]->setTexPos(0, 17);
                             tutorialDialogueAlpha = -0.2f;
                             tutorialDialogueDuration = 4.5f;
+                            break;
+                        }
+                        case 18: {
+                            this->popup[1]->setWidth(340);
+                            this->popup[1]->setHeight(115);
+                            this->popup[1]->reinit(this->windowWidth, this->windowHeight);
+                            ((GuiText *) this->popup[2])->updateString("The door is locked!\nLet me think for\na second.");
+                            this->popup[0]->setTexPos(0, 19);
+                            tutorialDialogueAlpha = -0.7f;
+                            tutorialDialogueDuration = 5.2f;
+                            tutorialProceeding = true;
+                            EntityFather *f = new EntityFather(this->core->getMap());
+                            f->setX(6.5);
+                            f->setY(23);
+                            f->setAngle(-M_PI_2);
+                            this->core->getMap()->addEntity(f);
+                            break;
+                        }
+                        case 19: {
+                            this->popup[1]->setWidth(0);
+                            this->popup[1]->setHeight(0);
+                            this->popup[1]->reinit(this->windowWidth, this->windowHeight);
+                            ((GuiText *) this->popup[2])->updateString("");
+                            this->popup[0]->setTexPos(0, 25);
+                            tutorialDialogueAlpha = -0.2f;
+                            tutorialDialogueDuration = 2.0f;
+                            tutorialProceeding = true;
+                            break;
+                        }
+                        case 20: {
+                            this->popup[1]->setWidth(450);
+                            this->popup[1]->setHeight(115);
+                            this->popup[1]->reinit(this->windowWidth, this->windowHeight);
+                            ((GuiText *) this->popup[2])->updateString("Hey, watch out! The parent\nhas just stepped in\nthe house!");
+                            this->popup[0]->setTexPos(0, 19);
+                            tutorialDialogueAlpha = -0.2f;
+                            tutorialDialogueDuration = 5.0f;
+                            tutorialProceeding = true;
+                            break;
+                        }
+                        case 21: {
+                            this->popup[1]->setWidth(470);
+                            this->popup[1]->setHeight(115);
+                            this->popup[1]->reinit(this->windowWidth, this->windowHeight);
+                            ((GuiText *) this->popup[2])->updateString("You can't let him see you!\nParents cannot understand\nthe presence of ghosts.");
+                            this->popup[0]->setTexPos(0, 19);
+                            tutorialDialogueAlpha = -0.2f;
+                            tutorialDialogueDuration = 5.5f;
+                            tutorialProceeding = true;
+                            break;
+                        }
+                        case 22: {
+                            this->popup[1]->setWidth(415);
+                            this->popup[1]->setHeight(140);
+                            this->popup[1]->reinit(this->windowWidth, this->windowHeight);
+                            ((GuiText *) this->popup[2])->updateString("Actually, he may open\nthe doors for us.\nWe only need to attract\nhis attention.");
+                            this->popup[0]->setTexPos(0, 17);
+                            tutorialDialogueAlpha = -0.2f;
+                            tutorialDialogueDuration = 5.5f;
                             break;
                         }
                         default:
@@ -348,7 +421,7 @@ void Game::tick(double deltaTime) {
         }
     } else if (this->tutorialDialogueNum == 14 && this->tutorialDialogueAlpha < this->tutorialDialogueDuration + 1.0f) {
         pos = 2;
-    } else if (this->tutorialDialogueNum == 16 && this->tutorialDialogueAlpha < this->tutorialDialogueDuration + 1.0f) {
+    } else if (this->tutorialDialogueNum == 17 && this->tutorialDialogueAlpha < this->tutorialDialogueDuration + 1.0f) {
         pos = 3;
     } else {
         this->core->setBlockSize(this->core->getDefaultBlockSize());
@@ -396,8 +469,17 @@ void Game::tick(double deltaTime) {
 
     if (this->tutorialDialogueNum == 6 && this->core->getPlayer()->getX() >= 27 && this->core->getPlayer()->getX() <= 29 && this->core->getPlayer()->getY() >= 10 && this->core->getPlayer()->getY() <= 15) {
         this->proceedTutorialDialogue(1.0f);
-    } else if (this->tutorialDialogueNum == 14 && (int)this->core->getPlayer()->getX() == 10 && (int)this->core->getPlayer()->getY() == 9) {
+    } else if (this->tutorialDialogueNum == 14 && (int)this->core->getPlayer()->getX() == 10 && this->core->getPlayer()->getY() >= 10.0 && this->core->getPlayer()->getY() <= 10.35) {
+        if (this->core->getPlayer()->getToy() != nullptr) {
+            this->proceedTutorialDialogue(1.0f);
+        }
+    } else if ((this->tutorialDialogueNum == 14 || this->tutorialDialogueNum == 15) && (int)this->core->getPlayer()->getX() == 10 && (int)this->core->getPlayer()->getY() == 9) {
         if (EntityHoover *h = dynamic_cast<EntityHoover *>(this->core->getPlayer()->getToy())) {
+            if (this->tutorialDialogueNum == 14) this->tutorialDialogueNum++; this->tutorialDialogueAlpha = 999.0f;
+            this->proceedTutorialDialogue(1.0f);
+        }
+    } else if (this->tutorialDialogueNum == 17 && (int)this->core->getPlayer()->getX() == 10 && this->core->getPlayer()->getY() >= 10.0 && this->core->getPlayer()->getY() <= 10.35) {
+        if (EntityBulldozer *b = dynamic_cast<EntityBulldozer *>(this->core->getPlayer()->getToy())) {
             this->proceedTutorialDialogue(1.0f);
         }
     }
