@@ -34,7 +34,7 @@ void GameRender::render(Window *window, RenderContext *const renderContext) {
 
     double camX = core->getCamX() * (core->getBlockSize() * core->getGeneralScale());
     double camY = core->getCamY() * (core->getBlockSize() * core->getGeneralScale());
-    
+
     fbo.bind();
     glClearColor(0.9, 0.9, 0.9, 0.0);
     glClear(GL_COLOR_BUFFER_BIT);
@@ -76,40 +76,21 @@ void GameRender::render(Window *window, RenderContext *const renderContext) {
 
 #ifndef EDITOR
     //TODO
-    this->voidRender->render(9, 3, 5, 6, projectionMatrix, glm::translate(viewMatrix, glm::vec3(
-        -(signed) windowWidth / 2.0f - camX,
-        (signed) windowHeight / 2.0f - camY,
-        0.0f)), core->getBlockSize() * core->getGeneralScale());
+    static int grayout[][4] = {{20, 3, 4, 6},
+                               {21, 9, 1, 1},
+                               {25, 3, 5, 3},
+                               {30, 3, 1, 1},
+                               {31, 3, 4, 3},
+                               {35, 4, 1, 1},
+                               {34, 6, 1, 1},
+                               {31, 7, 7, 11}};
 
-    this->voidRender->render(15, 3, 4, 6, projectionMatrix, glm::translate(viewMatrix, glm::vec3(
-        -(signed) windowWidth / 2.0f - camX,
-        (signed) windowHeight / 2.0f - camY,
-        0.0f)), core->getBlockSize() * core->getGeneralScale());
-
-    this->voidRender->render(25, 3, 5, 3, projectionMatrix, glm::translate(viewMatrix, glm::vec3(
-        -(signed) windowWidth / 2.0f - camX,
-        (signed) windowHeight / 2.0f - camY,
-        0.0f)), core->getBlockSize() * core->getGeneralScale());
-
-    this->voidRender->render(30, 3, 1, 1, projectionMatrix, glm::translate(viewMatrix, glm::vec3(
-        -(signed) windowWidth / 2.0f - camX,
-        (signed) windowHeight / 2.0f - camY,
-        0.0f)), core->getBlockSize() * core->getGeneralScale());
-
-    this->voidRender->render(31, 3, 4, 3, projectionMatrix, glm::translate(viewMatrix, glm::vec3(
-        -(signed) windowWidth / 2.0f - camX,
-        (signed) windowHeight / 2.0f - camY,
-        0.0f)), core->getBlockSize() * core->getGeneralScale());
-
-    this->voidRender->render(35, 4, 1, 1, projectionMatrix, glm::translate(viewMatrix, glm::vec3(
-        -(signed) windowWidth / 2.0f - camX,
-        (signed) windowHeight / 2.0f - camY,
-        0.0f)), core->getBlockSize() * core->getGeneralScale());
-
-    this->voidRender->render(34, 6, 1, 1, projectionMatrix, glm::translate(viewMatrix, glm::vec3(
-        -(signed) windowWidth / 2.0f - camX,
-        (signed) windowHeight / 2.0f - camY,
-        0.0f)), core->getBlockSize() * core->getGeneralScale());
+    for (int i = 0; i < 8; i++) {
+        this->voidRender->render(grayout[i][0], grayout[i][1], grayout[i][2], grayout[i][3], projectionMatrix, glm::translate(viewMatrix, glm::vec3(
+            -(signed) windowWidth / 2.0f - camX,
+            (signed) windowHeight / 2.0f - camY,
+            0.0f)), core->getBlockSize() * core->getGeneralScale());
+    }
 #endif //EDITOR
 
     fbo.unbind();
@@ -121,7 +102,7 @@ void GameRender::render(Window *window, RenderContext *const renderContext) {
 #if !defined(EDITOR) && !defined(DEBUG)
     float voidAlpha = 1.0f;
     if (game->getCore()->getMap()->getWorldTime() > 21.25f) {
-        voidAlpha = std::max(0.0f, 22.25f - (float)game->getCore()->getMap()->getWorldTime());
+        voidAlpha = std::max(0.0f, 22.25f - (float) game->getCore()->getMap()->getWorldTime());
     }
 
     this->voidRender->render(0, 0, windowWidth + 1, windowHeight + 1, projectionMatrix, glm::translate(viewMatrix, glm::vec3(
