@@ -33,6 +33,7 @@ EntityDoor::EntityDoor(Map *map, unsigned char type) : EntityMoving(map, 1.0, 0.
     revoluteJointDef.bodyA = this->body;
     revoluteJointDef.bodyB = this->hinge;
     this->map->getWorld()->CreateJoint(&revoluteJointDef);
+    this->setLocked(true);
 }
 
 void EntityDoor::setX(double x) {

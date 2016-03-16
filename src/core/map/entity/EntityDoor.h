@@ -25,7 +25,7 @@ public:
     double getHingeY();
 
     virtual void onCollision(IPositionable *object, char state) override {
-        if (EntityToy *b = dynamic_cast<EntityToy *>(object)) {
+        if (!this->isLocked()) if (EntityToy *b = dynamic_cast<EntityToy *>(object)) {
             if (EntityBulldozer *b = dynamic_cast<EntityBulldozer *>(object)) {
                 this->bodyType = b2_dynamicBody;
             } else {
@@ -45,18 +45,28 @@ public:
     }
 
     virtual bool doesCollide(IPositionable *obj) override {
-        if (Block *b = dynamic_cast<Block*>(obj)) {
+        if (Block *b = dynamic_cast<Block *>(obj)) {
             return b->doesCollide(this);
-        } else if (EntityDoor *e = dynamic_cast<EntityDoor *>(obj)){
+        } else if (EntityDoor *e = dynamic_cast<EntityDoor *>(obj)) {
             return false;
         } else {
             return true;
         }
     }
 
+    bool isLocked() const {
+        return locked;
+    }
+
+    void setLocked(bool locked) {
+        this->locked = locked;
+        this->setBodyType(this->locked ? b2_staticBody : b2_dynamicBody);
+    }
+
 private:
     b2Body *hinge;
     const unsigned char type;
+    bool locked;
 
     double getHingeOffsetX() {
         if (this->type & 0xF) return 0.5;
