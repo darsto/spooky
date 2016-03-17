@@ -21,7 +21,7 @@ public:
         EntityMoving::update();
         if (this->ejectTimer > 0.0) {
             this->ejectTimer -= 0.08;
-            this->applyForce(0.8, 0.8);
+            this->applyForce(0.6, 0.6);
         }
     }
 
