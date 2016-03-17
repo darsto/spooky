@@ -14,13 +14,7 @@ public:
     EntityFather(Map *map);
     virtual void update();
 
-    virtual bool doesCollide(IPositionable *obj) override {
-        if (EntityDoor *d = dynamic_cast<EntityDoor *>(obj)) {
-            return false;
-        } else {
-            return Entity::doesCollide(obj);
-        }
-    }
+    virtual bool doesCollide(IPositionable *obj);
 
 protected:
     virtual double getSpeed();

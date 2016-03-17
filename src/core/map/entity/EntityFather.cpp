@@ -3,6 +3,7 @@
 //
 
 #include "EntityFather.h"
+#include "EntityPlayer.h"
 
 
 EntityFather::EntityFather(Map *map) : EntityMoving(map, 0.25, 0.25) {
@@ -18,8 +19,28 @@ EntityFather::EntityFather(Map *map) : EntityMoving(map, 0.25, 0.25) {
 void EntityFather::update() {
     EntityMoving::update();
     this->applyImpulse(1.0f * this->getSpeed() * cos(this->getAngle()), 1.0f * this->getSpeed() * sin(this->getAngle()));
+    double radius = 3.5;
+    for (Entity *e : this->map->getEntities()) {
+        if (x >= e->getX() - e->getWidth() - radius && x <= e->getX() + radius &&
+            y >= e->getY() - e->getHeight() - radius && y <= e->getY() + radius) {
+            if (Player *p = dynamic_cast<Player *>(e)) {
+                if (p->getToy() != nullptr) {
+                    p->eject();
+                    break;
+                }
+            }
+        }
+    }
 }
 
 double EntityFather::getSpeed() {
     return 0.5f;
+}
+
+bool EntityFather::doesCollide(IPositionable *obj) {
+    if (EntityDoor *d = dynamic_cast<EntityDoor *>(obj)) {
+        return false;
+    } else {
+        return Entity::doesCollide(obj);
+    }
 }
