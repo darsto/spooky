@@ -18,16 +18,21 @@ public:
 
     virtual void onCollision(IPositionable *object, char state) override { }
 
+    virtual void update();
+
     Player *getHost() const {
         return host;
     }
 
     void setHost(Player *host) {
-        EntityToy::host = host;
+        this->host = host;
     }
 
-private:
+    void damage(double value);
+
+protected:
     Player *host = nullptr;
+    double durability = 1.0;
 };
 
 #endif //C003_TOY_H
