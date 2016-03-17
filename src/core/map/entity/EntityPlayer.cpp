@@ -123,6 +123,7 @@ void Player::setToy(bool force) {
         this->ejectTimer = -1.0;
     } else {
         if (this->toyToMerge != nullptr) {
+            this->setDamagedToy(nullptr);
             this->toy = this->toyToMerge;
             this->toy->setHost(this);
             this->toyToMerge = nullptr;
