@@ -60,6 +60,7 @@ void Player::eject() {
         this->toyToMerge = toy;
         this->toy = nullptr;
         this->toysToMerge = 0;
+        this->ejectTimer = 1.0;
     }
 }
 

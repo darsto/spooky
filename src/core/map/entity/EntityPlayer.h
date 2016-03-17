@@ -17,6 +17,14 @@ public:
     Player(Map *map);
     bool teleport(double x, double y);
 
+    virtual void update() override {
+        EntityMoving::update();
+        if (this->ejectTimer > 0.0) {
+            this->ejectTimer -= 0.08;
+            this->applyForce(0.8, 0.8);
+        }
+    }
+
     virtual void onCollision(IPositionable *object, char state) override;
 
     virtual double getX() const override;
@@ -42,6 +50,7 @@ private:
     int toysToMerge = 0;
     EntityToy *toyToMerge = nullptr;
     EntityToy *toy = nullptr;
+    double ejectTimer = 0.0;
 public:
 
     virtual bool doesCollide(IPositionable *obj) override;
