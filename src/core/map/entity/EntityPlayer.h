@@ -19,9 +19,18 @@ public:
 
     virtual void update() override {
         EntityMoving::update();
-        if (this->ejectTimer > 0.0) {
-            this->ejectTimer -= 0.08;
-            this->applyForce(0.6, 0.6);
+        this->ejectTimer *= 0.75;
+        if (std::abs(this->ejectTimer) < 0.05) {
+            if (this->ejectTimer < 0.0) {
+                this->setToy(true);
+            }
+            this->ejectTimer = 0.0;
+        } else {
+            if (this->ejectTimer > 0) {
+                this->applyForce(3 * this->ejectTimer, 3 * this->ejectTimer);
+            } else if (this->getToyToMerge() != nullptr) {
+                this->applyImpulse((this->getToyToMerge()->getX() - this->getX()) * 2.0, (this->getToyToMerge()->getY() - this->getY()) * 2.0);
+            }
         }
     }
 
@@ -42,7 +51,7 @@ public:
         return toyToMerge;
     }
 
-    void setToy();
+    void setToy(bool force = false);
 
     void eject();
 

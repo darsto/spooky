@@ -13,7 +13,8 @@ public:
     PlayerRender() : DefaultEntityRender("player", "shader") { }
 
     virtual void render(const Entity *const entity, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, double scale) override {
-        if (((const Player* const) entity)->getToy() == nullptr) {
+        const Player *const player = ((const Player *const) entity);
+        if (player->getToy() == nullptr || player->getEjectTime() > 0.0) {
             this->texture.bindTexture(0);
             this->shaderProgram.useProgram();
             this->shaderProgram.setUniform("projectionMatrix", projectionMatrix);
@@ -26,7 +27,13 @@ public:
             this->tmpModelMatrix = glm::rotate(this->tmpModelMatrix, (const float) entity->getAngle(), glm::vec3(0.0f, 0.0f, 1.0f)); // Apply rotation
             this->tmpModelMatrix = glm::translate(this->tmpModelMatrix, glm::vec3(-0.5 * scale, -0.5 * scale, 0.0)); // Translate back to the origin
 
+
+            double oldScale = scale;
+            scale *= player->getEjectTime() >= 0.0 ? 1.0 - player->getEjectTime() : -player->getEjectTime();
+
             this->tmpModelMatrix = glm::scale(this->tmpModelMatrix, glm::vec3(scale, scale, 1.0f));
+
+            this->tmpModelMatrix = glm::translate(this->tmpModelMatrix, glm::vec3(0.5 * (oldScale - scale) / scale, 0.5 * (oldScale - scale) / scale, 0.0)); // Translate to the center of scaling
 
             shaderProgram.setUniform("modelViewMatrix", viewMatrix * this->tmpModelMatrix);
             shaderProgram.setUniform("texPosX", 1.0f / this->texture.getWidth() + (float) (this->getTexPos(entity) % atlasSize) / atlasSize);

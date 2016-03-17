@@ -118,16 +118,21 @@ bool Player::doesCollide(IPositionable *obj) {
     return true;
 }
 
-void Player::setToy() {
-    if (this->toyToMerge != nullptr) {
-        this->toy = this->toyToMerge;
-        this->toy->setHost(this);
-        this->toyToMerge = nullptr;
+void Player::setToy(bool force) {
+    if (!force) {
+        this->ejectTimer = -1.0;
     } else {
-        Entity *e = this->map->getEntityAt<EntityToy>(this->getX(), this->getY());
-        if (e != nullptr) if (EntityToy *t = dynamic_cast<EntityToy *>(e)) {
-            this->toyToMerge = t;
-            this->setToy();
+        if (this->toyToMerge != nullptr) {
+            this->toy = this->toyToMerge;
+            this->toy->setHost(this);
+            this->toyToMerge = nullptr;
+            this->ejectTimer = 1.0;
+        } else {
+            Entity *e = this->map->getEntityAt<EntityToy>(this->getX(), this->getY());
+            if (e != nullptr) if (EntityToy *t = dynamic_cast<EntityToy *>(e)) {
+                this->toyToMerge = t;
+                this->setToy();
+            }
         }
     }
 }
