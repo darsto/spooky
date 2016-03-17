@@ -35,10 +35,6 @@ void GameRender::render(Window *window, RenderContext *const renderContext) {
     double camX = core->getCamX() * (core->getBlockSize() * core->getGeneralScale());
     double camY = core->getCamY() * (core->getBlockSize() * core->getGeneralScale());
 
-    if (core->getPlayer()->getEjectTime() > 0.0 && core->getPlayer()->getDamagedToy() == core->getPlayer()->getToyToMerge()) {
-        camY -= 25 * core->getPlayer()->getEjectTime();
-    }
-
     fbo.bind();
     glClearColor(0.9, 0.9, 0.9, 0.0);
     glClear(GL_COLOR_BUFFER_BIT);

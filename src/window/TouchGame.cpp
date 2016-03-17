@@ -560,6 +560,9 @@ void Game::tick(double deltaTime) {
         default:
             px = this->core->getPlayer()->getX() + this->core->getPlayer()->getWidth() / 2;
             py = this->core->getPlayer()->getY() + this->core->getPlayer()->getHeight() / 2;
+            if (core->getPlayer()->getEjectTime() > 0.0 && core->getPlayer()->getDamagedToy() == core->getPlayer()->getToyToMerge()) {
+                py -= 0.2 * core->getPlayer()->getEjectTime();
+            }
             break;
     }
     double dx = (px - 1 + this->core->getCamX());
