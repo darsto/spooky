@@ -46,6 +46,10 @@ public:
 
     void eject();
 
+    double getEjectTime() const {
+        return ejectTimer;
+    }
+
 private:
     int toysToMerge = 0;
     EntityToy *toyToMerge = nullptr;
