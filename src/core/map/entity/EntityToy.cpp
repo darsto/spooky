@@ -10,11 +10,14 @@ void EntityToy::update() {
     if (this->durability <= 0.0 && this->getHost() != nullptr) {
         this->getHost()->eject();
     }
+    if (this->movingTimer > 0.0) {
+        this->movingTimer -= 0.01;
+    }
     this->durability = 1.0;
 }
 
 void EntityToy::damage(double value) {
-    if (value <= -1.0) {
+    if (this->getMovingTime() > 0.3) {
         this->durability -= value;
     }
 }

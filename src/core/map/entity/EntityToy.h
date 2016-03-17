@@ -20,6 +20,11 @@ public:
 
     virtual void update();
 
+    virtual void applyImpulse(double x, double y, double power = 1.0) override {
+        EntityMoving::applyImpulse(x, y, power);
+        this->movingTimer += 0.015;
+    }
+
     Player *getHost() const {
         return host;
     }
@@ -30,9 +35,18 @@ public:
 
     void damage(double value);
 
+    double getMovingTime() const {
+        return movingTimer;
+    }
+
+    void resetMovingTime() {
+        this->movingTimer = 0.0;
+    }
+
 protected:
     Player *host = nullptr;
     double durability = 1.0;
+    double movingTimer = 0.0;
 };
 
 #endif //C003_TOY_H
