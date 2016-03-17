@@ -76,7 +76,7 @@ Game::Game(const std::function<bool(Window *window)> &switchWindow) : Window(swi
     GuiText *t = new GuiText(string("Dev Build: ") + __DATE__ + " " + __TIME__, 15, 15, GUI_BOTTOM_LEFT, 32, 0xFFFFFFFF, 0);
     this->guiElements.push_back(t);
 #if defined(DEBUG)
-    this->tutorialDialogueNum = 19;
+    this->tutorialDialogueNum = 23;
 #endif
 }
 
@@ -117,6 +117,28 @@ void Game::tick(double deltaTime) {
         double ghostAlpha;
         double ghostAngle;
         double ghostSize;
+
+        if (this->tutorialDialogueNum == 20) {
+            for (int i = 0; i < 2; i++) {
+                if (EntityDoor *d = dynamic_cast<EntityDoor *>(this->core->getMap()->getEntities()[3 + i])) {
+                    if (this->tutorialDialogueAlpha < 0.7f) {
+                        d->setLocked(false);
+                        d->applyForce(0, 6.5);
+                    } else if (this->tutorialDialogueAlpha > 3.3f && this->tutorialDialogueAlpha < 4.2f) {
+                        d->applyForce(0, -7.2);
+                    } else if (this->tutorialDialogueAlpha >= 3.9f) {
+                        d->setLocked(true);
+                    }
+                }
+            }
+        } else if (this->tutorialDialogueNum == 23 && this->tutorialDialogueAlpha <= 0.3) {
+            for (Entity *e : this->core->getMap()->getEntities()) {
+                if (EntityFather *f = dynamic_cast<EntityFather *>(e)) {
+                    f->setAngle((1 + (this->tutorialDialogueAlpha + 0.2) * 0.815) * (-M_PI_2));
+                    break;
+                }
+            }
+        }
 
         if (this->tutorialDialogueNum >= 5) {
             gx = (this->windowWidth * 0.7 - this->popup[0]->getWidth() / 2) + this->windowWidth * 0.3 * tutorialGhostMovement;
@@ -345,7 +367,7 @@ void Game::tick(double deltaTime) {
                             tutorialDialogueDuration = 5.2f;
                             tutorialProceeding = true;
                             EntityFather *f = new EntityFather(this->core->getMap());
-                            f->setX(6.5);
+                            f->setX(6.65);
                             f->setY(23);
                             f->setAngle(-M_PI_2);
                             this->core->getMap()->addEntity(f);
@@ -358,12 +380,12 @@ void Game::tick(double deltaTime) {
                             ((GuiText *) this->popup[2])->updateString("");
                             this->popup[0]->setTexPos(0, 25);
                             tutorialDialogueAlpha = -0.2f;
-                            tutorialDialogueDuration = 2.0f;
+                            tutorialDialogueDuration = 1.5f;
                             tutorialProceeding = true;
                             break;
                         }
                         case 20: {
-                            this->popup[1]->setWidth(450);
+                            this->popup[1]->setWidth(455);
                             this->popup[1]->setHeight(115);
                             this->popup[1]->reinit(this->windowWidth, this->windowHeight);
                             ((GuiText *) this->popup[2])->updateString("Hey, watch out! The parent\nhas just stepped in\nthe house!");
@@ -380,18 +402,40 @@ void Game::tick(double deltaTime) {
                             ((GuiText *) this->popup[2])->updateString("You can't let him see you!\nParents cannot understand\nthe presence of ghosts.");
                             this->popup[0]->setTexPos(0, 19);
                             tutorialDialogueAlpha = -0.2f;
-                            tutorialDialogueDuration = 5.5f;
+                            tutorialDialogueDuration = 6.0f;
                             tutorialProceeding = true;
                             break;
                         }
                         case 22: {
-                            this->popup[1]->setWidth(415);
-                            this->popup[1]->setHeight(140);
+                            this->popup[1]->setWidth(375);
+                            this->popup[1]->setHeight(115);
                             this->popup[1]->reinit(this->windowWidth, this->windowHeight);
-                            ((GuiText *) this->popup[2])->updateString("Actually, he may open\nthe doors for us.\nWe only need to attract\nhis attention.");
+                            ((GuiText *) this->popup[2])->updateString("Luckily, people can't\nsee ghosts. But they\nstill see moving toys.");
                             this->popup[0]->setTexPos(0, 17);
                             tutorialDialogueAlpha = -0.2f;
-                            tutorialDialogueDuration = 5.5f;
+                            tutorialDialogueDuration = 6.0f;
+                            tutorialProceeding = true;
+                            break;
+                        }
+                        case 23: {
+                            this->popup[1]->setWidth(415);
+                            this->popup[1]->setHeight(145);
+                            this->popup[1]->reinit(this->windowWidth, this->windowHeight);
+                            ((GuiText *) this->popup[2])->updateString("Actually, he may open\nthe door for us.\nWe only need to attract\nhis attention.");
+                            this->popup[0]->setTexPos(0, 17);
+                            tutorialDialogueAlpha = -0.2f;
+                            tutorialDialogueDuration = 6.0f;
+                            tutorialProceeding = true;
+                            break;
+                        }
+                        case 24: {
+                            this->popup[1]->setWidth(425);
+                            this->popup[1]->setHeight(180);
+                            this->popup[1]->reinit(this->windowWidth, this->windowHeight);
+                            ((GuiText *) this->popup[2])->updateString("There! If you only take\nthis car and hit the\nwall as hard as you can,\nyou will propably\nattract him.");
+                            this->popup[0]->setTexPos(0, 17);
+                            tutorialDialogueAlpha = -0.5f;
+                            tutorialDialogueDuration = 10.0f;
                             break;
                         }
                         default:
@@ -423,6 +467,8 @@ void Game::tick(double deltaTime) {
         pos = 2;
     } else if (this->tutorialDialogueNum == 17 && this->tutorialDialogueAlpha < this->tutorialDialogueDuration + 1.0f) {
         pos = 3;
+    } else if (this->tutorialDialogueNum == 24 && this->tutorialDialogueAlpha >= 0.2 && this->tutorialDialogueAlpha < this->tutorialDialogueDuration + 1.0f) {
+        pos = 4;
     } else {
         this->core->setBlockSize(this->core->getDefaultBlockSize());
     }
@@ -447,6 +493,12 @@ void Game::tick(double deltaTime) {
                 }
             }
             break;
+        case 4:
+            if (EntityTruck *t = dynamic_cast<EntityTruck *>(this->core->getMap()->getEntities()[1])) {
+                px = t->getX() + t->getWidth() / 2;
+                py = t->getY() + t->getHeight() / 2;
+            }
+            break;
         default:
             px = this->core->getPlayer()->getX() + this->core->getPlayer()->getWidth() / 2;
             py = this->core->getPlayer()->getY() + this->core->getPlayer()->getHeight() / 2;
@@ -469,16 +521,17 @@ void Game::tick(double deltaTime) {
 
     if (this->tutorialDialogueNum == 6 && this->core->getPlayer()->getX() >= 27 && this->core->getPlayer()->getX() <= 29 && this->core->getPlayer()->getY() >= 10 && this->core->getPlayer()->getY() <= 15) {
         this->proceedTutorialDialogue(1.0f);
-    } else if (this->tutorialDialogueNum == 14 && (int)this->core->getPlayer()->getX() == 10 && this->core->getPlayer()->getY() >= 10.0 && this->core->getPlayer()->getY() <= 10.35) {
+    } else if (this->tutorialDialogueNum == 14 && (int) this->core->getPlayer()->getX() == 10 && this->core->getPlayer()->getY() >= 10.0 && this->core->getPlayer()->getY() <= 10.35) {
         if (this->core->getPlayer()->getToy() != nullptr) {
             this->proceedTutorialDialogue(1.0f);
         }
-    } else if ((this->tutorialDialogueNum == 14 || this->tutorialDialogueNum == 15) && (int)this->core->getPlayer()->getX() == 10 && (int)this->core->getPlayer()->getY() == 9) {
+    } else if ((this->tutorialDialogueNum == 14 || this->tutorialDialogueNum == 15) && (int) this->core->getPlayer()->getX() == 10 && (int) this->core->getPlayer()->getY() == 9) {
         if (EntityHoover *h = dynamic_cast<EntityHoover *>(this->core->getPlayer()->getToy())) {
-            if (this->tutorialDialogueNum == 14) this->tutorialDialogueNum++; this->tutorialDialogueAlpha = 999.0f;
+            if (this->tutorialDialogueNum == 14) this->tutorialDialogueNum++;
+            this->tutorialDialogueAlpha = 999.0f;
             this->proceedTutorialDialogue(1.0f);
         }
-    } else if (this->tutorialDialogueNum == 17 && (int)this->core->getPlayer()->getX() == 10 && this->core->getPlayer()->getY() >= 10.0 && this->core->getPlayer()->getY() <= 10.35) {
+    } else if (this->tutorialDialogueNum == 17 && (int) this->core->getPlayer()->getX() == 10 && this->core->getPlayer()->getY() >= 10.0 && this->core->getPlayer()->getY() <= 10.35) {
         if (EntityBulldozer *b = dynamic_cast<EntityBulldozer *>(this->core->getPlayer()->getToy())) {
             this->proceedTutorialDialogue(1.0f);
         }
