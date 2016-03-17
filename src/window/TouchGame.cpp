@@ -76,7 +76,7 @@ Game::Game(const std::function<bool(Window *window)> &switchWindow) : Window(swi
     GuiText *t = new GuiText(string("Dev Build: ") + __DATE__ + " " + __TIME__, 15, 15, GUI_BOTTOM_LEFT, 32, 0xFFFFFFFF, 0);
     this->guiElements.push_back(t);
 #if defined(DEBUG)
-    this->tutorialDialogueNum = 23;
+    this->tutorialDialogueNum = 25;
 #endif
 }
 
@@ -514,9 +514,11 @@ void Game::tick(double deltaTime) {
         double x = (joystick->getX() - controller->getX()) / 100.0f * playerSpeed;
         double y = (joystick->getY() - controller->getY()) / 100.0f * playerSpeed;
         double power = std::sqrt(x * x + y * y);
-        double angle = atan2(y, x);
-        this->core->getPlayer()->applyImpulse(x, y, power);
-        this->core->getPlayer()->setAngle(angle, power);
+        if (power > 0.0) {
+            double angle = atan2(y, x);
+            this->core->getPlayer()->applyImpulse(x, y, power);
+            this->core->getPlayer()->setAngle(angle, power);
+        }
     }
 
     if (this->tutorialDialogueNum == 6 && this->core->getPlayer()->getX() >= 27 && this->core->getPlayer()->getX() <= 29 && this->core->getPlayer()->getY() >= 10 && this->core->getPlayer()->getY() <= 15) {
