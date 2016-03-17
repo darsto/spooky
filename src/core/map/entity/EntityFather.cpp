@@ -25,6 +25,7 @@ void EntityFather::update() {
             y >= e->getY() - e->getHeight() - radius && y <= e->getY() + radius) {
             if (Player *p = dynamic_cast<Player *>(e)) {
                 if (p->getToy() != nullptr) {
+                    p->applyImpulse((p->getX() - this->getX()) * 1.5, (p->getY() - this->getY()) * 1.5);
                     p->eject();
                     break;
                 }

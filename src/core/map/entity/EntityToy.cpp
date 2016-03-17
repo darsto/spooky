@@ -8,6 +8,7 @@
 void EntityToy::update() {
     EntityMoving::update();
     if (this->durability <= 0.0 && this->getHost() != nullptr) {
+        this->getHost()->setDamagedToy(this);
         this->getHost()->eject();
     }
     if (this->movingTimer > 0.0) {

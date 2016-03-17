@@ -76,7 +76,7 @@ Game::Game(const std::function<bool(Window *window)> &switchWindow) : Window(swi
     GuiText *t = new GuiText(string("Dev Build: ") + __DATE__ + " " + __TIME__, 15, 15, GUI_BOTTOM_LEFT, 32, 0xFFFFFFFF, 0);
     this->guiElements.push_back(t);
 #if defined(DEBUG)
-    this->tutorialDialogueNum = 25;
+    this->tutorialDialogueNum = 23;
 #endif
 }
 
@@ -138,6 +138,8 @@ void Game::tick(double deltaTime) {
                     break;
                 }
             }
+        } else if (this->tutorialDialogueNum == 24 && this->core->getPlayer()->getDamagedToy() == this->core->getMap()->getEntities()[1]) {
+            this->proceedTutorialDialogue(0.5f);
         }
 
         if (this->tutorialDialogueNum >= 5) {
@@ -432,10 +434,21 @@ void Game::tick(double deltaTime) {
                             this->popup[1]->setWidth(425);
                             this->popup[1]->setHeight(180);
                             this->popup[1]->reinit(this->windowWidth, this->windowHeight);
-                            ((GuiText *) this->popup[2])->updateString("There! If you only take\nthis car and hit the\nwall as hard as you can,\nyou will propably\nattract him.");
+                            ((GuiText *) this->popup[2])->updateString("There! If you only take\nthis car and hit the\nwall as hard as you can,\nthe sound will probably\nattract him.");
+                            this->core->getPlayer()->setDamagedToy(nullptr);
                             this->popup[0]->setTexPos(0, 17);
                             tutorialDialogueAlpha = -0.5f;
                             tutorialDialogueDuration = 10.0f;
+                            break;
+                        }
+                        case 25: {
+                            this->popup[1]->setWidth(425);
+                            this->popup[1]->setHeight(51);
+                            this->popup[1]->reinit(this->windowWidth, this->windowHeight);
+                            ((GuiText *) this->popup[2])->updateString("It worked! He's coming!");
+                            this->popup[0]->setTexPos(0, 17);
+                            tutorialDialogueAlpha = -0.5f;
+                            tutorialDialogueDuration = 3.5f;
                             break;
                         }
                         default:

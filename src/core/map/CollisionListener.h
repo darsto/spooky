@@ -28,7 +28,7 @@ public:
             if (EntityToy *t = dynamic_cast<EntityToy *>(d)) {
                 double dmg_x = t->getBody()->GetLinearVelocity().x;
                 double dmg_y = t->getBody()->GetLinearVelocity().y;
-                double dmg = sqrt(dmg_x * dmg_x + dmg_y * dmg_y) * 0.4;
+                double dmg = sqrt(dmg_x * dmg_x + dmg_y * dmg_y) * 0.5;
                 if (t->getHost() != nullptr) {
                     t->damage(dmg);
                     t->resetMovingTime();

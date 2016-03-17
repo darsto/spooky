@@ -59,10 +59,19 @@ public:
         return ejectTimer;
     }
 
+    EntityToy *getDamagedToy() const {
+        return damagedToy;
+    }
+
+    void setDamagedToy(EntityToy *damagedToy) {
+        this->damagedToy = damagedToy;
+    }
+
 private:
     int toysToMerge = 0;
     EntityToy *toyToMerge = nullptr;
     EntityToy *toy = nullptr;
+    EntityToy *damagedToy = nullptr; //for tutorial usages
     double ejectTimer = 0.0;
 public:
 
