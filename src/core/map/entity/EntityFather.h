@@ -16,8 +16,17 @@ public:
 
     virtual bool doesCollide(IPositionable *obj);
 
+    bool isMoving() const {
+        return moving;
+    }
+
+    void setMoving(bool moving) {
+        EntityFather::moving = moving;
+    }
+
 protected:
     virtual double getSpeed();
+    bool moving = true;
 };
 
 #endif //C003_ENTITYFATHER_H

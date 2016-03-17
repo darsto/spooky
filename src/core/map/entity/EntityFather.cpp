@@ -11,7 +11,7 @@ EntityFather::EntityFather(Map *map) : EntityMoving(map, 0.25, 0.25) {
     shape.SetAsBox(0.225, 0.435);
     b2FixtureDef fixDef;
     fixDef.shape = &shape;
-    fixDef.density = 6.0f;
+    fixDef.density = 999.0f;
     fixDef.friction = 0.1f;
     this->body->CreateFixture(&fixDef);
 }
@@ -25,7 +25,7 @@ void EntityFather::update() {
             y >= e->getY() - e->getHeight() - radius && y <= e->getY() + radius) {
             if (Player *p = dynamic_cast<Player *>(e)) {
                 if (p->getToy() != nullptr) {
-                    p->applyImpulse((p->getX() - this->getX()) * 1.5, (p->getY() - this->getY()) * 1.5);
+                    p->applyForce((p->getX() - this->getX()) * 3, (p->getY() - this->getY()) * 3);
                     p->eject();
                     break;
                 }
@@ -35,7 +35,7 @@ void EntityFather::update() {
 }
 
 double EntityFather::getSpeed() {
-    return 0.5f;
+    return 83.25f * this->isMoving();
 }
 
 bool EntityFather::doesCollide(IPositionable *obj) {
