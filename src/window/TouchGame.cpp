@@ -75,8 +75,8 @@ Game::Game(const std::function<bool(Window *window)> &switchWindow) : Window(swi
 
     GuiText *t = new GuiText(string("Dev Build: ") + __DATE__ + " " + __TIME__, 15, 15, GUI_BOTTOM_LEFT, 32, 0xFFFFFFFF, 0);
     this->guiElements.push_back(t);
-#if defined(DEBUG)
-    this->tutorialDialogueNum = 27;
+#if defined(__DEBUG__)
+    this->tutorialDialogueNum = 1;
 #endif
 }
 
@@ -152,11 +152,18 @@ void Game::tick(double deltaTime) {
                         f->setAngle(((this->tutorialDialogueAlpha - 19.8) * -2.0) * M_PI_2);
                         if (EntityDoor *d = dynamic_cast<EntityDoor *>(this->core->getMap()->getEntities()[16])) {
                             d->setLocked(false);
+                            for (Entity *e : this->core->getMap()->getEntities()) {
+                                if (EntityMoving *m = dynamic_cast<EntityMoving *>(e)) {
+                                    if ((int) e->getX() == 10 && (int) e->getY() == 9) {
+                                        m->applyForce(0, -20);
+                                    }
+                                }
+                            }
                         }
                     } else if (this->tutorialDialogueAlpha >= 20.5 && this->tutorialDialogueAlpha <= 22.5) {
                         f->setMoving(false);
                         if (EntityDoor *d = dynamic_cast<EntityDoor *>(this->core->getMap()->getEntities()[16])) {
-                            d->applyForce(0, -25);
+                            d->applyForce(0, -35);
                         }
                     } else if (this->tutorialDialogueAlpha >= 23.0 && this->tutorialDialogueAlpha <= 23.5) {
                         f->setAngle(-M_PI_2 - ((this->tutorialDialogueAlpha - 23.0) * 2.0) * M_PI_2);
@@ -168,13 +175,21 @@ void Game::tick(double deltaTime) {
                 }
             }
         } else if (this->tutorialDialogueNum == 26) {
+            bool foundGlass = false;
             for (Entity *e : this->core->getMap()->getEntities()) {
                 if (EntityFather *f = dynamic_cast<EntityFather *>(e)) {
                     if (this->tutorialDialogueAlpha >= 5.6 && this->tutorialDialogueAlpha <= 6.1) {
                         f->setAngle(M_PI + (1.45 * (this->tutorialDialogueAlpha - 5.6)) * M_PI_2);
                     }
                 }
+                if (EntityGlassDebris *d = dynamic_cast<EntityGlassDebris *>(e)) {
+                    foundGlass = true;
+                }
             }
+            if (!foundGlass) {
+                this->proceedTutorialDialogue(0.5f);
+            }
+
         }
 
         if (this->tutorialDialogueNum >= 29) {
@@ -182,7 +197,7 @@ void Game::tick(double deltaTime) {
             gy = (this->windowHeight / 4) + this->popup[0]->getHeight() / 2 - (this->windowHeight / 4 - 50);
             ghostAlpha = 1.0;
             ghostAngle = 0.0;
-                ghostSize = 150;
+            ghostSize = 150;
         } else if (this->tutorialDialogueNum >= 5) {
             gx = (this->windowWidth * 0.7 - this->popup[0]->getWidth() / 2) + this->windowWidth * 0.3 * tutorialGhostMovement;
             gy = (this->windowHeight / 4) + this->popup[0]->getHeight() / 2 - tutorialGhostMovement * tutorialGhostMovement * (this->windowHeight / 4 - 50);
@@ -503,7 +518,7 @@ void Game::tick(double deltaTime) {
                             this->popup[1]->reinit(this->windowWidth, this->windowHeight);
                             ((GuiText *) this->popup[2])->updateString("Congratulations! You've\ndone a great job.");
                             this->popup[0]->setTexPos(0, 18);
-                            tutorialDialogueAlpha = -0.2f;
+                            tutorialDialogueAlpha = -0.5f;
                             tutorialDialogueDuration = 4.5f;
                             tutorialProceeding = true;
                             break;
@@ -626,10 +641,6 @@ void Game::tick(double deltaTime) {
         }
     } else if (this->tutorialDialogueNum == 17 && (int) this->core->getPlayer()->getX() == 10 && this->core->getPlayer()->getY() >= 10.0 && this->core->getPlayer()->getY() <= 10.35) {
         if (EntityBulldozer *b = dynamic_cast<EntityBulldozer *>(this->core->getPlayer()->getToy())) {
-            this->proceedTutorialDialogue(1.0f);
-        }
-    } else if (this->tutorialDialogueNum == 26 && this->core->getPlayer()->getX() >= 28.5 && this->core->getPlayer()->getX() <= 29.0 && (int)this->core->getPlayer()->getY() == 17) {
-        if (EntityHoover *b = dynamic_cast<EntityHoover *>(this->core->getPlayer()->getToy())) {
             this->proceedTutorialDialogue(1.0f);
         }
     }
