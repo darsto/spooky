@@ -14,8 +14,8 @@ double EntityMoving::getSpeed() {
     return 1.0;
 }
 
-void EntityMoving::update() {
-    Entity::update();
+void EntityMoving::update(double deltaTime) {
+    Entity::update(0);
     if (this->bodyType != this->body->GetType()) {
         this->body->SetType(this->bodyType);
     }

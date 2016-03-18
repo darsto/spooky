@@ -11,6 +11,6 @@ void EntityBullet::onCollision(IPositionable *object, char state) {
     }
 }
 
-void EntityBullet::update() {
-    EntityMoving::update();
+void EntityBullet::update(double deltaTime) {
+    EntityMoving::update(0);
 }

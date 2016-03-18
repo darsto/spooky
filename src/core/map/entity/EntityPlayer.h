@@ -17,9 +17,9 @@ public:
     Player(Map *map);
     bool teleport(double x, double y);
 
-    virtual void update() override {
-        EntityMoving::update();
-        this->ejectTimer *= 0.75;
+    virtual void update(double deltaTime) override {
+        EntityMoving::update(0);
+        this->ejectTimer *= 0.75 * deltaTime * 62.5;
         if (std::abs(this->ejectTimer) < 0.05) {
             if (this->ejectTimer < 0.0) {
                 this->setToy(true);
@@ -36,7 +36,7 @@ public:
             double speed_x = this->getBody()->GetLinearVelocity().x;
             double speed_y = this->getBody()->GetLinearVelocity().y;
             double speed = speed_x * speed_x + speed_y * speed_y;
-            this->increaseTailAnimation((1.5 + speed * 0.2) * 0.03);
+            this->increaseTailAnimation((1.5 + speed * 0.2) * 0.03 * deltaTime * 62.5);
         }
     }
 

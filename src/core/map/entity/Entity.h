@@ -34,7 +34,7 @@ public:
 
     virtual void setY(double y);
 
-    virtual void update();
+    virtual void update(double deltaTime);
 
     virtual double getWidth() const override {
         return this->width;

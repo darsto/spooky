@@ -15,7 +15,7 @@ Entity::Entity(Map *map, double width, double height) : map(map) {
     body->SetLinearDamping(30.0);
 }
 
-void Entity::update() {
+void Entity::update(double deltaTime) {
     this->x = body->GetPosition().x + this->width * 0.5;
     this->y = body->GetPosition().y + this->height * 0.5;
 }

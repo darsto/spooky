@@ -5,8 +5,8 @@
 #include "EntityToy.h"
 #include "EntityPlayer.h"
 
-void EntityToy::update() {
-    EntityMoving::update();
+void EntityToy::update(double deltaTime) {
+    EntityMoving::update(0);
     if (this->durability <= 0.0 && this->getHost() != nullptr) {
         this->getHost()->setDamagedToy(this);
         this->getHost()->eject();

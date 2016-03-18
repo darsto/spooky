@@ -18,7 +18,7 @@ public:
 
     virtual void onCollision(IPositionable *object, char state) override { }
 
-    virtual void update();
+    virtual void update(double deltaTime);
 
     virtual void applyImpulse(double x, double y, double power = 1.0) override {
         EntityMoving::applyImpulse(x, y, power);

@@ -33,8 +33,8 @@ public:
         this->body->GetFixtureList()[0].SetSensor(sensor);
     }
 
-    virtual void update() override {
-        Entity::update();
+    virtual void update(double deltaTime) override {
+        Entity::update(0);
         if (this->collidingEntity != nullptr) {
             double dx = this->collidingEntity->getX() - this->collidingEntity->getWidth() / 2 - this->getX() + this->getWidth() / 2;
             double dy = this->collidingEntity->getY() - this->collidingEntity->getHeight() / 2 - this->getY() + this->getHeight() / 2;

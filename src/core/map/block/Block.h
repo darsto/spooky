@@ -28,7 +28,7 @@ public:
 
     void setY(int y);
 
-    void update() { }
+    void update(double deltaTime) { }
 
     virtual bool doesCollide(IPositionable *obj) {
         return true;

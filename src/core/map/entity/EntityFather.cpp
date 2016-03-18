@@ -16,8 +16,8 @@ EntityFather::EntityFather(Map *map) : EntityMoving(map, 0.25, 0.25) {
     this->body->CreateFixture(&fixDef);
 }
 
-void EntityFather::update() {
-    EntityMoving::update();
+void EntityFather::update(double deltaTime) {
+    EntityMoving::update(0);
     this->applyImpulse(1.0f * this->getSpeed() * cos(this->getAngle()), 1.0f * this->getSpeed() * sin(this->getAngle()));
     double radius = 3.5;
     for (Entity *e : this->map->getEntities()) {

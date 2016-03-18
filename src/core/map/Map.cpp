@@ -35,10 +35,10 @@ void Map::update(double deltaTime) {
     this->worldTime += deltaTime;
 
     for (Block *block : this->blocks) {
-        block->update();
+        block->update(deltaTime);
     }
     for (Entity *entity : this->entities) {
-        entity->update();
+        entity->update(deltaTime);
     }
 }
 

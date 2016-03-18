@@ -27,7 +27,7 @@ public:
 
     }
 
-    virtual void update() override;
+    virtual void update(double deltaTime) override;
 protected:
     double angle, velocity;
     virtual void onCollision(IPositionable *object, char state) override;
