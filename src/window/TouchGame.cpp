@@ -51,7 +51,7 @@ Game::Game(const std::function<bool(Window *window)> &switchWindow) : Window(swi
     auto backAction = [=](const TouchPoint *const p) {
         if (p->state == 1) {
             if (backButton->canBeClicked(p)) {
-                this->switchWindow(new MainMenu(switchWindow));
+                this->switchWindow(nullptr);
             }
             return false;
         }
@@ -76,7 +76,7 @@ Game::Game(const std::function<bool(Window *window)> &switchWindow) : Window(swi
     GuiText *t = new GuiText(string("Dev Build: ") + __DATE__ + " " + __TIME__, 15, 15, GUI_BOTTOM_LEFT, 32, 0xFFFFFFFF, 0);
     this->guiElements.push_back(t);
 #if defined(__DEBUG__)
-    this->tutorialDialogueNum = 1;
+    this->tutorialDialogueNum = 50;
 #endif
 }
 
