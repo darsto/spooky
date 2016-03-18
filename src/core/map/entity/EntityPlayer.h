@@ -32,6 +32,12 @@ public:
                 this->applyImpulse((this->getToyToMerge()->getX() - this->getX()) * 2.0, (this->getToyToMerge()->getY() - this->getY()) * 2.0);
             }
         }
+        if (this->getToy() == nullptr) {
+            double speed_x = this->getBody()->GetLinearVelocity().x;
+            double speed_y = this->getBody()->GetLinearVelocity().y;
+            double speed = speed_x * speed_x + speed_y * speed_y;
+            this->increaseTailAnimation((1.5 + speed * 0.2) * 0.03);
+        }
     }
 
     virtual void onCollision(IPositionable *object, char state) override;
@@ -67,12 +73,21 @@ public:
         this->damagedToy = damagedToy;
     }
 
+    double getTailAnimation() const {
+        return tailAnimation;
+    }
+
+    void increaseTailAnimation(double tailAnimation) {
+        this->tailAnimation += tailAnimation;
+    }
+
 private:
     int toysToMerge = 0;
     EntityToy *toyToMerge = nullptr;
     EntityToy *toy = nullptr;
     EntityToy *damagedToy = nullptr; //for tutorial usages
     double ejectTimer = 0.0;
+    double tailAnimation = 0.0;
 public:
 
     virtual bool doesCollide(IPositionable *obj) override;

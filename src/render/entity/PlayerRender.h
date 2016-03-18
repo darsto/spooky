@@ -7,6 +7,7 @@
 
 #include "DefaultEntityRender.h"
 #include <core/map/entity/EntityPlayer.h>
+#include <core/map/Map.h>
 
 class PlayerRender : public DefaultEntityRender {
 public:
@@ -43,6 +44,13 @@ public:
             glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
         }
     }
+
+protected:
+    virtual int getTexPos(const Entity *const entity) override {
+        const Player *const player = ((const Player *const) entity);
+        return (int) std::fmod((sin(player->getTailAnimation()) + 1.0) * 8, 16.0);
+    }
+
 };
 
 #endif //C003_PLAYERRENDER_H
