@@ -12,6 +12,10 @@
 Application::Application() {
     this->renderer = new RenderManager();
     auto switchVideo = [=](Window *window) {
+        if (window == nullptr) {
+            this->running = false;
+            return false;
+        }
         this->previousWindow = this->window;
         this->window = window;
         this->renderer->initWindow(this->window);
