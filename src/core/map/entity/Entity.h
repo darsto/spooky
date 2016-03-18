@@ -18,6 +18,10 @@ class Entity : public IPositionable {
 public:
     Entity(Map *map, double width, double height);
 
+    Map *getMap() const {
+        return map;
+    }
+
     virtual double getX() const override {
         return x;
     }
