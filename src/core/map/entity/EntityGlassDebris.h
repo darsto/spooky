@@ -38,7 +38,7 @@ public:
         if (this->collidingEntity != nullptr) {
             double dx = this->collidingEntity->getX() - this->collidingEntity->getWidth() / 2 - this->getX() + this->getWidth() / 2;
             double dy = this->collidingEntity->getY() - this->collidingEntity->getHeight() / 2 - this->getY() + this->getHeight() / 2;
-            if (dx * dx + dy * dy < 0.06) {
+            if (dx * dx + dy * dy < 0.85) {
                 this->remove();
             }
         }
