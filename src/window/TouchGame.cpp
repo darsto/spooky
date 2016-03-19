@@ -356,7 +356,7 @@ void Game::tick(double deltaTime) {
                             tutorialProceeding = true;
                             for (int i = 0; i < 3; i++) {
                                 EntityGlassDebris *p = new EntityGlassDebris(this->core->getMap());
-                                p->setX(28.6);
+                                p->setX(28.2);
                                 p->setY(16.9);
                                 p->setAngle(i * M_PI * 0.35 - M_PI * 0.3);
                                 p->applyImpulse(sin(-i * M_PI_2 / 3 - M_PI_4) * 0.12, cos(-i * M_PI_2 / 3 - M_PI_4) * 0.12);
