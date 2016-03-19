@@ -10,7 +10,7 @@
 
 class EntityFurniture : public EntityMoving {
 public:
-    EntityFurniture(Map *map, double width, double height, int texId);
+    EntityFurniture(Map *map, b2Shape *shape, double width, double height, int texId);
 
     int getTexId() const {
         return texId;
@@ -24,7 +24,7 @@ protected:
 
 class EntityFridge : public EntityFurniture {
 public:
-    EntityFridge(Map *map) : EntityFurniture(map, 1.0, 0.5, 1) {
+    EntityFridge(Map *map) : EntityFurniture(map, new b2PolygonShape, 1.0, 0.5, 1) {
         this->body->GetFixtureList()[0].SetDensity(15.0f);
     }
 
@@ -34,7 +34,7 @@ public:
 
 class EntityWardrobe : public EntityFurniture {
 public:
-    EntityWardrobe(Map *map) : EntityFurniture(map, 1.0, 0.5, 2) {
+    EntityWardrobe(Map *map) : EntityFurniture(map, new b2PolygonShape, 1.0, 0.5, 2) {
         this->body->GetFixtureList()[0].SetDensity(15.0f);
     }
 
@@ -42,23 +42,9 @@ public:
 
 };
 
-class EntityFlowerPot : public EntityMoving {
-public:
-    EntityFlowerPot(Map *map) : EntityMoving(map, 0.85, 0.85) {
-        b2CircleShape shape;
-        shape.m_radius = 0.425;
-        b2FixtureDef fixDef;
-        fixDef.shape = &shape;
-        fixDef.density = 6.0f;
-        fixDef.friction = 0.1f;
-
-        this->body->CreateFixture(&fixDef);
-    }
-};
-
 class EntityToaster : public EntityFurniture {
 public:
-    EntityToaster(Map *map) : EntityFurniture(map, 0.5, 0.375, 23) { }
+    EntityToaster(Map *map) : EntityFurniture(map, new b2PolygonShape, 0.5, 0.375, 23) { }
 
     virtual bool doesCollide(IPositionable *obj) override {
         if (SimpleBlock *b = dynamic_cast<SimpleBlock *>(obj)) {
@@ -74,15 +60,15 @@ public:
 
 class EntityRadio : public EntityFurniture {
 public:
-    EntityRadio(Map *map) : EntityFurniture(map, 0.8, 0.4, 22) { }
+    EntityRadio(Map *map) : EntityFurniture(map, new b2PolygonShape, 0.8, 0.4, 22) { }
 
     virtual ~EntityRadio() override { }
 };
 
 class EntitySink : public EntityFurniture {
 public:
-    EntitySink(Map *map) : EntityFurniture(map, 0.66, 0.8, 21) {
-        this->body->GetFixtureList()[0].SetDensity(100.0f);
+    EntitySink(Map *map) : EntityFurniture(map, new b2PolygonShape, 0.66, 0.8, 21) {
+        this->setBodyType(b2_staticBody);
     }
 
     virtual ~EntitySink() override { }
@@ -90,7 +76,7 @@ public:
 
 class EntityCuttingBoard : public EntityFurniture {
 public:
-    EntityCuttingBoard(Map *map) : EntityFurniture(map, 0.46, 0.66, 20) { }
+    EntityCuttingBoard(Map *map) : EntityFurniture(map, new b2PolygonShape, 0.46, 0.66, 20) { }
 
     virtual bool doesCollide(IPositionable *obj) override {
         if (SimpleBlock *b = dynamic_cast<SimpleBlock *>(obj)) {
@@ -102,6 +88,73 @@ public:
     }
 
     virtual ~EntityCuttingBoard() override { }
+};
+
+class EntityFlowerPot : public EntityFurniture {
+public:
+    EntityFlowerPot(Map *map) : EntityFurniture(map, new b2CircleShape, 0.85, 0.85, 16) { }
+};
+
+class EntityTallLight : public EntityFurniture {
+public:
+    EntityTallLight(Map *map) : EntityFurniture(map, new b2CircleShape, 0.815, 0.815, 24) { }
+};
+
+class EntityWallLight : public EntityFurniture {
+public:
+    EntityWallLight(Map *map) : EntityFurniture(map, new b2PolygonShape, 0.5, 0.5, 17) {
+        this->setBodyType(b2_staticBody);
+    }
+
+    virtual ~EntityWallLight() override { }
+};
+
+class EntityChestHandle : public EntityFurniture {
+public:
+    EntityChestHandle(Map *map) : EntityFurniture(map, new b2CircleShape, 0.18, 0.18, 18) {
+        this->setBodyType(b2_staticBody);
+    }
+
+    virtual ~EntityChestHandle() override { }
+};
+
+class EntityNotebook : public EntityFurniture {
+public:
+    EntityNotebook(Map *map) : EntityFurniture(map, new b2PolygonShape, 0.46, 0.66, 19) { }
+
+    virtual bool doesCollide(IPositionable *obj) override {
+        if (SimpleBlock *b = dynamic_cast<SimpleBlock *>(obj)) {
+            if (b->getTexPos() == 37) {
+                return false;
+            }
+        }
+        return Entity::doesCollide(obj);
+    }
+
+    virtual ~EntityNotebook() override { }
+};
+
+class EntityCupboardTop: public EntityFurniture {
+public:
+    EntityCupboardTop(Map *map) : EntityFurniture(map, new b2PolygonShape, 0.85, 1.0, 32) { }
+
+    virtual ~EntityCupboardTop() override { }
+};
+
+class EntityCupboardBottom: public EntityFurniture {
+public:
+    EntityCupboardBottom(Map *map) : EntityFurniture(map, new b2PolygonShape, 0.85, 1.0, 40) { }
+
+    virtual ~EntityCupboardBottom() override { }
+};
+
+class EntityToiletPaper: public EntityFurniture {
+public:
+    EntityToiletPaper(Map *map) : EntityFurniture(map, new b2PolygonShape, 0.3125, 0.625, 7) {
+        this->setBodyType(b2_staticBody);
+    }
+
+    virtual ~EntityToiletPaper() override { }
 };
 
 #endif //C003_ENTITYFURNITURE_H

@@ -162,9 +162,29 @@ TiledTxtMapLoader::TiledTxtMapLoader(const std::string &fileName) {
                     case 20:
                         sshape = new EntityCuttingBoard(this->map);
                         break;
+                    case 21:
+                        sshape = new EntityTallLight(this->map);
+                        break;
+                    case 22:
+                        sshape = new EntityWallLight(this->map);
+                        break;
+                    case 23:
+                        sshape = new EntityChestHandle(this->map);
+                        break;
+                    case 24:
+                        sshape = new EntityNotebook(this->map);
+                        break;
+                    case 25:
+                        sshape = new EntityCupboardTop(this->map);
+                        break;
+                    case 26:
+                        sshape = new EntityCupboardBottom(this->map);
+                        break;
+                    case 27:
+                        sshape = new EntityToiletPaper(this->map);
+                        break;
                     default:
                         break;
-
                 }
                 sshape->setX(atof(blockRow.at(i).c_str()));
                 i++;

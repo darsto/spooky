@@ -88,6 +88,13 @@ void Map::saveEntities() {
             else if (EntityRadio *p = dynamic_cast<EntityRadio *>(e)) id = 18;
             else if (EntitySink *p = dynamic_cast<EntitySink *>(e)) id = 19;
             else if (EntityCuttingBoard *p = dynamic_cast<EntityCuttingBoard *>(e)) id = 20;
+            else if (EntityTallLight *p = dynamic_cast<EntityTallLight *>(e)) id = 21;
+            else if (EntityWallLight *p = dynamic_cast<EntityWallLight *>(e)) id = 22;
+            else if (EntityChestHandle *p = dynamic_cast<EntityChestHandle *>(e)) id = 23;
+            else if (EntityNotebook *p = dynamic_cast<EntityNotebook *>(e)) id = 24;
+            else if (EntityCupboardTop *p = dynamic_cast<EntityCupboardTop *>(e)) id = 25;
+            else if (EntityCupboardBottom *p = dynamic_cast<EntityCupboardBottom *>(e)) id = 26;
+            else if (EntityToiletPaper *p = dynamic_cast<EntityToiletPaper *>(e)) id = 27;
             else continue;
             myfile << id << "," << e->getX() << "," << e->getY() << "," << e->getAngle();
             if (i != this->getEntities().size() - 1) {
