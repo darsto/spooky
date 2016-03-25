@@ -52,6 +52,10 @@ public class JniBridge {
         //return textureId;
     }
 
+    public void exit() {
+        System.exit(0);
+    }
+
     private int lastTexId = 0;
 
     public static Resources resources;//TODO
