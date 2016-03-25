@@ -94,18 +94,9 @@ public:
         return (char) indx;
     }
 
-    float getGlyphSize(char character) const {
-        if (character >= 0 && character < 64) return (float) (GLYPH_SIZE[character] % 64) / 64;
+    double getGlyphSize(char character) const {
+        if (character >= 0 && character < 64) return (double) (GLYPH_SIZE[character] % 64) / 64;
         return TEXT_SPACESIZE;
-    }
-
-    float getStringSize() {
-        float size = 0;
-        for (int i = 0; i < this->getString().length(); i++) {
-            char pos = this->getGlyphPos(this->getString().at(i));
-            size += this->getGlyphSize(pos);
-        }
-        return size;
     }
 
     const float TEXT_SPACESIZE = 0.2f;
@@ -125,8 +116,19 @@ private:
     char flags;
 
     void recalculateSize() {
-        this->width = this->getStringSize() * this->scale + (this->getString().length() - 1) * SPACING_PX;
-        this->height = 0.61 * this->getScale();
+        double tmp_width = 0; //incrementing with each iteration
+        this->width = 0; //maximum of all tmp_width(s)
+        this->height = 0;
+        for (int i = 0; i <= this->getString().length(); i++) {
+            if (i == this->getString().length() || this->getString().at(i) == '\n') {
+                if (tmp_width > this->width) this->width = tmp_width;
+                tmp_width = 0;
+                this->height += this->getScale() + 2 * SPACING_PX;
+                continue;
+            }
+            char pos = this->getGlyphPos(this->getString().at(i));
+            tmp_width += this->getGlyphSize(pos) * this->getScale() + SPACING_PX;
+        }
     }
 };
 

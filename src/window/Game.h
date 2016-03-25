@@ -76,6 +76,10 @@ private:
         if (this->tutorialDialogueAlpha >= 1.5 && this->tutorialDialogueAlpha < this->tutorialDialogueDuration - currentDialogueAlpha) {
             this->tutorialDialogueAlpha = this->tutorialDialogueDuration - currentDialogueAlpha;
         }
-    }};
+    }
+
+    void setTutorialText(const std::string &string, float startAlpha, float duration);
+
+};
 
 #endif //C003_GAME_H

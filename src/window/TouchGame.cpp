@@ -73,10 +73,10 @@ Game::Game(const std::function<bool(Window *window)> &switchWindow) : Window(swi
     this->popup[1] = window;
     this->popup[2] = text;
 
-    GuiText *t = new GuiText(string("Dev Build: ") + __DATE__ + " " + __TIME__, 15, 15, GUI_BOTTOM_LEFT, 32, 0xFFFFFFFF, 0);
-    this->guiElements.push_back(t);
+    //GuiText *t = new GuiText(string("Dev Build: ") + __DATE__ + " " + __TIME__, 15, 15, GUI_BOTTOM_LEFT, 32, 0xFFFFFFFF, 0);
+    //this->guiElements.push_back(t);
 #if defined(__DEBUG__)
-    this->tutorialDialogueNum = 50;
+    this->tutorialDialogueNum = 1;
 #endif
 }
 
@@ -247,112 +247,57 @@ void Game::tick(double deltaTime) {
                     tutorialProceeding = false;
                     switch (this->tutorialDialogueNum) {
                         case 2: {
-                            this->popup[1]->setWidth(415);
-                            this->popup[1]->setHeight(80);
-                            this->popup[1]->reinit(this->windowWidth, this->windowHeight);
-                            ((GuiText *) this->popup[2])->updateString("My name is Willy. I'm the\nchildren guardian ghost.");
-                            tutorialDialogueAlpha = -0.2f;
-                            tutorialDialogueDuration = 5.0f;
+                            this->setTutorialText("My name is Willy. I'm the\nchildren guardian ghost.", -0.2f, 5.0f);
                             tutorialProceeding = true;
                             break;
                         }
                         case 3: {
-                            this->popup[1]->setWidth(278);
-                            this->popup[1]->setHeight(80);
-                            this->popup[1]->reinit(this->windowWidth, this->windowHeight);
-                            ((GuiText *) this->popup[2])->updateString("And you must be\n<Player>.");
-                            tutorialDialogueAlpha = -0.2f;
-                            tutorialDialogueDuration = 3.15f;
+                            this->setTutorialText("And you must be\n<Player>.", -0.2f, 3.15f);
                             tutorialProceeding = true;
                             break;
                         }
                         case 4: {
-                            this->popup[1]->setWidth(290);
-                            this->popup[1]->setHeight(51);
-                            this->popup[1]->reinit(this->windowWidth, this->windowHeight);
-                            ((GuiText *) this->popup[2])->updateString("Nice to meet you!");
+                            this->setTutorialText("Nice to meet you!", -0.2f, 2.65f);
                             this->popup[0]->setTexPos(0, 18);
-                            tutorialDialogueAlpha = -0.2f;
-                            tutorialDialogueDuration = 2.65f;
                             tutorialProceeding = true;
                             break;
                         }
                         case 5: {
-                            this->popup[1]->setWidth(450);
-                            this->popup[1]->setHeight(175);
-                            this->popup[1]->reinit(this->windowWidth, this->windowHeight);
-                            ((GuiText *) this->popup[2])->updateString("See? That's me over there!\nYou can move my body by\npushing the screen and\nheading in the direction\nyou want me to move.");
+                            this->setTutorialText("See? That's me over there!\nYou can move my body by\npushing the screen and\nheading in the direction\nyou want me to move.", -0.9f, 999.9f);
                             this->popup[0]->setTexPos(0, 17);
-                            tutorialDialogueAlpha = -0.9f;
-                            tutorialDialogueDuration = 999.9f;
                             tutorialGhostMovement = -0.2f;
                             break;
                         }
                         case 6: {
-                            this->popup[1]->setWidth(350);
-                            this->popup[1]->setHeight(145);
-                            this->popup[1]->reinit(this->windowWidth, this->windowHeight);
-                            ((GuiText *) this->popup[2])->updateString("Easy? Let's fly\nto the bathroom.\nYou can move\nthrough the walls.");
-                            tutorialDialogueAlpha = -0.7f;
-                            tutorialDialogueDuration = 999.9f;
+                            this->setTutorialText("Easy? Let's fly\nto the bathroom.\nYou can move\nthrough the walls.", -0.7f, 999.9f);
                             break;
                         }
                         case 7: {
-                            this->popup[1]->setWidth(395);
-                            this->popup[1]->setHeight(80);
-                            this->popup[1]->reinit(this->windowWidth, this->windowHeight);
-                            ((GuiText *) this->popup[2])->updateString("Now, do you see that\ncar? Go and fly over it!");
-                            tutorialDialogueAlpha = -0.2f;
-                            tutorialDialogueDuration = 999.9f;
+                            this->setTutorialText("Now, do you see that\ncar? Go and fly over it!", -0.2f, 999.9f);
                             break;
                         }
                         case 8: {
-                            this->popup[1]->setWidth(380);
-                            this->popup[1]->setHeight(115);
-                            this->popup[1]->reinit(this->windowWidth, this->windowHeight);
-                            ((GuiText *) this->popup[2])->updateString("Check out what will\nhappen when you click\nthat button.");
-                            tutorialDialogueAlpha = -0.2f;
-                            tutorialDialogueDuration = 999.9f;
+                            this->setTutorialText("Check out what will\nhappen when you click\nthat button.", -0.2f, 999.9f);
                             break;
                         }
                         case 9: {
-                            this->popup[1]->setWidth(400);
-                            this->popup[1]->setHeight(51);
-                            this->popup[1]->reinit(this->windowWidth, this->windowHeight);
-                            ((GuiText *) this->popup[2])->updateString("Now you're inside a toy!");
-                            tutorialDialogueAlpha = -0.2f;
-                            tutorialDialogueDuration = 3.05f;
+                            this->setTutorialText("Now you're inside a toy!", -0.2f, 3.05f);
                             tutorialProceeding = true;
                             break;
                         }
                         case 10: {
-                            this->popup[1]->setWidth(395);
-                            this->popup[1]->setHeight(145);
-                            this->popup[1]->reinit(this->windowWidth, this->windowHeight);
-                            ((GuiText *) this->popup[2])->updateString("You can't pass through\nwalls anymore. But\nyou can interact with\nthe environment.");
-                            tutorialDialogueAlpha = -0.2f;
-                            tutorialDialogueDuration = 5.5f;
+                            this->setTutorialText("You can't pass through\nwalls anymore. But\nyou can interact with\nthe environment.", -0.2f, 5.5f);
                             tutorialProceeding = true;
                             break;
                         }
                         case 11: {
-                            this->popup[1]->setWidth(350);
-                            this->popup[1]->setHeight(115);
-                            this->popup[1]->reinit(this->windowWidth, this->windowHeight);
-                            ((GuiText *) this->popup[2])->updateString("Different toys have\ndifferent abilities.\nKeep that in mind!");
-                            tutorialDialogueAlpha = -0.2f;
-                            tutorialDialogueDuration = 4.5f;
+                            this->setTutorialText("Different toys have\ndifferent abilities.\nKeep that in mind!", -0.2f, 4.5f);
                             tutorialProceeding = true;
                             break;
                         }
                         case 12: {
-                            this->popup[1]->setWidth(288);
-                            this->popup[1]->setHeight(80);
-                            this->popup[1]->reinit(this->windowWidth, this->windowHeight);
-                            ((GuiText *) this->popup[2])->updateString("Oh no! A glass\nhas shattered!");
+                            this->setTutorialText("Oh no! A glass\nhas shattered!", -1.0f, 3.0f);
                             this->popup[0]->setTexPos(0, 19);
-                            tutorialDialogueAlpha = -1.0f;
-                            tutorialDialogueDuration = 3.0f;
                             tutorialProceeding = true;
                             for (int i = 0; i < 3; i++) {
                                 EntityGlassDebris *p = new EntityGlassDebris(this->core->getMap());
@@ -365,40 +310,22 @@ void Game::tick(double deltaTime) {
                             break;
                         }
                         case 13: {
-                            this->popup[1]->setWidth(450);
-                            this->popup[1]->setHeight(80);
-                            this->popup[1]->reinit(this->windowWidth, this->windowHeight);
-                            ((GuiText *) this->popup[2])->updateString("You have to clean it up\nbefore someone gets hurt!");
+                            this->setTutorialText("You have to clean it up\nbefore someone gets hurt!", -0.2f, 4.5f);
                             this->popup[0]->setTexPos(0, 25);
-                            tutorialDialogueAlpha = -0.2f;
-                            tutorialDialogueDuration = 4.5f;
                             tutorialProceeding = true;
                             break;
                         }
                         case 14: {
-                            this->popup[1]->setWidth(415);
-                            this->popup[1]->setHeight(115);
-                            this->popup[1]->reinit(this->windowWidth, this->windowHeight);
-                            ((GuiText *) this->popup[2])->updateString("There is a hoover toy\non the other side of the\nhouse. Go take it.");
+                            this->setTutorialText("There is a hoover toy\non the other side of the\nhouse. Go take it.", -0.2f, 5.5f);
                             this->popup[0]->setTexPos(0, 17);
-                            tutorialDialogueAlpha = -0.2f;
-                            tutorialDialogueDuration = 5.5f;
                             break;
                         }
                         case 15: {
-                            this->popup[1]->setWidth(365);
-                            this->popup[1]->setHeight(145);
-                            this->popup[1]->reinit(this->windowWidth, this->windowHeight);
-                            ((GuiText *) this->popup[2])->updateString("You can't open the\ndoor with this toy.\nIt's too light.\nTry to fly through.");
-                            tutorialDialogueAlpha = -0.6f;
-                            tutorialDialogueDuration = 6.5f;
+                            this->setTutorialText("You can't open the\ndoor with this toy.\nIt's too light.\nTry to fly through.", -0.6f, 6.5f);
                             break;
                         }
                         case 16: {
-                            this->popup[1]->setWidth(435);
-                            this->popup[1]->setHeight(180);
-                            this->popup[1]->reinit(this->windowWidth, this->windowHeight);
-                            ((GuiText *) this->popup[2])->updateString("It seems like not only the\ntoy is too light to open\nthe door, but also\nthat door open only\nfrom the other side!\n");
+                            this->setTutorialText("It seems like not only the\ntoy is too light to open\nthe door, but also\nthat door open only\nfrom the other side!", -0.2f, 9.5f);
                             this->popup[0]->setTexPos(0, 25);
                             tutorialDialogueAlpha = -0.2f;
                             tutorialDialogueDuration = 9.5f;
@@ -406,23 +333,13 @@ void Game::tick(double deltaTime) {
                             break;
                         }
                         case 17: {
-                            this->popup[1]->setWidth(400);
-                            this->popup[1]->setHeight(115);
-                            this->popup[1]->reinit(this->windowWidth, this->windowHeight);
-                            ((GuiText *) this->popup[2])->updateString("You can probably use\nthis bulldozer to open\nthe door.");
+                            this->setTutorialText("You can probably use\nthis bulldozer to open\nthe door.", -0.2f, 4.5f);
                             this->popup[0]->setTexPos(0, 17);
-                            tutorialDialogueAlpha = -0.2f;
-                            tutorialDialogueDuration = 4.5f;
                             break;
                         }
                         case 18: {
-                            this->popup[1]->setWidth(340);
-                            this->popup[1]->setHeight(115);
-                            this->popup[1]->reinit(this->windowWidth, this->windowHeight);
-                            ((GuiText *) this->popup[2])->updateString("The door is locked!\nLet me think for\na second.");
+                            this->setTutorialText("The door is locked!\nLet me think for\na second.", -0.7f, 5.2f);
                             this->popup[0]->setTexPos(0, 19);
-                            tutorialDialogueAlpha = -0.7f;
-                            tutorialDialogueDuration = 5.2f;
                             tutorialProceeding = true;
                             EntityFather *f = new EntityFather(this->core->getMap());
                             f->setX(6.65);
@@ -432,111 +349,60 @@ void Game::tick(double deltaTime) {
                             break;
                         }
                         case 19: {
-                            this->popup[1]->setWidth(0);
-                            this->popup[1]->setHeight(0);
-                            this->popup[1]->reinit(this->windowWidth, this->windowHeight);
-                            ((GuiText *) this->popup[2])->updateString("");
+                            this->setTutorialText("", -0.2f, 1.5f);
                             this->popup[0]->setTexPos(0, 25);
-                            tutorialDialogueAlpha = -0.2f;
-                            tutorialDialogueDuration = 1.5f;
                             tutorialProceeding = true;
                             break;
                         }
                         case 20: {
-                            this->popup[1]->setWidth(455);
-                            this->popup[1]->setHeight(115);
-                            this->popup[1]->reinit(this->windowWidth, this->windowHeight);
-                            ((GuiText *) this->popup[2])->updateString("Hey, watch out! The parent\nhas just stepped into\nthe house!");
+                            this->setTutorialText("Hey, watch out! The parent\nhas just stepped into\nthe house!", -0.2f, 5.0f);
                             this->popup[0]->setTexPos(0, 19);
-                            tutorialDialogueAlpha = -0.2f;
-                            tutorialDialogueDuration = 5.0f;
                             tutorialProceeding = true;
                             break;
                         }
                         case 21: {
-                            this->popup[1]->setWidth(470);
-                            this->popup[1]->setHeight(180);
-                            this->popup[1]->reinit(this->windowWidth, this->windowHeight);
-                            ((GuiText *) this->popup[2])->updateString("You can't let him see you!\nParents cannot understand\nthe presence of ghosts.\nThey would go crazy if\nthey saw one.");
-                            tutorialDialogueAlpha = -0.2f;
-                            tutorialDialogueDuration = 10.0f;
+                            this->setTutorialText("You can't let him see you!\nParents cannot understand\nthe presence of ghosts.\nThey would go crazy if\nthey saw one.", -0.2f, 10.0f);
                             tutorialProceeding = true;
                             break;
                         }
                         case 22: {
-                            this->popup[1]->setWidth(375);
-                            this->popup[1]->setHeight(115);
-                            this->popup[1]->reinit(this->windowWidth, this->windowHeight);
-                            ((GuiText *) this->popup[2])->updateString("Luckily, people can't\nsee ghosts. But they\nstill see moving toys.");
+                            this->setTutorialText("Luckily, people can't\nsee ghosts. But they\nstill see moving toys.", -0.2f, 6.0f);
                             this->popup[0]->setTexPos(0, 17);
-                            tutorialDialogueAlpha = -0.2f;
-                            tutorialDialogueDuration = 6.0f;
                             tutorialProceeding = true;
                             break;
                         }
                         case 23: {
-                            this->popup[1]->setWidth(415);
-                            this->popup[1]->setHeight(145);
-                            this->popup[1]->reinit(this->windowWidth, this->windowHeight);
-                            ((GuiText *) this->popup[2])->updateString("Actually, he may open\nthe door for us.\nWe only need to attract\nhis attention.");
-                            tutorialDialogueAlpha = -0.2f;
-                            tutorialDialogueDuration = 6.0f;
+                            this->setTutorialText("Actually, he may open\nthe door for us.\nWe only need to attract\nhis attention.", -0.2f, 6.0f);
                             tutorialProceeding = true;
                             break;
                         }
                         case 24: {
-                            this->popup[1]->setWidth(425);
-                            this->popup[1]->setHeight(180);
-                            this->popup[1]->reinit(this->windowWidth, this->windowHeight);
-                            ((GuiText *) this->popup[2])->updateString("There! If only you take\nthis car and hit the\nwall as hard as you can,\nthe sound will probably\nattract him.");
+                            this->setTutorialText("There! If only you take\nthis car and hit the\nwall as hard as you can,\nthe sound will probably\nattract him.", -0.5f, 10.0f);
                             this->core->getPlayer()->setDamagedToy(nullptr);
-                            tutorialDialogueAlpha = -0.5f;
-                            tutorialDialogueDuration = 10.0f;
                             break;
                         }
                         case 25: {
-                            this->popup[1]->setWidth(395);
-                            this->popup[1]->setHeight(51);
-                            this->popup[1]->reinit(this->windowWidth, this->windowHeight);
-                            ((GuiText *) this->popup[2])->updateString("It worked! He's coming!");
-                            tutorialDialogueAlpha = -0.5f;
-                            tutorialDialogueDuration = 3.5f;
+                            this->setTutorialText("It worked! He's coming!", -0.5f, 3.5f);
                             break;
                         }
                         case 26: {
-                            this->popup[1]->setWidth(425);
-                            this->popup[1]->setHeight(80);
-                            this->popup[1]->reinit(this->windowWidth, this->windowHeight);
-                            ((GuiText *) this->popup[2])->updateString("Now take the hoover and\nclean the glass.");
-                            tutorialDialogueAlpha = -0.35f;
-                            tutorialDialogueDuration = 4.5f;
+                            this->setTutorialText("Now take the hoover and\nclean the glass.", -0.35f, 4.5f);
                             break;
                         }
                         case 27: {
-                            this->popup[1]->setWidth(425);
-                            this->popup[1]->setHeight(80);
-                            this->popup[1]->reinit(this->windowWidth, this->windowHeight);
-                            ((GuiText *) this->popup[2])->updateString("Congratulations! You've\ndone a great job.");
+                            this->setTutorialText("Congratulations! You've\ndone a great job.", -0.5f, 4.5f);
                             this->popup[0]->setTexPos(0, 18);
-                            tutorialDialogueAlpha = -0.5f;
-                            tutorialDialogueDuration = 4.5f;
                             tutorialProceeding = true;
                             break;
                         }
                         case 28: {
-                            this->popup[1]->setWidth(525);
-                            this->popup[1]->setHeight(180);
-                            this->popup[1]->reinit(this->windowWidth, this->windowHeight);
-                            ((GuiText *) this->popup[2])->updateString("This is the end of the tutorial.\nYou can continue exploring the\nhouse. Once you're done, click\nthe 'back' button in the top\nleft corner of the screen.");
+                            this->setTutorialText("This is the end of the tutorial.\nYou can continue exploring the\nhouse. Once you're done, click\nthe 'back' button in the top\nleft corner of the screen.", -0.2f, 15.5f);
                             this->popup[0]->setTexPos(0, 18);
-                            tutorialDialogueAlpha = -0.2f;
-                            tutorialDialogueDuration = 15.5f;
                             tutorialProceeding = true;
                             break;
                         }
                         case 29: {
-                            tutorialDialogueAlpha = -1.0f;
-                            tutorialDialogueDuration = -1.0f;
+                            this->setTutorialText("", -1.0f, -1.0f);
                             tutorialGhostMovement = -0.2f;
                             this->popup[0]->setTexPos(0, 17);
                             break;
@@ -727,6 +593,14 @@ void Game::resetButtons(const TouchPoint *const p, const GuiButton *const b) {
 
 void Game::handleKeyboard(const Keypress *const keypress) {
     //Keyboard input is unsupported on current platform
+}
+
+void Game::setTutorialText(const std::string &string, float startAlpha, float duration) {
+    ((GuiText *) this->popup[2])->updateString(string);
+    ((GuiTextBubble *) this->popup[1])->setupDimensions((GuiText *) this->popup[2]);
+    this->popup[1]->reinit(this->windowWidth, this->windowHeight);
+    this->tutorialDialogueAlpha = startAlpha;
+    this->tutorialDialogueDuration = duration;
 }
 
 Game::~Game() {
