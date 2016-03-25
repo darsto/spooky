@@ -129,6 +129,7 @@ private:
             char pos = this->getGlyphPos(this->getString().at(i));
             tmp_width += this->getGlyphSize(pos) * this->getScale() + SPACING_PX;
         }
+        this->height -= 0.61f * this->getScale();
     }
 };
 

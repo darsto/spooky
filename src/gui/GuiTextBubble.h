@@ -16,7 +16,7 @@ public:
 
     void setupDimensions(GuiText *text) {
         this->width = text->getWidth() + 20;
-        this->height = text->getHeight() > 0 ? text->getHeight() + 19 : 0;
+        this->height = text->getHeight() > 0 ? text->getHeight() + 34 : 0;
     }
 
     const double resolution = 50.0;
