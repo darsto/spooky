@@ -79,12 +79,12 @@ JNIEXPORT void JNICALL Java_tk_approach_android_spookytom_JniBridge_init(JNIEnv 
     } else {
         application->reinit();
     }
-    jclass cls = env->GetObjectClass(obj);
+    /*jclass cls = env->GetObjectClass(obj);
     jmethodID mid = env->GetMethodID(cls, "loadTexture", "()V");
     if (mid == 0) {
         return;
     }
-    env->CallVoidMethod(obj, mid);
+    env->CallVoidMethod(obj, mid);*/
 }
 
 JNIEXPORT void JNICALL Java_tk_approach_android_spookytom_JniBridge_resize(JNIEnv *env, jobject obj, jint width, jint height) {
@@ -93,6 +93,14 @@ JNIEXPORT void JNICALL Java_tk_approach_android_spookytom_JniBridge_resize(JNIEn
 
 JNIEXPORT void JNICALL Java_tk_approach_android_spookytom_JniBridge_tick(JNIEnv *env, jobject obj) {
     application->update(false);
+    if (!application->isRunning()) {
+        jclass cls = env->GetObjectClass(obj);
+        jmethodID mid = env->GetMethodID(cls, "exit", "()V");
+        if (mid != 0) {
+            delete application;
+            env->CallVoidMethod(obj, mid);
+        }
+    }
 }
 
 JNIEXPORT void JNICALL Java_tk_approach_android_spookytom_JniBridge_handleTouch(JNIEnv *env, jobject obj, jint i,  jint action, jfloat x, jfloat y) {
