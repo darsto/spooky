@@ -19,7 +19,7 @@ public:
 
     virtual void update(double deltaTime) override {
         EntityMoving::update(0);
-        this->ejectTimer *= 0.75 * deltaTime * 62.5;
+        this->ejectTimer *= pow(0.75, deltaTime * 62.5);
         if (std::abs(this->ejectTimer) < 0.05) {
             if (this->ejectTimer < 0.0) {
                 this->setToy(true);
