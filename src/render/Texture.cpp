@@ -10,13 +10,8 @@ int Texture::activeTexId = -1;
 
 Texture::Texture() { }
 
-void Texture::createFromData(unsigned char *data, int width, int height, int channels, GLenum format, bool mipmaps) {
-    this->mipmaps = mipmaps;
-    this->width = width;
-    this->height = height;
-    this->channels = channels;
-
-    this->uiTexture = SOIL_create_OGL_texture(data, this->width, this->height, this->channels, 0, SOIL_FLAG_MULTIPLY_ALPHA);
+void Texture::createFromData(unsigned char *data) {
+    this->id = SOIL_create_OGL_texture(data, this->width, this->height, this->channels, 0, SOIL_FLAG_MULTIPLY_ALPHA);
 
     if (this->mipmaps) {
         glGenerateMipmap(GL_TEXTURE_2D);
@@ -25,14 +20,19 @@ void Texture::createFromData(unsigned char *data, int width, int height, int cha
 
 bool Texture::loadTexture2D(const std::string &path, bool mipmaps) {
 #ifdef __ANDROID__
-    path = "/sdcard/c003/" + a_sPath; //TODO Move files inside apk
+    path = "/sdcard/c003/" + path; //TODO Move files inside apk
 #endif // __ANDROID__
-    int width, height, channels;
-    unsigned char *data_ptr = SOIL_load_image(path.c_str(), &width, &height, &channels, SOIL_LOAD_RGBA);
-    createFromData(data_ptr, width, height, channels, GL_RGBA, mipmaps);
-    delete data_ptr;
 
     this->path = path;
+    this->mipmaps = mipmaps;
+    this->width = width;
+    this->height = height;
+    this->channels = channels;
+
+    unsigned char *data_ptr = SOIL_load_image(this->path.c_str(), &this->width, &this->height, &this->channels, SOIL_LOAD_RGBA);
+    createFromData(data_ptr);
+    delete data_ptr;
+
     return true;
 }
 
@@ -63,13 +63,13 @@ void Texture::setFiltering(int filterMag, int filterMin) {
 
 void Texture::bindTexture(int id) {
     this->boundId = id;
-    if (boundTexId != uiTexture || activeTexId != id) {
+    if (Texture::boundTexId != id || Texture::activeTexId != id) {
         glActiveTexture(GL_TEXTURE0 + id);
-        activeTexId = id;
+        Texture::activeTexId = id;
     }
-    if (boundTexId != uiTexture) {
-        glBindTexture(GL_TEXTURE_2D, uiTexture);
-        boundTexId = uiTexture;
+    if (Texture::boundTexId != id) {
+        glBindTexture(GL_TEXTURE_2D, id);
+        Texture::boundTexId = id;
     }
 }
 
@@ -98,5 +98,5 @@ int Texture::getBoundId() const {
 }
 
 Texture::~Texture() {
-    glDeleteTextures(1, &uiTexture);
+    glDeleteTextures(1, &id);
 }

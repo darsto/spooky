@@ -7,6 +7,7 @@
 #pragma once
 
 #include <string>
+#include <map>
 #include "opengl.h"
 
 enum ETextureFiltering
@@ -25,7 +26,7 @@ class Texture
 public:
     Texture();
     ~Texture();
-    void createFromData(unsigned char* data, int width, int height, int channels, GLenum format, bool mipmaps = false);
+    void createFromData(unsigned char* data);
     bool loadTexture2D(const std::string &path, bool mipmaps = false);
     void bindTexture(int id = 0);
 
@@ -43,8 +44,7 @@ public:
 
 private:
     int width, height, channels;
-    GLuint uiTexture;
-    GLuint uiSampler;
+    GLuint id;
     bool mipmaps;
     int boundId = -1;
     int filterMin, filterMag;
