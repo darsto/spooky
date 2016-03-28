@@ -7,7 +7,7 @@
 
 #include "EntityMoving.h"
 
-class Player;
+class EntityPlayer;
 
 class EntityToy : public EntityMoving {
 
@@ -25,11 +25,11 @@ public:
         this->movingTimer += 0.015;
     }
 
-    Player *getHost() const {
+    EntityPlayer *getHost() const {
         return host;
     }
 
-    void setHost(Player *host) {
+    void setHost(EntityPlayer *host) {
         this->host = host;
     }
 
@@ -44,7 +44,7 @@ public:
     }
 
 protected:
-    Player *host = nullptr;
+    EntityPlayer *host = nullptr;
     double durability = 1.0;
     double movingTimer = 0.0;
 };

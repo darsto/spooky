@@ -53,7 +53,7 @@ void Map::saveEntities() {
         for (int i = 0; i < this->getEntities().size(); i++) {
             Entity *e = this->getEntities().at(i);
             int id = -1;
-            if (Player *p = dynamic_cast<Player *>(e)) id = 0;
+            if (EntityPlayer *p = dynamic_cast<EntityPlayer *>(e)) id = 0;
             else if (EntityTruck *p = dynamic_cast<EntityTruck *>(e)) id = 1;
             else if (EntityFather *p = dynamic_cast<EntityFather *>(e)) id = 2;
             else if (EntityBulldozer *p = dynamic_cast<EntityBulldozer *>(e)) id = 3;

@@ -11,10 +11,10 @@
 #include "EntityToy.h"
 #include "IEntityLighted.h"
 
-class Player : public EntityMoving, public IEntityLighted {
+class EntityPlayer : public EntityMoving, public IEntityLighted {
 
 public:
-    Player(Map *map);
+    EntityPlayer(Map *map);
     bool teleport(double x, double y);
 
     virtual void update(double deltaTime) override {

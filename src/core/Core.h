@@ -21,7 +21,7 @@ public:
 #endif //__ANDROID__
         if (this->player == nullptr) {
             for (Entity *e : map->getEntities()) {
-                if (Player *p = dynamic_cast<Player *>(e)) {
+                if (EntityPlayer *p = dynamic_cast<EntityPlayer *>(e)) {
                     this->player = p;
                     break;
                 }
@@ -57,11 +57,11 @@ public:
         this->running = false;
     }
 
-    Player *getPlayer() const {
+    EntityPlayer *getPlayer() const {
         return player;
     }
 
-    void setPlayer(Player *player) {
+    void setPlayer(EntityPlayer *player) {
         Core::player = player;
     }
 
@@ -88,7 +88,7 @@ public:
 private:
     bool running = true;
     Map *map;
-    Player *player = nullptr;
+    EntityPlayer *player = nullptr;
     double camX = 0, camY = 0;
     double generalScale = 1.0;
     double defaultBlockSize;

@@ -97,7 +97,7 @@ TiledTxtMapLoader::TiledTxtMapLoader(const std::string &fileName) {
                 i++;
                 switch (id) {
                     case 0:
-                        sshape = new Player(this->map);
+                        sshape = new EntityPlayer(this->map);
                         break;
                     case 1:
                         sshape = new EntityTruck(this->map);

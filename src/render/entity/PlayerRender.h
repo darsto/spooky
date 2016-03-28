@@ -14,7 +14,7 @@ public:
     PlayerRender() : DefaultEntityRender("player", "shader") { }
 
     virtual void render(const Entity *const entity, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, double scale) override {
-        const Player *const player = ((const Player *const) entity);
+        const EntityPlayer *const player = ((const EntityPlayer *const) entity);
         if (player->getToy() == nullptr || player->getEjectTime() > 0.0) {
             this->texture.bindTexture(0);
             this->shaderProgram.useProgram();
@@ -47,7 +47,7 @@ public:
 
 protected:
     virtual int getTexPos(const Entity *const entity) override {
-        const Player *const player = ((const Player *const) entity);
+        const EntityPlayer *const player = ((const EntityPlayer *const) entity);
         return (int) std::fmod((sin(player->getTailAnimation()) + 1.0) * 8, 16.0);
     }
 

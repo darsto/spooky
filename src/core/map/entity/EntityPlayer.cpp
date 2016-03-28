@@ -6,7 +6,7 @@
 #include "core/map/Map.h"
 #include "EntityToy.h"
 
-Player::Player(Map *map) : EntityMoving(map, 0.55, 0.55) {
+EntityPlayer::EntityPlayer(Map *map) : EntityMoving(map, 0.55, 0.55) {
     b2CircleShape shape;
     shape.m_p.Set(0, 0);
     shape.m_radius = 0.35; // A bit more than our size because it is only a sensor
@@ -21,7 +21,7 @@ Player::Player(Map *map) : EntityMoving(map, 0.55, 0.55) {
 /*
  * Teleport player by given vector
  */
-bool Player::teleport(double x, double y) {
+bool EntityPlayer::teleport(double x, double y) {
     if (this->map->getBlock((int) (this->getX() + x), (int) (this->getY() + this->height * 0.55 + y)) == nullptr) {
         this->setX(this->getX() + x);
         this->setY(this->getY() + y);
@@ -38,7 +38,7 @@ bool Player::teleport(double x, double y) {
     return true;
 }
 
-void Player::onCollision(IPositionable *object, char state) {
+void EntityPlayer::onCollision(IPositionable *object, char state) {
     if (object != nullptr) if (EntityToy *toy = dynamic_cast<EntityToy *>(object)) {
         if (state == 0 && this->toy == nullptr) {
             this->toysToMerge++;
@@ -52,7 +52,7 @@ void Player::onCollision(IPositionable *object, char state) {
     }
 }
 
-void Player::eject() {
+void EntityPlayer::eject() {
     if (this->toy != nullptr) {
         this->setX(this->toy->getX());
         this->setY(this->toy->getY());
@@ -64,17 +64,17 @@ void Player::eject() {
     }
 }
 
-double Player::getX() const {
+double EntityPlayer::getX() const {
     if (this->toy != nullptr) return this->toy->getX();
     return Entity::getX();
 }
 
-double Player::getY() const {
+double EntityPlayer::getY() const {
     if (this->toy != nullptr) return this->toy->getY();
     return Entity::getY();
 }
 
-void Player::applyImpulse(double x, double y, double power) {
+void EntityPlayer::applyImpulse(double x, double y, double power) {
     if (this->toy != nullptr) {
         double da = this->toy->getAngle() - this->getAngle();
         double dx = atan2(-sin(da), cos(da));
@@ -92,7 +92,7 @@ void Player::applyImpulse(double x, double y, double power) {
     else EntityMoving::applyImpulse(x, y);
 }
 
-void Player::applyForce(double x, double y) {
+void EntityPlayer::applyForce(double x, double y) {
     if (this->toy != nullptr) {
         x *= this->toy->getSpeed();
         y *= this->toy->getSpeed();
@@ -101,7 +101,7 @@ void Player::applyForce(double x, double y) {
     else EntityMoving::applyImpulse(x, y);
 }
 
-void Player::setAngle(double angle, double power) {
+void EntityPlayer::setAngle(double angle, double power) {
     if (this->toy != nullptr) {
         double da = angle - this->toy->getAngle();
         double dx = atan2(-sin(da), cos(da));
@@ -114,11 +114,11 @@ void Player::setAngle(double angle, double power) {
     Entity::setAngle(angle);
 }
 
-bool Player::doesCollide(IPositionable *obj) {
+bool EntityPlayer::doesCollide(IPositionable *obj) {
     return true;
 }
 
-void Player::setToy(bool force) {
+void EntityPlayer::setToy(bool force) {
     if (!force) {
         this->ejectTimer = -1.0;
     } else {

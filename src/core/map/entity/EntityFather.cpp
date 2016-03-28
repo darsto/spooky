@@ -23,7 +23,7 @@ void EntityFather::update(double deltaTime) {
     for (Entity *e : this->map->getEntities()) {
         if (x >= e->getX() - e->getWidth() - radius && x <= e->getX() + radius &&
             y >= e->getY() - e->getHeight() - radius && y <= e->getY() + radius) {
-            if (Player *p = dynamic_cast<Player *>(e)) {
+            if (EntityPlayer *p = dynamic_cast<EntityPlayer *>(e)) {
                 if (p->getToy() != nullptr) {
                     p->applyForce((p->getX() - this->getX()) * 3, (p->getY() - this->getY()) * 3);
                     p->eject();

@@ -166,7 +166,7 @@ void GameRender::initRenders() {
     entityRenders.clear();
 
     blockRenders.insert(std::make_pair(typeid(SimpleBlock).name(), new SimpleBlockRender()));
-    entityRenders.insert(std::make_pair(typeid(Player).name(), new PlayerRender()));
+    entityRenders.insert(std::make_pair(typeid(EntityPlayer).name(), new PlayerRender()));
     entityRenders.insert(std::make_pair(typeid(EntityTruck).name(), new EntityTruckRender()));
     entityRenders.insert(std::make_pair(typeid(EntityBulldozer).name(), new EntityBulldozerRender()));
     entityRenders.insert(std::make_pair(typeid(EntityBullet).name(), new DefaultEntityRender("bullet", "shader")));
