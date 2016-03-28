@@ -24,6 +24,22 @@
 #include <render/entity/EntityFurnitureRender.h>
 #include <render/entity/EntityWideRender.h>
 
+GameRender::GameRender() : WindowRender() { }
+
+void GameRender::init(RenderContext *const renderContext) {
+    this->initRenders();
+    fbo.init(3, renderContext->getWindowWidth(), renderContext->getWindowHeight(), new float[4]{0.9, 0.9, 0.9, 1.0}, "fboshader");
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+    this->resize(renderContext);
+}
+
+void GameRender::resize(RenderContext *const renderContext) {
+    viewMatrix = glm::lookAt(glm::vec3(0, 0, 0.0f), glm::vec3(0, 0, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+    this->projectionMatrix = glm::ortho(0.0f, float(renderContext->getWindowWidth()), 0.0f, float(renderContext->getWindowHeight()));
+    this->fbo.resize(renderContext->getWindowWidth(), renderContext->getWindowHeight());
+}
+
 void GameRender::render(Window *window, RenderContext *const renderContext) {
     Game *game = ((Game *) window);
     Core *core = game->getCore();
@@ -118,22 +134,6 @@ void GameRender::render(Window *window, RenderContext *const renderContext) {
             0.0f)), core->getGeneralScale());
     }
 }
-
-void GameRender::resize(RenderContext *const renderContext) {
-    viewMatrix = glm::lookAt(glm::vec3(0, 0, 0.0f), glm::vec3(0, 0, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-    this->projectionMatrix = glm::ortho(0.0f, float(renderContext->getWindowWidth()), 0.0f, float(renderContext->getWindowHeight()));
-    this->fbo.resize(renderContext->getWindowWidth(), renderContext->getWindowHeight());
-}
-
-void GameRender::init(RenderContext *const renderContext) {
-    this->initRenders();
-    fbo.init(3, renderContext->getWindowWidth(), renderContext->getWindowHeight(), new float[4]{0.9, 0.9, 0.9, 1.0}, "fboshader");
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-    this->resize(renderContext);
-}
-
-GameRender::GameRender() : WindowRender() { }
 
 BlockRender *GameRender::getBlockRender(const Block *const block) {
     return blockRenders[typeid(*block).name()];
