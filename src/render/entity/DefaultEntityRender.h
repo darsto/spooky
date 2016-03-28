@@ -33,8 +33,15 @@ protected:
 
     virtual int getTexPos(const Entity *const entity);
 
+    struct Cache {
+        Cache() { }
+        glm::mat4 readyModelMatrix; //matrix past transformations
+    };
+
+    static std::map<const Entity *const, Cache *> matrixCache;
+
     /* -- tmp -- */
-    glm::mat4 tmpModelMatrix;
+    glm::mat4 *tmpModelMatrix;
 };
 
 #endif //C003_DEFAULTENTITYRENDER_H

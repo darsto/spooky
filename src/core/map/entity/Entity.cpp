@@ -18,14 +18,21 @@ Entity::Entity(Map *map, double width, double height) : map(map) {
 void Entity::update(double deltaTime) {
     this->x = body->GetPosition().x + this->width * 0.5;
     this->y = body->GetPosition().y + this->height * 0.5;
+    if (this->x != this->prevX || this->y != this->prevY) {
+        this->markToRedraw();
+    }
+    this->prevX = this->x;
+    this->prevY = this->y;
 }
 
 void Entity::setY(double y) {
     body->SetTransform(b2Vec2(body->GetPosition().x, (float32) (y - this->height * 0.5)), body->GetAngle());
+    this->markToRedraw();
 }
 
 void Entity::setX(double x) {
     body->SetTransform(b2Vec2((float32) (x - this->width * 0.5), body->GetPosition().y), body->GetAngle());
+    this->markToRedraw();
 }
 
 Entity::~Entity() {

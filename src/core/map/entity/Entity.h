@@ -65,11 +65,24 @@ public:
     }
 
     virtual void setAngle(double angle, double power = 1.0) {
+        if (angle != this->getAngle()) this->markToRedraw();
         this->body->SetTransform(this->body->GetPosition(), (float) angle);
     }
 
     b2Body *getBody() const {
         return body;
+    }
+
+    virtual bool toBeRedrawn() const {
+        return this->redraw;
+    }
+
+    virtual void setRedrawn() {
+        this->redraw = false;
+    }
+
+    virtual void markToRedraw() {
+        this->redraw = true;
     }
 
     void remove() {
@@ -85,10 +98,12 @@ public:
 protected:
     Map *map;
     double x = 0, y = 0;
+    double prevX, prevY;
     double width, height;
     b2Body *body;
     b2BodyDef bodyDef;
     bool toBeDeleted = false;
+    bool redraw = true;
 };
 
 #endif //C003_ENTITY_H

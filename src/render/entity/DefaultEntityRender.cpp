@@ -6,6 +6,8 @@
 #include "../../core/map/block/Block.h"
 #include <string>
 
+std::map<const Entity *const, DefaultEntityRender::Cache *> DefaultEntityRender::matrixCache;
+
 DefaultEntityRender::DefaultEntityRender(const string &textureFile, const string &shader, int texId) : texId(texId) {
     texture.loadTexture2D(textureFile + string(".png"), true);
     texture.setFiltering(TEXTURE_FILTER_MAG_BILINEAR, TEXTURE_FILTER_MIN_BILINEAR_MIPMAP);
@@ -70,15 +72,29 @@ void DefaultEntityRender::render(const Entity *const entity, glm::mat4 projectio
     this->shaderProgram.setUniform("projectionMatrix", projectionMatrix);
     this->shaderProgram.setUniform("gSampler", texture.getBoundId());
 
-    this->tmpModelMatrix = glm::translate(this->modelMatrix, glm::vec3(0.0f - (entity->getX() - entity->getWidth() / 2) * scale, 0.0f - (entity->getY() - entity->getHeight() / 2) * scale, 0.0f));
+    Cache *cache = matrixCache[entity];
+    
+    if (cache == nullptr || entity->toBeRedrawn()) {
+        glm::mat4x4 tmpModelMatrixVal;
+        tmpModelMatrixVal = glm::translate(this->modelMatrix, glm::vec3(0.0f - (entity->getX() - entity->getWidth() / 2) * scale, 0.0f - (entity->getY() - entity->getHeight() / 2) * scale, 0.0f));
 
-    this->tmpModelMatrix = glm::translate(this->tmpModelMatrix, glm::vec3(0.5 * scale, 0.5 * scale, 0.0)); // Translate to the middle of the entity
-    this->tmpModelMatrix = glm::rotate(this->tmpModelMatrix, (const float) entity->getAngle(), glm::vec3(0.0f, 0.0f, 1.0f)); // Apply rotation
-    this->tmpModelMatrix = glm::translate(this->tmpModelMatrix, glm::vec3(-0.5 * scale, -0.5 * scale, 0.0)); // Translate back to the origin
+        tmpModelMatrixVal = glm::translate(tmpModelMatrixVal, glm::vec3(0.5 * scale, 0.5 * scale, 0.0)); // Translate to the middle of the entity
+        tmpModelMatrixVal = glm::rotate(tmpModelMatrixVal, (const float) entity->getAngle(), glm::vec3(0.0f, 0.0f, 1.0f)); // Apply rotation
+        tmpModelMatrixVal = glm::translate(tmpModelMatrixVal, glm::vec3(-0.5 * scale, -0.5 * scale, 0.0)); // Translate back to the origin
 
-    this->tmpModelMatrix = glm::scale(this->tmpModelMatrix, glm::vec3(scale, scale, 1.0f));
+        tmpModelMatrixVal = glm::scale(tmpModelMatrixVal, glm::vec3(scale, scale, 1.0f));
+        this->tmpModelMatrix = &tmpModelMatrixVal;
 
-    shaderProgram.setUniform("modelViewMatrix", viewMatrix * this->tmpModelMatrix);
+        if (cache == nullptr) {
+            cache = new Cache();
+            matrixCache[entity] = cache;
+        }
+        cache->readyModelMatrix = *this->tmpModelMatrix;
+    } else {
+        this->tmpModelMatrix = &cache->readyModelMatrix;
+    }
+
+    shaderProgram.setUniform("modelViewMatrix", viewMatrix * *this->tmpModelMatrix);
     shaderProgram.setUniform("texPosX", 1.0f / this->texture.getWidth() + (float) (this->getTexPos(entity) % atlasSize) / atlasSize);
     shaderProgram.setUniform("texPosY", 1.0f / this->texture.getWidth() + (float) (this->getTexPos(entity) / atlasSize) / atlasSize);
 

@@ -10,6 +10,8 @@
 #include "SimpleBlockRender.h"
 #include "../../core/map/block/SimpleBlock.h"
 
+std::map<const Block *const, SimpleBlockRender::Cache *> SimpleBlockRender::matrixCache;
+
 SimpleBlockRender::SimpleBlockRender() {
     texture.loadTexture2D("terrain.png", true);
     texture.setFiltering(TEXTURE_FILTER_MAG_NEAREST, TEXTURE_FILTER_MIN_NEAREST_MIPMAP);
@@ -50,10 +52,10 @@ SimpleBlockRender::SimpleBlockRender() {
 
     float size = 1.0f / atlasSize - 1.0f / texture.getWidth();
     float tCoords[] = {
-            size, 0.0f,
-            size, size,
-            0.0f, 0.0f,
-            0.0f, size,
+        size, 0.0f,
+        size, size,
+        0.0f, 0.0f,
+        0.0f, size,
     };
 
     glBindBuffer(GL_ARRAY_BUFFER, this->vbo[1]); /* texture coords vbo */
@@ -74,15 +76,26 @@ void SimpleBlockRender::render(const Block *const block, glm::mat4 projectionMat
     this->shaderProgram.setUniform("projectionMatrix", projectionMatrix);
     this->shaderProgram.setUniform("gSampler", texture.getBoundId());
 
+    Cache *cache = matrixCache[block];
 
-    this->tmpModelMatrix = glm::translate(this->modelMatrix, glm::vec3((-block->getX() * scale), (- block->getY() * scale), 0.0f));
-    this->tmpModelMatrix = glm::scale(this->tmpModelMatrix, glm::vec3(scale, scale, 1.0f));
-    this->tmpModelMatrix = glm::rotate(this->tmpModelMatrix, 0.0f, glm::vec3(1.0f, 0.0f, 0.0f)); // Just a variation of first rotating
 
-    shaderProgram.setUniform("modelViewMatrix", viewMatrix * this->tmpModelMatrix);
+    if (cache == nullptr || block->toBeRedrawn()) {
+        glm::mat4x4 tmpModelMatrixVal = glm::translate(this->modelMatrix, glm::vec3((-block->getX() * scale), (-block->getY() * scale), 0.0f));
+        tmpModelMatrixVal = glm::scale(tmpModelMatrixVal, glm::vec3(scale, scale, 1.0f));
+        this->tmpModelMatrix = &tmpModelMatrixVal;
+        if (cache == nullptr) {
+            cache = new Cache();
+            matrixCache[block] = cache;
+        }
+        cache->readyModelMatrix = *this->tmpModelMatrix;
+    } else {
+        this->tmpModelMatrix = &cache->readyModelMatrix;
+    }
+
+    shaderProgram.setUniform("modelViewMatrix", viewMatrix * *this->tmpModelMatrix);
 
     int texId = this->getTexPos(block);
-    int x = texId % atlasSize,  y = texId / atlasSize;
+    int x = texId % atlasSize, y = texId / atlasSize;
     shaderProgram.setUniform("texPosX", 0.5f / texture.getWidth() + (float) x / atlasSize);
     shaderProgram.setUniform("texPosY", 0.5f / texture.getHeight() + (float) y / atlasSize);
 

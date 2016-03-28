@@ -20,13 +20,13 @@ public:
         return x;
     }
 
-    void setX(int x);
+    virtual void setX(int x);
 
     virtual double getY() const override {
         return y;
     }
 
-    void setY(int y);
+    virtual void setY(int y);
 
     void update(double deltaTime) { }
 
@@ -41,6 +41,12 @@ public:
     virtual double getHeight() const override {
         return 1;
     }
+
+    virtual bool toBeRedrawn() const = 0;
+
+    virtual void setRedrawn() = 0;
+
+    virtual void markToRedraw() = 0;
 
     virtual ~Block() { }
 

@@ -29,8 +29,15 @@ private:
 
     int getTexPos(const Block *const block);
 
+    struct Cache {
+        Cache() { }
+        glm::mat4 readyModelMatrix; //matrix past transformations
+    };
+
+    static std::map<const Block *const, Cache *> matrixCache;
+
     /* -- tmp -- */
-    glm::mat4 tmpModelMatrix;
+    glm::mat4 *tmpModelMatrix;
 
 };
 

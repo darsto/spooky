@@ -23,8 +23,32 @@ public:
         return texPos;
     }
 
+    virtual void setX(int x) override {
+        Block::setX(x);
+        this->markToRedraw();
+    }
+
+    virtual void setY(int y) override {
+        Block::setY(y);
+        this->markToRedraw();
+    }
+
+    virtual bool toBeRedrawn() const override {
+        return this->redraw;
+    }
+
+    virtual void markToRedraw() override {
+        this->redraw = true;
+    }
+
+    //TODO call this after each render cycle on all the objects
+    virtual void setRedrawn() override {
+        this->redraw = false;
+    }
+
 private:
     int texPos;
+    bool redraw = true;
 };
 
 #endif //C003_SIMPLEBLOCK_H
