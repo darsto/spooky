@@ -41,9 +41,15 @@ public:
         glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
 
-    virtual void render(const Entity *const entity, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, double scale) override {
-        DefaultEntityRender::render(entity, projectionMatrix, viewMatrix, scale);
+protected:
+    virtual int getTexPos(const Entity *const entity) override {
+        int texPos = -1;
+        if (dynamic_cast<const EntityTable *const>(entity)) texPos = 4;
+        if (dynamic_cast<const EntityCoffeeTable *const>(entity)) texPos = 8;
+        if (dynamic_cast<const EntityCouch *const>(entity)) texPos = 13;
+        return texPos;
     }
+
 };
 
 #endif //C003_ENTITYTABLERENDER_H

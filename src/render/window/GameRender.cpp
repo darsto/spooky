@@ -15,13 +15,12 @@
 #include <core/map/entity/EntityDoor.h>
 #include <core/map/entity/EntityFurniture.h>
 #include <core/map/entity/EntityTable.h>
-#include <core/map/entity/EntityChair.h>
 #include <core/map/entity/EntityGlassDebris.h>
 #include <core/map/entity/EntityCouch.h>
 #include <core/map/block/SimpleBlock.h>
 #include <logging.h>
 #include <render/entity/EntityMachineryRender.h>
-#include <render/entity/EntityFurnitureRender.h>
+#include <render/entity/EntityStaticRender.h>
 #include <render/entity/EntityWideRender.h>
 
 GameRender::GameRender() : WindowRender() { }
@@ -101,12 +100,12 @@ void GameRender::render(Window *window, RenderContext *const renderContext) {
                                {34, 6, 1, 1},
                                {31, 7, 7, 11}};
 
-    for (int i = 0; i < 8; i++) {
+    /*for (int i = 0; i < 8; i++) {
         this->voidRender->render(grayout[i][0], grayout[i][1], grayout[i][2], grayout[i][3], projectionMatrix, glm::translate(viewMatrix, glm::vec3(
             -(signed) windowWidth / 2.0f - camX,
             (signed) windowHeight / 2.0f - camY,
             0.0f)), core->getBlockSize() * core->getGeneralScale());
-    }
+    }*/
 #endif //EDITOR
 
     fbo.unbind();
@@ -167,20 +166,18 @@ void GameRender::initRenders() {
 
     blockRenders.insert(std::make_pair(typeid(SimpleBlock).name(), new SimpleBlockRender()));
     entityRenders.insert(std::make_pair(typeid(EntityPlayer).name(), new PlayerRender()));
-    entityRenders.insert(std::make_pair(typeid(EntityTruck).name(), new EntityTruckRender()));
-    entityRenders.insert(std::make_pair(typeid(EntityBulldozer).name(), new EntityBulldozerRender()));
-    entityRenders.insert(std::make_pair(typeid(EntityBullet).name(), new DefaultEntityRender("bullet", "shader")));
-    entityRenders.insert(std::make_pair(typeid(EntityDoor).name(), new EntityFurnitureRender(0)));
-    entityRenders.insert(std::make_pair(typeid(EntityChair).name(), new EntityFurnitureRender(3)));
-    entityRenders.insert(std::make_pair(typeid(EntityArmchair).name(), new EntityFurnitureRender(11)));
-    entityRenders.insert(std::make_pair(typeid(EntityPouf).name(), new EntityFurnitureRender(12)));
-    entityRenders.insert(std::make_pair(typeid(EntityTable).name(), new EntityWideRender(4)));
-    entityRenders.insert(std::make_pair(typeid(EntityCoffeeTable).name(), new EntityWideRender(8)));
-    entityRenders.insert(std::make_pair(typeid(EntityCouch).name(), new EntityWideRender(13)));
-    entityRenders.insert(std::make_pair(typeid(EntityFurniture).name(), new EntityFurnitureRender()));
-    entityRenders.insert(std::make_pair(typeid(EntityFlowerPot).name(), new EntityFurnitureRender(16)));
-    entityRenders.insert(std::make_pair(typeid(EntityGlassDebris).name(), new EntityGlassDebrisRender()));
-    entityRenders.insert(std::make_pair(typeid(EntityHoover).name(), new DefaultEntityRender("toy", "shader", 2)));
+    EntityMachineryRender *machineryRender = new EntityMachineryRender();
+    entityRenders.insert(std::make_pair(typeid(EntityTruck).name(), machineryRender));
+    entityRenders.insert(std::make_pair(typeid(EntityBulldozer).name(), machineryRender));
+    entityRenders.insert(std::make_pair(typeid(EntityHoover).name(), machineryRender));
+    //entityRenders.insert(std::make_pair(typeid(EntityBullet).name(), new DefaultEntityRender("bullet", "shader")));
+    EntityWideRender *wideRender = new EntityWideRender();
+    entityRenders.insert(std::make_pair(typeid(EntityTable).name(), wideRender));
+    entityRenders.insert(std::make_pair(typeid(EntityCoffeeTable).name(), wideRender));
+    entityRenders.insert(std::make_pair(typeid(EntityCouch).name(), wideRender));
+    EntityStaticRender *staticRender = new EntityStaticRender();
+    entityRenders.insert(std::make_pair(typeid(EntityFurniture).name(), staticRender));
+    entityRenders.insert(std::make_pair(typeid(EntityGlassDebris).name(), staticRender));
     entityRenders.insert(std::make_pair(typeid(SimpleShape).name(), new SimpleShapeRender()));
     entityRenders.insert(std::make_pair(typeid(EntityFather).name(), new DefaultEntityRender("parents", "shader")));
 }

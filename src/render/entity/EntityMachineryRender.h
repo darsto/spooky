@@ -7,21 +7,16 @@
 
 #include "DefaultEntityRender.h"
 
-class EntityTruckRender : public DefaultEntityRender {
+class EntityMachineryRender : public DefaultEntityRender {
 public:
-    EntityTruckRender() : DefaultEntityRender("toy", "shader") { };
+    EntityMachineryRender() : DefaultEntityRender("toy", "shader") { };
 protected:
     virtual int getTexPos(const Entity *const entity) override {
-        return 0;
-    }
-};
-
-class EntityBulldozerRender : public DefaultEntityRender {
-public:
-    EntityBulldozerRender() : DefaultEntityRender("toy", "shader") { };
-protected:
-    virtual int getTexPos(const Entity *const entity) override {
-        return 1;
+        int texPos = -1;
+        if (dynamic_cast<const EntityTruck *const>(entity)) texPos = 0;
+        if (dynamic_cast<const EntityBulldozer *const>(entity)) texPos = 1;
+        if (dynamic_cast<const EntityHoover *const>(entity)) texPos = 2;
+        return texPos;
     }
 };
 

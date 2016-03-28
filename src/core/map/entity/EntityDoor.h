@@ -7,9 +7,10 @@
 
 #include "EntityMoving.h"
 #include "EntityMachinery.h"
+#include "EntityFurniture.h"
 #include <core/map/Map.h>
 
-class EntityDoor : public EntityMoving {
+class EntityDoor : public EntityFurniture {
 
 public:
     EntityDoor(Map *map, unsigned char type);

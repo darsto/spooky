@@ -4,17 +4,13 @@
 
 #include "EntityDoor.h"
 
-EntityDoor::EntityDoor(Map *map, unsigned char type) : EntityMoving(map, 1.0, 0.25), type(type) {
-    b2PolygonShape shape;
-    shape.SetAsBox(0.5 - 0.07, 0.125);
-    b2FixtureDef fixDef;
-    fixDef.shape = &shape;
-    fixDef.density = 0.9f;
-    fixDef.friction = 0.1f;
-
-    this->body->CreateFixture(&fixDef);
+EntityDoor::EntityDoor(Map *map, unsigned char type) : EntityFurniture(map, new b2PolygonShape, 1.0 - 0.14, 0.25, 0), type(type) {
+    this->body->GetFixtureList()[0].SetDensity(0.9f);
 
     this->hinge = this->map->getWorld()->CreateBody(&bodyDef);
+    b2FixtureDef fixDef;
+    fixDef.density = 0.9f;
+    fixDef.friction = 0.1f;
     b2CircleShape circleShape;
     circleShape.m_radius = 0.001;
     fixDef.shape = &circleShape;

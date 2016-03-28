@@ -8,9 +8,9 @@
 #include <core/map/entity/EntityDoor.h>
 #include <core/map/entity/SimpleShape.h>
 #include <core/map/entity/EntityFurniture.h>
-#include <core/map/entity/EntityChair.h>
 #include <core/map/entity/EntityGlassDebris.h>
 #include <core/map/entity/EntityCouch.h>
+#include <core/map/entity/EntityTable.h>
 #include "Map.h"
 
 Map::~Map() {

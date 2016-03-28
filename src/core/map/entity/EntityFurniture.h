@@ -157,4 +157,26 @@ public:
     virtual ~EntityToiletPaper() override { }
 };
 
+class EntityChair : public EntityFurniture {
+public:
+    EntityChair(Map *map) : EntityFurniture(map, new b2PolygonShape, 0.6, 0.6, 3) {
+        this->body->GetFixtureList()[0].SetDensity(6.0f);
+    }
+};
+
+class EntityArmchair : public EntityFurniture {
+public:
+    EntityArmchair(Map *map) : EntityFurniture(map, new b2PolygonShape, 0.875, 0.76, 11) {
+        this->body->GetFixtureList()[0].SetDensity(4.5f);
+    }
+};
+
+class EntityPouf : public EntityFurniture {
+public:
+    EntityPouf(Map *map) : EntityFurniture(map, new b2PolygonShape, 0.75, 0.625, 12) {
+        this->body->GetFixtureList()[0].SetDensity(3.5f);
+    }
+};
+
+
 #endif //C003_ENTITYFURNITURE_H
