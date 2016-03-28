@@ -9,8 +9,6 @@
 #include <string>
 #include "opengl.h"
 
-using namespace std;
-
 enum ETextureFiltering
 {
     TEXTURE_FILTER_MAG_NEAREST = 0, // Nearest criterion for magnification
@@ -25,36 +23,35 @@ enum ETextureFiltering
 class Texture
 {
 public:
+    Texture();
     ~Texture();
-    void createFromData(unsigned char* bData, int a_iWidth, int a_iHeight, int a_iBPP, GLenum format, bool bGenerateMipMaps = false);
-    bool loadTexture2D(string a_sPath, bool bGenerateMipMaps = false);
-    void bindTexture(int iTextureUnit = 0);
+    void createFromData(unsigned char* data, int width, int height, int channels, GLenum format, bool mipmaps = false);
+    bool loadTexture2D(const std::string &path, bool mipmaps = false);
+    void bindTexture(int id = 0);
 
-    void setFiltering(int a_tfMagnification, int a_tfMinification);
+    void setFiltering(int filterMag, int filterMin);
 
     void setSamplerParameter(GLenum parameter, GLenum value);
 
-    int getMinificationFilter();
-    int getMagnificationFilter();
-
-    int getWidth();
-    int getHeight();
-    int getBPP();
-
-    Texture();
+    int getMinificationFilter() const;
+    int getMagnificationFilter() const;
+    int getWidth() const;
+    int getHeight() const;
+    int getChannels() const;
 
     int getBoundId() const;
 
 private:
-    int iWidth, iHeight, iBPP;
+    int width, height, channels;
     GLuint uiTexture;
     GLuint uiSampler;
-    bool bMipMapsGenerated;
+    bool mipmaps;
     int boundId = -1;
-    int tfMinification, tfMagnification;
+    int filterMin, filterMag;
+    std::string path;
 
-    string sPath;
+    static int boundTexId;
+    static int activeTexId;
 };
-
 
 #endif //C003_TEXTURE_H
