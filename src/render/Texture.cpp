@@ -61,15 +61,15 @@ void Texture::setFiltering(int filterMag, int filterMin) {
     this->filterMag = filterMag;
 }
 
-void Texture::bindTexture(int id) {
-    this->boundId = id;
-    if (Texture::boundTexId != id || Texture::activeTexId != id) {
-        glActiveTexture(GL_TEXTURE0 + id);
-        Texture::activeTexId = id;
+void Texture::bindTexture(int bindId) {
+    this->boundId = bindId;
+    if (Texture::boundTexId != bindId || Texture::activeTexId != bindId) {
+        glActiveTexture(GL_TEXTURE0 + bindId);
+        Texture::activeTexId = bindId;
     }
-    if (Texture::boundTexId != id) {
-        glBindTexture(GL_TEXTURE_2D, id);
-        Texture::boundTexId = id;
+    if (Texture::boundTexId != this->id) {
+        glBindTexture(GL_TEXTURE_2D, this->id);
+        Texture::boundTexId = this->id;
     }
 }
 
