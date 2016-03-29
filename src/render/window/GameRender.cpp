@@ -62,7 +62,6 @@ void GameRender::render(Window *window, RenderContext *const renderContext) {
                 -(signed) windowWidth / 2.0f - camX,
                 (signed) windowHeight / 2.0f - camY, 0.0f
             )), core->getBlockSize() * core->getGeneralScale());
-            block->setRedrawn();
         }
     }
     int entitiesNum = 0;
@@ -77,7 +76,6 @@ void GameRender::render(Window *window, RenderContext *const renderContext) {
                 -(signed) windowWidth / 2.0f - camX,
                 (signed) windowHeight / 2.0f - camY,
                 0.0f)), core->getBlockSize() * core->getGeneralScale());
-            entity->setRedrawn();
             if (IEntityLighted *elighted = dynamic_cast<IEntityLighted *>(entity)) {
                 fbo.getShaderProgram()->useProgram();
                 if (entitiesNum < fbo.MAX_LIGHT_SRCS) {

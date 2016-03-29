@@ -16,13 +16,11 @@ Block::Block(Map *map, int x, int y) : id(Block::getNextBlockId()) {
 void Block::setY(int y) {
     this->y = y;
     body->SetTransform(b2Vec2(this->getX(), this->getY()), body->GetAngle());
-    this->markToRedraw();
 }
 
 void Block::setX(int x) {
     this->x = x;
     body->SetTransform(b2Vec2(this->getX(), this->getY()), body->GetAngle());
-    this->markToRedraw();
 }
 
 unsigned int Block::maxBlockId = 0;

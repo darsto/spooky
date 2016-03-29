@@ -69,7 +69,6 @@ public:
     }
 
     virtual void setAngle(double angle, double power = 1.0) {
-        if (angle != this->getAngle()) this->markToRedraw();
         this->body->SetTransform(this->body->GetPosition(), (float) angle);
     }
 
@@ -78,15 +77,7 @@ public:
     }
 
     virtual bool toBeRedrawn() const {
-        return this->redraw;
-    }
-
-    virtual void setRedrawn() {
-        this->redraw = false;
-    }
-
-    virtual void markToRedraw() {
-        this->redraw = true;
+        return this->body->IsAwake();
     }
 
     void remove() {
@@ -103,12 +94,10 @@ protected:
     const unsigned int id;
     Map *map;
     double x = 0, y = 0;
-    double prevX, prevY;
     double width, height;
     b2Body *body;
     b2BodyDef bodyDef;
     bool toBeDeleted = false;
-    bool redraw = true;
 
     static unsigned int maxEntityId;
     static unsigned int getNextEntityId();

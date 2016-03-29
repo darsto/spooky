@@ -47,15 +47,7 @@ public:
     }
 
     virtual bool toBeRedrawn() const {
-        return this->redraw;
-    }
-
-    virtual void markToRedraw() {
-        this->redraw = true;
-    }
-
-    virtual void setRedrawn() {
-        this->redraw = false;
+        return this->body->IsAwake();
     }
 
     virtual ~Block() { }
@@ -70,9 +62,6 @@ protected:
 
     static unsigned int maxBlockId;
     static unsigned int getNextBlockId();
-
-private:
-    bool redraw = true;
 };
 
 #endif //C003_BLOCK_H

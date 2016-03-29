@@ -18,11 +18,6 @@ Entity::Entity(Map *map, double width, double height) : id(Entity::getNextEntity
 void Entity::update(double deltaTime) {
     this->x = body->GetPosition().x + this->width * 0.5;
     this->y = body->GetPosition().y + this->height * 0.5;
-    if (this->x != this->prevX || this->y != this->prevY) {
-        this->markToRedraw();
-    }
-    this->prevX = this->x;
-    this->prevY = this->y;
 }
 
 void Entity::setY(double y) {
