@@ -57,12 +57,13 @@ void GameRender::render(Window *window, RenderContext *const renderContext) {
         if (block->getX() * scale > -(signed) windowWidth / 2.0f - camX &&
             (block->getX() - 1) * scale < -(signed) windowWidth / 2.0f - camX + (signed) windowWidth &&
             block->getY() * scale > -(signed) windowHeight / 2.0f - camY &&
-            (block->getY() - 1) * scale < -(signed) windowHeight / 2.0f - camY + (signed) windowHeight)
+            (block->getY() - 1) * scale < -(signed) windowHeight / 2.0f - camY + (signed) windowHeight) {
             getBlockRender(block)->render(block, projectionMatrix, glm::translate(viewMatrix, glm::vec3(
                 -(signed) windowWidth / 2.0f - camX,
                 (signed) windowHeight / 2.0f - camY, 0.0f
             )), core->getBlockSize() * core->getGeneralScale());
             block->setRedrawn();
+        }
     }
     int entitiesNum = 0;
     for (int i = core->getMap()->getEntities().size() - 1; i >= 0; i--) {
