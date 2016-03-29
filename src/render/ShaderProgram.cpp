@@ -39,6 +39,8 @@ void ShaderProgram::useProgram() {
     if (linked) glUseProgram(uiProgram);
 }
 
+
+//TODO uniform caching (?) (is it worth it?)
 void ShaderProgram::setUniform(string sName, float* fValues, int iCount)
 {
     int iLoc = glGetUniformLocation(uiProgram, sName.c_str());
