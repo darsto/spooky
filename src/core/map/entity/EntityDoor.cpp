@@ -5,6 +5,7 @@
 #include "EntityDoor.h"
 
 EntityDoor::EntityDoor(Map *map, unsigned char type) : EntityFurniture(map, new b2PolygonShape, 1.0 - 0.14, 0.25, 0), type(type) {
+    this->width = 1.0;
     this->body->GetFixtureList()[0].SetDensity(0.9f);
 
     this->hinge = this->map->getWorld()->CreateBody(&bodyDef);
