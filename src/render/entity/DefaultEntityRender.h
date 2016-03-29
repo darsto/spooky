@@ -34,11 +34,15 @@ protected:
     virtual int getTexPos(const Entity *const entity);
 
     struct Cache {
-        Cache() { }
+        Cache() { };
         glm::mat4 readyModelMatrix; //matrix past transformations
     };
 
-    static std::map<const Entity *const, Cache *> matrixCache;
+    static int cacheLevel; //determines cache size, (@see calculateCacheSize())
+    static int calculateCacheSize(); //size = 2 * (level + 6)
+    static int tmpCacheSize;
+    static Cache **matrixCache;
+    static Cache *addToCache(Cache *cache, const Entity *const entity);
 
     /* -- tmp -- */
     glm::mat4 *tmpModelMatrix;

@@ -30,16 +30,20 @@ private:
     int getTexPos(const Block *const block);
 
     struct Cache {
-        Cache() { }
+        Cache() { };
         glm::mat4 readyModelMatrix; //matrix past transformations
     };
 
-    static std::map<const Block *const, Cache *> matrixCache;
+    static int cacheLevel; //determines cache size, (@see calculateCacheSize())
+    static int calculateCacheSize(); //size = 2 * (level + 6)
+    static int tmpCacheSize;
+    static Cache **matrixCache;
+
+    static Cache *addToCache(Cache *cache, const Block *const block);
 
     /* -- tmp -- */
     glm::mat4 *tmpModelMatrix;
 
 };
-
 
 #endif //C003_SIMPLEBLOCKRENDER_H

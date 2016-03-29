@@ -1,12 +1,10 @@
-//
+#include "DefaultEntityRender.h"//
 // Created by dar on 11/28/15.
 //
 
 #include "DefaultEntityRender.h"
 #include "../../core/map/block/Block.h"
 #include <string>
-
-std::map<const Entity *const, DefaultEntityRender::Cache *> DefaultEntityRender::matrixCache;
 
 DefaultEntityRender::DefaultEntityRender(const string &textureFile, const string &shader, int texId) : texId(texId) {
     texture.loadTexture2D(textureFile + string(".png"), true);
@@ -72,9 +70,18 @@ void DefaultEntityRender::render(const Entity *const entity, glm::mat4 projectio
     this->shaderProgram.setUniform("projectionMatrix", projectionMatrix);
     this->shaderProgram.setUniform("gSampler", texture.getBoundId());
 
-    Cache *cache = matrixCache[entity];
-    
-    if (cache == nullptr || entity->toBeRedrawn()) {
+    Cache *cache = nullptr;
+
+    if (entity->getId() < tmpCacheSize) {
+        cache = matrixCache[entity->getId()];
+        if (cache == nullptr) {
+            cache = addToCache(new Cache(), entity);
+        }
+    } else {
+        cache = addToCache(new Cache(), entity);
+    }
+
+    if (matrixCache[entity->getId()] == nullptr || entity->toBeRedrawn()) {
         glm::mat4x4 tmpModelMatrixVal;
         tmpModelMatrixVal = glm::translate(this->modelMatrix, glm::vec3(0.0f - (entity->getX() - entity->getWidth() / 2) * scale, 0.0f - (entity->getY() - entity->getHeight() / 2) * scale, 0.0f));
 
@@ -85,10 +92,6 @@ void DefaultEntityRender::render(const Entity *const entity, glm::mat4 projectio
         tmpModelMatrixVal = glm::scale(tmpModelMatrixVal, glm::vec3(scale, scale, 1.0f));
         this->tmpModelMatrix = &tmpModelMatrixVal;
 
-        if (cache == nullptr) {
-            cache = new Cache();
-            matrixCache[entity] = cache;
-        }
         cache->readyModelMatrix = *this->tmpModelMatrix;
     } else {
         this->tmpModelMatrix = &cache->readyModelMatrix;
@@ -110,3 +113,30 @@ DefaultEntityRender::~DefaultEntityRender() {
     glDeleteBuffers(2, this->vbo);
     glDeleteVertexArrays(1, &this->vao);
 }
+
+int DefaultEntityRender::cacheLevel = 0;
+DefaultEntityRender::Cache **DefaultEntityRender::matrixCache = nullptr;
+
+DefaultEntityRender::Cache *DefaultEntityRender::addToCache(DefaultEntityRender::Cache *cache, const Entity *const entity) {
+    if (entity->getId() > tmpCacheSize) {
+        int prevSize = DefaultEntityRender::tmpCacheSize;
+        while (entity->getId() > DefaultEntityRender::tmpCacheSize) {
+            DefaultEntityRender::cacheLevel++;
+            DefaultEntityRender::tmpCacheSize = DefaultEntityRender::calculateCacheSize();
+        }
+        DefaultEntityRender::Cache **newMatrixCache = new DefaultEntityRender::Cache *[DefaultEntityRender::tmpCacheSize];
+        for (int i = 0; i < DefaultEntityRender::tmpCacheSize; i++) {
+            newMatrixCache[i] = i < prevSize ? DefaultEntityRender::matrixCache[i] : nullptr;
+        }
+        delete[] DefaultEntityRender::matrixCache;
+        DefaultEntityRender::matrixCache = newMatrixCache;
+    }
+    DefaultEntityRender::matrixCache[entity->getId()] = cache;
+    return cache;
+}
+
+int DefaultEntityRender::calculateCacheSize() {
+    return 2 * (DefaultEntityRender::cacheLevel + 6) * (DefaultEntityRender::cacheLevel + 6);
+}
+
+int DefaultEntityRender::tmpCacheSize = 0;

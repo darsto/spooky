@@ -10,8 +10,6 @@
 #include "SimpleBlockRender.h"
 #include "../../core/map/block/SimpleBlock.h"
 
-std::map<const Block *const, SimpleBlockRender::Cache *> SimpleBlockRender::matrixCache;
-
 SimpleBlockRender::SimpleBlockRender() {
     texture.loadTexture2D("terrain.png", true);
     texture.setFiltering(TEXTURE_FILTER_MAG_NEAREST, TEXTURE_FILTER_MIN_NEAREST_MIPMAP);
@@ -76,17 +74,22 @@ void SimpleBlockRender::render(const Block *const block, glm::mat4 projectionMat
     this->shaderProgram.setUniform("projectionMatrix", projectionMatrix);
     this->shaderProgram.setUniform("gSampler", texture.getBoundId());
 
-    Cache *cache = matrixCache[block];
+    Cache *cache = nullptr;
 
+    if (block->getId() < tmpCacheSize) {
+        cache = matrixCache[block->getId()];
+        if (cache == nullptr) {
+            cache = addToCache(new Cache(), block);
+        }
+    } else {
+        cache = addToCache(new Cache(), block);
+    }
 
-    if (cache == nullptr || block->toBeRedrawn()) {
+    if (matrixCache[block->getId()] == nullptr || block->toBeRedrawn()) {
         glm::mat4x4 tmpModelMatrixVal = glm::translate(this->modelMatrix, glm::vec3((-block->getX() * scale), (-block->getY() * scale), 0.0f));
         tmpModelMatrixVal = glm::scale(tmpModelMatrixVal, glm::vec3(scale, scale, 1.0f));
         this->tmpModelMatrix = &tmpModelMatrixVal;
-        if (cache == nullptr) {
-            cache = new Cache();
-            matrixCache[block] = cache;
-        }
+
         cache->readyModelMatrix = *this->tmpModelMatrix;
     } else {
         this->tmpModelMatrix = &cache->readyModelMatrix;
@@ -111,3 +114,30 @@ SimpleBlockRender::~SimpleBlockRender() {
     glDeleteBuffers(2, this->vbo);
     glDeleteVertexArrays(1, &this->vao);
 }
+
+int SimpleBlockRender::cacheLevel = 0;
+SimpleBlockRender::Cache **SimpleBlockRender::matrixCache = nullptr;
+
+SimpleBlockRender::Cache *SimpleBlockRender::addToCache(SimpleBlockRender::Cache *cache, const Block *const block) {
+    if (block->getId() >= SimpleBlockRender::tmpCacheSize) {
+        int prevSize = SimpleBlockRender::tmpCacheSize;
+        while (block->getId() >= SimpleBlockRender::tmpCacheSize) {
+            SimpleBlockRender::cacheLevel++;
+            SimpleBlockRender::tmpCacheSize = SimpleBlockRender::calculateCacheSize();
+        }
+        SimpleBlockRender::Cache **newMatrixCache = new SimpleBlockRender::Cache *[SimpleBlockRender::tmpCacheSize];
+        for (int i = 0; i < SimpleBlockRender::tmpCacheSize; i++) {
+            newMatrixCache[i] = i < prevSize ? SimpleBlockRender::matrixCache[i] : nullptr;
+        }
+        delete[] SimpleBlockRender::matrixCache;
+        SimpleBlockRender::matrixCache = newMatrixCache;
+    }
+    SimpleBlockRender::matrixCache[block->getId()] = cache;
+    return cache;
+}
+
+int SimpleBlockRender::calculateCacheSize() {
+    return 2 * (SimpleBlockRender::cacheLevel + 6) * (SimpleBlockRender::cacheLevel + 6);
+}
+
+int SimpleBlockRender::tmpCacheSize = 0;
