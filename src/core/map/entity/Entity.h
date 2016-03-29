@@ -18,6 +18,10 @@ class Entity : public IPositionable {
 public:
     Entity(Map *map, double width, double height);
 
+    unsigned int getId() const {
+        return id;
+    }
+
     Map *getMap() const {
         return map;
     }
@@ -96,6 +100,7 @@ public:
     virtual ~Entity();
 
 protected:
+    const unsigned int id;
     Map *map;
     double x = 0, y = 0;
     double prevX, prevY;
@@ -104,6 +109,9 @@ protected:
     b2BodyDef bodyDef;
     bool toBeDeleted = false;
     bool redraw = true;
+
+    static unsigned int maxEntityId;
+    static unsigned int getNextEntityId();
 };
 
 #endif //C003_ENTITY_H

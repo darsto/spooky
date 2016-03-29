@@ -16,6 +16,10 @@ class Block : public IPositionable {
 public:
     Block(Map *map, int x, int y);
 
+    const unsigned int getId() const {
+        return id;
+    }
+
     virtual double getX() const override {
         return x;
     }
@@ -42,21 +46,33 @@ public:
         return 1;
     }
 
-    virtual bool toBeRedrawn() const = 0;
+    virtual bool toBeRedrawn() const {
+        return this->redraw;
+    }
 
-    virtual void setRedrawn() = 0;
+    virtual void markToRedraw() {
+        this->redraw = true;
+    }
 
-    virtual void markToRedraw() = 0;
+    virtual void setRedrawn() {
+        this->redraw = false;
+    }
 
     virtual ~Block() { }
 
 protected:
+    const unsigned int id;
     Map *map;
     int x, y;
     b2BodyDef bodyDef;
     b2Body *body;
     b2PolygonShape shape;
 
+    static unsigned int maxBlockId;
+    static unsigned int getNextBlockId();
+
+private:
+    bool redraw = true;
 };
 
 #endif //C003_BLOCK_H
