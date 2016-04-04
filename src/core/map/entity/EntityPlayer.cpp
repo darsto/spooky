@@ -18,26 +18,6 @@ EntityPlayer::EntityPlayer(Map *map) : EntityMoving(map, 0.55, 0.55) {
     this->body->CreateFixture(&fixDef);
 }
 
-/*
- * Teleport player by given vector
- */
-bool EntityPlayer::teleport(double x, double y) {
-    if (this->map->getBlock((int) (this->getX() + x), (int) (this->getY() + this->height * 0.55 + y)) == nullptr) {
-        this->setX(this->getX() + x);
-        this->setY(this->getY() + y);
-    } else {
-        double angle = atan2(y, -x) + M_PI;
-        static auto isEmpty = [&](int x, int y) {
-            return this->map->getBlock(x, y) == nullptr;
-        };
-        Ray *ray = projectRay(x + this->getX() + this->width * 0.55, y + this->getY() + this->height * 0.55, angle + M_PI, _len2d(x, y), isEmpty);
-        this->setX(this->getX() + x + ray->getCompX() - cos(angle) * this->width / 2);
-        this->setY(this->getY() + y + ray->getCompY() + sin(angle) * this->height / 2);
-        delete ray;
-    }
-    return true;
-}
-
 void EntityPlayer::onCollision(IPositionable *object, char state) {
     if (object != nullptr) if (EntityToy *toy = dynamic_cast<EntityToy *>(object)) {
         if (state == 0 && this->toy == nullptr) {

@@ -72,14 +72,34 @@ TiledTxtMapLoader::TiledTxtMapLoader(const std::string &fileName) {
 
         for (int i = 0; i < 2; i++) getline(myfile, line);
 
+        Block **blocks = new Block *[width * height];
+
         for (int y = 0; y < height; y++) {
             getline(myfile, line);
             std::vector<std::string> blockRow = split(line, ',');
             for (int x = 0; x < width; x++) {
                 int blockId = atoi(blockRow.at(x).c_str()) - 1;
-                if (blockId >= 0) this->map->addBlock(new SimpleBlock(map, blockId, x, y));
+                blocks[y * width + x] = blockId >= 0 ? new SimpleBlock(map, blockId, x, y) : nullptr;
             }
         }
+
+        int chunksNumY = (int) ceil(height / Chunk::size);
+        int chunksNumX = (int) ceil(width / Chunk::size);
+
+        for (int cy = 0; cy < chunksNumY; cy++) {
+            for (int cx = 0; cx < chunksNumX; cx++) {
+                Chunk *chunk = new Chunk(cx, cy);
+                for (int y = 0; y < Chunk::size; y++) {
+                    for (int x = 0; x < Chunk::size; x++) {
+                        Block *block = blocks[(cy * Chunk::size + y) * width + (cx * Chunk::size + x)];
+                        chunk->addBlock(x, y, block);
+                    }
+                }
+
+            }
+        }
+
+        delete[] blocks;
 
         myfile.close();
 

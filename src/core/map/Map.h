@@ -14,6 +14,7 @@
 #include "../Utils.h"
 #include "ContactFilter.h"
 #include <Box2D/Box2D.h>
+#include <core/map/chunk/Chunk.h>
 
 class Map {
 
@@ -32,17 +33,16 @@ public:
         return height;
     }
 
-    ~Map();
     Block *getBlock(int x, int y);
 
     Entity *getEntity(int id) { /* TODO */ };
 
-    std::vector<Block *> &getBlocks() {
-        return blocks;
+    const std::vector<Chunk *> &getChunks() {
+        return chunks;
     }
 
-    void addBlock(Block *block) {
-        this->blocks.push_back(block);
+    void addChunk(Chunk *chunk) {
+        this->chunks.push_back(chunk);
     }
 
     std::vector<Entity *> &getEntities() {
@@ -84,12 +84,14 @@ public:
         return nullptr;
     }
 
+    ~Map();
+
 private:
     const std::string fileName;
     const unsigned int width, height;
     double worldTime;
     b2World *const world;
-    std::vector<Block *> blocks;
+    std::vector<Chunk *> chunks;
     std::vector<Entity *> entities;
     CollisionListener contactListener;
     ContactFilter contactFilter;

@@ -15,7 +15,6 @@ class EntityPlayer : public EntityMoving, public IEntityLighted {
 
 public:
     EntityPlayer(Map *map);
-    bool teleport(double x, double y);
 
     virtual void update(double deltaTime) override {
         EntityMoving::update(0);

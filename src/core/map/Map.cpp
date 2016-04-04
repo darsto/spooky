@@ -14,28 +14,26 @@
 #include "Map.h"
 
 Map::~Map() {
-    for (Block *block : this->blocks) {
-        delete block;
+    for (Chunk *chunk : this->chunks) {
+        delete chunk;
     }
     for (Entity *entity : this->entities) {
         delete entity;
     }
-    this->blocks.clear();
+    this->chunks.clear();
     this->entities.clear();
 }
 
 Block *Map::getBlock(int x, int y) {
-    for (Block *b : this->blocks) {
-        if (b->getX() == x && b->getY() == y) return b;
-    }
+    //TODO !
     return nullptr;
 }
 
 void Map::update(double deltaTime) {
     this->worldTime += deltaTime;
 
-    for (Block *block : this->blocks) {
-        block->update(deltaTime);
+    for (Chunk *chunk : this->chunks) {
+        chunk->update(deltaTime);
     }
     for (Entity *entity : this->entities) {
         entity->update(deltaTime);
