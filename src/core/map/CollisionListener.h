@@ -52,7 +52,7 @@ public:
             if (EntityToy *t = dynamic_cast<EntityToy *>(d)) {
                 double dmg_x = t->getBody()->GetLinearVelocity().x;
                 double dmg_y = t->getBody()->GetLinearVelocity().y;
-                double dmg = sqrt(dmg_x * dmg_x + dmg_y * dmg_y) * 0.5;
+                double dmg = std::sqrt(dmg_x * dmg_x + dmg_y * dmg_y) * 0.5;
                 double angle2 = 0;
                 if (Entity *t = dynamic_cast<Entity *>(i == 0 ? body2UserData : bodyUserData)) {
                     angle2 = t->getAngle();
