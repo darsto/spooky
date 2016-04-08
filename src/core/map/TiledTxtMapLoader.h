@@ -83,19 +83,23 @@ TiledTxtMapLoader::TiledTxtMapLoader(const std::string &fileName) {
             }
         }
 
-        int chunksNumY = (int) ceil(height / Chunk::size);
-        int chunksNumX = (int) ceil(width / Chunk::size);
+        int chunksNumY = (int) ceil((double) height / Chunk::size);
+        int chunksNumX = (int) ceil((double) width / Chunk::size);
 
         for (int cy = 0; cy < chunksNumY; cy++) {
             for (int cx = 0; cx < chunksNumX; cx++) {
                 Chunk *chunk = new Chunk(cx, cy);
                 for (int y = 0; y < Chunk::size; y++) {
                     for (int x = 0; x < Chunk::size; x++) {
-                        Block *block = blocks[(cy * Chunk::size + y) * width + (cx * Chunk::size + x)];
-                        chunk->addBlock(x, y, block);
+                        int id = (cy * Chunk::size + y) * width + (cx * Chunk::size + x);
+                        if (id < width * height) {
+                            chunk->addBlock(x, y, blocks[id]);
+                        } else {
+                            chunk->addBlock(x, y, nullptr);
+                        }
                     }
                 }
-
+                map->addChunk(chunk);
             }
         }
 
