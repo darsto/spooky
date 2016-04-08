@@ -14,13 +14,14 @@ class GuiButton;
 class Settings : public Menu {
 
 public:
-    Settings(const std::function<bool(Window *window)> &switchWindow);
+    Settings(ApplicationContext *applicationContext);
     virtual void reload(unsigned int windowWidth, unsigned int windowHeight);
     virtual void tick(double deltaTime);
     virtual void handleClick(const TouchPoint *const touchPoint);
     virtual ~Settings() override;
 
 private:
+    unsigned int windowWidth = 0, windowHeight = 0;
 };
 
 #endif //C003_SETTINGS_H

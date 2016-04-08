@@ -17,7 +17,7 @@
 #include <core/map/entity/EntityFurniture.h>
 #include "../logging.h"
 
-Game::Game(const std::function<bool(Window *window)> &switchWindow) : Window(switchWindow) {
+Game::Game(ApplicationContext *applicationContext) : Window(applicationContext) {
     initShapeDefinitions();
     MapLoader *mapLoader = new TiledTxtMapLoader("test_map");
     Map *bmap = mapLoader->loadMap();

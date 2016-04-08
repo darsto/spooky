@@ -10,6 +10,7 @@
 #include <string>
 #include <InputManager.h>
 #include <logging.h>
+#include <ApplicationContext.h>
 
 #ifndef __ANDROID__
 
@@ -17,12 +18,17 @@
 
 #endif //__ANDROID__
 
-Settings::Settings(const std::function<bool(Window *window)> &switchWindow) : Menu(switchWindow) {
-    GuiButton *b = new GuiButton("Setting 1", GUI_MIDDLE_CENTER, 0, -80, 375, 125, new int[2]{3, 11}, 2);
+Settings::Settings(ApplicationContext *applicationContext) : Menu(applicationContext) {
+    std::string joystickText = this->applicationContext->getSettingsData().joystick() ? "Joy: on" : "Joy: off";
+    GuiButton *b = new GuiButton(joystickText, GUI_MIDDLE_CENTER, 0, -80, 375, 125, new int[2]{3, 11}, 2);
     auto button1Action = [=](const TouchPoint *const p) {
         if (p->state == 1) {
             if (b->canBeClicked(p)) {
-                LOGD("Button 1 pressed\n");
+                this->applicationContext->getSettingsData().joystick() = !this->applicationContext->getSettingsData().joystick();
+                std::string joystickText = this->applicationContext->getSettingsData().joystick() ? "Joy: on" : "Joy: off";
+                b->getText()->updateString(joystickText);
+                b->reinit(windowWidth, windowHeight);
+
             }
             return false;
         }
@@ -30,11 +36,15 @@ Settings::Settings(const std::function<bool(Window *window)> &switchWindow) : Me
     };
     b->setOnClickListener(button1Action);
     this->guiElements.push_back(b);
-    b = new GuiButton("Setting 2", GUI_MIDDLE_CENTER, 0, 80, 375, 125, new int[2]{3, 11}, 2);
+    std::string devText = this->applicationContext->getSettingsData().dev() ? "Dev: on" : "Dev: off";
+    b = new GuiButton(devText, GUI_MIDDLE_CENTER, 0, 80, 375, 125, new int[2]{3, 11}, 2);
     auto button2Action = [=](const TouchPoint *const p) {
         if (p->state == 1) {
             if (b->canBeClicked(p)) {
-                LOGD("Button 2 pressed\n");
+                this->applicationContext->getSettingsData().dev() = !this->applicationContext->getSettingsData().dev();
+                std::string devText = this->applicationContext->getSettingsData().dev() ? "Dev: on" : "Dev: off";
+                b->getText()->updateString(devText);
+                b->reinit(windowWidth, windowHeight);
             }
             return false;
         }
@@ -46,7 +56,7 @@ Settings::Settings(const std::function<bool(Window *window)> &switchWindow) : Me
     auto backAction = [=](const TouchPoint *const p) {
         if (p->state == 1) {
             if (b->canBeClicked(p)) {
-                this->switchWindow(new MainMenu(switchWindow));
+                this->applicationContext->switchWindow(new MainMenu(this->applicationContext));
             }
             return false;
         }
@@ -59,6 +69,8 @@ Settings::Settings(const std::function<bool(Window *window)> &switchWindow) : Me
 }
 
 void Settings::reload(unsigned int windowWidth, unsigned int windowHeight) {
+    this->windowWidth = windowWidth;
+    this->windowHeight = windowHeight;
     for (GuiElement *e : this->guiElements) {
         e->reinit(windowWidth, windowHeight);
     }

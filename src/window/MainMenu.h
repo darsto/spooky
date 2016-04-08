@@ -17,7 +17,7 @@ class GuiButton;
 class MainMenu : public Window {
 
 public:
-    MainMenu(const std::function<bool(Window *window)> &switchWindow);
+    MainMenu(ApplicationContext *applicationContext);
     virtual void reload(unsigned int windowWidth, unsigned int WindowHeight) override;
     virtual void tick(double deltaTime) override;
     virtual void handleKeyboard(const Keypress *const keypress) override;

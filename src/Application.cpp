@@ -8,6 +8,7 @@
 #include "window/Game.h"
 #include "render/RenderManager.h"
 #include "logging.h"
+#include <ApplicationContext.h>
 
 Application::Application() {
     this->renderer = new RenderManager();
@@ -22,7 +23,7 @@ Application::Application() {
         this->resize(this->renderer->getRenderContext()->getWindowWidth(), this->renderer->getRenderContext()->getWindowHeight());
         return true;
     };
-    this->window = new Game(switchVideo);
+    this->window = new Game(new ApplicationContext(switchVideo));
     this->timer = new Timer();
     this->inputManager = new InputManager();
     this->reinit();

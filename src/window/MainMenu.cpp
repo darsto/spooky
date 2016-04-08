@@ -10,6 +10,7 @@
 #include <string>
 #include <InputManager.h>
 #include <logging.h>
+#include <ApplicationContext.h>
 
 #ifndef __ANDROID__
 
@@ -17,12 +18,12 @@
 
 #endif //__ANDROID__
 
-MainMenu::MainMenu(const std::function<bool(Window *window)> &switchWindow) : Window(switchWindow) {
+MainMenu::MainMenu(ApplicationContext *applicationContext) : Window(applicationContext) {
     GuiButton *b = new GuiButton("Play", GUI_MIDDLE_CENTER, 0, -220, 375, 125, new int[2]{3, 11}, 2);
     auto playAction = [=](const TouchPoint *const p) {
         if (p->state == 1) {
             if (b->canBeClicked(p)) {
-                this->switchWindow(new Game(switchWindow));
+                this->applicationContext->switchWindow(new Game(this->applicationContext));
             }
             return false;
         }
@@ -34,7 +35,7 @@ MainMenu::MainMenu(const std::function<bool(Window *window)> &switchWindow) : Wi
     auto settingsAction = [=](const TouchPoint *const p) {
         if (p->state == 1) {
             if (b->canBeClicked(p)) {
-                this->switchWindow(new Settings(switchWindow));
+                this->applicationContext->switchWindow(new Settings(this->applicationContext));
             }
             return false;
         }

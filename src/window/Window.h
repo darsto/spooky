@@ -16,9 +16,11 @@ class TouchPoint;
 
 class Keypress;
 
+class ApplicationContext;
+
 class Window {
 public:
-    Window(const std::function<bool(Window *window)> &switchWindow) : switchWindow(switchWindow) { };
+    Window(ApplicationContext *applicationContext) : applicationContext(applicationContext) { };
     virtual void reload(unsigned int windowWidth, unsigned int windowHeight) = 0;
     virtual void tick(double deltaTime) = 0;
     virtual void handleKeyboard(const Keypress *const keypress) = 0;
@@ -26,7 +28,7 @@ public:
     virtual ~Window() {};
 
 protected:
-    std::function<bool(Window *window)> switchWindow;
+    ApplicationContext *const applicationContext;
 };
 
 #endif //C003_WINDOW_H

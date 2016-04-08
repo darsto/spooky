@@ -12,8 +12,9 @@
 #include <gui/GuiButton.h>
 #include <gui/GuiTextBubble.h>
 #include <window/MainMenu.h>
+#include <ApplicationContext.h>
 
-Game::Game(const std::function<bool(Window *window)> &switchWindow) : Window(switchWindow) {
+Game::Game(ApplicationContext *applicationContext) : Window(applicationContext) {
     initShapeDefinitions();
     MapLoader *mapLoader = new TiledTxtMapLoader("test_map");
     Map *bmap = mapLoader->loadMap();
@@ -51,7 +52,7 @@ Game::Game(const std::function<bool(Window *window)> &switchWindow) : Window(swi
     auto backAction = [=](const TouchPoint *const p) {
         if (p->state == 1) {
             if (backButton->canBeClicked(p)) {
-                this->switchWindow(nullptr);
+                this->applicationContext->switchWindow(new MainMenu(this->applicationContext));
             }
             return false;
         }
@@ -76,7 +77,7 @@ Game::Game(const std::function<bool(Window *window)> &switchWindow) : Window(swi
     GuiText *t = new GuiText(string("Dev Build: ") + __DATE__ + " " + __TIME__, 15, 15, GUI_BOTTOM_LEFT, 32, 0xFFFFFFFF, 0);
     this->guiElements.push_back(t);
 #if defined(__DEBUG__)
-    this->tutorialDialogueNum = 50;
+    this->tutorialDialogueNum = 1;
 #endif
 }
 
