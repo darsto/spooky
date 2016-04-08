@@ -23,7 +23,11 @@ Application::Application() {
         this->resize(this->renderer->getRenderContext()->getWindowWidth(), this->renderer->getRenderContext()->getWindowHeight());
         return true;
     };
+#if !defined(EDITOR) && !defined(DEBUG)
+    this->window = new MainMenu(new ApplicationContext(switchVideo));
+#else
     this->window = new Game(new ApplicationContext(switchVideo));
+#endif
     this->timer = new Timer();
     this->inputManager = new InputManager();
     this->reinit();
