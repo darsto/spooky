@@ -39,6 +39,7 @@ private:
     VoidRender *voidRender = nullptr;
 
     void initRenders();
+    void cleanRenders();
     ChunkRender *getChunkRender() const;
     EntityRender *getEntityRender(const Entity *const entity);
 };

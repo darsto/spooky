@@ -149,16 +149,19 @@ EntityRender *GameRender::getEntityRender(const Entity *const entity) {
     return r;
 }
 
-void GameRender::initRenders() {
+void GameRender::cleanRenders() {
     delete this->voidRender;
     delete this->chunkRender;
-    this->voidRender = new VoidRender();
-    this->chunkRender = new ChunkRender();
 
     for (std::pair<const char *, EntityRender *> renderPair : entityRenders) {
         delete renderPair.second;
     }
     entityRenders.clear();
+}
+
+void GameRender::initRenders() {
+    this->voidRender = new VoidRender();
+    this->chunkRender = new ChunkRender();
 
     entityRenders.insert(std::make_pair(typeid(EntityPlayer).name(), new PlayerRender()));
     EntityMachineryRender *machineryRender = new EntityMachineryRender();
@@ -176,3 +179,8 @@ void GameRender::initRenders() {
     entityRenders.insert(std::make_pair(typeid(SimpleShape).name(), new SimpleShapeRender()));
     entityRenders.insert(std::make_pair(typeid(EntityFather).name(), new DefaultEntityRender("parents", "shader")));
 }
+
+GameRender::~GameRender() {
+    cleanRenders();
+}
+
