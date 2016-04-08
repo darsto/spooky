@@ -4,10 +4,10 @@
 
 #include "Chunk.h"
 
-Chunk::Chunk(int x, int y) {
+Chunk::Chunk(int x, int y) : id(getNextChunkId()) {
     this->x = x;
     this->y = y;
-    this->blocks = new Block*[Chunk::size * Chunk::size];
+    this->blocks = new Block *[Chunk::size * Chunk::size];
 }
 
 void Chunk::addBlock(int relX, int relY, Block *block) {
@@ -16,6 +16,13 @@ void Chunk::addBlock(int relX, int relY, Block *block) {
 
 void Chunk::update(double deltaTime) {
     for (int i = 0; i < Chunk::size * Chunk::size; i++) {
-        this->blocks[i]->update(deltaTime)        ;
+        this->blocks[i]->update(deltaTime);
     }
 }
+
+unsigned int Chunk::maxChunkId = 0;
+
+unsigned int Chunk::getNextChunkId() {
+    Chunk::maxChunkId++;
+    return Chunk::maxChunkId;
+};

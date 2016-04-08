@@ -11,6 +11,10 @@ class Chunk {
 public:
     Chunk(int x, int y);
 
+    int getId() const {
+        return id;
+    }
+
     int getX() const {
         return x;
     }
@@ -27,12 +31,25 @@ public:
 
     void update(double deltaTime);
 
+    bool toBeRedrawn() const {
+        return this->redraw;
+    }
+
+    void setRedrawn() {
+        this->redraw = false;
+    }
+
     static const int size = 16;
 
 private:
+    const unsigned int id;
+    bool redraw = true;
     int x;
     int y;
     Block **blocks;
+
+    static unsigned int maxChunkId;
+    static unsigned int getNextChunkId();
 };
 
 #endif //C003_CHUNK_H
