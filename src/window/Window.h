@@ -25,7 +25,12 @@ public:
     virtual void tick(double deltaTime) = 0;
     virtual void handleKeyboard(const Keypress *const keypress) = 0;
     virtual void handleClick(const TouchPoint *const touchPoint) = 0;
-    virtual ~Window() {};
+
+    ApplicationContext *const getApplicationContext() const {
+        return applicationContext;
+    }
+
+    virtual ~Window() { };
 
 protected:
     ApplicationContext *const applicationContext;
