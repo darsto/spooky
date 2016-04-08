@@ -64,8 +64,6 @@ DefaultEntityRender::DefaultEntityRender(const string &textureFile, const string
 void DefaultEntityRender::render(const Entity *const entity, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, double scale) {
     this->texture.bindTexture(0);
     this->shaderProgram.useProgram();
-    this->shaderProgram.setUniform("projectionMatrix", projectionMatrix);
-    this->shaderProgram.setUniform("gSampler", texture.getBoundId());
 
     Cache *cache = nullptr;
 
@@ -79,6 +77,9 @@ void DefaultEntityRender::render(const Entity *const entity, glm::mat4 projectio
     }
 
     if (matrixCache[entity->getId()] == nullptr || entity->toBeRedrawn()) {
+        this->shaderProgram.setUniform("projectionMatrix", projectionMatrix);
+        this->shaderProgram.setUniform("gSampler", texture.getBoundId());
+
         glm::mat4x4 tmpModelMatrixVal;
         tmpModelMatrixVal = glm::translate(this->modelMatrix, glm::vec3(0.0f - (entity->getX() - entity->getWidth() / 2) * scale, 0.0f - (entity->getY() - entity->getHeight() / 2) * scale, 0.0f));
 

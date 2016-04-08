@@ -80,12 +80,13 @@ ChunkRender::ChunkRender() : texVbos(1) {
 void ChunkRender::render(const Chunk *const chunk, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, double scale) {
     texture.bindTexture(0);
     this->shaderProgram.useProgram();
-    this->shaderProgram.setUniform("projectionMatrix", projectionMatrix);
-    this->shaderProgram.setUniform("gSampler", texture.getBoundId());
 
     int texVboId = chunk->getId();
     bool toBeIncreased = texVboId >= this->texVbos.size();
     if (toBeIncreased || chunk->toBeRedrawn()) {
+        this->shaderProgram.setUniform("projectionMatrix", projectionMatrix);
+        this->shaderProgram.setUniform("gSampler", texture.getBoundId());
+
         if (toBeIncreased) {
             this->texVbos.resize(texVboId + 1);
             glGenBuffers(1, &this->texVbos[texVboId]);
