@@ -46,6 +46,16 @@ MainMenu::MainMenu(ApplicationContext *applicationContext) : Window(applicationC
     b = new GuiButton("About", GUI_MIDDLE_CENTER, 0, 60, 375, 125, new int[2]{3, 11}, 2);
     this->guiElements.push_back(b);
     b = new GuiButton("Exit", GUI_MIDDLE_CENTER, 0, 200, 375, 125, new int[2]{3, 11}, 2);
+    auto exitAction = [=](const TouchPoint *const p) {
+        if (p->state == 1) {
+            if (b->canBeClicked(p)) {
+                this->applicationContext->switchWindow(nullptr);
+            }
+            return false;
+        }
+        return true;
+    };
+    b->setOnClickListener(exitAction);
     this->guiElements.push_back(b);
     GuiText *t = new GuiText(std::string("Dev Build: ") + __DATE__ + " " + __TIME__, 15, 15, GUI_BOTTOM_LEFT, 32, 0, 0);
     this->guiElements.push_back(t);
