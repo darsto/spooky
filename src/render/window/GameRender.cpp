@@ -2,7 +2,7 @@
 // Created by dar on 1/25/16.
 //
 
-#include <render/block/SimpleBlockRender.h>
+#include <render/block/ChunkRender.h>
 #include <render/entity/PlayerRender.h>
 #include <render/entity/SimpleShapeRender.h>
 #include "../RenderManager.h"
@@ -53,17 +53,15 @@ void GameRender::render(Window *window, RenderContext *const renderContext) {
     fbo.bind();
     glClearColor(0.9, 0.9, 0.9, 0.0);
     glClear(GL_COLOR_BUFFER_BIT);
-    for (Block *block : core->getMap()->getBlocks()) {
-        if (block->getX() * scale > -(signed) windowWidth / 2.0f - camX &&
-            (block->getX() - 1) * scale < -(signed) windowWidth / 2.0f - camX + (signed) windowWidth &&
-            block->getY() * scale > -(signed) windowHeight / 2.0f - camY &&
-            (block->getY() - 1) * scale < -(signed) windowHeight / 2.0f - camY + (signed) windowHeight) {
-            getBlockRender(block)->render(block, projectionMatrix, glm::translate(viewMatrix, glm::vec3(
-                -(signed) windowWidth / 2.0f - camX,
-                (signed) windowHeight / 2.0f - camY, 0.0f
-            )), core->getBlockSize() * core->getGeneralScale());
-        }
+    scale *= Chunk::size;
+    for (Chunk *const chunk : core->getMap()->getChunks()) {
+        getChunkRender()->render(chunk, projectionMatrix, glm::translate(viewMatrix, glm::vec3(
+            -(signed) windowWidth / 2.0f - camX,
+            (signed) windowHeight / 2.0f - camY, 0.0f
+        )), core->getBlockSize() * core->getGeneralScale());
+        chunk->setRedrawn();
     }
+    scale /= Chunk::size;
     int entitiesNum = 0;
     for (int i = core->getMap()->getEntities().size() - 1; i >= 0; i--) {
         Entity *entity = core->getMap()->getEntities().at(i);
@@ -135,8 +133,8 @@ void GameRender::render(Window *window, RenderContext *const renderContext) {
     }
 }
 
-BlockRender *GameRender::getBlockRender(const Block *const block) {
-    return blockRenders[typeid(*block).name()];
+ChunkRender *GameRender::getChunkRender() const {
+    return this->chunkRender;
 }
 
 EntityRender *GameRender::getEntityRender(const Entity *const entity) {
@@ -153,19 +151,15 @@ EntityRender *GameRender::getEntityRender(const Entity *const entity) {
 
 void GameRender::initRenders() {
     delete this->voidRender;
+    delete this->chunkRender;
     this->voidRender = new VoidRender();
+    this->chunkRender = new ChunkRender();
 
-    for (std::pair<const char *, BlockRender *> renderPair : blockRenders) {
-        delete renderPair.second;
-    }
-
-    blockRenders.clear();
     for (std::pair<const char *, EntityRender *> renderPair : entityRenders) {
         delete renderPair.second;
     }
     entityRenders.clear();
 
-    blockRenders.insert(std::make_pair(typeid(SimpleBlock).name(), new SimpleBlockRender()));
     entityRenders.insert(std::make_pair(typeid(EntityPlayer).name(), new PlayerRender()));
     EntityMachineryRender *machineryRender = new EntityMachineryRender();
     entityRenders.insert(std::make_pair(typeid(EntityTruck).name(), machineryRender));

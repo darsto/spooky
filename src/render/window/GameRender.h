@@ -12,7 +12,7 @@
 #include <render/Fbo.h>
 #include <glm/detail/type_mat.hpp>
 #include <window/Window.h>
-#include <render/block/BlockRender.h>
+#include <render/block/ChunkRender.h>
 #include <render/entity/EntityRender.h>
 #include <core/map/block/Block.h>
 #include <core/map/entity/Entity.h>
@@ -34,12 +34,12 @@ private:
     Fbo fbo;
     glm::mat4 viewMatrix;
     glm::mat4 projectionMatrix;
-    std::map<const char *, BlockRender *> blockRenders;
+    ChunkRender *chunkRender = nullptr;
     std::map<const char *, EntityRender *> entityRenders;
     VoidRender *voidRender = nullptr;
 
     void initRenders();
-    BlockRender *getBlockRender(const Block *const block);
+    ChunkRender *getChunkRender() const;
     EntityRender *getEntityRender(const Entity *const entity);
 };
 
