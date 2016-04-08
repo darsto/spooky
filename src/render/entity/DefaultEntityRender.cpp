@@ -21,17 +21,14 @@ DefaultEntityRender::DefaultEntityRender(const string &textureFile, const string
     this->vertices[0] = 0.0f;
     this->vertices[1] = 1.0f;
 
+    this->vertices[2] = 0.0f;
     this->vertices[3] = 0.0f;
-    this->vertices[4] = 0.0f;
+
+    this->vertices[4] = 1.0f;
+    this->vertices[5] = 1.0f;
 
     this->vertices[6] = 1.0f;
-    this->vertices[7] = 1.0f;
-
-    this->vertices[9] = 1.0f;
-    this->vertices[10] = 0.0f;
-
-    /* 3rd dimension vertices (unused) */
-    this->vertices[2] = this->vertices[5] = this->vertices[8] = this->vertices[11] = 0.0f;
+    this->vertices[7] = 0.0f;
 
     glGenVertexArrays(1, &this->vao);
     glGenBuffers(2, this->vbo);
@@ -39,10 +36,10 @@ DefaultEntityRender::DefaultEntityRender(const string &textureFile, const string
     glBindVertexArray(this->vao);
 
     glBindBuffer(GL_ARRAY_BUFFER, this->vbo[0]); /* vertices vbo */
-    glBufferData(GL_ARRAY_BUFFER, 12 * sizeof(float), this->vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, 8 * sizeof(float), this->vertices, GL_STATIC_DRAW);
     glBindAttribLocation(this->shaderProgram.getProgramID(), 0, "inPosition");
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
 
     float size = (float) (1.0 - (atlasSize + 1.5) / texture.getWidth()) / atlasSize;
     float tCoords[] = {
