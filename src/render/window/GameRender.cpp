@@ -37,6 +37,7 @@ void GameRender::resize(RenderContext *const renderContext) {
     viewMatrix = glm::lookAt(glm::vec3(0, 0, 0.0f), glm::vec3(0, 0, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
     this->projectionMatrix = glm::ortho(0.0f, float(renderContext->getWindowWidth()), 0.0f, float(renderContext->getWindowHeight()));
     this->fbo.resize(renderContext->getWindowWidth(), renderContext->getWindowHeight());
+    this->markedToRedraw = true;
 }
 
 void GameRender::render(Window *window, RenderContext *const renderContext) {
@@ -55,6 +56,9 @@ void GameRender::render(Window *window, RenderContext *const renderContext) {
     glClear(GL_COLOR_BUFFER_BIT);
     scale *= Chunk::size;
     for (Chunk *const chunk : core->getMap()->getChunks()) {
+        if (this->markedToRedraw) {
+            chunk->setRedrawn(false);
+        }
         getChunkRender()->render(chunk, projectionMatrix, glm::translate(viewMatrix, glm::vec3(
             -(signed) windowWidth / 2.0f - camX,
             (signed) windowHeight / 2.0f - camY, 0.0f
@@ -70,10 +74,14 @@ void GameRender::render(Window *window, RenderContext *const renderContext) {
             (entity->getX() - 1 - maxSize) * scale < -(signed) windowWidth / 2.0f - camX + (signed) windowWidth &&
             entity->getY() * scale > -(signed) windowHeight / 2.0f - camY &&
             (entity->getY() - 1 - maxSize) * scale < -(signed) windowHeight / 2.0f - camY + (signed) windowHeight) {
+            if (this->markedToRedraw) {
+                entity->setRedrawn(false);
+            }
             getEntityRender(entity)->render(entity, projectionMatrix, glm::translate(viewMatrix, glm::vec3(
                 -(signed) windowWidth / 2.0f - camX,
                 (signed) windowHeight / 2.0f - camY,
                 0.0f)), core->getBlockSize() * core->getGeneralScale());
+            entity->setRedrawn();
             if (IEntityLighted *elighted = dynamic_cast<IEntityLighted *>(entity)) {
                 fbo.getShaderProgram()->useProgram();
                 if (entitiesNum < fbo.MAX_LIGHT_SRCS) {
@@ -131,6 +139,8 @@ void GameRender::render(Window *window, RenderContext *const renderContext) {
             (int) ((signed) windowHeight),
             0.0f)), core->getGeneralScale());
     }
+
+    this->markedToRedraw = false;
 }
 
 ChunkRender *GameRender::getChunkRender() const {

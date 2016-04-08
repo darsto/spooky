@@ -37,6 +37,7 @@ private:
     ChunkRender *chunkRender = nullptr;
     std::map<const char *, EntityRender *> entityRenders;
     VoidRender *voidRender = nullptr;
+    bool markedToRedraw = false;
 
     void initRenders();
     void cleanRenders();
