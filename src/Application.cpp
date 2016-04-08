@@ -12,7 +12,7 @@
 
 Application::Application() {
     this->renderer = new RenderManager();
-    auto switchVideo = [=](Window *window) {
+    auto switchWindow = [&](Window *window) {
         if (window == nullptr) {
             this->running = false;
             return false;
@@ -24,9 +24,9 @@ Application::Application() {
         return true;
     };
 #if !defined(EDITOR) && !defined(DEBUG)
-    this->window = new MainMenu(new ApplicationContext(switchVideo));
+    this->window = new MainMenu(new ApplicationContext(switchWindow));
 #else
-    this->window = new Game(new ApplicationContext(switchVideo));
+    this->window = new Game(new ApplicationContext(switchWindow));
 #endif
     this->timer = new Timer();
     this->inputManager = new InputManager();
