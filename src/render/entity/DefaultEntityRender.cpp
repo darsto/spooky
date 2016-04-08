@@ -109,6 +109,10 @@ int DefaultEntityRender::getTexPos(const Entity *const entity) {
 }
 
 DefaultEntityRender::~DefaultEntityRender() {
+    for (int i = 0; i < DefaultEntityRender::tmpCacheSize; i++) {
+        delete DefaultEntityRender::matrixCache;
+    }
+    delete[] DefaultEntityRender::matrixCache;
     glDeleteBuffers(2, this->vbo);
     glDeleteVertexArrays(1, &this->vao);
 }
