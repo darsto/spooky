@@ -18,7 +18,7 @@ void Texture::createFromData(unsigned char *data) {
     }
 }
 
-bool Texture::loadTexture2D(const std::string &path, bool mipmaps) {
+bool Texture::loadTexture2D(std::string path, bool mipmaps) {
 #ifdef __ANDROID__
     path = "/sdcard/c003/" + path; //TODO Move files inside apk
 #endif // __ANDROID__
