@@ -78,6 +78,8 @@ Game::Game(ApplicationContext *applicationContext) : Window(applicationContext) 
     this->guiElements.push_back(t);
 #if defined(__DEBUG__)
     this->tutorialDialogueNum = 50;
+#else
+    if (this->applicationContext->getSettingsData().dev()) this->tutorialDialogueNum = 50;
 #endif
 }
 
@@ -110,7 +112,7 @@ void Game::tick(double deltaTime) {
 
     tutorialGhostMovement += deltaTime * 0.95;
 
-    if (tutorialGhostMovement >= 0) {
+    if (tutorialDialogueNum < 50 && tutorialGhostMovement >= 0) {
         if (tutorialGhostMovement > 1) tutorialGhostMovement = 1;
 
         double gx;

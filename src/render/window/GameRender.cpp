@@ -22,6 +22,7 @@
 #include <render/entity/EntityMachineryRender.h>
 #include <render/entity/EntityStaticRender.h>
 #include <render/entity/EntityWideRender.h>
+#include <ApplicationContext.h>
 
 GameRender::GameRender() : WindowRender() { }
 
@@ -122,15 +123,17 @@ void GameRender::render(Window *window, RenderContext *const renderContext) {
     fbo.render(0);
 
 #if !defined(EDITOR) && !defined(DEBUG)
-    float voidAlpha = 1.0f;
-    if (game->getCore()->getMap()->getWorldTime() > 21.25f) {
-        voidAlpha = std::max(0.0f, 22.25f - (float) game->getCore()->getMap()->getWorldTime());
-    }
+    if (!game->getApplicationContext()->getSettingsData().dev()) {
+        float voidAlpha = 1.0f;
+        if (game->getCore()->getMap()->getWorldTime() > 21.25f) {
+            voidAlpha = std::max(0.0f, 22.25f - (float) game->getCore()->getMap()->getWorldTime());
+        }
 
-    this->voidRender->render(0, 0, windowWidth + 1, windowHeight + 1, projectionMatrix, glm::translate(viewMatrix, glm::vec3(
-        0,
-        (int) ((signed) windowHeight),
-        0.0f)), 1.0f, 0.7f, 0.7f, 0.7f, voidAlpha);
+        this->voidRender->render(0, 0, windowWidth + 1, windowHeight + 1, projectionMatrix, glm::translate(viewMatrix, glm::vec3(
+            0,
+            (int) ((signed) windowHeight),
+            0.0f)), 1.0f, 0.7f, 0.7f, 0.7f, voidAlpha);
+    }
 #endif
 
     for (GuiElement *guiElement : game->getGuiElements()) {
