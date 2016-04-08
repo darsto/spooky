@@ -77,7 +77,7 @@ Game::Game(ApplicationContext *applicationContext) : Window(applicationContext) 
     GuiText *t = new GuiText(string("Dev Build: ") + __DATE__ + " " + __TIME__, 15, 15, GUI_BOTTOM_LEFT, 32, 0xFFFFFFFF, 0);
     this->guiElements.push_back(t);
 #if defined(__DEBUG__)
-    this->tutorialDialogueNum = 1;
+    this->tutorialDialogueNum = 50;
 #endif
 }
 
@@ -482,7 +482,7 @@ void Game::tick(double deltaTime) {
     if (abs(dx) > 0.00001) this->core->setCamX(-this->core->getCamX() + (dx) * 0.05);
     if (abs(dy) > 0.00001) this->core->setCamY(-this->core->getCamY() + (dy) * 0.05);
 
-    if (controller->isVisible() && pos == 0) {
+    if (!this->applicationContext->getSettingsData().joystick() || (controller->isVisible() && pos == 0)) {
         double playerSpeed = this->core->getPlayer()->getSpeed();
         double x = (joystick->getX() - controller->getX()) / 100.0f * playerSpeed;
         double y = (joystick->getY() - controller->getY()) / 100.0f * playerSpeed;
@@ -546,13 +546,28 @@ void Game::handleClick(const TouchPoint *const p) {
 
     if (!clicked) {
         if (p->state == 0) {
-            if (this->tutorialDialogueNum >= 5 && !controller->isVisible()) {
-                controller->setVisible(true), joystick->setVisible(true);
-                controller->setX(p->x - controller->getWidth() / 2);
-                controller->setY(p->y - controller->getHeight() / 2);
-                joystick->setX(p->x - joystick->getWidth() / 2);
-                joystick->setY(p->y - joystick->getHeight() / 2);
-                controller->onClick(p);
+            if (this->tutorialDialogueNum >= 5) {
+                if (this->applicationContext->getSettingsData().joystick()) {
+                    if (!controller->isVisible()) {
+                        controller->setVisible(true), joystick->setVisible(true);
+                        controller->setX(p->x - controller->getWidth() / 2);
+                        controller->setY(p->y - controller->getHeight() / 2);
+                        joystick->setX(p->x - joystick->getWidth() / 2);
+                        joystick->setY(p->y - joystick->getHeight() / 2);
+                        controller->onClick(p);
+                    }
+                } else {
+                    controller->setX(windowWidth / 2 - controller->getWidth() / 2);
+                    controller->setY(windowHeight / 2 - controller->getHeight() / 2);
+                    double x = p->x - controller->getX() - controller->getWidth() / 2;
+                    double y = p->y - controller->getY() - controller->getHeight() / 2;
+                    if (std::sqrt(x * x + y * y) > joystick->getWidth() / 2) {
+                        double angle = atan2(y, x);
+                        x = cos(angle) * controller->getWidth() / 2;
+                        y = sin(angle) * controller->getHeight() / 2;
+                    }
+                    joystick->setX(controller->getX() + x), joystick->setY(controller->getY() + y);
+                }
             }
         } else if (p->state == 1) {
             this->resetButtons(p);
@@ -560,7 +575,7 @@ void Game::handleClick(const TouchPoint *const p) {
     }
 
     if (this->tutorialDialogueNum >= 5 && p->state == 2) {
-        if (controller->isVisible() && controller->getTouchedBy() == p->id) {
+        if (!this->applicationContext->getSettingsData().joystick() || controller->isVisible() && controller->getTouchedBy() == p->id) {
             double x = p->x - controller->getX() - controller->getWidth() / 2;
             double y = p->y - controller->getY() - controller->getHeight() / 2;
             if (std::sqrt(x * x + y * y) > joystick->getWidth() / 2) {
@@ -586,7 +601,7 @@ void Game::resetButtons(const TouchPoint *const p, const GuiButton *const b) {
             }
         }
     }
-    if (p == nullptr || controller->getTouchedBy() == p->id) {
+    if (p == nullptr || controller->getTouchedBy() == p->id || !this->applicationContext->getSettingsData().joystick()) {
         joystick->setX(controller->getX()), joystick->setY(controller->getY());
         controller->setVisible(false), joystick->setVisible(false);
     }
