@@ -35,8 +35,8 @@ public:
         return this->redraw;
     }
 
-    void setRedrawn() {
-        this->redraw = false;
+    void setRedrawn(bool state = true) {
+        this->redraw = !state;
     }
 
     static const int size = 16;
