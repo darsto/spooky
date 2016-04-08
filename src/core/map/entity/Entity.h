@@ -76,8 +76,12 @@ public:
         return body;
     }
 
+    void setRedrawn(bool state = true) {
+        this->redraw = !redraw;
+    }
+
     virtual bool toBeRedrawn() const {
-        return this->body->IsAwake();
+        return this->redraw || this->body->IsAwake();
     }
 
     void remove() {
@@ -98,6 +102,7 @@ protected:
     b2Body *body;
     b2BodyDef bodyDef;
     bool toBeDeleted = false;
+    bool redraw = true;
 
     static unsigned int maxEntityId;
     static unsigned int getNextEntityId();
