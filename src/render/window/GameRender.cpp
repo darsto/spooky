@@ -99,12 +99,12 @@ void GameRender::render(Window *window, RenderContext *const renderContext) {
                                {34, 6, 1, 1},
                                {31, 7, 7, 11}};
 
-    /*for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < 8; i++) {
         this->voidRender->render(grayout[i][0], grayout[i][1], grayout[i][2], grayout[i][3], projectionMatrix, glm::translate(viewMatrix, glm::vec3(
             -(signed) windowWidth / 2.0f - camX,
             (signed) windowHeight / 2.0f - camY,
             0.0f)), core->getBlockSize() * core->getGeneralScale());
-    }*/
+    }
 #endif //EDITOR
 
     fbo.unbind();
