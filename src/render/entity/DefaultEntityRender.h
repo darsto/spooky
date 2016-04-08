@@ -36,6 +36,7 @@ protected:
     struct Cache {
         Cache() { };
         glm::mat4 readyModelMatrix; //matrix past transformations
+        double scale;
     };
 
     static int cacheLevel; //determines cache size, (@see calculateCacheSize())

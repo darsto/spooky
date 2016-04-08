@@ -76,7 +76,7 @@ void DefaultEntityRender::render(const Entity *const entity, glm::mat4 projectio
         cache = addToCache(new Cache(), entity);
     }
 
-    if (matrixCache[entity->getId()] == nullptr || entity->toBeRedrawn()) {
+    if (cache == nullptr || entity->toBeRedrawn() || cache->scale != scale) {
         this->shaderProgram.setUniform("projectionMatrix", projectionMatrix);
         this->shaderProgram.setUniform("gSampler", texture.getBoundId());
 
@@ -91,6 +91,7 @@ void DefaultEntityRender::render(const Entity *const entity, glm::mat4 projectio
         this->tmpModelMatrix = &tmpModelMatrixVal;
 
         cache->readyModelMatrix = *this->tmpModelMatrix;
+        cache->scale = scale;
     } else {
         this->tmpModelMatrix = &cache->readyModelMatrix;
     }
