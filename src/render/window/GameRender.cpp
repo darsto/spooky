@@ -29,6 +29,9 @@ GameRender::GameRender() : WindowRender() { }
 void GameRender::init(RenderContext *const renderContext) {
     this->initRenders();
     fbo.init(3, renderContext->getWindowWidth(), renderContext->getWindowHeight(), new float[4]{0.9, 0.9, 0.9, 1.0}, "fboshader");
+    fbo.bind();
+    glClearColor(0.9, 0.9, 0.9, 0.0);
+    fbo.unbind();
     glEnable(GL_BLEND);
     glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
     this->resize(renderContext);
@@ -52,8 +55,8 @@ void GameRender::render(Window *window, RenderContext *const renderContext) {
     double camX = core->getCamX() * (core->getBlockSize() * core->getGeneralScale());
     double camY = core->getCamY() * (core->getBlockSize() * core->getGeneralScale());
 
+    glClear(GL_COLOR_BUFFER_BIT);
     fbo.bind();
-    glClearColor(0.9, 0.9, 0.9, 0.0);
     glClear(GL_COLOR_BUFFER_BIT);
     scale *= Chunk::size;
     for (Chunk *const chunk : core->getMap()->getChunks()) {
