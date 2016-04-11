@@ -47,7 +47,8 @@ void Application::update(bool dynamic) {
         this->previousWindow = nullptr;
     }
     if (dynamic) {
-        this->getCurrentWindow()->tick(TIME_STEP * timer->GetDelta() * 65);
+        double deltaTime = timer->GetDelta();
+        this->getCurrentWindow()->tick(TIME_STEP * deltaTime * 60);
     } else {
         this->getCurrentWindow()->tick(TIME_STEP * 1.5);
     }
