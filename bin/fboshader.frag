@@ -15,19 +15,22 @@ void main(void) {
     //texcoord.x += sin(texcoord.y * 4.0*2.0*3.14159 + offset) / 500.0;
     //gl_FragColor = texture2D(fbo_texture, texcoord);
 
+    vec2 position = gl_FragCoord.xy;
+    float res = min(uResolution.x, uResolution.y);
+    float screenDist = distance(position, uResolution * 0.5) / res;
+
     gl_FragColor = texture2D(fbo_texture, texcoord);
 
     vec3 average = vec3(gl_FragColor.r + gl_FragColor.g + gl_FragColor.b) / 3.0;
-    gl_FragColor.rgb = mix(average, gl_FragColor.rgb, colorfulness);
+    gl_FragColor.rgb = mix(gl_FragColor.rgb, average, min((2.0 - colorfulness) * (0.5 + screenDist), 1.0));
 
-    vec2 position = gl_FragCoord.xy;
     float dist;
     float alpha = 0.0;
     for (int i = 0; i < lightPointsNum; i++) {
         dist = distance(position, lightPoints[i]) / scale;
         alpha += clamp(2.0 - dist, 0.0, 3.0) / 8.0;
     }
-    float screenDist = distance(position, uResolution * 0.5) / min(uResolution.x, uResolution.y);
+
     gl_FragColor.a *= clamp(1.0 - screenDist * 0.5, 0.75, 0.9);
     gl_FragColor.xyz += alpha;
 
