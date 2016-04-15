@@ -39,9 +39,6 @@ Game::Game(ApplicationContext *applicationContext) : Window(applicationContext) 
     GuiText *text = new GuiText(string("Oh... Em... Hello!"), -500, 76, GUI_TOP_LEFT, 24, 0x666666FF, 0);
     text->setVisible(false);
     this->guiElements.push_back(text);
-    this->popup[0] = character;
-    this->popup[1] = window;
-    this->popup[2] = text;
 
     GuiText *t = new GuiText(string("Dev Build: ") + __DATE__ + " " + __TIME__, 15, 15, GUI_BOTTOM_LEFT, 32, 0xFFFFFFFF, 0);
     this->guiElements.push_back(t);
