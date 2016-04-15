@@ -61,24 +61,8 @@ private:
     GuiElement *entityRotationRing;
     int mouseLockX, mouseLockY;
 #endif //__ANDROID__
-    bool tutorialProceeding = true;
-    int tutorialDialogueNum = 1;
-    float tutorialGhostMovement = -0.2f;
-    float tutorialDialogueAlpha = -0.2f;
-    float tutorialDialogueDuration = 2.5f;
-
-    GuiElement *popup[3];
 
     unsigned int windowWidth, windowHeight;
-
-    void proceedTutorialDialogue(double currentDialogueAlpha = 999.9f) {
-        this->tutorialProceeding = true;
-        if (this->tutorialDialogueAlpha >= 1.5 && this->tutorialDialogueAlpha < this->tutorialDialogueDuration - currentDialogueAlpha) {
-            this->tutorialDialogueAlpha = this->tutorialDialogueDuration - currentDialogueAlpha;
-        }
-    }
-
-    void setTutorialText(const std::string &string, float startAlpha, float duration);
 
 };
 
