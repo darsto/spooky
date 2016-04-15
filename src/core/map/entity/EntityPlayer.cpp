@@ -40,10 +40,10 @@ void EntityPlayer::update(double deltaTime) {
         this->increaseTailAnimation((0.5 + speed * 0.9) * 0.3 * deltaTime);
     }
     if (this->toy != nullptr) {
-        this->colorfulness += 0.03 * deltaTime;
+        this->colorfulness += 0.04 * deltaTime;
         if (this->colorfulness > 2.0) this->colorfulness = 2.0;
     } else {
-        this->colorfulness -= 0.03 * deltaTime;
+        this->colorfulness -= 0.04 * deltaTime;
         if (this->colorfulness < 0.0) this->colorfulness = 0.0;
     }
 }
