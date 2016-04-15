@@ -22,6 +22,8 @@ class GuiButton;
 
 class Entity;
 
+class EntityToy;
+
 class Game : public Window {
 
 public:
@@ -48,6 +50,9 @@ private:
 #ifndef EDITOR
     GuiButton *controller;
     GuiButton *possessButton;
+
+    EntityToy *lastToyToMerge = nullptr;
+    GuiElement *toyController[3];
 
     void resetButtons(const TouchPoint *const p, const GuiButton *const b);
 
