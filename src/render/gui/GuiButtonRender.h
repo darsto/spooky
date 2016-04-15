@@ -23,16 +23,12 @@ public:
             this->shaderProgram.setUniform("gSampler", texture.getBoundId());
 
             int color = element->getColor();
-            float cr = ((color & 0xFF000000) >> 24) / 255.0f;
-            float cg = ((color & 0x00FF0000) >> 16) / 255.0f;
-            float cb = ((color & 0x0000FF00) >> 8) / 255.0f;
             float ca = (color & 0x000000FF) / 255.0f;
+            float cr = ((color & 0xFF000000) >> 24) / 255.0f * ca;
+            float cg = ((color & 0x00FF0000) >> 16) / 255.0f * ca;
+            float cb = ((color & 0x0000FF00) >> 8) / 255.0f * ca;
 
             shaderProgram.setUniform("colorMod", glm::vec4(cr, cg, cb, ca));
-
-            if (ca != 1.0f) {
-                glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-            }
 
             double ratio = b->getWidth()/b->getHeight();
             double singular_ratio = ratio - (int)ratio;
@@ -52,10 +48,6 @@ public:
 
                 glBindVertexArray(this->vao);
                 glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-            }
-
-            if (ca != 1.0f) {
-                glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
             }
         }
     }
