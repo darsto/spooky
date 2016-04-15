@@ -18,6 +18,29 @@ EntityPlayer::EntityPlayer(Map *map) : EntityMoving(map, 0.55, 0.55) {
     this->body->CreateFixture(&fixDef);
 }
 
+void EntityPlayer::update(double deltaTime) {
+    EntityMoving::update(deltaTime);
+    this->ejectTimer *= pow(0.75, deltaTime);
+    if (std::abs(this->ejectTimer) < 0.05) {
+        if (this->ejectTimer < 0.0) {
+            this->setToy(true);
+        }
+        this->ejectTimer = 0.0;
+    } else {
+        if (this->ejectTimer > 0) {
+            this->applyForce(3 * this->ejectTimer, 3 * this->ejectTimer);
+        } else if (this->getToyToMerge() != nullptr) {
+            this->applyForce((this->getToyToMerge()->getX() - this->getX()) * 2.0, (this->getToyToMerge()->getY() - this->getY()) * 2.0);
+        }
+    }
+    if (this->getToy() == nullptr) {
+        double speed_x = this->getBody()->GetLinearVelocity().x;
+        double speed_y = this->getBody()->GetLinearVelocity().y;
+        double speed = speed_x * speed_x + speed_y * speed_y;
+        this->increaseTailAnimation((0.5 + speed * 0.9) * 0.3 * deltaTime);
+    }
+}
+
 void EntityPlayer::onCollision(IPositionable *object, char state) {
     if (object != nullptr) if (EntityToy *toy = dynamic_cast<EntityToy *>(object)) {
         if (state == 0 && this->toy == nullptr) {
@@ -102,11 +125,10 @@ void EntityPlayer::move(double x, double y, double deltaTime) {
         double dx = atan2(-sin(da), cos(da));
         x = power * -sin(toy->getAngle() - M_PI_2);
         y = power * cos(toy->getAngle() - M_PI_2);
-        toy->setAngle(toy->getAngle() - dx * this->toy->getSpeed() * deltaTime / 25);
+        toy->setAngle(toy->getAngle() - dx * this->toy->getSpeed() * deltaTime);
     } else {
         this->setAngle(atan2(y, x));
     }
     this->applyForce(x, y);
 
 }
-
