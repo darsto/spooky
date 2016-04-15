@@ -68,7 +68,7 @@ public:
         return this->body->GetAngle();
     }
 
-    virtual void setAngle(double angle, double power = 1.0) {
+    virtual void setAngle(double angle) {
         this->body->SetTransform(this->body->GetPosition(), (float) angle);
     }
 

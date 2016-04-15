@@ -5,6 +5,16 @@
 #ifndef C003_TOY_H
 #define C003_TOY_H
 
+#ifndef M_PI
+#define M_PI		3.14159265358979323846
+#endif
+#ifndef M_PI_2
+#define M_PI_2		1.57079632679489661923
+#endif
+#ifndef M_PI_4
+#define M_PI_4		0.78539816339744830962
+#endif
+
 #include "EntityMoving.h"
 
 class EntityPlayer;
@@ -20,8 +30,12 @@ public:
 
     virtual void update(double deltaTime);
 
-    virtual void applyImpulse(double x, double y, double power = 1.0) override {
-        EntityMoving::applyImpulse(x, y, power);
+    virtual void applyForce(double x, double y) override {
+        EntityMoving::applyForce(x, y);
+    }
+
+    virtual void applyImpulse(double x, double y) override {
+        EntityMoving::applyImpulse(x, y);
         this->movingTimer += 0.015;
     }
 

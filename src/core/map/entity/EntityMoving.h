@@ -17,7 +17,7 @@ public:
 
     virtual void update(double deltaTime) override;
 
-    virtual void applyImpulse(double x, double y, double power = 1.0);
+    virtual void applyImpulse(double x, double y);
 
     virtual void applyForce(double x, double y);
 

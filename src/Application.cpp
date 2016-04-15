@@ -48,9 +48,9 @@ void Application::update(bool dynamic) {
     }
     if (dynamic) {
         double deltaTime = timer->GetDelta();
-        this->getCurrentWindow()->tick(TIME_STEP * deltaTime * 60);
+        this->getCurrentWindow()->tick(deltaTime * 60);
     } else {
-        this->getCurrentWindow()->tick(TIME_STEP * 1.5);
+        this->getCurrentWindow()->tick(1.0);
     }
     this->renderer->render(this->getCurrentWindow());
     if (!MOBILE) this->handleEvents();

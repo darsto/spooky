@@ -18,7 +18,7 @@ public:
 
     virtual void update(double deltaTime) override {
         EntityMoving::update(0);
-        this->ejectTimer *= pow(0.75, deltaTime * 62.5);
+        this->ejectTimer *= pow(0.75, deltaTime * 10);
         if (std::abs(this->ejectTimer) < 0.05) {
             if (this->ejectTimer < 0.0) {
                 this->setToy(true);
@@ -35,17 +35,21 @@ public:
             double speed_x = this->getBody()->GetLinearVelocity().x;
             double speed_y = this->getBody()->GetLinearVelocity().y;
             double speed = speed_x * speed_x + speed_y * speed_y;
-            this->increaseTailAnimation((1.5 + speed * 0.2) * 0.03 * deltaTime * 62.5);
+            this->increaseTailAnimation((1.5 + speed * 0.7) * 0.03 * deltaTime * 10);
         }
     }
 
     virtual void onCollision(IPositionable *object, char state) override;
-
+    virtual bool doesCollide(IPositionable *obj) override;
+    virtual void applyImpulse(double x, double y) override;
+    virtual void applyForce(double x, double y) override;
     virtual double getX() const override;
     virtual double getY() const override;
 
+    void move(double x, double y, double deltaTime);
+
     double getSpeed() override {
-        return 1.0;
+        return 1.6;
     }
 
     EntityToy *getToy() const {
@@ -87,12 +91,6 @@ private:
     EntityToy *damagedToy = nullptr; //for tutorial usages
     double ejectTimer = 0.0;
     double tailAnimation = 0.0;
-public:
-
-    virtual bool doesCollide(IPositionable *obj) override;
-    virtual void applyImpulse(double x, double y, double power = 1.0) override;
-    virtual void applyForce(double x, double y) override;
-    virtual void setAngle(double angle, double power) override;
 };
 
 #endif //C003_PLAYER_H

@@ -15,16 +15,16 @@ double EntityMoving::getSpeed() {
 }
 
 void EntityMoving::update(double deltaTime) {
-    Entity::update(0);
+    Entity::update(deltaTime);
     if (this->bodyType != this->body->GetType()) {
         this->body->SetType(this->bodyType);
     }
 }
 
 void EntityMoving::applyForce(double x, double y) {
-    this->body->ApplyForce(b2Vec2(x, y), this->body->GetWorldCenter(), true);
+    this->body->ApplyForce(b2Vec2(x * this->getSpeed(), y * this->getSpeed()), this->body->GetWorldCenter(), true);
 }
 
-void EntityMoving::applyImpulse(double x, double y, double power) {
-    this->body->ApplyLinearImpulse(b2Vec2(x, y), this->body->GetWorldCenter(), true);
+void EntityMoving::applyImpulse(double x, double y) {
+    this->body->ApplyLinearImpulse(b2Vec2(x * this->getSpeed(), y * this->getSpeed()), this->body->GetWorldCenter(), true);
 }

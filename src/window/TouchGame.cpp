@@ -59,7 +59,7 @@ Game::Game(ApplicationContext *applicationContext) : Window(applicationContext) 
         return true;
     };
     backButton->setOnClickListener(backAction);
-    //this->guiElements.push_back(backButton);
+    this->guiElements.push_back(backButton);
 
     GuiElement *character = new GuiElement(GUI_TOP_RIGHT, 0, 50, 225, 225, 17);
     character->setVisible(false);
@@ -112,15 +112,9 @@ void Game::tick(double deltaTime) {
     if (abs(dy) > 0.00001) this->core->setCamY(-this->core->getCamY() + (dy) * 0.05);
 
     if (!this->applicationContext->getSettingsData().joystick() || (controller->isVisible())) {
-        double playerSpeed = this->core->getPlayer()->getSpeed();
-        double x = (joystick->getX() - controller->getX()) / 100.0f * playerSpeed;
-        double y = (joystick->getY() - controller->getY()) / 100.0f * playerSpeed;
-        double power = std::sqrt(x * x + y * y);
-        if (power > 0.0) {
-            double angle = atan2(y, x);
-            this->core->getPlayer()->applyImpulse(x, y, power * deltaTime);
-            this->core->getPlayer()->setAngle(angle, power * deltaTime);
-        }
+        double x = (joystick->getX() - controller->getX()) / 100.0f;
+        double y = (joystick->getY() - controller->getY()) / 100.0f;
+        this->core->getPlayer()->move(x, y, deltaTime);
     }
 
     double camX = this->core->getCamX(), camY = this->core->getCamY();
