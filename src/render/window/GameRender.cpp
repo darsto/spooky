@@ -121,6 +121,7 @@ void GameRender::render(Window *window, RenderContext *const renderContext) {
 
     fbo.unbind();
     fbo.getShaderProgram()->useProgram();
+    fbo.getShaderProgram()->setUniform("colorfulness", (float) core->getPlayer()->getColorfulness());
     fbo.getShaderProgram()->setUniform("lightPointsNum", entitiesNum);
     fbo.getShaderProgram()->setUniform("scale", (float) (core->getBlockSize() * core->getGeneralScale()));
     fbo.render(0);

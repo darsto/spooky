@@ -8,22 +8,28 @@ uniform vec2 uResolution;
 uniform int lightPointsNum;
 uniform vec2 lightPoints[50];
 uniform float scale;
+uniform float colorfulness;
 
 void main(void) {
     vec2 texcoord = f_texcoord;
-    //texcoord.x += sin(texcoord.y * 4.0*2.0*3.14159 + offset) / 100.0;
+    //texcoord.x += sin(texcoord.y * 4.0*2.0*3.14159 + offset) / 500.0;
+    //gl_FragColor = texture2D(fbo_texture, texcoord);
+
     gl_FragColor = texture2D(fbo_texture, texcoord);
+
+    vec3 average = vec3(gl_FragColor.r + gl_FragColor.g + gl_FragColor.b) / 3.0;
+    gl_FragColor.rgb = mix(average, gl_FragColor.rgb, colorfulness);
 
     vec2 position = gl_FragCoord.xy;
     float dist;
-    float alpha = 1.0;
+    float alpha = 0.0;
     for (int i = 0; i < lightPointsNum; i++) {
         dist = distance(position, lightPoints[i]) / scale;
-        alpha += clamp(1.4 - dist * 0.4, 0.0, 1.0/alpha/alpha) / 2.5;
+        alpha += clamp(2.0 - dist, 0.0, 3.0) / 8.0;
     }
     float screenDist = distance(position, uResolution * 0.5) / min(uResolution.x, uResolution.y);
-    gl_FragColor.a *= clamp(1.0 - screenDist * 0.5, 0.8, 1.0);
-    gl_FragColor.xyz *= min(alpha, 1.3);
+    gl_FragColor.a *= clamp(1.0 - screenDist * 0.5, 0.75, 0.9);
+    gl_FragColor.xyz += alpha;
 
     /*gl_FragColor = vec4(0.0);
     gl_FragColor += texture2D(fbo_texture, v_blurTexCoords[ 0])*0.0044299121055113265;

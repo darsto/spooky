@@ -39,6 +39,13 @@ void EntityPlayer::update(double deltaTime) {
         double speed = speed_x * speed_x + speed_y * speed_y;
         this->increaseTailAnimation((0.5 + speed * 0.9) * 0.3 * deltaTime);
     }
+    if (this->toy != nullptr) {
+        this->colorfulness += 0.05 * deltaTime;
+        if (this->colorfulness > 0.95) this->colorfulness = 0.95;
+    } else {
+        this->colorfulness -= 0.05 * deltaTime;
+        if (this->colorfulness < 0.0) this->colorfulness = 0.0;
+    }
 }
 
 void EntityPlayer::onCollision(IPositionable *object, char state) {

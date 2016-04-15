@@ -62,12 +62,17 @@ public:
         this->tailAnimation += tailAnimation;
     }
 
+    double getColorfulness() const {
+        return colorfulness;
+    }
+
 private:
     int toysToMerge = 0;
     EntityToy *toyToMerge = nullptr;
     EntityToy *toy = nullptr;
     EntityToy *damagedToy = nullptr; //for tutorial usages
     double ejectTimer = 0.0;
+    double colorfulness = 0.0;
     double tailAnimation = 0.0;
 };
 
