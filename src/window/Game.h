@@ -47,7 +47,6 @@ private:
 
 #ifndef EDITOR
     GuiButton *controller;
-    GuiButton *joystick;
     GuiButton *possessButton;
 
     void resetButtons(const TouchPoint *const p, const GuiButton *const b);

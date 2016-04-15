@@ -22,15 +22,12 @@ Game::Game(ApplicationContext *applicationContext) : Window(applicationContext) 
     delete mapLoader;
 
     controller = new GuiButton(GUI_TOP_LEFT, 0, 0, 200, 200, 0);
-    joystick = new GuiButton(GUI_TOP_LEFT, 0, 0, 200, 200, 1);
     controller->setVisible(false);
-    joystick->setVisible(false);
     auto moveController = [&](const TouchPoint *const touchPoint) {
         return true;
     };
     controller->setOnClickListener(moveController);
     this->guiElements.push_back(controller);
-    this->guiElements.push_back(joystick);
     possessButton = new GuiButton(GUI_BOTTOM_RIGHT, 50, 50, 125, 125, new int[2]{2, 10}, 2);
     possessButton->setVisible(false);
     auto possessAction = [&](const TouchPoint *const p) {
@@ -111,9 +108,12 @@ void Game::tick(double deltaTime) {
     if (abs(dx) > 0.00001) this->core->setCamX(-this->core->getCamX() + (dx) * 0.05);
     if (abs(dy) > 0.00001) this->core->setCamY(-this->core->getCamY() + (dy) * 0.05);
 
-    if (!this->applicationContext->getSettingsData().joystick() || (controller->isVisible())) {
-        double x = (joystick->getX() - controller->getX()) / 100.0f;
-        double y = (joystick->getY() - controller->getY()) / 100.0f;
+    if (controller->isPressed()) {
+        double player_x = this->windowWidth / 2.0 + (this->core->getPlayer()->getX() + this->core->getCamX() - 1 + this->core->getPlayer()->getWidth() / 2) * (this->core->getGeneralScale() * this->core->getBlockSize());
+        double player_y = this->windowHeight / 2.0 + (this->core->getPlayer()->getY() + this->core->getCamY() - 1 + this->core->getPlayer()->getWidth() / 2) * (this->core->getGeneralScale() * this->core->getBlockSize());
+
+        double x = (controller->getX() - player_x) / 100.0f;
+        double y = (controller->getY() - player_y) / 100.0f;
         this->core->getPlayer()->move(x, y, deltaTime);
     }
 
@@ -150,43 +150,21 @@ void Game::handleClick(const TouchPoint *const p) {
     }
 
     if (!clicked) {
-        if (p->state == 0) {
-            if (this->applicationContext->getSettingsData().joystick()) {
-                if (!controller->isVisible()) {
-                    controller->setVisible(true), joystick->setVisible(true);
-                    controller->setX(p->x - controller->getWidth() / 2);
-                    controller->setY(p->y - controller->getHeight() / 2);
-                    joystick->setX(p->x - joystick->getWidth() / 2);
-                    joystick->setY(p->y - joystick->getHeight() / 2);
-                    controller->onClick(p);
-                }
-            } else {
-                controller->setX(windowWidth / 2 - controller->getWidth() / 2);
-                controller->setY(windowHeight / 2 - controller->getHeight() / 2);
-                double x = p->x - controller->getX() - controller->getWidth() / 2;
-                double y = p->y - controller->getY() - controller->getHeight() / 2;
-                if (std::sqrt(x * x + y * y) > joystick->getWidth() / 2) {
-                    double angle = atan2(y, x);
-                    x = cos(angle) * controller->getWidth() / 2;
-                    y = sin(angle) * controller->getHeight() / 2;
-                }
-                joystick->setX(controller->getX() + x), joystick->setY(controller->getY() + y);
-            }
-        } else if (p->state == 1) {
-            this->resetButtons(p);
-        }
-    }
+        if (p->state == 0 || p->state == 2) {
+            double player_x = this->windowWidth / 2.0 + (this->core->getPlayer()->getX() + this->core->getCamX() - 1 + this->core->getPlayer()->getWidth() / 2) * (this->core->getGeneralScale() * this->core->getBlockSize());
+            double player_y = this->windowHeight / 2.0 + (this->core->getPlayer()->getY() + this->core->getCamY() - 1 + this->core->getPlayer()->getWidth() / 2) * (this->core->getGeneralScale() * this->core->getBlockSize());
 
-    if (p->state == 2) {
-        if (!this->applicationContext->getSettingsData().joystick() || controller->isVisible() && controller->getTouchedBy() == p->id) {
-            double x = p->x - controller->getX() - controller->getWidth() / 2;
-            double y = p->y - controller->getY() - controller->getHeight() / 2;
-            if (std::sqrt(x * x + y * y) > joystick->getWidth() / 2) {
+            double x = p->x - player_x;
+            double y = p->y - player_y;
+            if (std::sqrt(x * x + y * y) > controller->getWidth() / 2) {
                 double angle = atan2(y, x);
                 x = cos(angle) * controller->getWidth() / 2;
                 y = sin(angle) * controller->getHeight() / 2;
             }
-            joystick->setX(controller->getX() + x), joystick->setY(controller->getY() + y);
+            controller->setX(player_x + x), controller->setY(player_y + y);
+            controller->setPressed(true);
+        } else if (p->state == 1) {
+            this->resetButtons(p);
         }
     }
 }
@@ -203,10 +181,7 @@ void Game::resetButtons(const TouchPoint *const p, const GuiButton *const b) {
             }
         }
     }
-    if (p == nullptr || controller->getTouchedBy() == p->id || !this->applicationContext->getSettingsData().joystick()) {
-        joystick->setX(controller->getX()), joystick->setY(controller->getY());
-        controller->setVisible(false), joystick->setVisible(false);
-    }
+    controller->setPressed(false);
 }
 
 void Game::handleKeyboard(const Keypress *const keypress) {
