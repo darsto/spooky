@@ -135,37 +135,33 @@ void Game::tick(double deltaTime) {
         this->core->setCamY(-(signed) this->windowHeight / (2.0 * scale) + (this->core->getMap()->getHeight() - 1));
     }
 
-    static double alpha = 0.0;
-    EntityToy *toyToMerge = this->core->getPlayer()->getToyToMerge();
-
-    if (toyToMerge != nullptr) {
-        this->lastToyToMerge = toyToMerge;
-        alpha += 0.05 * deltaTime;
-        if (alpha > 1.0) alpha = 1.0;
-    } else {
-        alpha -= 0.05 * deltaTime;
-        if (alpha < 0.0) {
-            alpha = 0.0;
-            this->lastToyToMerge = nullptr;
-        }
-    }
-
     for (int i = 1; i < 3; i++) {
         int color = this->toyController[1]->getColor() & 0xFFFFFF00;
-        color |= (int) (alpha * 255);
+        color |= (int) (toyPopupAlpha * 255);
         this->toyController[i]->setColor(color);
     }
 
-    if (this->lastToyToMerge != nullptr) {
-        double toy_x = this->windowWidth / 2.0 + (this->lastToyToMerge->getX() + this->core->getCamX() - 1 + this->lastToyToMerge->getWidth() / 2) * scale;
-        double toy_y = this->windowHeight / 2.0 + (this->lastToyToMerge->getY() + this->core->getCamY() - 1 + this->lastToyToMerge->getWidth() / 2) * scale;
+    if (this->markedToy != nullptr) {
+        double toy_x = this->windowWidth / 2.0 + (this->markedToy->getX() + this->core->getCamX() - 1 + this->markedToy->getWidth() / 2) * scale;
+        double toy_y = this->windowHeight / 2.0 + (this->markedToy->getY() + this->core->getCamY() - 1 + this->markedToy->getWidth() / 2) * scale;
 
         this->toyController[1]->setX(toy_x - this->toyController[1]->getWidth() / 2);
-        this->toyController[1]->setY(toy_y - (std::max(this->lastToyToMerge->getWidth(), this->lastToyToMerge->getHeight()) / 2 + 0.25) * scale - this->toyController[1]->getHeight());
-        this->toyController[2]->setX(this->toyController[1]->getX() + 10);
-        this->toyController[2]->setY(this->toyController[1]->getY() + 10);
+        this->toyController[1]->setY(toy_y - (std::max(this->markedToy->getWidth(), this->markedToy->getHeight()) / 2 + 0.25) * scale - this->toyController[1]->getHeight());
+        this->toyController[2]->setX(this->toyController[1]->getX() + 10 * this->core->getBlockSize() / 64.0);
+        this->toyController[2]->setY(this->toyController[1]->getY() + 10 * this->core->getBlockSize() / 64.0);
         for (int i = 1; i < 3; i++) {
-            this->toyController[i]->setVisible(alpha != 0.0);
+            this->toyController[i]->setVisible(i == 2 && toyPopupAlpha != 0.0);
+        }
+    }
+
+    if (toyPopupClickedBy >= 0) {
+        toyPopupAlpha += 0.05 * deltaTime;
+        if (toyPopupAlpha > 1.0) toyPopupAlpha = 1.0;
+    } else if (toyPopupClickedBy < 0) {
+        toyPopupAlpha -= 0.05 * deltaTime;
+        if (toyPopupAlpha < 0.0) {
+            toyPopupAlpha = 0.0;
+            this->markedToy = nullptr;
         }
     }
 }
@@ -190,6 +186,35 @@ void Game::handleClick(const TouchPoint *const p) {
                 clicked = true;
             }
         }
+    }
+
+    float sx = (float) ((-this->core->getCamX() - ((double) this->windowWidth / (2.0) - p->x) / (this->core->getGeneralScale() * this->core->getBlockSize())) + 0.5);
+    float sy = (float) ((-this->core->getCamY() - ((double) this->windowHeight / (2.0) - p->y) / (this->core->getGeneralScale() * this->core->getBlockSize())) + 0.5);
+
+    if (p->state == 0) {
+        this->clickedToy = this->core->getMap()->getEntityAt<EntityToy>(sx, sy);
+        if (this->markedToy == nullptr) {
+            if (this->clickedToy != nullptr) {
+                this->toyPopupClickedBy = p->id;
+            }
+        } else {
+            this->toyPopupClickedBy = -1;
+        }
+    } else if (p->state == 1 && this->toyPopupClickedBy == p->id) {
+        if (!clicked) {
+            this->markedToy = this->core->getMap()->getEntityAt<EntityToy>(sx, sy);
+            if (this->markedToy != this->clickedToy) {
+                this->toyPopupClickedBy = -1;
+            } else {
+                this->toyPopupClickedBy = p->id;
+            }
+        } else {
+            this->toyPopupClickedBy = -1;
+        }
+    }
+
+    if (this->clickedToy != nullptr && p->state != 1) {
+        clicked = true;
     }
 
     if (!clicked) {

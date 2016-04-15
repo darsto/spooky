@@ -51,7 +51,11 @@ private:
     GuiButton *controller;
     GuiButton *possessButton;
 
-    EntityToy *lastToyToMerge = nullptr;
+    EntityToy *clickedToy = nullptr;
+    float toyPopupAlpha = 0.0f;
+    int toyPopupClickedBy = -1;
+    EntityToy *markedToy = nullptr;
+
     GuiElement *toyController[3];
 
     void resetButtons(const TouchPoint *const p, const GuiButton *const b);
