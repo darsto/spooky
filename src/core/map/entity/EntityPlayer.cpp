@@ -130,9 +130,19 @@ void EntityPlayer::move(double x, double y, double deltaTime) {
     if (toy != nullptr) {
         double da = atan2(y, x) - toy->getAngle();
         double dx = atan2(-sin(da), cos(da));
-        x = power * -sin(toy->getAngle() - M_PI_2);
-        y = power * cos(toy->getAngle() - M_PI_2);
-        toy->setAngle(toy->getAngle() - dx * this->toy->getSpeed() * deltaTime);
+        if (dx < M_PI * 0.75 && dx > -M_PI * 0.75) {
+            x = power * -sin(this->toy->getAngle() - M_PI_2);
+            y = power * cos(this->toy->getAngle() - M_PI_2);
+        } else {
+            x = power * -sin(this->toy->getAngle() + M_PI_2);
+            y = power * cos(this->toy->getAngle() + M_PI_2);
+            if (dx >= M_PI * 0.75) {
+                dx -= M_PI;
+            } else {
+                dx += M_PI;
+            }
+        }
+        toy->setAngle(toy->getAngle() - dx * this->toy->getControllability() * deltaTime);
     } else {
         this->setAngle(atan2(y, x));
     }

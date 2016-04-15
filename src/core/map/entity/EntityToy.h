@@ -26,6 +26,10 @@ public:
 
     virtual double getSpeed() override = 0;
 
+    virtual double getControllability() {
+        return 0.05;
+    }
+
     virtual void onCollision(IPositionable *object, char state) override { }
 
     virtual void update(double deltaTime);
