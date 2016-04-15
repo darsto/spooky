@@ -9,7 +9,7 @@
 EntityPlayer::EntityPlayer(Map *map) : EntityMoving(map, 0.55, 0.55) {
     b2CircleShape shape;
     shape.m_p.Set(0, 0);
-    shape.m_radius = 0.35; // A bit more than our size because it is only a sensor
+    shape.m_radius = 1.5; // A bit more than our size because it is only a sensor
     b2FixtureDef fixDef;
     fixDef.shape = &shape;
     fixDef.isSensor = true;

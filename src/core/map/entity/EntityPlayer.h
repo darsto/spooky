@@ -27,7 +27,7 @@ public:
     void move(double x, double y, double deltaTime);
 
     double getSpeed() override {
-        return 1.6;
+        return 29.3;
     }
 
     EntityToy *getToy() const {
