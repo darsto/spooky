@@ -62,6 +62,7 @@ Game::Game(ApplicationContext *applicationContext) : Window(applicationContext) 
                 } else {
                     this->core->getPlayer()->eject();
                 }
+                this->toyPopupClickedBy = -1;
             }
             return false;
         }
@@ -157,23 +158,26 @@ void Game::tick(double deltaTime) {
         this->toyController[1]->setY(toy_y - (std::max(this->markedToy->getWidth(), this->markedToy->getHeight()) / 2 + 0.25) * scale - this->toyController[1]->getHeight());
         this->toyController[2]->setX(this->toyController[1]->getX() + 10 * this->core->getBlockSize() / 64.0);
         this->toyController[2]->setY(this->toyController[1]->getY() + 10 * this->core->getBlockSize() / 64.0);
-        for (int i = 1; i < 3; i++) {
-            this->toyController[i]->setVisible(i == 2 && toyPopupAlpha != 0.0);
-        }
+
+        ((GuiButton *) this->toyController[2])->setEnabled(this->core->getPlayer()->getToy() == nullptr || this->markedToy == this->core->getPlayer()->getToy());
+    }
+
+    for (int i = 1; i < 3; i++) {
+        this->toyController[i]->setVisible(i == 2 && toyPopupAlpha > 0.0f);
     }
 
     if (toyPopupClickedBy >= 0 && this->markedToy != nullptr) {
-        toyPopupAlpha += 0.05 * deltaTime;
-        if (toyPopupAlpha > 1.0) toyPopupAlpha = 1.0;
+        toyPopupAlpha += 0.05f * deltaTime;
+        if (toyPopupAlpha > 1.0f) toyPopupAlpha = 1.0f;
     } else if (toyPopupClickedBy < 0) {
         for (int i = 2; i < 3; i++) {
             if (((GuiButton *) this->toyController[i])->isPressed()) {
                 return;
             }
         }
-        toyPopupAlpha -= 0.05 * deltaTime;
-        if (toyPopupAlpha < 0.0) {
-            toyPopupAlpha = 0.0;
+        toyPopupAlpha -= 0.05f * deltaTime;
+        if (toyPopupAlpha < 0.0f) {
+            toyPopupAlpha = 0.0f;
             this->markedToy = nullptr;
             if (this->core->getPlayer()->getToy() == nullptr) {
                 this->toyController[2]->setTexPos(0, 2);
@@ -182,6 +186,16 @@ void Game::tick(double deltaTime) {
                 this->toyController[2]->setTexPos(0, 18);
                 this->toyController[2]->setTexPos(1, 26);
             }
+        }
+    }
+
+    if (toyPopupClickedBy < 0 && toyPopupClickedBy != -2 && this->markedToy == nullptr) {
+        if (this->core->getPlayer()->getToy() != nullptr && !this->core->getPlayer()->getToy()->getBody()->GetLinearVelocity().Length() > 0) {
+            this->markedToy = this->core->getPlayer()->getToy();
+            toyPopupClickedBy = 100;
+        } else if (this->core->getPlayer()->getToyToMerge() != nullptr) {
+            this->markedToy = this->core->getPlayer()->getToyToMerge();
+            toyPopupClickedBy = 100;
         }
     }
 }
@@ -218,8 +232,8 @@ void Game::handleClick(const TouchPoint *const p) {
             if (this->clickedToy != nullptr) {
                 this->toyPopupClickedBy = p->id;
             }
-        } else {
-            this->toyPopupClickedBy = -1;
+        } else if (this->clickedToy != nullptr) {
+            this->toyPopupClickedBy = -2;
         }
     } else if (p->state == 1 && this->toyPopupClickedBy == p->id) {
         if (!clicked) {
@@ -250,6 +264,9 @@ void Game::handleClick(const TouchPoint *const p) {
             }
             controller->setX(player_x + x), controller->setY(player_y + y);
             controller->setPressed(true);
+            if (this->core->getPlayer()->getToyToMerge() == nullptr) {
+                this->toyPopupClickedBy = -1;
+            }
         }
     }
 
