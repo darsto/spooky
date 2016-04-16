@@ -47,14 +47,16 @@ Game::Game(ApplicationContext *applicationContext) : Window(applicationContext) 
     character->setVisible(false);
     this->guiElements.push_back(character);
     GuiTextBubble *window = new GuiTextBubble(GUI_TOP_LEFT, -500, 0, 150 * this->core->getBlockSize() / 64.0, 74 * this->core->getBlockSize() / 64.0);
-    window->setVisible(true);
+    this->toyController[1] = window;
+    window->setVisible(false);
     this->guiElements.push_back(window);
 
-    possessButton = new GuiButton(GUI_TOP_LEFT, 50, 50, 55 * this->core->getBlockSize() / 64.0, 55 * this->core->getBlockSize() / 64.0, new int[2]{2, 10}, 2);
+    GuiButton *possessButton = new GuiButton(GUI_TOP_LEFT, 50, 50, 55 * this->core->getBlockSize() / 64.0, 55 * this->core->getBlockSize() / 64.0, new int[2]{2, 10}, 2);
+    this->toyController[2] = possessButton;
     possessButton->setVisible(false);
     auto possessAction = [&](const TouchPoint *const p) {
         if (p->state == 1) {
-            if (possessButton->canBeClicked(p)) {
+            if (((GuiButton *) this->toyController[2])->canBeClicked(p)) {
                 if (this->core->getPlayer()->getToy() == nullptr) {
                     this->core->getPlayer()->setToy();
                 } else {
@@ -67,9 +69,6 @@ Game::Game(ApplicationContext *applicationContext) : Window(applicationContext) 
     };
     possessButton->setOnClickListener(possessAction);
     this->guiElements.push_back(possessButton);
-
-    this->toyController[1] = window;
-    this->toyController[2] = possessButton;
 
     GuiText *t = new GuiText(string("Dev Build: ") + __DATE__ + " " + __TIME__, 15, 15, GUI_BOTTOM_LEFT, 32, 0xFFFFFFFF, 0);
     this->guiElements.push_back(t);
@@ -102,7 +101,16 @@ void Game::tick(double deltaTime) {
     double player_x = this->windowWidth / 2.0 + (this->core->getPlayer()->getX() + this->core->getCamX() - 1 + this->core->getPlayer()->getWidth() / 2) * scale;
     double player_y = this->windowHeight / 2.0 + (this->core->getPlayer()->getY() + this->core->getCamY() - 1 + this->core->getPlayer()->getWidth() / 2) * scale;
 
-    possessButton->setVisible((this->core->getPlayer()->getToyToMerge() != nullptr || this->core->getPlayer()->getToy() != nullptr));
+    bool possessButtonEnabled = this->core->getPlayer()->getToy() != nullptr;
+    if (!possessButtonEnabled && this->markedToy != nullptr) {
+        for (b2ContactEdge *edge = this->core->getPlayer()->getBody()->GetContactList(); edge != nullptr; edge = edge->next) {
+            if (edge->other == this->markedToy->getBody() && edge->contact->IsTouching()) {
+                possessButtonEnabled = true;
+                break;
+            }
+        }
+    }
+    ((GuiButton *) this->toyController[2])->setEnabled(possessButtonEnabled);
 
     double px = this->core->getPlayer()->getX() + this->core->getPlayer()->getWidth() / 2;
     double py = this->core->getPlayer()->getY() + this->core->getPlayer()->getHeight() / 2;
@@ -154,7 +162,7 @@ void Game::tick(double deltaTime) {
         }
     }
 
-    if (toyPopupClickedBy >= 0) {
+    if (toyPopupClickedBy >= 0 && this->markedToy != nullptr) {
         toyPopupAlpha += 0.05 * deltaTime;
         if (toyPopupAlpha > 1.0) toyPopupAlpha = 1.0;
     } else if (toyPopupClickedBy < 0) {
@@ -162,6 +170,13 @@ void Game::tick(double deltaTime) {
         if (toyPopupAlpha < 0.0) {
             toyPopupAlpha = 0.0;
             this->markedToy = nullptr;
+            if (this->core->getPlayer()->getToy() == nullptr) {
+                this->toyController[2]->setTexPos(0, 2);
+                this->toyController[2]->setTexPos(1, 10);
+            } else {
+                this->toyController[2]->setTexPos(0, 18);
+                this->toyController[2]->setTexPos(1, 26);
+            }
         }
     }
 }
@@ -181,7 +196,8 @@ void Game::handleClick(const TouchPoint *const p) {
                 }
             }
         } else {
-            if (p->x > e->getX() && p->x < e->getX() + e->getWidth() &&
+            if (e->isVisible() &&
+                p->x > e->getX() && p->x < e->getX() + e->getWidth() &&
                 p->y > e->getY() && p->y < e->getY() + e->getHeight()) {
                 clicked = true;
             }
@@ -205,8 +221,6 @@ void Game::handleClick(const TouchPoint *const p) {
             this->markedToy = this->core->getMap()->getEntityAt<EntityToy>(sx, sy);
             if (this->markedToy != this->clickedToy) {
                 this->toyPopupClickedBy = -1;
-            } else {
-                this->toyPopupClickedBy = p->id;
             }
         } else {
             this->toyPopupClickedBy = -1;
