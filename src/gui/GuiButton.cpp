@@ -13,6 +13,7 @@ GuiButton::GuiButton(const std::string &string, char positionFlag, double x, dou
 }
 
 bool GuiButton::onClick(const TouchPoint *const touchPoint) {
+    if (!this->isEnabled()) return false;
     this->touchedBy = touchPoint != nullptr ? touchPoint->id : -1;
     if (onClickListener == NULL || !this->isVisible()) this->setPressed(false);
     else this->setPressed(onClickListener(touchPoint));
@@ -25,8 +26,11 @@ void GuiButton::setOnClickListener(std::function<bool(const TouchPoint *const)> 
 }
 
 void GuiButton::setPressed(bool pressed) {
+    if (!this->isEnabled()) {
+        pressed = false;
+    }
     this->pressed = pressed;
-    if (this->pressed == false) this->touchedBy = -1;
+    if (!this->pressed) this->touchedBy = -1;
 }
 
 bool GuiButton::canBeClicked(const TouchPoint *const p) {

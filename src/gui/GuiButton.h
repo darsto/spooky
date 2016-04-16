@@ -25,6 +25,15 @@ public:
     virtual bool onClick(const TouchPoint *const touchPoint);
     virtual void setOnClickListener(std::function<bool(const TouchPoint *const)> onClickListener);
 
+    bool isEnabled() const {
+        return enabled;
+    }
+
+    void setEnabled(bool enabled) {
+        this->enabled = enabled;
+        if (!this->isEnabled() && this->isPressed()) this->setPressed(false);
+    }
+
     bool isPressed() const {
         return pressed;
     }
@@ -51,6 +60,7 @@ public:
 
 protected:
     GuiText *text = nullptr;
+    bool enabled = true;
     bool pressed = false;
     int touchedBy;
     std::function<bool(const TouchPoint *const)> onClickListener;

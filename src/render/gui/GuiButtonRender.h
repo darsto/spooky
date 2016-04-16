@@ -28,6 +28,13 @@ public:
             float cg = ((color & 0x00FF0000) >> 16) / 255.0f * ca;
             float cb = ((color & 0x0000FF00) >> 8) / 255.0f * ca;
 
+            if (!b->isEnabled()) {
+                double mod = 0.75f;
+                cr *= mod;
+                cg *= mod;
+                cb *= mod;
+            }
+
             shaderProgram.setUniform("colorMod", glm::vec4(cr, cg, cb, ca));
 
             double ratio = b->getWidth()/b->getHeight();
