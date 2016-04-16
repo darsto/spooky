@@ -56,7 +56,7 @@ Game::Game(ApplicationContext *applicationContext) : Window(applicationContext) 
     possessButton->setVisible(false);
     auto possessAction = [&](const TouchPoint *const p) {
         if (p->state == 1) {
-            if (((GuiButton *) this->toyController[2])->canBeClicked(p)) {
+            if (this->toyPopupAlpha == 1.0 && ((GuiButton *) this->toyController[2])->canBeClicked(p)) {
                 if (this->core->getPlayer()->getToy() == nullptr) {
                     this->core->getPlayer()->setToy();
                 } else {
@@ -166,6 +166,11 @@ void Game::tick(double deltaTime) {
         toyPopupAlpha += 0.05 * deltaTime;
         if (toyPopupAlpha > 1.0) toyPopupAlpha = 1.0;
     } else if (toyPopupClickedBy < 0) {
+        for (int i = 2; i < 3; i++) {
+            if (((GuiButton *) this->toyController[i])->isPressed()) {
+                return;
+            }
+        }
         toyPopupAlpha -= 0.05 * deltaTime;
         if (toyPopupAlpha < 0.0) {
             toyPopupAlpha = 0.0;

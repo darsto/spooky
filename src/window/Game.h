@@ -49,7 +49,6 @@ private:
 
 #ifndef EDITOR
     GuiButton *controller;
-    GuiButton *possessButton;
 
     EntityToy *clickedToy = nullptr;
     float toyPopupAlpha = 0.0f;
