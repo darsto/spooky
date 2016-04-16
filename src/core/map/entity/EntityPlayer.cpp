@@ -43,7 +43,7 @@ void EntityPlayer::update(double deltaTime) {
         this->colorfulness += 0.04 * deltaTime;
         if (this->colorfulness > 2.0) this->colorfulness = 2.0;
     } else {
-        this->colorfulness -= 0.04 * deltaTime;
+        this->colorfulness -= 0.025 * deltaTime;
         if (this->colorfulness < 0.0) this->colorfulness = 0.0;
     }
 }
@@ -110,7 +110,6 @@ void EntityPlayer::setToy(bool force) {
             EntityToy *t = this->map->getEntityAt<EntityToy>(this->getX(), this->getY());
             if (t != nullptr) {
                 this->toyToMerge = t;
-                this->setToy();
             }
         }
         if (this->toyToMerge != nullptr) {
