@@ -34,7 +34,8 @@ void GuiButton::setPressed(bool pressed) {
 }
 
 bool GuiButton::canBeClicked(const TouchPoint *const p) {
-    return p->x > this->getX() && p->x < this->getX() + this->getWidth() &&
+    return this->isVisible() &&
+           p->x > this->getX() && p->x < this->getX() + this->getWidth() &&
            p->y > this->getY() && p->y < this->getY() + this->getHeight();
 }
 
