@@ -6,8 +6,8 @@
 #include "core/map/Map.h"
 
 Entity::Entity(Map *map, double width, double height) : id(Entity::getNextEntityId()), map(map) {
-    this->width = width - 0.025;
-    this->height = height - 0.025;
+    this->width = width;
+    this->height = height;
     bodyDef.type = b2_staticBody;
     body = this->map->getWorld()->CreateBody(&bodyDef);
     body->SetUserData(this);
