@@ -15,7 +15,7 @@ public:
         shape.SetAsBox(0.5, 0.5);
         b2FixtureDef fixDef;
         fixDef.shape = &shape;
-        fixDef.isSensor = texPos >= 13 * 16;
+        fixDef.isSensor = true;
         body->CreateFixture(&fixDef);
     };
 
