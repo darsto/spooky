@@ -11,6 +11,7 @@
 #include <core/map/entity/EntityGlassDebris.h>
 #include <core/map/entity/EntityCouch.h>
 #include <core/map/entity/EntityTable.h>
+#include <core/map/entity/EntityWall.h>
 #include "Map.h"
 
 Map::~Map() {
@@ -93,6 +94,14 @@ void Map::saveEntities() {
             else if (EntityCupboardTop *p = dynamic_cast<EntityCupboardTop *>(e)) id = 25;
             else if (EntityCupboardBottom *p = dynamic_cast<EntityCupboardBottom *>(e)) id = 26;
             else if (EntityToiletPaper *p = dynamic_cast<EntityToiletPaper *>(e)) id = 27;
+            else if (EntityWall *p = dynamic_cast<EntityWall *>(e)) {
+                id = 28;
+                myfile << id << "," << p->getWidth() << "," << p->getHeight() << "," << e->getX() << "," << e->getY() << "," << 0;
+                if (i != this->getEntities().size() - 1) {
+                    myfile << "\n";
+                }
+                continue;
+            }
             else continue;
             myfile << id << "," << e->getX() << "," << e->getY() << "," << e->getAngle();
             if (i != this->getEntities().size() - 1) {
