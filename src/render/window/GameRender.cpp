@@ -17,11 +17,13 @@
 #include <core/map/entity/EntityTable.h>
 #include <core/map/entity/EntityGlassDebris.h>
 #include <core/map/entity/EntityCouch.h>
+#include <core/map/entity/EntityWall.h>
 #include <core/map/block/SimpleBlock.h>
 #include <logging.h>
 #include <render/entity/EntityMachineryRender.h>
 #include <render/entity/EntityStaticRender.h>
 #include <render/entity/EntityWideRender.h>
+#include <render/entity/EntityWallRender.h>
 #include <ApplicationContext.h>
 
 GameRender::GameRender() : WindowRender() { }
@@ -181,6 +183,7 @@ void GameRender::initRenders() {
     entityRenders.insert(std::make_pair(typeid(EntityGlassDebris).name(), staticRender));
     entityRenders.insert(std::make_pair(typeid(SimpleShape).name(), new SimpleShapeRender()));
     entityRenders.insert(std::make_pair(typeid(EntityFather).name(), new DefaultEntityRender("parents", "shader")));
+    entityRenders.insert(std::make_pair(typeid(EntityWall).name(), new EntityWallRender()));
 }
 
 GameRender::~GameRender() {

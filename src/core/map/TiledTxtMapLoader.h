@@ -14,6 +14,7 @@
 #include <core/map/entity/EntityTable.h>
 #include <core/map/entity/EntityGlassDebris.h>
 #include <core/map/entity/EntityCouch.h>
+#include <core/map/entity/EntityWall.h>
 #include "Map.h"
 #include "../map/block/SimpleBlock.h"
 #include "../map/entity/EntityPlayer.h"
@@ -205,6 +206,10 @@ TiledTxtMapLoader::TiledTxtMapLoader(const std::string &fileName) {
                         break;
                     case 27:
                         sshape = new EntityToiletPaper(this->map);
+                        break;
+                    case 28:
+                        sshape = new EntityWall(this->map, atof(blockRow.at(i).c_str()), atof(blockRow.at(i + 1).c_str()));
+                        i += 2;
                         break;
                     default:
                         break;
