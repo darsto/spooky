@@ -110,8 +110,8 @@ void Game::tick(double deltaTime) {
 
     double dx = (px - 1 + this->core->getCamX());
     double dy = (py - 1 + this->core->getCamY());
-    if (abs(dx) > 0.00001) this->core->setCamX(-this->core->getCamX() + (dx) * 0.05);
-    if (abs(dy) > 0.00001) this->core->setCamY(-this->core->getCamY() + (dy) * 0.05);
+    if (abs(dx) > 0.05) this->core->setCamX(-this->core->getCamX() + (dx) * 0.05);
+    if (abs(dy) > 0.05) this->core->setCamY(-this->core->getCamY() + (dy) * 0.05);
 
     if (controller->isPressed()) {
         double x = (controller->getX() - player_x) / 100.0f;
