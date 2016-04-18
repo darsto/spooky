@@ -20,7 +20,9 @@ public:
         this->body->CreateFixture(&fixDef);
     }
 
-
+    virtual bool doesCollide(IPositionable *obj) override {
+        return dynamic_cast<EntityWall *>(obj) == nullptr;
+    }
 };
 
 #endif //C003_ENTITYWALL_H
