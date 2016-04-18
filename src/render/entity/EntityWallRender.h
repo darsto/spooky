@@ -31,9 +31,10 @@ public:
             this->shaderProgram.setUniform("gSampler", texture.getBoundId());
 
             glm::mat4x4 tmpModelMatrixVal;
-            tmpModelMatrixVal = glm::translate(this->modelMatrix, glm::vec3(0.0f - (entity->getX() - entity->getWidth() / 2) * scale, 0.0f - (entity->getY() - entity->getHeight() / 2) * scale, 0.0f));
+            //Walls are scaled to their dimensions, so they need different render positioning
+            tmpModelMatrixVal = glm::translate(this->modelMatrix, glm::vec3(0.0f - (entity->getX() - 0.5) * scale, 0.0f - (entity->getY() - 0.5) * scale, 0.0f));
 
-            tmpModelMatrixVal = glm::scale(tmpModelMatrixVal, glm::vec3((entity->getWidth() + 0.025) * scale, (entity->getHeight() + 0.025) * scale, 1.0f));
+            tmpModelMatrixVal = glm::scale(tmpModelMatrixVal, glm::vec3((entity->getWidth() + 0.05) * scale, (entity->getHeight() + 0.05) * scale, 1.0f));
             this->tmpModelMatrix = &tmpModelMatrixVal;
 
             cache->readyModelMatrix = *this->tmpModelMatrix;
