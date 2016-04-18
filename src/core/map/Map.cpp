@@ -96,7 +96,7 @@ void Map::saveEntities() {
             else if (EntityToiletPaper *p = dynamic_cast<EntityToiletPaper *>(e)) id = 27;
             else if (EntityWall *p = dynamic_cast<EntityWall *>(e)) {
                 id = 28;
-                myfile << id << "," << p->getWidth() << "," << p->getHeight() << "," << e->getX() << "," << e->getY() << "," << 0;
+                myfile << id << "," << (p->getWidth() + 0.025) << "," << (p->getHeight() + 0.025) << "," << e->getX() << "," << e->getY() << "," << 0;
                 if (i != this->getEntities().size() - 1) {
                     myfile << "\n";
                 }
