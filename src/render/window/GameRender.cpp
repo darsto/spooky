@@ -104,7 +104,7 @@ void GameRender::render(Window *window, RenderContext *const renderContext) {
 
 #ifndef EDITOR
     //TODO
-    static int grayout[][4] = {{20, 3, 4, 6},
+    /*static int grayout[][4] = {{20, 3, 4, 6},
                                {21, 9, 1, 1},
                                {25, 3, 5, 3},
                                {30, 3, 1, 1},
@@ -118,7 +118,7 @@ void GameRender::render(Window *window, RenderContext *const renderContext) {
             -(signed) windowWidth / 2.0f - camX,
             (signed) windowHeight / 2.0f - camY,
             0.0f)), core->getBlockSize() * core->getGeneralScale());
-    }
+    }*/
 #endif //EDITOR
 
     fbo.unbind();
