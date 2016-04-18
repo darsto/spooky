@@ -30,7 +30,7 @@ public:
             if (EntityBulldozer *b = dynamic_cast<EntityBulldozer *>(object)) {
                 this->bodyType = b2_dynamicBody;
             } else {
-                this->bodyType = b2_staticBody;
+                //this->bodyType = b2_staticBody;
             }
             Entity::onCollision(object, state);
         }
@@ -70,13 +70,13 @@ private:
     bool locked;
 
     double getHingeOffsetX() {
-        if (this->type & 0xF) return 0.5;
+        if ((this->type >> 0) & 1) return 0.5;
         else return -0.5;
     }
 
     double getHingeOffsetY() {
-        if ((this->type & 0xF0) >> 1) return 0.125;
-        else return -0.125;
+        if ((this->type >> 1) & 1) return 0.5;
+        else return -0.5;
     }
 };
 
