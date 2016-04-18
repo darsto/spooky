@@ -19,8 +19,9 @@ protected:
     virtual int getTexPos(const Entity *const entity) override {
         int texPos = -1;
         //TODO (?) could use some strategy here, trying not to create another render though
-        if (const EntityFurniture *const f = dynamic_cast<const EntityFurniture *const>(entity)) texPos = f->getTexId();
+        if (const EntityDoor *const d = dynamic_cast<const EntityDoor *const>(entity)) texPos = 28 + 8 * ((d->getType() >> 7) & 1);
         else if (const EntityGlassDebris *const d = dynamic_cast<const EntityGlassDebris *const>(entity)) texPos = 62 + d->getType();
+        else if (const EntityFurniture *const f = dynamic_cast<const EntityFurniture *const>(entity)) texPos = f->getTexId();
         return texPos;
     };
 };
