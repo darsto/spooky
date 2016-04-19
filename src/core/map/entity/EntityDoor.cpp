@@ -4,7 +4,14 @@
 
 #include "EntityDoor.h"
 
-EntityDoor::EntityDoor(Map *map, unsigned char type) : EntityFurniture(map, new b2PolygonShape, ((type >> 7) & 1) ? 0.25 : 1.0, ((type >> 7) & 1) ? 1.0 : 0.25, 0), type(type) {
+EntityDoor::EntityDoor(Map *map, unsigned char type)
+    : EntityFurniture(map,
+                      new b2PolygonShape,
+                      ((type >> 7) & 1) ? (((type >> 6) & 1) ? 0.1 : 0.25) : (1.0 - 0.025),
+                      ((type >> 7) & 1) ? (1.0 - 0.025) : (((type >> 6) & 1) ? 0.1 : 0.25),
+                      0),
+      type(type) {
+
     this->body->GetFixtureList()[0].SetDensity(0.9f);
 
     this->hinge = this->map->getWorld()->CreateBody(&bodyDef);
@@ -22,15 +29,12 @@ EntityDoor::EntityDoor(Map *map, unsigned char type) : EntityFurniture(map, new 
 
     b2RevoluteJointDef revoluteJointDef;
 
-    //revoluteJointDef.localAnchorA.Set(0, 0); //-0.125 for hinge on top, 0.125 on bottom
     revoluteJointDef.localAnchorA.Set(this->getHingeOffsetX() * this->width, this->getHingeOffsetY() * this->height); //-0.125 for hinge on top, 0.125 on bottom
     revoluteJointDef.localAnchorB.Set(0, 0);
 
-    //inside the loop, only need to change the bodies to be joined
     revoluteJointDef.bodyA = this->body;
     revoluteJointDef.bodyB = this->hinge;
     this->map->getWorld()->CreateJoint(&revoluteJointDef);
-    //this->setLocked(true);
 }
 
 void EntityDoor::setX(double x) {
