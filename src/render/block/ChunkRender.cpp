@@ -94,7 +94,7 @@ void ChunkRender::render(const Chunk *const chunk, glm::mat4 projectionMatrix, g
 
 
         float size = 1.0f / atlasSize;
-        float bleedfix = 1.0f / texture.getWidth();
+        float bleedfix = 0.5f / texture.getWidth();
 
         float *tCoords = new float[8 * Chunk::size * Chunk::size];
 
@@ -104,17 +104,17 @@ void ChunkRender::render(const Chunk *const chunk, glm::mat4 projectionMatrix, g
                 int texId = ((SimpleBlock *) b)->getTexPos(); //TODO
                 int x = texId % atlasSize, y = texId / atlasSize;
 
-                tCoords[8 * i + 0] = size * (x + 1 - bleedfix);
-                tCoords[8 * i + 1] = size * y;
+                tCoords[8 * i + 0] = size * (x + 1) - bleedfix;
+                tCoords[8 * i + 1] = bleedfix + size * y;
 
-                tCoords[8 * i + 2] = size * (x + 1 - bleedfix);
-                tCoords[8 * i + 3] = size * (y + 1 - bleedfix);
+                tCoords[8 * i + 2] = size * (x + 1) - bleedfix;
+                tCoords[8 * i + 3] = size * (y + 1) - bleedfix;
 
-                tCoords[8 * i + 4] = size * x;
-                tCoords[8 * i + 5] = size * y;
+                tCoords[8 * i + 4] = bleedfix + size * x;
+                tCoords[8 * i + 5] = bleedfix + size * y;
 
-                tCoords[8 * i + 6] = size * x;
-                tCoords[8 * i + 7] = size * (y + 1 - bleedfix);
+                tCoords[8 * i + 6] = bleedfix + size * x;
+                tCoords[8 * i + 7] = size * (y + 1) - bleedfix;
             } else {
                 for (int j = 0; j < 7; j++) {
                     tCoords[8 * i + j] = 0;
