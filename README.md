@@ -8,3 +8,5 @@ Spooky Tom is a top-down game for children aged 7 to 13 years old. Action takes 
 
 <!--![Screenshot by 5.12.15]
 (http://i.imgur.com/atZIiPz.png)-->
+
+Copyright 2015-2016 Game Development Accident
