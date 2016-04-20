@@ -211,6 +211,9 @@ TiledTxtMapLoader::TiledTxtMapLoader(const std::string &fileName) {
                         sshape = new EntityWall(this->map, atof(blockRow.at(i).c_str()), atof(blockRow.at(i + 1).c_str()));
                         i += 2;
                         break;
+                    case 29:
+                        sshape = new EntityGlass(this->map);
+                        break;
                     default:
                         break;
                 }

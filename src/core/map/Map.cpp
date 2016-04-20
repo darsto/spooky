@@ -102,6 +102,7 @@ void Map::saveEntities() {
                 }
                 continue;
             }
+            else if (EntityGlass *p = dynamic_cast<EntityGlass *>(e)) id = 29;
             else continue;
             myfile << id << "," << e->getX() << "," << e->getY() << "," << e->getAngle();
             if (i != this->getEntities().size() - 1) {

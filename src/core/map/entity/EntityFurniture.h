@@ -16,7 +16,7 @@ public:
         return texId;
     }
 
-    virtual ~EntityFurniture() {};
+    virtual ~EntityFurniture() { };
 
 protected:
     int texId;
@@ -134,21 +134,21 @@ public:
     virtual ~EntityNotebook() override { }
 };
 
-class EntityCupboardTop: public EntityFurniture {
+class EntityCupboardTop : public EntityFurniture {
 public:
     EntityCupboardTop(Map *map) : EntityFurniture(map, new b2PolygonShape, 0.85, 1.0, 32) { }
 
     virtual ~EntityCupboardTop() override { }
 };
 
-class EntityCupboardBottom: public EntityFurniture {
+class EntityCupboardBottom : public EntityFurniture {
 public:
     EntityCupboardBottom(Map *map) : EntityFurniture(map, new b2PolygonShape, 0.85, 1.0, 40) { }
 
     virtual ~EntityCupboardBottom() override { }
 };
 
-class EntityToiletPaper: public EntityFurniture {
+class EntityToiletPaper : public EntityFurniture {
 public:
     EntityToiletPaper(Map *map) : EntityFurniture(map, new b2PolygonShape, 0.3125, 0.625, 7) {
         this->setBodyType(b2_staticBody);
@@ -178,5 +178,16 @@ public:
     }
 };
 
+class EntityGlass : public EntityFurniture {
+public:
+    EntityGlass(Map *map) : EntityFurniture(map, new b2CircleShape, 0.3, 0.3, 61) { }
+
+    virtual bool doesCollide(IPositionable *obj) override {
+        if (EntityWardrobe *b = dynamic_cast<EntityWardrobe *>(obj)) {
+            return false;
+        }
+        return Entity::doesCollide(obj);
+    }
+};
 
 #endif //C003_ENTITYFURNITURE_H
