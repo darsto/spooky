@@ -26,11 +26,11 @@ public:
     double getHingeY();
 
     virtual void onCollision(IPositionable *object, char state) override {
-        if (!this->isLocked()) if (EntityToy *b = dynamic_cast<EntityToy *>(object)) {
+        if (!this->isLocked() && ((type >> 6) & 1) == 0) if (EntityToy *b = dynamic_cast<EntityToy *>(object)) {
             if (EntityBulldozer *b = dynamic_cast<EntityBulldozer *>(object)) {
                 this->bodyType = b2_dynamicBody;
             } else {
-                //this->bodyType = b2_staticBody;
+                this->bodyType = b2_staticBody;
             }
             Entity::onCollision(object, state);
         }
