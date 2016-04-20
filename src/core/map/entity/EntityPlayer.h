@@ -54,6 +54,10 @@ public:
         this->damagedToy = damagedToy;
     }
 
+    void setToyToMerge(EntityToy *toyToMerge) {
+        EntityPlayer::toyToMerge = toyToMerge;
+    }
+
     double getTailAnimation() const {
         return tailAnimation;
     }
