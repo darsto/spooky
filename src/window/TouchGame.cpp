@@ -71,6 +71,30 @@ Game::Game(ApplicationContext *applicationContext) : Window(applicationContext) 
     possessButton->setOnClickListener(possessAction);
     this->guiElements.push_back(possessButton);
 
+    GuiButton *infoButton = new GuiButton(GUI_TOP_RIGHT, 50, 50, 100, 100, new int[2]{24, 32}, 2);
+    this->infoControl[0] = infoButton;
+    auto infoAction = [=](const TouchPoint *const p) {
+        if (p->state == 1) {
+            if (infoButton->canBeClicked(p)) {
+                this->infoWindowVisible = !this->infoWindowVisible;
+            }
+            return false;
+        }
+        return true;
+    };
+    infoButton->setOnClickListener(infoAction);
+    this->guiElements.push_back(infoButton);
+
+    GuiTextBubble *infoWindow = new GuiTextBubble(GUI_TOP_RIGHT, 40, 190, 400, 500);
+    this->infoControl[1] = infoWindow;
+    infoWindow->setVisible(false);
+    this->guiElements.push_back(infoWindow);
+
+    GuiText *infoText = new GuiText("No help is available\nat the moment. Sorry!", 0, 0, GUI_TOP_LEFT, 24, 0x666666FF, 0);
+    this->infoControl[2] = infoText;
+    infoText->setVisible(false);
+    this->guiElements.push_back(infoText);
+
     GuiText *t = new GuiText(string("Dev Build: ") + __DATE__ + " " + __TIME__, 15, 15, GUI_BOTTOM_LEFT, 32, 0xFFFFFFFF, 0);
     this->guiElements.push_back(t);
 #if defined(__DEBUG__)
@@ -79,9 +103,13 @@ Game::Game(ApplicationContext *applicationContext) : Window(applicationContext) 
 }
 
 void Game::reload(unsigned int windowWidth, unsigned int windowHeight) {
+    //this->infoControl[1]->setHeight(windowHeight - 250);
+    ((GuiTextBubble *)this->infoControl[1])->setupDimensions((GuiText *) this->infoControl[2]);
     for (GuiElement *e : this->guiElements) {
         e->reinit(windowWidth, windowHeight);
     }
+    this->infoControl[2]->setX(this->infoControl[1]->getX() + 10);
+    this->infoControl[2]->setY(this->infoControl[1]->getY() + 17.5);
     this->resetButtons(nullptr);
     this->windowWidth = windowWidth;
     this->windowHeight = windowHeight;
@@ -200,6 +228,24 @@ void Game::tick(double deltaTime) {
             this->markedToy = this->core->getPlayer()->getToyToMerge();
             toyPopupClickedBy = 100;
         }
+    }
+
+    if (this->infoWindowVisible) {
+        this->infoWindowAlpha += 0.05f * deltaTime;
+        if (this->infoWindowAlpha > 1.0f) {
+            this->infoWindowAlpha = 1.0f;
+        }
+    } else {
+        this->infoWindowAlpha -= 0.05f * deltaTime;
+        if (this->infoWindowAlpha < 0.0f) {
+            this->infoWindowAlpha = 0.0f;
+        }
+    }
+    for (int i = 1; i < 3; i++) {
+        int color = this->infoControl[i]->getColor() & 0xFFFFFF00;
+        color |= (int) (this->infoWindowAlpha * 255);
+        this->infoControl[i]->setColor(color);
+        this->infoControl[i]->setVisible(this->infoWindowAlpha > 0.0);
     }
 }
 

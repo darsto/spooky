@@ -56,6 +56,9 @@ private:
     EntityToy *markedToy = nullptr;
 
     GuiElement *toyController[3];
+    GuiElement *infoControl[3];
+    float infoWindowAlpha = 0.0f;
+    bool infoWindowVisible = false;
 
     void resetButtons(const TouchPoint *const p, const GuiButton *const b);
 
