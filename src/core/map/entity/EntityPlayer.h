@@ -55,7 +55,7 @@ public:
     }
 
     void setToyToMerge(EntityToy *toyToMerge) {
-        EntityPlayer::toyToMerge = toyToMerge;
+        this->toyToMerge = toyToMerge;
     }
 
     double getTailAnimation() const {
