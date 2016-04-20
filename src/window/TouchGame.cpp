@@ -58,6 +58,7 @@ Game::Game(ApplicationContext *applicationContext) : Window(applicationContext) 
         if (p->state == 1) {
             if (this->toyPopupAlpha == 1.0 && ((GuiButton *) this->toyController[2])->canBeClicked(p)) {
                 if (this->core->getPlayer()->getToy() == nullptr) {
+                    this->core->getPlayer()->setToyToMerge(this->markedToy);
                     this->core->getPlayer()->setToy();
                 } else {
                     this->core->getPlayer()->eject();
