@@ -15,13 +15,13 @@ public:
         shape.SetAsBox(this->width / 2, this->height / 2);
         b2FixtureDef fixDef;
         fixDef.shape = &shape;
-        fixDef.density = 0.1f;
+        fixDef.density = 0.3f;
         fixDef.friction = 0.1f;
         this->body->CreateFixture(&fixDef);
     }
 
     double getSpeed() override {
-        return 0.02;
+        return 0.06;
     }
 };
 
