@@ -27,13 +27,15 @@ public:
 
     virtual void onCollision(IPositionable *object, char state) override {
         if (!this->isLocked() && ((type >> 6) & 1) == 0) if (EntityToy *b = dynamic_cast<EntityToy *>(object)) {
-            if (EntityBulldozer *b = dynamic_cast<EntityBulldozer *>(object)) {
-                this->bodyType = b2_dynamicBody;
-            } else {
-                this->bodyType = b2_staticBody;
+            if (b->getHost() != nullptr) {
+                if (EntityBulldozer *b = dynamic_cast<EntityBulldozer *>(object)) {
+                    this->bodyType = b2_dynamicBody;
+                } else {
+                    this->bodyType = b2_staticBody;
+                }
             }
-            Entity::onCollision(object, state);
         }
+        Entity::onCollision(object, state);
     }
 
     virtual ~EntityDoor() override {
