@@ -60,6 +60,14 @@ Game::Game(ApplicationContext *applicationContext) : Window(applicationContext) 
                 if (this->core->getPlayer()->getToy() == nullptr) {
                     this->core->getPlayer()->setToyToMerge(this->markedToy);
                     this->core->getPlayer()->setToy();
+                    int missionProgress = this->missionFlags & 0xFF;
+                    if (missionProgress == 0) {
+                        this->newInfoText = "Head outside of the room.\nExplore the house.";
+                        this->infoWindowVisible = false;
+                        if (this->infoWindowAlpha == 0.0) this->infoWindowAlpha = 0.001;
+                        this->missionFlags = (this->missionFlags >> 8) << 8;
+                        this->missionFlags |= missionProgress;
+                    }
                 } else {
                     this->core->getPlayer()->eject();
                 }
@@ -72,12 +80,13 @@ Game::Game(ApplicationContext *applicationContext) : Window(applicationContext) 
     possessButton->setOnClickListener(possessAction);
     this->guiElements.push_back(possessButton);
 
-    GuiButton *infoButton = new GuiButton(GUI_TOP_RIGHT, 50, 50, 100, 100, new int[2]{24, 32}, 2);
+    GuiButton *infoButton = new GuiButton(GUI_TOP_RIGHT, 50, 50, 100, 100, new int[2]{33, 32}, 2);
     this->infoControl[0] = infoButton;
     auto infoAction = [=](const TouchPoint *const p) {
         if (p->state == 1) {
-            if (infoButton->canBeClicked(p)) {
+            if ((this->infoWindowAlpha == 0.0 || this->infoWindowAlpha == 1.0) && infoButton->canBeClicked(p)) {
                 this->infoWindowVisible = !this->infoWindowVisible;
+                infoButton->setTexPos(0, 24);
             }
             return false;
         }
@@ -91,7 +100,7 @@ Game::Game(ApplicationContext *applicationContext) : Window(applicationContext) 
     infoWindow->setVisible(false);
     this->guiElements.push_back(infoWindow);
 
-    GuiText *infoText = new GuiText("No help is available\nat the moment. Sorry!", 0, 0, GUI_TOP_LEFT, 24, 0x666666FF, 0);
+    GuiText *infoText = new GuiText("Try to fly over an\norange car. Then,\npress the possess\nbutton.", 0, 0, GUI_TOP_LEFT, 24, 0x666666FF, 0);
     this->infoControl[2] = infoText;
     infoText->setVisible(false);
     this->guiElements.push_back(infoText);
@@ -104,8 +113,7 @@ Game::Game(ApplicationContext *applicationContext) : Window(applicationContext) 
 }
 
 void Game::reload(unsigned int windowWidth, unsigned int windowHeight) {
-    //this->infoControl[1]->setHeight(windowHeight - 250);
-    ((GuiTextBubble *)this->infoControl[1])->setupDimensions((GuiText *) this->infoControl[2]);
+    ((GuiTextBubble *) this->infoControl[1])->setupDimensions((GuiText *) this->infoControl[2]);
     for (GuiElement *e : this->guiElements) {
         e->reinit(windowWidth, windowHeight);
     }
@@ -236,17 +244,59 @@ void Game::tick(double deltaTime) {
         if (this->infoWindowAlpha > 1.0f) {
             this->infoWindowAlpha = 1.0f;
         }
-    } else {
+    } else if (this->infoWindowAlpha > 0.0) {
         this->infoWindowAlpha -= 0.05f * deltaTime;
         if (this->infoWindowAlpha < 0.0f) {
             this->infoWindowAlpha = 0.0f;
+            if (this->newInfoText.length() > 0 && ((GuiText *) this->infoControl[2])->getString().compare(this->newInfoText) != 0) {
+                ((GuiText *) this->infoControl[2])->updateString(this->newInfoText);
+                if (this->infoControl[1]->isVisible()) {
+                    this->infoWindowVisible = true;
+                } else {
+                    this->infoControl[0]->setTexPos(0, 33);
+                }
+                ((GuiTextBubble *) this->infoControl[1])->setupDimensions(((GuiText *) this->infoControl[2]));
+                ((GuiTextBubble *) this->infoControl[1])->reinit(this->windowWidth, this->windowHeight);
+                this->infoControl[2]->setX(this->infoControl[1]->getX() + 10);
+                this->infoControl[2]->setY(this->infoControl[1]->getY() + 17.5);
+            }
         }
     }
+
     for (int i = 1; i < 3; i++) {
         int color = this->infoControl[i]->getColor() & 0xFFFFFF00;
         color |= (int) (this->infoWindowAlpha * 255);
         this->infoControl[i]->setColor(color);
         this->infoControl[i]->setVisible(this->infoWindowAlpha > 0.0);
+    }
+
+    if (!((this->missionFlags >> 31) & 1)) {
+        if (EntityGlass *glass = dynamic_cast<EntityGlass *>(this->core->getMap()->getEntities()[1])) {
+            if (this->core->getPlayer()->getToy() != nullptr && (int) this->core->getPlayer()->getX() == 24 && this->core->getPlayer()->getX() < 24.8 && (int) this->core->getPlayer()->getY() == 13 && this->core->getPlayer()->getY() < 13.7) {
+                glass->remove();
+                this->newInfoText = "A glass has shattered!\nYou have to clean it up\nbefore someone gets hurt!\nThere is a hoover toy\non the other side of the\nhouse. Go take it.";
+                this->infoWindowVisible = false;
+                if (this->infoWindowAlpha == 0.0) this->infoWindowAlpha = 0.001;
+                for (int i = 0; i < 3; i++) {
+                    EntityGlassDebris *p = new EntityGlassDebris(this->core->getMap());
+                    p->setX(25.0571);
+                    p->setY(14.01);
+                    p->setAngle(i * M_PI * 0.35 - M_PI * 0.3);
+                    p->applyImpulse(sin(-i * M_PI_2 / 3 + M_PI_4 * 3) * 0.0, cos(-i * M_PI_2 / 3 + M_PI_4 * 3) * 0.0);
+                    this->core->getMap()->addEntity(p);
+                }
+                this->missionFlags |= (1 << 31);
+            }
+        }
+    }
+
+    if (!((this->missionFlags >> 30) & 1)) {
+        if (this->core->getPlayer()->getToy() != nullptr && (int) this->core->getPlayer()->getX() > 9.25 && this->core->getPlayer()->getX() < 10.5 && this->core->getPlayer()->getY() > 9.65 && this->core->getPlayer()->getY() < 10.25) {
+            this->newInfoText = "This toy is too light\nto open the door.\nTry the bulldozer\nfrom the room on\nthe right.";
+            this->infoWindowVisible = false;
+            if (this->infoWindowAlpha == 0.0) this->infoWindowAlpha = 0.001;
+            this->missionFlags |= (1 << 30);
+        }
     }
 }
 

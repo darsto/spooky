@@ -61,6 +61,8 @@ private:
     bool infoWindowVisible = false;
     std::string newInfoText;
 
+    unsigned int missionFlags = 0;
+
     void resetButtons(const TouchPoint *const p, const GuiButton *const b);
 
     void resetButtons(const TouchPoint *const p) {
