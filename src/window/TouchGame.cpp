@@ -191,7 +191,7 @@ void Game::tick(double deltaTime) {
         this->toyController[2]->setY(this->toyController[1]->getY() + 10 * this->core->getBlockSize() / 64.0);
 
         bool possessButtonEnabled = this->core->getPlayer()->getToy() != nullptr && this->markedToy == this->core->getPlayer()->getToy();
-        if (!possessButtonEnabled) {
+        if (this->core->getPlayer()->getToy() == nullptr) {
             for (b2ContactEdge *edge = this->core->getPlayer()->getBody()->GetContactList(); edge != nullptr; edge = edge->next) {
                 if (edge->other == this->markedToy->getBody() && edge->contact->IsTouching()) {
                     possessButtonEnabled = true;
