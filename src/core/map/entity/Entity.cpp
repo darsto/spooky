@@ -16,8 +16,15 @@ Entity::Entity(Map *map, double width, double height) : id(Entity::getNextEntity
 }
 
 void Entity::update(double deltaTime) {
-    this->x = body->GetPosition().x + this->width * 0.5;
-    this->y = body->GetPosition().y + this->height * 0.5;
+    double newX = body->GetPosition().x + this->width * 0.5;
+    double newY = body->GetPosition().y + this->height * 0.5;
+
+    if (newX != this->x || newY != this->y) {
+        this->getBody()->SetAwake(true);
+    }
+
+    this->x = newX;
+    this->y = newY;
 }
 
 void Entity::setY(double y) {
