@@ -72,11 +72,13 @@ private:
     bool locked;
 
     double getHingeOffsetX() {
+        if (((type >> 7) & 1) && ((type >> 6) & 1)) return 0.0;
         if ((this->type >> 0) & 1) return 0.5;
         else return -0.5;
     }
 
     double getHingeOffsetY() {
+        if (!((type >> 7) & 1) && ((type >> 6) & 1)) return 0.0;
         if ((this->type >> 1) & 1) return 0.5;
         else return -0.5;
     }
