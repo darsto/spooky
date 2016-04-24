@@ -40,6 +40,9 @@ private:
     RenderManager *renderer = nullptr;
     InputManager *inputManager = nullptr;
     Timer *timer = nullptr;
+    double deltaTimeHistory[15];
+    double averageDeltaTime = 0;
+    unsigned long long ticks = 0;
 
 #ifndef __DEFMOBILE__
     SDL_Event e;
