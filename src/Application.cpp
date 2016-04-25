@@ -49,6 +49,7 @@ void Application::update(bool dynamic) {
     if (dynamic) {
         this->deltaTimeHistory[this->ticks] = timer->GetDelta();
         if (this->ticks == 14) {
+            this->averageDeltaTime = 0.0;
             for (int i = 0; i < 15; i++) {
                 this->averageDeltaTime += this->deltaTimeHistory[i];
             }
