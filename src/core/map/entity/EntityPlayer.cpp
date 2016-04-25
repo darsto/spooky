@@ -155,7 +155,7 @@ void EntityPlayer::move(double x, double y, double deltaTime) {
         this->setAngle(atan2(y, x));
     }
 
-    double powMod = std::pow(0.08, deltaTime);
+    double powMod = 0.08 * deltaTime;
     this->setVelocity(this->velX + x * powMod, this->velY + y * powMod);
 
 }
