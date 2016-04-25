@@ -5,8 +5,18 @@
 #include "EntityToy.h"
 #include "EntityPlayer.h"
 
+#ifndef M_PI
+#define M_PI        3.14159265358979323846
+#endif
+#ifndef M_PI_2
+#define M_PI_2        1.57079632679489661923
+#endif
+#ifndef M_PI_4
+#define M_PI_4        0.78539816339744830962
+#endif
+
 void EntityToy::update(double deltaTime) {
-    EntityMoving::update(0);
+    EntityMoving::update(deltaTime);
     if (this->durability <= 0.0 && this->getHost() != nullptr) {
         this->getHost()->setDamagedToy(this);
         this->getHost()->eject();
@@ -22,3 +32,36 @@ void EntityToy::damage(double value) {
         this->durability -= value;
     }
 }
+
+double EntityToy::getControllability() {
+    return 0.03;
+}
+
+void EntityToy::applyForce(double x, double y) {
+    EntityMoving::applyForce(x, y);
+}
+
+void EntityToy::applyImpulse(double x, double y) {
+    EntityMoving::applyImpulse(x, y);
+    this->movingTimer += 0.015;
+}
+
+EntityPlayer *EntityToy::getHost() const {
+    return host;
+}
+
+void EntityToy::setHost(EntityPlayer *host) {
+    this->host = host;
+}
+
+double EntityToy::getMovingTime() const {
+    return movingTimer;
+}
+
+void EntityToy::resetMovingTime() {
+    this->movingTimer = 0.0;
+}
+
+EntityToy::EntityToy(Map *map, double width, double height) : EntityMoving(map, width, height) { }
+
+void EntityToy::onCollision(IPositionable *object, char state) { }
