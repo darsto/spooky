@@ -42,7 +42,12 @@ void EntityPlayer::update(double deltaTime) {
         this->increaseTailAnimation((0.5 + speed * 0.9) * 0.3 * deltaTime);
     }
 
-    if (this->toy != nullptr) {
+    if (this->getToy() != nullptr) {
+        this->setX(this->getToy()->getX());
+        this->setY(this->getToy()->getY());
+    }
+
+    if (this->getToy() != nullptr) {
         this->colorfulness += 0.04 * deltaTime;
         if (this->colorfulness > 2.0) this->colorfulness = 2.0;
     } else {
@@ -83,16 +88,6 @@ void EntityPlayer::eject() {
         this->toysToMerge = 0;
         this->ejectTimer = 1.0;
     }
-}
-
-double EntityPlayer::getX() const {
-    if (this->toy != nullptr) return this->toy->getX();
-    return Entity::getX();
-}
-
-double EntityPlayer::getY() const {
-    if (this->toy != nullptr) return this->toy->getY();
-    return Entity::getY();
 }
 
 void EntityPlayer::applyImpulse(double x, double y) {
@@ -159,7 +154,9 @@ void EntityPlayer::move(double x, double y, double deltaTime) {
     } else {
         this->setAngle(atan2(y, x));
     }
-    this->setVelocity(x, y);
+
+    double powMod = std::pow(0.08, deltaTime);
+    this->setVelocity(this->velX + x * powMod, this->velY + y * powMod);
 
 }
 

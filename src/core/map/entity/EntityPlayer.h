@@ -21,8 +21,6 @@ public:
     virtual bool doesCollide(IPositionable *obj) override;
     virtual void applyImpulse(double x, double y) override;
     virtual void applyForce(double x, double y) override;
-    virtual double getX() const override;
-    virtual double getY() const override;
 
     void move(double x, double y, double deltaTime);
 
