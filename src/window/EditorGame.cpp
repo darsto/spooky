@@ -144,8 +144,10 @@ void Game::handleClick(const TouchPoint *const p) {
     if (p->id == SDL_BUTTON_LEFT) {
         if (p->state == 0) {
             this->heldEntity = this->core->getMap()->getEntityAt<Entity>(x, y);
-            this->relXClicked = this->heldEntity->getX() - x;
-            this->relYClicked = this->heldEntity->getY() - y;
+            if (this->heldEntity != nullptr) {
+                this->relXClicked = this->heldEntity->getX() - x;
+                this->relYClicked = this->heldEntity->getY() - y;
+            }
         } else if (p->state == 2) {
             if (this->heldEntity != nullptr && !this->entityRotationRing->isVisible()) {
                 Entity *e = this->heldEntity;
