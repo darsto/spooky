@@ -70,6 +70,8 @@ public:
         return colorfulness;
     }
 
+    void setVelocity(double velX, double velY);
+
 private:
     int toysToMerge = 0;
     EntityToy *toyToMerge = nullptr;
@@ -78,6 +80,7 @@ private:
     double ejectTimer = 0.0;
     double colorfulness = 0.0;
     double tailAnimation = 0.0;
+    double velX = 0.0, velY = 0.0;
 };
 
 #endif //C003_PLAYER_H

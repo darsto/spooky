@@ -20,6 +20,7 @@ EntityPlayer::EntityPlayer(Map *map) : EntityMoving(map, 0.55, 0.55) {
 
 void EntityPlayer::update(double deltaTime) {
     EntityMoving::update(deltaTime);
+
     this->ejectTimer *= pow(0.75, deltaTime);
     if (std::abs(this->ejectTimer) < 0.05) {
         if (this->ejectTimer < 0.0) {
@@ -33,12 +34,14 @@ void EntityPlayer::update(double deltaTime) {
             this->applyForce((this->getToyToMerge()->getX() - this->getX()) * 2.0, (this->getToyToMerge()->getY() - this->getY()) * 2.0);
         }
     }
+
     if (this->getToy() == nullptr) {
         double speed_x = this->getBody()->GetLinearVelocity().x;
         double speed_y = this->getBody()->GetLinearVelocity().y;
         double speed = speed_x * speed_x + speed_y * speed_y;
         this->increaseTailAnimation((0.5 + speed * 0.9) * 0.3 * deltaTime);
     }
+
     if (this->toy != nullptr) {
         this->colorfulness += 0.04 * deltaTime;
         if (this->colorfulness > 2.0) this->colorfulness = 2.0;
@@ -46,6 +49,14 @@ void EntityPlayer::update(double deltaTime) {
         this->colorfulness -= 0.025 * deltaTime;
         if (this->colorfulness < 0.0) this->colorfulness = 0.0;
     }
+
+    if (std::abs(this->velX) > 0.01 || std::abs(this->velY) > 0.01) {
+        this->applyForce(this->velX, this->velY);
+    }
+
+    double deltaPow = std::pow(0.9, deltaTime);
+    this->velX *= deltaPow;
+    this->velY *= deltaPow;
 }
 
 void EntityPlayer::onCollision(IPositionable *object, char state) {
@@ -148,6 +159,11 @@ void EntityPlayer::move(double x, double y, double deltaTime) {
     } else {
         this->setAngle(atan2(y, x));
     }
-    this->applyForce(x, y);
+    this->setVelocity(x, y);
 
+}
+
+void EntityPlayer::setVelocity(double velX, double velY) {
+    this->velX = velX;
+    this->velY = velY;
 }
