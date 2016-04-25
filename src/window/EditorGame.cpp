@@ -30,16 +30,6 @@ Game::Game(ApplicationContext *applicationContext) : Window(applicationContext) 
     this->entityRotationRing->setAngle(2);
     this->guiElements.push_back(this->entityRotationRing);
 
-    GuiElement *character = new GuiElement(GUI_TOP_RIGHT, 0, 50, 225, 225, 17);
-    character->setVisible(false);
-    this->guiElements.push_back(character);
-    GuiElement *window = new GuiTextBubble(GUI_TOP_RIGHT, -500, 0, 280, 51);
-    window->setVisible(false);
-    this->guiElements.push_back(window);
-    GuiText *text = new GuiText(string("Oh... Em... Hello!"), -500, 76, GUI_TOP_LEFT, 24, 0x666666FF, 0);
-    text->setVisible(false);
-    this->guiElements.push_back(text);
-
     GuiText *t = new GuiText(string("Dev Build: ") + __DATE__ + " " + __TIME__, 15, 15, GUI_BOTTOM_LEFT, 32, 0xFFFFFFFF, 0);
     this->guiElements.push_back(t);
 }
@@ -65,24 +55,8 @@ void Game::tick(double deltaTime) {
         }
     }
 
-    double dx = (this->core->getPlayer()->getX() + this->core->getPlayer()->getWidth() / 2 - 1) + this->core->getCamX();
-    double dy = (this->core->getPlayer()->getY() + this->core->getPlayer()->getHeight() / 2 - 1) + this->core->getCamY();
-    if (abs(dx) > 0.00001) this->core->setCamX(-this->core->getCamX() + (dx) * 0.05);
-    if (abs(dy) > 0.00001) this->core->setCamY(-this->core->getCamY() + (dy) * 0.05);
-
-    double camX = this->core->getCamX(), camY = this->core->getCamY();
-    if (-camX < this->windowWidth / (2.0 * this->core->getBlockSize() * this->core->getGeneralScale()) - 1) {
-        this->core->setCamX(this->windowWidth / (2.0 * this->core->getBlockSize() * this->core->getGeneralScale()) - 1);
-    }
-    if (-camY < this->windowHeight / (2.0 * this->core->getBlockSize() * this->core->getGeneralScale()) - 1) {
-        this->core->setCamY(this->windowHeight / (2.0 * this->core->getBlockSize() * this->core->getGeneralScale()) - 1);
-    }
-    if (-camX > -(signed) this->windowWidth / (2.0 * this->core->getBlockSize() * this->core->getGeneralScale()) + (this->core->getMap()->getWidth() - 1)) {
-        this->core->setCamX(-(signed) this->windowWidth / (2.0 * this->core->getBlockSize() * this->core->getGeneralScale()) + (this->core->getMap()->getWidth() - 1));
-    }
-    if (-camY > -(signed) this->windowHeight / (2.0 * this->core->getBlockSize() * this->core->getGeneralScale()) + (this->core->getMap()->getHeight() - 1)) {
-        this->core->setCamY(-(signed) this->windowHeight / (2.0 * this->core->getBlockSize() * this->core->getGeneralScale()) + (this->core->getMap()->getHeight() - 1));
-    }
+    this->core->setCamX(this->core->getPlayer()->getX() + this->core->getPlayer()->getWidth() / 2 - 1);
+    this->core->setCamY(this->core->getPlayer()->getY() + this->core->getPlayer()->getHeight() / 2 - 1);
 }
 
 void Game::handleKeyboard(const Keypress *const keypress) {
@@ -135,18 +109,20 @@ void Game::handleKeyboard(const Keypress *const keypress) {
             this->core->getPlayer()->eject();
         }
     }
-    double playerSpeed = this->core->getPlayer()->getSpeed();
-    if (keypress[SDLK_w].isDown()) {
-        this->core->getPlayer()->applyImpulse(0, -playerSpeed);
-    }
-    if (keypress[SDLK_s].isDown()) {
-        this->core->getPlayer()->applyImpulse(0, playerSpeed);
-    }
-    if (keypress[SDLK_a].isDown()) {
-        this->core->getPlayer()->applyImpulse(-playerSpeed, 0);
-    }
-    if (keypress[SDLK_d].isDown()) {
-        this->core->getPlayer()->applyImpulse(playerSpeed, 0);
+    double playerSpeed = 1.0;
+    if (!this->entityRotationRing->isVisible()) {
+        if (keypress[SDLK_w].isDown()) {
+            this->core->getPlayer()->applyImpulse(0, -playerSpeed);
+        }
+        if (keypress[SDLK_s].isDown()) {
+            this->core->getPlayer()->applyImpulse(0, playerSpeed);
+        }
+        if (keypress[SDLK_a].isDown()) {
+            this->core->getPlayer()->applyImpulse(-playerSpeed, 0);
+        }
+        if (keypress[SDLK_d].isDown()) {
+            this->core->getPlayer()->applyImpulse(playerSpeed, 0);
+        }
     }
     if (keypress[SDLK_q].isPressed()) {
         this->core->stop();
@@ -168,19 +144,20 @@ void Game::handleClick(const TouchPoint *const p) {
     if (p->id == SDL_BUTTON_LEFT) {
         if (p->state == 0) {
             this->heldEntity = this->core->getMap()->getEntityAt<Entity>(x, y);
-            int i = 0;
+            this->relXClicked = this->heldEntity->getX() - x;
+            this->relYClicked = this->heldEntity->getY() - y;
         } else if (p->state == 2) {
             if (this->heldEntity != nullptr && !this->entityRotationRing->isVisible()) {
                 Entity *e = this->heldEntity;
-                e->setX(x + e->getWidth() / 2);
-                e->setY(y + e->getHeight() / 2);
+                e->setX(x + relXClicked);
+                e->setY(y + relYClicked);
             }
         } else if (p->state == 1) {
             if (this->heldEntity == nullptr) {
-                SimpleShape *s = new SimpleShape(this->core->getMap(), (unsigned int) (rand() % 3));
+                /*SimpleShape *s = new SimpleShape(this->core->getMap(), (unsigned int) (rand() % 3));
                 s->setX(x + s->getWidth() / 2);
                 s->setY(y + s->getWidth() / 2);
-                this->core->getMap()->addEntity(s);
+                this->core->getMap()->addEntity(s);*/
             } else {
                 this->heldEntity = nullptr;
                 if (this->entityRotationRing->isVisible()) {
@@ -201,9 +178,12 @@ void Game::handleClick(const TouchPoint *const p) {
     } else if (p->id == SDL_BUTTON_RIGHT) {
         if (p->state == 0) {
             if (this->heldEntity != nullptr) {
-                this->entityRotationRing->setX(p->x - this->entityRotationRing->getWidth() / 2);
-                this->entityRotationRing->setY(p->y - this->entityRotationRing->getHeight() / 2);
-                this->entityRotationRing->setAngle(this->heldEntity->getAngle());
+                double scale = this->core->getGeneralScale() * this->core->getBlockSize();
+                double player_x = this->windowWidth / 2.0 + (this->heldEntity->getBody()->GetPosition().x + this->core->getCamX() - 0.5) * scale;
+                double player_y = this->windowHeight / 2.0 + (this->heldEntity->getBody()->GetPosition().y + this->core->getCamY() - 0.5) * scale;
+                this->entityRotationRing->setX(player_x - this->entityRotationRing->getWidth() / 2);
+                this->entityRotationRing->setY(player_y - this->entityRotationRing->getHeight() / 2);
+                this->defaultAngle = this->heldEntity->getAngle();
                 this->entityRotationRing->setVisible(true);
                 SDL_GetGlobalMouseState(&this->mouseLockX, &this->mouseLockY);
                 SDL_ShowCursor(false);
@@ -212,7 +192,7 @@ void Game::handleClick(const TouchPoint *const p) {
             if (this->heldEntity != nullptr) {
                 int x, y;
                 SDL_GetGlobalMouseState(&x, &y);
-                double angle = 10.0 * (x - this->mouseLockX) / this->windowWidth;
+                double angle = this->defaultAngle + 10.0 * (x - this->mouseLockX) / this->windowWidth;
                 this->entityRotationRing->setAngle(angle);
                 this->heldEntity->setAngle(angle);
             }

@@ -72,6 +72,8 @@ private:
     Entity *heldEntity = nullptr;
 
     GuiElement *entityRotationRing;
+    double defaultAngle;
+    double relXClicked, relYClicked;
     int mouseLockX, mouseLockY;
 #endif //__ANDROID__
 
