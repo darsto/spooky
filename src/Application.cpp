@@ -47,17 +47,13 @@ void Application::update(bool dynamic) {
         this->previousWindow = nullptr;
     }
     if (dynamic) {
-        if (this->ticks > 15) {
-            this->getCurrentWindow()->tick(this->averageDeltaTime * 60);
-        } else if (this->ticks < 15) {
-            double deltaTime = this->deltaTimeHistory[this->ticks] = timer->GetDelta();
-            this->getCurrentWindow()->tick(deltaTime * 60);
-        } else {
+        this->deltaTimeHistory[this->ticks] = timer->GetDelta();
+        if (this->ticks == 14) {
             for (int i = 0; i < 15; i++) {
                 this->averageDeltaTime += this->deltaTimeHistory[i];
             }
-            this->averageDeltaTime /= 15;
         }
+        this->getCurrentWindow()->tick(this->averageDeltaTime * 4.0); //multiplied by 4.0 to make the whole equal ~1.0
     } else {
         this->getCurrentWindow()->tick(1.0);
     }
@@ -65,6 +61,9 @@ void Application::update(bool dynamic) {
     if (!MOBILE) this->handleEvents();
     this->inputManager->tick(this->getCurrentWindow());
     this->ticks++;
+    if (this->ticks > 14) {
+        this->ticks = 0;
+    }
 }
 
 Application::~Application() {
