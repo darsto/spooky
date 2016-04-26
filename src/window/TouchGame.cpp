@@ -136,8 +136,8 @@ void Game::tick(double deltaTime) {
     }
 
     double scale = this->core->getGeneralScale() * this->core->getBlockSize();
-    double player_x = this->windowWidth / 2.0 + (this->core->getPlayer()->getX() + this->core->getCamX() - 1 + this->core->getPlayer()->getWidth() / 2) * scale;
-    double player_y = this->windowHeight / 2.0 + (this->core->getPlayer()->getY() + this->core->getCamY() - 1 + this->core->getPlayer()->getWidth() / 2) * scale;
+    double player_x = this->windowWidth / 2.0 + (this->core->getPlayer()->getBody()->GetPosition().x + this->core->getCamX() - 0.5) * scale;
+    double player_y = this->windowHeight / 2.0 + (this->core->getPlayer()->getBody()->GetPosition().y + this->core->getCamY() - 0.5) * scale;
 
     double px = this->core->getPlayer()->getX() + this->core->getPlayer()->getWidth() / 2;
     double py = this->core->getPlayer()->getY() + this->core->getPlayer()->getHeight() / 2;
@@ -177,8 +177,8 @@ void Game::tick(double deltaTime) {
     }
 
     if (this->markedToy != nullptr) {
-        double toy_x = this->windowWidth / 2.0 + (this->markedToy->getX() + this->core->getCamX() - 1 + this->markedToy->getWidth() / 2) * scale;
-        double toy_y = this->windowHeight / 2.0 + (this->markedToy->getY() + this->core->getCamY() - 1 + this->markedToy->getWidth() / 2) * scale;
+        double toy_x = this->windowWidth / 2.0 + (this->markedToy->getBody()->GetPosition().x + this->core->getCamX() - 0.5) * scale;
+        double toy_y = this->windowHeight / 2.0 + (this->markedToy->getBody()->GetPosition().y + this->core->getCamY() - 0.5) * scale;
 
         double offset_y = -(std::max(this->markedToy->getWidth(), this->markedToy->getHeight()) / 2 + 0.25) * scale - this->toyController[1]->getHeight();
         if (toy_y < this->windowHeight * 0.25) {
