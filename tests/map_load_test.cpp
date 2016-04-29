@@ -2,7 +2,6 @@
 // Created by dar on 12/19/15.
 //
 
-#include <core/map/block/Block.h>
 #include <core/map/Map.h>
 #include <fstream>
 #include <core/map/TiledTxtMapLoader.h>
@@ -10,16 +9,6 @@
 
 struct map_data {
     MapLoader *mapLoader;
-    std::vector<Block *> blocks; //blocks which existence is about to be checked
-
-    friend std::ostream &operator<<(std::ostream &os, const map_data &obj) {
-        for (Block *i : obj.blocks) {
-            os << " bx:" << i->getX();
-            os << " by:" << i->getY();
-            os << ",";
-        }
-        return os;
-    }
 };
 
 struct MapLoaderTest : testing::Test, testing::WithParamInterface<map_data> {
@@ -36,28 +25,29 @@ struct MapLoaderTest : testing::Test, testing::WithParamInterface<map_data> {
 };
 
 TEST_P(MapLoaderTest, tiledTxtLoadTest) {
-    auto par = GetParam();
-    Block *tmp;
-    for (Block *i : par.blocks) {
-        tmp = nullptr;
-        for (Block *j : this->map->getBlocks())
-            if (j->getX() == i->getX() && j->getY() == i->getY()) tmp = i;
-        EXPECT_EQ(i, tmp);
+    EXPECT_GT(this->map->getEntities().size(), 1);
+    for (Entity *i : this->map->getEntities()) {
+        EXPECT_TRUE(i != nullptr);
+        EXPECT_TRUE(i->getId() > 0);
     }
 }
 
+TEST_P(MapLoaderTest, playerExistanceTest) {
+    int playerFound = false;
+    for (Entity *i : this->map->getEntities()) {
+        if (dynamic_cast<EntityPlayer *>(i)) {
+            playerFound = true;
+            break;
+        }
+    }
+    EXPECT_TRUE(playerFound);
+}
+
+
 map_data getBasicMapData() {
     map_data data;
-
-    Map *tmpNullMap = new Map();
-    std::vector<Block *> blocks;
-    blocks.push_back(new SimpleBlock(tmpNullMap, 8, 0, 0));
-    blocks.push_back(new SimpleBlock(tmpNullMap, 11, 12, 2));
-    blocks.push_back(new SimpleBlock(tmpNullMap, 11, 0, 14));
-
-    data.mapLoader = new TiledTxtMapLoader("test_map.txt");
-    data.blocks = blocks;
-
+    initShapeDefinitions();
+    data.mapLoader = new TiledTxtMapLoader("test_map");
     return data;
 }
 
