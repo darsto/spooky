@@ -9,6 +9,7 @@
 #include "render/RenderManager.h"
 #include "logging.h"
 #include <ApplicationContext.h>
+#include <window/LoadingScreen.h>
 
 Application::Application() {
     this->renderer = new RenderManager();
@@ -23,11 +24,7 @@ Application::Application() {
         this->resize(this->renderer->getRenderContext()->getWindowWidth(), this->renderer->getRenderContext()->getWindowHeight());
         return true;
     };
-#if !defined(EDITOR) && !defined(DEBUG)
-    this->window = new MainMenu(new ApplicationContext(switchWindow));
-#else
-    this->window = new Game(new ApplicationContext(switchWindow));
-#endif
+    this->window = new LoadingScreen(new ApplicationContext(switchWindow));
     this->timer = new Timer();
     this->inputManager = new InputManager();
     this->reinit();
