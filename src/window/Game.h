@@ -10,7 +10,7 @@
 #include <gui/GuiText.h>
 #include "Window.h"
 
-class Core;
+class LevelContext;
 
 class RenderManager;
 
@@ -27,14 +27,14 @@ class EntityToy;
 class Game : public Window {
 
 public:
-    Game(ApplicationContext *applicationContext);
+    Game(ApplicationContext *applicationContext, const std::string &levelName);
     virtual void reload(unsigned int windowWidth, unsigned int windowHeight) override;
     virtual void tick(double deltaTime) override;
     virtual void handleKeyboard(const Keypress *const keypress) override;
     virtual void handleClick(const TouchPoint *const touchPoint) override;
 
-    Core *getCore() const {
-        return core;
+    LevelContext *getLevelContext() const {
+        return levelContext;
     }
 
     const std::vector<GuiElement *> &getGuiElements() const {
@@ -44,7 +44,7 @@ public:
     virtual ~Game() override;
 
 private:
-    Core *core = nullptr;
+    LevelContext *levelContext = nullptr;
     std::vector<GuiElement *> guiElements;
 
 #ifndef EDITOR

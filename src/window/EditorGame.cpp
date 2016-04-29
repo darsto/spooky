@@ -7,8 +7,6 @@
 #include <gui/GuiText.h>
 #include <gui/GuiButton.h>
 #include "Game.h"
-#include "../core/Core.h"
-#include "../core/map/TiledTxtMapLoader.h"
 #include "render/RenderManager.h"
 #include "InputManager.h"
 #include <core/map/entity/EntityBullet.h>
@@ -16,15 +14,17 @@
 #include <core/map/entity/EntityDoor.h>
 #include <core/map/entity/EntityFurniture.h>
 #include "../logging.h"
+#include <core/LevelContext.h>
+#include <ApplicationContext.h>
+#include <core/map/entity/SimpleShape.h>
+#include <core/map/entity/EntityTable.h>
+#include <core/map/entity/EntityPlayer.h>
 
-Game::Game(ApplicationContext *applicationContext) : Window(applicationContext) {
+Game::Game(ApplicationContext *applicationContext, const std::string &levelName) : Window(applicationContext) {
     initShapeDefinitions();
-    MapLoader *mapLoader = new TiledTxtMapLoader("test_map");
-    Map *bmap = mapLoader->loadMap();
-    this->core = new Core(bmap);
-    delete mapLoader;
+    this->levelContext = new LevelContext(levelName);
 
-    double ringScale = 2 * this->core->getBlockSize();
+    double ringScale = 2 * this->levelContext->getBlockSize();
     this->entityRotationRing = new GuiElement(GUI_TOP_LEFT, 0, 0, ringScale, ringScale, 6);
     this->entityRotationRing->setVisible(false);
     this->entityRotationRing->setAngle(2);
@@ -45,105 +45,105 @@ void Game::reload(unsigned int windowWidth, unsigned int windowHeight) {
 }
 
 void Game::tick(double deltaTime) {
-    this->core->getMap()->update(deltaTime);
-    this->core->getMap()->getWorld()->Step(deltaTime, 8, 3);
-    for (int i = 0; i < this->core->getMap()->getEntities().size(); i++) {
-        Entity *entity = this->core->getMap()->getEntities().at(i);
+    this->levelContext->getMap()->update(deltaTime);
+    this->levelContext->getMap()->getWorld()->Step(deltaTime, 8, 3);
+    for (int i = 0; i < this->levelContext->getMap()->getEntities().size(); i++) {
+        Entity *entity = this->levelContext->getMap()->getEntities().at(i);
         if (entity->isToBeDeleted()) {
-            this->core->getMap()->removeEntity(entity);
+            this->levelContext->getMap()->removeEntity(entity);
             i--;
         }
     }
 
-    this->core->setCamX(this->core->getPlayer()->getX() + this->core->getPlayer()->getWidth() / 2 - 1);
-    this->core->setCamY(this->core->getPlayer()->getY() + this->core->getPlayer()->getHeight() / 2 - 1);
+    this->levelContext->setCamX(this->levelContext->getPlayer()->getX() + this->levelContext->getPlayer()->getWidth() / 2 - 1);
+    this->levelContext->setCamY(this->levelContext->getPlayer()->getY() + this->levelContext->getPlayer()->getHeight() / 2 - 1);
 }
 
 void Game::handleKeyboard(const Keypress *const keypress) {
     if (keypress[SDLK_c].isPressed()) {
         double angle = atan2(0, 0) + M_PI; //TODO
-        EntityBullet *p = new EntityBullet(this->core->getMap(), angle, 1);
-        p->setX(this->core->getPlayer()->getX() - (p->getWidth()) + 0.5 * cos(angle));
-        p->setY(this->core->getPlayer()->getY() - (p->getHeight()) + 0.5 * sin(angle));
-        this->core->getMap()->addEntity(p);
+        EntityBullet *p = new EntityBullet(this->levelContext->getMap(), angle, 1);
+        p->setX(this->levelContext->getPlayer()->getX() - (p->getWidth()) + 0.5 * cos(angle));
+        p->setY(this->levelContext->getPlayer()->getY() - (p->getHeight()) + 0.5 * sin(angle));
+        this->levelContext->getMap()->addEntity(p);
     }
     if (keypress[SDLK_n].isPressed()) {
         Entity *p;
         switch (rand() % 6) {
             case 0:
-                p = new EntityFridge(this->core->getMap());
+                p = new EntityFridge(this->levelContext->getMap());
                 break;
             case 1:
-                p = new EntityTruck(this->core->getMap());
+                p = new EntityTruck(this->levelContext->getMap());
                 break;
             case 2:
-                p = new EntityBulldozer(this->core->getMap());
+                p = new EntityBulldozer(this->levelContext->getMap());
                 break;
             case 3:
-                p = new EntityWardrobe(this->core->getMap());
+                p = new EntityWardrobe(this->levelContext->getMap());
                 break;
             case 4:
-                p = new EntityTable(this->core->getMap());
+                p = new EntityTable(this->levelContext->getMap());
                 break;
             case 5:
-                p = new EntityChair(this->core->getMap());
+                p = new EntityChair(this->levelContext->getMap());
                 break;
             default:
-                p = new EntityDoor(this->core->getMap(), 0);
+                p = new EntityDoor(this->levelContext->getMap(), 0);
                 break;
         }
-        p->setX(this->core->getPlayer()->getX() - this->core->getPlayer()->getWidth() / 2);
-        p->setY(this->core->getPlayer()->getY() - this->core->getPlayer()->getHeight() / 2);
-        this->core->getMap()->addEntity(p);
+        p->setX(this->levelContext->getPlayer()->getX() - this->levelContext->getPlayer()->getWidth() / 2);
+        p->setY(this->levelContext->getPlayer()->getY() - this->levelContext->getPlayer()->getHeight() / 2);
+        this->levelContext->getMap()->addEntity(p);
     }
     if (keypress[SDLK_m].isPressed()) {
-        SimpleShape *p = new SimpleShape(this->core->getMap(), (unsigned int) (rand() % 3));
-        p->setX(this->core->getPlayer()->getX() - this->core->getPlayer()->getWidth() / 2);
-        p->setY(this->core->getPlayer()->getY() - this->core->getPlayer()->getHeight() / 2);
-        this->core->getMap()->addEntity(p);
+        SimpleShape *p = new SimpleShape(this->levelContext->getMap(), (unsigned int) (rand() % 3));
+        p->setX(this->levelContext->getPlayer()->getX() - this->levelContext->getPlayer()->getWidth() / 2);
+        p->setY(this->levelContext->getPlayer()->getY() - this->levelContext->getPlayer()->getHeight() / 2);
+        this->levelContext->getMap()->addEntity(p);
     }
     if (keypress[SDLK_k].isPressed()) {
-        if (this->core->getPlayer()->getToy() == nullptr) {
-            this->core->getPlayer()->setToy();
+        if (this->levelContext->getPlayer()->getToy() == nullptr) {
+            this->levelContext->getPlayer()->setToy();
         } else {
-            this->core->getPlayer()->eject();
+            this->levelContext->getPlayer()->eject();
         }
     }
     double playerSpeed = 1.0;
     if (!this->entityRotationRing->isVisible()) {
         if (keypress[SDLK_w].isDown()) {
-            this->core->getPlayer()->applyImpulse(0, -playerSpeed);
+            this->levelContext->getPlayer()->applyImpulse(0, -playerSpeed);
         }
         if (keypress[SDLK_s].isDown()) {
-            this->core->getPlayer()->applyImpulse(0, playerSpeed);
+            this->levelContext->getPlayer()->applyImpulse(0, playerSpeed);
         }
         if (keypress[SDLK_a].isDown()) {
-            this->core->getPlayer()->applyImpulse(-playerSpeed, 0);
+            this->levelContext->getPlayer()->applyImpulse(-playerSpeed, 0);
         }
         if (keypress[SDLK_d].isDown()) {
-            this->core->getPlayer()->applyImpulse(playerSpeed, 0);
+            this->levelContext->getPlayer()->applyImpulse(playerSpeed, 0);
         }
     }
     if (keypress[SDLK_q].isPressed()) {
-        this->core->stop();
+        this->applicationContext->switchWindow(nullptr);
     }
     if (keypress[SDLK_p].isPressed()) {
-        this->core->getMap()->saveEntities();
+        this->levelContext->getMap()->saveEntities();
     }
     if (keypress[SDLK_MINUS].isDown()) {
-        this->core->setBlockSize(this->core->getBlockSize() - 0.15);
+        this->levelContext->setBlockSize(this->levelContext->getBlockSize() - 0.15);
     }
     if (keypress[SDLK_EQUALS].isDown()) {
-        this->core->setBlockSize(this->core->getBlockSize() + 0.15);
+        this->levelContext->setBlockSize(this->levelContext->getBlockSize() + 0.15);
     }
 }
 
 void Game::handleClick(const TouchPoint *const p) {
-    float x = (float) ((-this->core->getCamX() - ((double) this->windowWidth / (2.0) - p->x) / (this->core->getGeneralScale() * this->core->getBlockSize())) + 0.5);
-    float y = (float) ((-this->core->getCamY() - ((double) this->windowHeight / (2.0) - p->y) / (this->core->getGeneralScale() * this->core->getBlockSize())) + 0.5);
+    float x = (float) ((-this->levelContext->getCamX() - ((double) this->windowWidth / (2.0) - p->x) / (this->levelContext->getGeneralScale() * this->levelContext->getBlockSize())) + 0.5);
+    float y = (float) ((-this->levelContext->getCamY() - ((double) this->windowHeight / (2.0) - p->y) / (this->levelContext->getGeneralScale() * this->levelContext->getBlockSize())) + 0.5);
     if (p->id == SDL_BUTTON_LEFT) {
         if (p->state == 0) {
-            this->heldEntity = this->core->getMap()->getEntityAt<Entity>(x, y);
+            this->heldEntity = this->levelContext->getMap()->getEntityAt<Entity>(x, y);
             if (this->heldEntity != nullptr) {
                 this->relXClicked = this->heldEntity->getX() - x;
                 this->relYClicked = this->heldEntity->getY() - y;
@@ -171,18 +171,18 @@ void Game::handleClick(const TouchPoint *const p) {
         }
     } else if (p->id == SDL_BUTTON_MIDDLE) {
         if (p->state == 0) {
-            this->heldEntity = this->core->getMap()->getEntityAt<Entity>(x, y);
+            this->heldEntity = this->levelContext->getMap()->getEntityAt<Entity>(x, y);
         } else if (p->state == 1) {
-            if (this->heldEntity != nullptr && this->core->getMap()->getEntityAt<Entity>(x, y) == this->heldEntity) {
+            if (this->heldEntity != nullptr && this->levelContext->getMap()->getEntityAt<Entity>(x, y) == this->heldEntity) {
                 this->heldEntity->remove();
             }
         }
     } else if (p->id == SDL_BUTTON_RIGHT) {
         if (p->state == 0) {
             if (this->heldEntity != nullptr) {
-                double scale = this->core->getGeneralScale() * this->core->getBlockSize();
-                double player_x = this->windowWidth / 2.0 + (this->heldEntity->getBody()->GetPosition().x + this->core->getCamX() - 0.5) * scale;
-                double player_y = this->windowHeight / 2.0 + (this->heldEntity->getBody()->GetPosition().y + this->core->getCamY() - 0.5) * scale;
+                double scale = this->levelContext->getGeneralScale() * this->levelContext->getBlockSize();
+                double player_x = this->windowWidth / 2.0 + (this->heldEntity->getBody()->GetPosition().x + this->levelContext->getCamX() - 0.5) * scale;
+                double player_y = this->windowHeight / 2.0 + (this->heldEntity->getBody()->GetPosition().y + this->levelContext->getCamY() - 0.5) * scale;
                 this->entityRotationRing->setX(player_x - this->entityRotationRing->getWidth() / 2);
                 this->entityRotationRing->setY(player_y - this->entityRotationRing->getHeight() / 2);
                 this->defaultAngle = this->heldEntity->getAngle();
@@ -210,5 +210,5 @@ void Game::handleClick(const TouchPoint *const p) {
 
 Game::~Game() {
     SDL_StopTextInput();
-    delete this->core;
+    delete this->levelContext;
 }

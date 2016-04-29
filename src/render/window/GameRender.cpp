@@ -8,7 +8,6 @@
 #include "../RenderManager.h"
 #include "GameRender.h"
 #include "../../window/Game.h"
-#include "../../core/Core.h"
 #include <core/map/entity/EntityBullet.h>
 #include <core/map/entity/EntityFather.h>
 #include <core/map/entity/EntityMachinery.h>
@@ -25,6 +24,7 @@
 #include <render/entity/EntityWideRender.h>
 #include <render/entity/EntityWallRender.h>
 #include <ApplicationContext.h>
+#include <core/LevelContext.h>
 
 GameRender::GameRender() : WindowRender() { }
 
@@ -48,33 +48,33 @@ void GameRender::resize(RenderContext *const renderContext) {
 
 void GameRender::render(Window *window, RenderContext *const renderContext) {
     Game *game = ((Game *) window);
-    Core *core = game->getCore();
+    LevelContext *levelContext = game->getLevelContext();
 
     unsigned int windowWidth = renderContext->getWindowWidth();
     unsigned int windowHeight = renderContext->getWindowHeight();
-    double scale = core->getBlockSize() * core->getGeneralScale();
+    double scale = levelContext->getBlockSize() * levelContext->getGeneralScale();
 
-    double camX = core->getCamX() * (core->getBlockSize() * core->getGeneralScale());
-    double camY = core->getCamY() * (core->getBlockSize() * core->getGeneralScale());
+    double camX = levelContext->getCamX() * (levelContext->getBlockSize() * levelContext->getGeneralScale());
+    double camY = levelContext->getCamY() * (levelContext->getBlockSize() * levelContext->getGeneralScale());
 
     glClear(GL_COLOR_BUFFER_BIT);
     fbo.bind();
     glClear(GL_COLOR_BUFFER_BIT);
     scale *= Chunk::size;
-    for (Chunk *const chunk : core->getMap()->getChunks()) {
+    for (Chunk *const chunk : levelContext->getMap()->getChunks()) {
         if (this->markedToRedraw) {
             chunk->setRedrawn(false);
         }
         getChunkRender()->render(chunk, projectionMatrix, glm::translate(viewMatrix, glm::vec3(
             -(signed) windowWidth / 2.0f - camX,
             (signed) windowHeight / 2.0f - camY, 0.0f
-        )), core->getBlockSize() * core->getGeneralScale());
+        )), levelContext->getBlockSize() * levelContext->getGeneralScale());
         chunk->setRedrawn();
     }
     scale /= Chunk::size;
     int entitiesNum = 0;
-    for (int i = core->getMap()->getEntities().size() - 1; i >= 0; i--) {
-        Entity *entity = core->getMap()->getEntities().at(i);
+    for (int i = levelContext->getMap()->getEntities().size() - 1; i >= 0; i--) {
+        Entity *entity = levelContext->getMap()->getEntities().at(i);
         double maxSize = entity->getWidth() > entity->getHeight() ? entity->getWidth() : entity->getHeight();
         if (entity->getX() * scale > -(signed) windowWidth / 2.0f - camX &&
             (entity->getX() - 1 - maxSize) * scale < -(signed) windowWidth / 2.0f - camX + (signed) windowWidth &&
@@ -86,7 +86,7 @@ void GameRender::render(Window *window, RenderContext *const renderContext) {
             getEntityRender(entity)->render(entity, projectionMatrix, glm::translate(viewMatrix, glm::vec3(
                 -(signed) windowWidth / 2.0f - camX,
                 (signed) windowHeight / 2.0f - camY,
-                0.0f)), core->getBlockSize() * core->getGeneralScale());
+                0.0f)), levelContext->getBlockSize() * levelContext->getGeneralScale());
             entity->setRedrawn();
             if (IEntityLighted *elighted = dynamic_cast<IEntityLighted *>(entity)) {
                 fbo.getShaderProgram()->useProgram();
@@ -123,16 +123,16 @@ void GameRender::render(Window *window, RenderContext *const renderContext) {
 
     fbo.unbind();
     fbo.getShaderProgram()->useProgram();
-    fbo.getShaderProgram()->setUniform("colorfulness", (float) core->getPlayer()->getColorfulness());
+    fbo.getShaderProgram()->setUniform("colorfulness", (float) levelContext->getPlayer()->getColorfulness());
     fbo.getShaderProgram()->setUniform("lightPointsNum", entitiesNum);
-    fbo.getShaderProgram()->setUniform("scale", (float) (core->getBlockSize() * core->getGeneralScale()));
+    fbo.getShaderProgram()->setUniform("scale", (float) (levelContext->getBlockSize() * levelContext->getGeneralScale()));
     fbo.render(0);
 
     for (GuiElement *guiElement : game->getGuiElements()) {
         renderContext->getGuiElementRender(guiElement)->render(guiElement, projectionMatrix, glm::translate(viewMatrix, glm::vec3(
             0,
             (int) ((signed) windowHeight),
-            0.0f)), core->getGeneralScale());
+            0.0f)), levelContext->getGeneralScale());
     }
 
     this->markedToRedraw = false;

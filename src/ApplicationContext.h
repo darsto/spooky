@@ -15,7 +15,7 @@ class ApplicationContext {
 public:
     ApplicationContext(const std::function<bool(Window *)> &switchWindow);
 
-    const bool switchWindow(Window *window) {
+    bool switchWindow(Window *window) {
         return switchWindowFunc(window);
     }
 
@@ -23,8 +23,8 @@ public:
         return settingsData;
     }
 
-    const LevelData &getLevelData() const {
-        return levelData;
+    LevelData *getLevelData() {
+        return &levelData;
     }
 
 private:

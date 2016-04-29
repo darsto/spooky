@@ -15,8 +15,7 @@ LoadingScreen::LoadingScreen(ApplicationContext *applicationContext) : Window(ap
     initState["LevelData"].setClass(kaguya::ClassMetatable<LevelData>()
                                     .addMember("addLevel", &LevelData::addLevel)
     );
-    LevelData a = applicationContext->getLevelData();
-    initState["levelData"] = &a;
+    initState["levelData"] = applicationContext->getLevelData();
     initState["time"] = time(0);
     initState.dofile("scripts/init.lua");
 }
@@ -33,7 +32,7 @@ void LoadingScreen::tick(double deltaTime) {
 #if !defined(EDITOR) && !defined(DEBUG)
         this->applicationContext->switchWindow(new MainMenu(this->applicationContext));
 #else
-        this->applicationContext->switchWindow(new Game(this->applicationContext));
+        this->applicationContext->switchWindow(new Game(this->applicationContext, this->applicationContext->getLevelData()->getLevels()[0]));
 #endif
     }
 }

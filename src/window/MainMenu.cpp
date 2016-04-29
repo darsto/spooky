@@ -23,7 +23,7 @@ MainMenu::MainMenu(ApplicationContext *applicationContext) : Window(applicationC
     auto playAction = [=](const TouchPoint *const p) {
         if (p->state == 1) {
             if (b->canBeClicked(p)) {
-                this->applicationContext->switchWindow(new Game(this->applicationContext));
+                this->applicationContext->switchWindow(new Game(this->applicationContext, applicationContext->getLevelData()->getLevels()[0]));
             }
             return false;
         }

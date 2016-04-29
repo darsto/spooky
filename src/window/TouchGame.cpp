@@ -3,23 +3,24 @@
 //
 
 #include "Game.h"
-#include "../core/Core.h"
 #include "render/RenderManager.h"
 #include "InputManager.h"
-#include "../core/map/TiledTxtMapLoader.h"
 #include "../logging.h"
 #include <gui/GuiText.h>
 #include <gui/GuiButton.h>
 #include <gui/GuiTextBubble.h>
 #include <window/MainMenu.h>
 #include <ApplicationContext.h>
+#include <core/LevelContext.h>
+#include <core/map/entity/SimpleShape.h>
+#include <core/map/entity/EntityPlayer.h>
+#include <core/map/Map.h>
+#include <core/map/entity/EntityFurniture.h>
+#include <core/map/entity/EntityGlassDebris.h>
 
-Game::Game(ApplicationContext *applicationContext) : Window(applicationContext) {
+Game::Game(ApplicationContext *applicationContext, const std::string &levelName) : Window(applicationContext) {
     initShapeDefinitions();
-    MapLoader *mapLoader = new TiledTxtMapLoader("test_map");
-    Map *bmap = mapLoader->loadMap();
-    this->core = new Core(bmap);
-    delete mapLoader;
+    this->levelContext = new LevelContext(levelName);
 
     auto nullController = [&](const TouchPoint *const touchPoint) {
         return true;
@@ -46,20 +47,20 @@ Game::Game(ApplicationContext *applicationContext) : Window(applicationContext) 
     GuiElement *character = new GuiElement(GUI_TOP_RIGHT, 0, 50, 225, 225, 17);
     character->setVisible(false);
     this->guiElements.push_back(character);
-    GuiTextBubble *window = new GuiTextBubble(GUI_TOP_LEFT, -500, -500, 150 * this->core->getBlockSize() / 64.0, 74 * this->core->getBlockSize() / 64.0);
+    GuiTextBubble *window = new GuiTextBubble(GUI_TOP_LEFT, -500, -500, 150 * this->levelContext->getBlockSize() / 64.0, 74 * this->levelContext->getBlockSize() / 64.0);
     this->toyController[1] = window;
     window->setVisible(false);
     this->guiElements.push_back(window);
 
-    GuiButton *possessButton = new GuiButton(GUI_TOP_LEFT, 50, 50, 55 * this->core->getBlockSize() / 64.0, 55 * this->core->getBlockSize() / 64.0, new int[2]{2, 10}, 2);
+    GuiButton *possessButton = new GuiButton(GUI_TOP_LEFT, 50, 50, 55 * this->levelContext->getBlockSize() / 64.0, 55 * this->levelContext->getBlockSize() / 64.0, new int[2]{2, 10}, 2);
     this->toyController[2] = possessButton;
     possessButton->setVisible(false);
     auto possessAction = [&](const TouchPoint *const p) {
         if (p->state == 1) {
             if (this->toyPopupAlpha == 1.0 && ((GuiButton *) this->toyController[2])->canBeClicked(p)) {
-                if (this->core->getPlayer()->getToy() == nullptr) {
-                    this->core->getPlayer()->setToyToMerge(this->markedToy);
-                    this->core->getPlayer()->setToy();
+                if (this->levelContext->getPlayer()->getToy() == nullptr) {
+                    this->levelContext->getPlayer()->setToyToMerge(this->markedToy);
+                    this->levelContext->getPlayer()->setToy();
                     int missionProgress = this->missionFlags & 0xFF;
                     if (missionProgress == 0) {
                         this->newInfoText = "Head outside of the room.\nExplore the house.";
@@ -69,7 +70,7 @@ Game::Game(ApplicationContext *applicationContext) : Window(applicationContext) 
                         this->missionFlags |= missionProgress;
                     }
                 } else {
-                    this->core->getPlayer()->eject();
+                    this->levelContext->getPlayer()->eject();
                 }
                 this->toyPopupClickedBy = -1;
             }
@@ -110,6 +111,8 @@ Game::Game(ApplicationContext *applicationContext) : Window(applicationContext) 
 #if defined(__DEBUG__)
 #else
 #endif
+
+
 }
 
 void Game::reload(unsigned int windowWidth, unsigned int windowHeight) {
@@ -125,49 +128,49 @@ void Game::reload(unsigned int windowWidth, unsigned int windowHeight) {
 }
 
 void Game::tick(double deltaTime) {
-    this->core->getMap()->update(deltaTime);
-    this->core->getMap()->getWorld()->Step(deltaTime, 8, 3);
-    for (int i = 0; i < this->core->getMap()->getEntities().size(); i++) {
-        Entity *entity = this->core->getMap()->getEntities().at(i);
+    this->levelContext->getMap()->update(deltaTime);
+    this->levelContext->getMap()->getWorld()->Step(deltaTime, 8, 3);
+    for (int i = 0; i < this->levelContext->getMap()->getEntities().size(); i++) {
+        Entity *entity = this->levelContext->getMap()->getEntities().at(i);
         if (entity->isToBeDeleted()) {
-            this->core->getMap()->removeEntity(entity);
+            this->levelContext->getMap()->removeEntity(entity);
             i--;
         }
     }
 
-    double scale = this->core->getGeneralScale() * this->core->getBlockSize();
-    double player_x = this->windowWidth / 2.0 + (this->core->getPlayer()->getBody()->GetPosition().x + this->core->getCamX() - 0.5) * scale;
-    double player_y = this->windowHeight / 2.0 + (this->core->getPlayer()->getBody()->GetPosition().y + this->core->getCamY() - 0.5) * scale;
+    double scale = this->levelContext->getGeneralScale() * this->levelContext->getBlockSize();
+    double player_x = this->windowWidth / 2.0 + (this->levelContext->getPlayer()->getBody()->GetPosition().x + this->levelContext->getCamX() - 0.5) * scale;
+    double player_y = this->windowHeight / 2.0 + (this->levelContext->getPlayer()->getBody()->GetPosition().y + this->levelContext->getCamY() - 0.5) * scale;
 
-    double px = this->core->getPlayer()->getX() + this->core->getPlayer()->getWidth() / 2;
-    double py = this->core->getPlayer()->getY() + this->core->getPlayer()->getHeight() / 2;
-    if (core->getPlayer()->getEjectTime() > 0.0 && core->getPlayer()->getDamagedToy() == core->getPlayer()->getToyToMerge()) {
-        py -= 0.2 * core->getPlayer()->getEjectTime();
+    double px = this->levelContext->getPlayer()->getX() + this->levelContext->getPlayer()->getWidth() / 2;
+    double py = this->levelContext->getPlayer()->getY() + this->levelContext->getPlayer()->getHeight() / 2;
+    if (levelContext->getPlayer()->getEjectTime() > 0.0 && levelContext->getPlayer()->getDamagedToy() == levelContext->getPlayer()->getToyToMerge()) {
+        py -= 0.2 * levelContext->getPlayer()->getEjectTime();
     }
 
-    double dx = (px - 1 + this->core->getCamX());
-    double dy = (py - 1 + this->core->getCamY());
-    if (abs(dx) > 0.05) this->core->setCamX(-this->core->getCamX() + (dx) * 0.05);
-    if (abs(dy) > 0.05) this->core->setCamY(-this->core->getCamY() + (dy) * 0.05);
+    double dx = (px - 1 + this->levelContext->getCamX());
+    double dy = (py - 1 + this->levelContext->getCamY());
+    if (abs(dx) > 0.05) this->levelContext->setCamX(-this->levelContext->getCamX() + (dx) * 0.05);
+    if (abs(dy) > 0.05) this->levelContext->setCamY(-this->levelContext->getCamY() + (dy) * 0.05);
 
     if (controller->isPressed()) {
         double x = (controller->getX() - player_x) / 100.0f;
         double y = (controller->getY() - player_y) / 100.0f;
-        this->core->getPlayer()->move(x, y, deltaTime);
+        this->levelContext->getPlayer()->move(x, y, deltaTime);
     }
 
-    double camX = this->core->getCamX(), camY = this->core->getCamY();
+    double camX = this->levelContext->getCamX(), camY = this->levelContext->getCamY();
     if (-camX < this->windowWidth / (2.0 * scale) - 1) {
-        this->core->setCamX(this->windowWidth / (2.0 * scale) - 1);
+        this->levelContext->setCamX(this->windowWidth / (2.0 * scale) - 1);
     }
     if (-camY < this->windowHeight / (2.0 * scale) - 1) {
-        this->core->setCamY(this->windowHeight / (2.0 * scale) - 1);
+        this->levelContext->setCamY(this->windowHeight / (2.0 * scale) - 1);
     }
-    if (-camX > -(signed) this->windowWidth / (2.0 * scale) + (this->core->getMap()->getWidth() - 1)) {
-        this->core->setCamX(-(signed) this->windowWidth / (2.0 * scale) + (this->core->getMap()->getWidth() - 1));
+    if (-camX > -(signed) this->windowWidth / (2.0 * scale) + (this->levelContext->getMap()->getWidth() - 1)) {
+        this->levelContext->setCamX(-(signed) this->windowWidth / (2.0 * scale) + (this->levelContext->getMap()->getWidth() - 1));
     }
-    if (-camY > -(signed) this->windowHeight / (2.0 * scale) + (this->core->getMap()->getHeight() - 1)) {
-        this->core->setCamY(-(signed) this->windowHeight / (2.0 * scale) + (this->core->getMap()->getHeight() - 1));
+    if (-camY > -(signed) this->windowHeight / (2.0 * scale) + (this->levelContext->getMap()->getHeight() - 1)) {
+        this->levelContext->setCamY(-(signed) this->windowHeight / (2.0 * scale) + (this->levelContext->getMap()->getHeight() - 1));
     }
 
     for (int i = 1; i < 3; i++) {
@@ -177,8 +180,8 @@ void Game::tick(double deltaTime) {
     }
 
     if (this->markedToy != nullptr) {
-        double toy_x = this->windowWidth / 2.0 + (this->markedToy->getBody()->GetPosition().x + this->core->getCamX() - 0.5) * scale;
-        double toy_y = this->windowHeight / 2.0 + (this->markedToy->getBody()->GetPosition().y + this->core->getCamY() - 0.5) * scale;
+        double toy_x = this->windowWidth / 2.0 + (this->markedToy->getBody()->GetPosition().x + this->levelContext->getCamX() - 0.5) * scale;
+        double toy_y = this->windowHeight / 2.0 + (this->markedToy->getBody()->GetPosition().y + this->levelContext->getCamY() - 0.5) * scale;
 
         double offset_y = -(std::max(this->markedToy->getWidth(), this->markedToy->getHeight()) / 2 + 0.25) * scale - this->toyController[1]->getHeight();
         if (toy_y < this->windowHeight * 0.25) {
@@ -187,12 +190,12 @@ void Game::tick(double deltaTime) {
 
         this->toyController[1]->setX(toy_x - this->toyController[1]->getWidth() / 2);
         this->toyController[1]->setY(this->toyController[1]->getY() + (toy_y + offset_y - this->toyController[1]->getY()) * 0.3 * deltaTime);
-        this->toyController[2]->setX(this->toyController[1]->getX() + 10 * this->core->getBlockSize() / 64.0);
-        this->toyController[2]->setY(this->toyController[1]->getY() + 10 * this->core->getBlockSize() / 64.0);
+        this->toyController[2]->setX(this->toyController[1]->getX() + 10 * this->levelContext->getBlockSize() / 64.0);
+        this->toyController[2]->setY(this->toyController[1]->getY() + 10 * this->levelContext->getBlockSize() / 64.0);
 
-        bool possessButtonEnabled = this->core->getPlayer()->getToy() != nullptr && this->markedToy == this->core->getPlayer()->getToy();
-        if (this->core->getPlayer()->getToy() == nullptr) {
-            for (b2ContactEdge *edge = this->core->getPlayer()->getBody()->GetContactList(); edge != nullptr; edge = edge->next) {
+        bool possessButtonEnabled = this->levelContext->getPlayer()->getToy() != nullptr && this->markedToy == this->levelContext->getPlayer()->getToy();
+        if (this->levelContext->getPlayer()->getToy() == nullptr) {
+            for (b2ContactEdge *edge = this->levelContext->getPlayer()->getBody()->GetContactList(); edge != nullptr; edge = edge->next) {
                 if (edge->other == this->markedToy->getBody() && edge->contact->IsTouching()) {
                     possessButtonEnabled = true;
                     break;
@@ -219,7 +222,7 @@ void Game::tick(double deltaTime) {
         if (toyPopupAlpha < 0.0f) {
             toyPopupAlpha = 0.0f;
             this->markedToy = nullptr;
-            if (this->core->getPlayer()->getToy() == nullptr) {
+            if (this->levelContext->getPlayer()->getToy() == nullptr) {
                 this->toyController[2]->setTexPos(0, 2);
                 this->toyController[2]->setTexPos(1, 10);
             } else {
@@ -230,11 +233,11 @@ void Game::tick(double deltaTime) {
     }
 
     if (toyPopupClickedBy < 0 && toyPopupClickedBy != -2 && this->markedToy == nullptr) {
-        if (this->core->getPlayer()->getToy() != nullptr && !this->core->getPlayer()->getToy()->getBody()->GetLinearVelocity().Length() > 0) {
-            this->markedToy = this->core->getPlayer()->getToy();
+        if (this->levelContext->getPlayer()->getToy() != nullptr && !this->levelContext->getPlayer()->getToy()->getBody()->GetLinearVelocity().Length() > 0) {
+            this->markedToy = this->levelContext->getPlayer()->getToy();
             toyPopupClickedBy = 100;
-        } else if (this->core->getPlayer()->getToyToMerge() != nullptr) {
-            this->markedToy = this->core->getPlayer()->getToyToMerge();
+        } else if (this->levelContext->getPlayer()->getToyToMerge() != nullptr) {
+            this->markedToy = this->levelContext->getPlayer()->getToyToMerge();
             toyPopupClickedBy = 100;
         }
     }
@@ -271,19 +274,19 @@ void Game::tick(double deltaTime) {
     }
 
     if (!((this->missionFlags >> 31) & 1)) {
-        if (EntityGlass *glass = dynamic_cast<EntityGlass *>(this->core->getMap()->getEntities()[1])) {
-            if (this->core->getPlayer()->getToy() != nullptr && (int) this->core->getPlayer()->getX() == 24 && this->core->getPlayer()->getX() < 24.8 && (int) this->core->getPlayer()->getY() == 13 && this->core->getPlayer()->getY() < 13.7) {
+        if (EntityGlass *glass = dynamic_cast<EntityGlass *>(this->levelContext->getMap()->getEntities()[1])) {
+            if (this->levelContext->getPlayer()->getToy() != nullptr && (int) this->levelContext->getPlayer()->getX() == 24 && this->levelContext->getPlayer()->getX() < 24.8 && (int) this->levelContext->getPlayer()->getY() == 13 && this->levelContext->getPlayer()->getY() < 13.7) {
                 glass->remove();
                 this->newInfoText = "A glass has shattered!\nYou have to clean it up\nbefore someone gets hurt!\nThere is a hoover toy\non the other side of the\nhouse. Go take it.";
                 this->infoWindowVisible = false;
                 if (this->infoWindowAlpha == 0.0) this->infoWindowAlpha = 0.001;
                 for (int i = 0; i < 3; i++) {
-                    EntityGlassDebris *p = new EntityGlassDebris(this->core->getMap());
+                    EntityGlassDebris *p = new EntityGlassDebris(this->levelContext->getMap());
                     p->setX(25.0571);
                     p->setY(14.01);
                     p->setAngle(i * M_PI * 0.35 - M_PI * 0.3);
                     p->applyImpulse(sin(-i * M_PI_2 / 3 + M_PI_4 * 3) * 0.0, cos(-i * M_PI_2 / 3 + M_PI_4 * 3) * 0.0);
-                    this->core->getMap()->addEntity(p);
+                    this->levelContext->getMap()->addEntity(p);
                 }
                 this->missionFlags |= (1 << 31);
             }
@@ -291,7 +294,7 @@ void Game::tick(double deltaTime) {
     }
 
     if (!((this->missionFlags >> 30) & 1)) {
-        if (this->core->getPlayer()->getToy() != nullptr && (int) this->core->getPlayer()->getX() > 9.25 && this->core->getPlayer()->getX() < 10.5 && this->core->getPlayer()->getY() > 9.65 && this->core->getPlayer()->getY() < 10.25) {
+        if (this->levelContext->getPlayer()->getToy() != nullptr && (int) this->levelContext->getPlayer()->getX() > 9.25 && this->levelContext->getPlayer()->getX() < 10.5 && this->levelContext->getPlayer()->getY() > 9.65 && this->levelContext->getPlayer()->getY() < 10.25) {
             this->newInfoText = "This toy is too light\nto open the door.\nTry the bulldozer\nfrom the room on\nthe right.";
             this->infoWindowVisible = false;
             if (this->infoWindowAlpha == 0.0) this->infoWindowAlpha = 0.001;
@@ -323,11 +326,11 @@ void Game::handleClick(const TouchPoint *const p) {
         }
     }
 
-    float sx = (float) ((-this->core->getCamX() - ((double) this->windowWidth / (2.0) - p->x) / (this->core->getGeneralScale() * this->core->getBlockSize())) + 0.5);
-    float sy = (float) ((-this->core->getCamY() - ((double) this->windowHeight / (2.0) - p->y) / (this->core->getGeneralScale() * this->core->getBlockSize())) + 0.5);
+    float sx = (float) ((-this->levelContext->getCamX() - ((double) this->windowWidth / (2.0) - p->x) / (this->levelContext->getGeneralScale() * this->levelContext->getBlockSize())) + 0.5);
+    float sy = (float) ((-this->levelContext->getCamY() - ((double) this->windowHeight / (2.0) - p->y) / (this->levelContext->getGeneralScale() * this->levelContext->getBlockSize())) + 0.5);
 
     if (p->state == 0) {
-        this->clickedToy = this->core->getMap()->getEntityAt<EntityToy>(sx, sy);
+        this->clickedToy = this->levelContext->getMap()->getEntityAt<EntityToy>(sx, sy);
         if (this->markedToy == nullptr) {
             if (this->clickedToy != nullptr) {
                 this->toyPopupClickedBy = p->id;
@@ -337,7 +340,7 @@ void Game::handleClick(const TouchPoint *const p) {
         }
     } else if (p->state == 1 && this->toyPopupClickedBy == p->id) {
         if (!clicked && this->markedToy == nullptr) {
-            this->markedToy = this->core->getMap()->getEntityAt<EntityToy>(sx, sy);
+            this->markedToy = this->levelContext->getMap()->getEntityAt<EntityToy>(sx, sy);
             if (this->markedToy != this->clickedToy) {
                 this->toyPopupClickedBy = -1;
             }
@@ -352,8 +355,8 @@ void Game::handleClick(const TouchPoint *const p) {
 
     if (!clicked) {
         if (p->state == 0 || (p->state == 2 && controller->isPressed())) {
-            double player_x = this->windowWidth / 2.0 + (this->core->getPlayer()->getX() + this->core->getCamX() - 1 + this->core->getPlayer()->getWidth() / 2) * (this->core->getGeneralScale() * this->core->getBlockSize());
-            double player_y = this->windowHeight / 2.0 + (this->core->getPlayer()->getY() + this->core->getCamY() - 1 + this->core->getPlayer()->getWidth() / 2) * (this->core->getGeneralScale() * this->core->getBlockSize());
+            double player_x = this->windowWidth / 2.0 + (this->levelContext->getPlayer()->getX() + this->levelContext->getCamX() - 1 + this->levelContext->getPlayer()->getWidth() / 2) * (this->levelContext->getGeneralScale() * this->levelContext->getBlockSize());
+            double player_y = this->windowHeight / 2.0 + (this->levelContext->getPlayer()->getY() + this->levelContext->getCamY() - 1 + this->levelContext->getPlayer()->getWidth() / 2) * (this->levelContext->getGeneralScale() * this->levelContext->getBlockSize());
 
             double x = p->x - player_x;
             double y = p->y - player_y;
@@ -364,7 +367,7 @@ void Game::handleClick(const TouchPoint *const p) {
             }
             controller->setX(player_x + x), controller->setY(player_y + y);
             controller->setPressed(true);
-            if (toyPopupClickedBy >= 0 && (this->core->getPlayer()->getToyToMerge() == nullptr || this->markedToy != this->core->getPlayer()->getToyToMerge())) {
+            if (toyPopupClickedBy >= 0 && (this->levelContext->getPlayer()->getToyToMerge() == nullptr || this->markedToy != this->levelContext->getPlayer()->getToyToMerge())) {
                 this->toyPopupClickedBy = -1;
             }
         }
@@ -395,5 +398,5 @@ void Game::handleKeyboard(const Keypress *const keypress) {
 }
 
 Game::~Game() {
-    delete this->core;
+    delete this->levelContext;
 }
