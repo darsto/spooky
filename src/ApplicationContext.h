@@ -6,6 +6,7 @@
 #define C003_APPLICATIONCONTEXT_H
 
 #include <functional>
+#include <core/LevelData.h>
 #include "SettingsData.h"
 
 class Window;
@@ -22,9 +23,14 @@ public:
         return settingsData;
     }
 
+    const LevelData &getLevelData() const {
+        return levelData;
+    }
+
 private:
     const std::function<bool(Window *window)> switchWindowFunc;
     SettingsData settingsData;
+    LevelData levelData;
 };
 
 #endif //C003_APPLICATIONCONTEXT_H

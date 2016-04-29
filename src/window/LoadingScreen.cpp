@@ -10,7 +10,16 @@
 #include <core/LevelData.h>
 #include <gui/GuiElement.h>
 
-LoadingScreen::LoadingScreen(ApplicationContext *applicationContext) : Window(applicationContext) { }
+LoadingScreen::LoadingScreen(ApplicationContext *applicationContext) : Window(applicationContext) {
+    kaguya::State initState;
+    initState["LevelData"].setClass(kaguya::ClassMetatable<LevelData>()
+                                    .addMember("addLevel", &LevelData::addLevel)
+    );
+    LevelData a = applicationContext->getLevelData();
+    initState["levelData"] = &a;
+    initState["time"] = time(0);
+    initState.dofile("scripts/init.lua");
+}
 
 void LoadingScreen::reload(unsigned int windowWidth, unsigned int windowHeight) {
     for (GuiElement *e : this->guiElements) {
