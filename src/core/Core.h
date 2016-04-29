@@ -49,14 +49,6 @@ public:
         Core::camY = camY;
     }
 
-    bool isRunning() {
-        return this->running;
-    }
-
-    void stop() {
-        this->running = false;
-    }
-
     EntityPlayer *getPlayer() const {
         return player;
     }
@@ -86,7 +78,6 @@ public:
     }
 
 private:
-    bool running = true;
     Map *map;
     EntityPlayer *player = nullptr;
     double camX = 0, camY = 0;
