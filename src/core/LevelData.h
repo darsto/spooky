@@ -14,7 +14,7 @@ class LevelData {
 public:
     using type = std::vector<std::string>;
 
-    void addLevel(std::string name);
+    void addLevel(const std::string &name);
     type getLevels() const;
 
 private:

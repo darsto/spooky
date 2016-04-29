@@ -4,7 +4,7 @@
 
 #include "LevelData.h"
 
-void LevelData::addLevel(std::string name) {
+void LevelData::addLevel(const std::string &name) {
     this->levels.push_back(name);
 }
 
