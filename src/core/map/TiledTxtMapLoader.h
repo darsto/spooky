@@ -17,6 +17,7 @@
 #include <core/map/entity/EntityWall.h>
 #include "Map.h"
 #include "../map/block/SimpleBlock.h"
+#include <core/map/entity/SimpleShape.h>
 #include "../map/entity/EntityPlayer.h"
 
 std::vector<std::string> &split(const std::string &s, char delim, std::vector<std::string> &elems) {
