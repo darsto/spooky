@@ -1,3 +1,7 @@
 mapLoader = TiledTxtMapLoader.new('test_map')
-this:setMap(mapLoader:loadMap())
+map = mapLoader:loadMap();
+this:setMap(map)
 
+player = map:getEntityPlayer(1)
+player:setX(6)
+player:setY(4)

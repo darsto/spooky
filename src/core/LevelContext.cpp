@@ -23,15 +23,56 @@ LevelContext::LevelContext(const std::string &name) : name(name) {
                                                   .addConstructor<std::string>()
                                                   .addMember("loadMap", &TiledTxtMapLoader::loadMap)
     );
+
+    scriptState["Entity"].setClass(kaguya::ClassMetatable<Entity>()
+                                       .addConstructor<Map *, double, double>()
+                                       .addMember("getId", &Entity::getId)
+                                       .addMember("getX", &Entity::getX)
+                                       .addMember("getY", &Entity::getY)
+                                       .addMember("getAngle", &Entity::getAngle)
+                                       .addMember("getWidth", &Entity::getWidth)
+                                       .addMember("getHeight", &Entity::getHeight)
+                                       .addMember("setX", &Entity::setX)
+                                       .addMember("setY", &Entity::setY)
+                                       .addMember("setAngle", &Entity::setAngle)
+                                       .addMember("getBody", &Entity::getBody)
+                                       .addMember("doesCollide", &Entity::doesCollide)
+                                       .addMember("remove", &Entity::remove)
+    );
+
+    scriptState["EntityMoving"].setClass(kaguya::ClassMetatable<EntityMoving, Entity>()
+                                             .addConstructor<Map *, double, double>()
+                                             .addMember("setBodyType", &EntityMoving::setBodyType)
+                                             .addMember("applyForce", &EntityMoving::applyForce)
+                                             .addMember("applyImpulse", &EntityMoving::applyImpulse)
+    );
+
+    scriptState["EntityPlayer"].setClass(kaguya::ClassMetatable<EntityPlayer, EntityMoving>()
+                                             .addMember("getColorfulness", &EntityPlayer::getColorfulness)
+                                             .addMember("getDamagedToy", &EntityPlayer::getDamagedToy)
+                                             .addMember("getEjectTime", &EntityPlayer::getEjectTime)
+                                             .addMember("getToyToMerge", &EntityPlayer::getToyToMerge)
+                                             .addMember("getTailAnimation", &EntityPlayer::getTailAnimation)
+    );
+
+    scriptState["Map"].setClass(kaguya::ClassMetatable<Map>()
+                                    .addStaticMember("getWidth", &Map::getWidth)
+                                    .addStaticMember("getHeight", &Map::getHeight)
+                                    .addStaticMember("getBlock", &Map::getBlock)
+                                    .addStaticMember("getEntities", &Map::getEntities)
+                                    .addStaticMember("getEntity", &Map::getEntity<>)
+                                    .addStaticMember("getEntityPlayer", &Map::getEntity<EntityPlayer>)
+                                    .addStaticMember("getEntityAt", &Map::getEntityAt<Entity>)
+                                    .addStaticMember("getWorldTime", &Map::getWorldTime)
+    );
+
     scriptState["this"] = this;
     scriptState.dofile("scripts/levels/" + name + ".lua");
 
-    if (this->player == nullptr) {
-        for (Entity *e : map->getEntities()) {
-            if (EntityPlayer *p = dynamic_cast<EntityPlayer *>(e)) {
-                this->player = p;
-                break;
-            }
+    for (Entity *e : map->getEntities()) {
+        if (EntityPlayer *p = dynamic_cast<EntityPlayer *>(e)) {
+            this->player = p;
+            break;
         }
     }
 }
