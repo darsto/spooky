@@ -4,7 +4,7 @@
 
 #include <render/block/ChunkRender.h>
 #include <render/entity/PlayerRender.h>
-#include <render/entity/SimpleShapeRender.h>
+#include <render/entity/EntityBlockRender.h>
 #include "../RenderManager.h"
 #include "GameRender.h"
 #include "../../window/Game.h"
@@ -181,7 +181,7 @@ void GameRender::initRenders() {
     EntityStaticRender *staticRender = new EntityStaticRender();
     entityRenders.insert(std::make_pair(typeid(EntityFurniture).name(), staticRender));
     entityRenders.insert(std::make_pair(typeid(EntityGlassDebris).name(), staticRender));
-    entityRenders.insert(std::make_pair(typeid(SimpleShape).name(), new SimpleShapeRender()));
+    entityRenders.insert(std::make_pair(typeid(EntityBlock).name(), new EntityBlockRender()));
     entityRenders.insert(std::make_pair(typeid(EntityFather).name(), new DefaultEntityRender("parents", "shader")));
     entityRenders.insert(std::make_pair(typeid(EntityWall).name(), new EntityWallRender()));
 }

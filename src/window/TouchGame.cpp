@@ -12,14 +12,13 @@
 #include <window/MainMenu.h>
 #include <ApplicationContext.h>
 #include <core/LevelContext.h>
-#include <core/map/entity/SimpleShape.h>
+#include <core/map/entity/EntityBlock.h>
 #include <core/map/entity/EntityPlayer.h>
 #include <core/map/Map.h>
 #include <core/map/entity/EntityFurniture.h>
 #include <core/map/entity/EntityGlassDebris.h>
 
 Game::Game(ApplicationContext *applicationContext, const std::string &levelName) : Window(applicationContext) {
-    initShapeDefinitions();
     this->levelContext = new LevelContext(levelName);
 
     auto nullController = [&](const TouchPoint *const touchPoint) {

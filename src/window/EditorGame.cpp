@@ -16,12 +16,11 @@
 #include "../logging.h"
 #include <core/LevelContext.h>
 #include <ApplicationContext.h>
-#include <core/map/entity/SimpleShape.h>
+#include <core/map/entity/EntityBlock.h>
 #include <core/map/entity/EntityTable.h>
 #include <core/map/entity/EntityPlayer.h>
 
 Game::Game(ApplicationContext *applicationContext, const std::string &levelName) : Window(applicationContext) {
-    initShapeDefinitions();
     this->levelContext = new LevelContext(levelName);
 
     double ringScale = 2 * this->levelContext->getBlockSize();
@@ -97,7 +96,7 @@ void Game::handleKeyboard(const Keypress *const keypress) {
         this->levelContext->getMap()->addEntity(p);
     }
     if (keypress[SDLK_m].isPressed()) {
-        SimpleShape *p = new SimpleShape(this->levelContext->getMap(), (unsigned int) (rand() % 3));
+        EntityBlock *p = new EntityBlock(this->levelContext->getMap(), (unsigned int) (rand() % 3));
         p->setX(this->levelContext->getPlayer()->getX() - this->levelContext->getPlayer()->getWidth() / 2);
         p->setY(this->levelContext->getPlayer()->getY() - this->levelContext->getPlayer()->getHeight() / 2);
         this->levelContext->getMap()->addEntity(p);

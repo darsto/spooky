@@ -6,7 +6,7 @@
 #include <core/map/entity/EntityFather.h>
 #include <core/map/entity/EntityMachinery.h>
 #include <core/map/entity/EntityDoor.h>
-#include <core/map/entity/SimpleShape.h>
+#include <core/map/entity/EntityBlock.h>
 #include <core/map/entity/EntityFurniture.h>
 #include <core/map/entity/EntityGlassDebris.h>
 #include <core/map/entity/EntityCouch.h>
@@ -64,7 +64,7 @@ void Map::saveEntities() {
                 }
                 continue;
             }
-            else if (SimpleShape *p = dynamic_cast<SimpleShape *>(e)) {
+            else if (EntityBlock *p = dynamic_cast<EntityBlock *>(e)) {
                 id = 5;
                 myfile << id << "," << (int)p->getTexPos() << "," << e->getX() << "," << e->getY() << "," << e->getAngle();
                 if (i != this->getEntities().size() - 1) {

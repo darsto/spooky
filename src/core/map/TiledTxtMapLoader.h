@@ -17,7 +17,7 @@
 #include <core/map/entity/EntityWall.h>
 #include "Map.h"
 #include "../map/block/SimpleBlock.h"
-#include <core/map/entity/SimpleShape.h>
+#include <core/map/entity/EntityBlock.h>
 #include "../map/entity/EntityPlayer.h"
 
 std::vector<std::string> &split(const std::string &s, char delim, std::vector<std::string> &elems) {
@@ -139,7 +139,7 @@ TiledTxtMapLoader::TiledTxtMapLoader(const std::string &fileName) {
                         i += 3;
                         break;
                     case 5:
-                        sshape = new SimpleShape(this->map, atoi(blockRow.at(i).c_str()) % 8, atoi(blockRow.at(i).c_str()) / 8);
+                        sshape = new EntityBlock(this->map, atoi(blockRow.at(i).c_str()) % 8, atoi(blockRow.at(i).c_str()) / 8);
                         i++;
                         break;
                     case 6:

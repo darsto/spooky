@@ -5,16 +5,16 @@
 #ifndef C003_SIMPLESHAPERENDER_H
 #define C003_SIMPLESHAPERENDER_H
 
-#include <core/map/entity/SimpleShape.h>
+#include <core/map/entity/EntityBlock.h>
 #include "DefaultEntityRender.h"
 
-class SimpleShapeRender : public DefaultEntityRender {
+class EntityBlockRender : public DefaultEntityRender {
 public:
-    SimpleShapeRender() : DefaultEntityRender("shapes", "shader") { }
+    EntityBlockRender() : DefaultEntityRender("shapes", "shader") { }
 
 protected:
     virtual int getTexPos(const Entity *const entity) override {
-        return ((const SimpleShape *const) entity)->getTexPos();
+        return ((const EntityBlock *const) entity)->getTexPos();
     }
 
 };
