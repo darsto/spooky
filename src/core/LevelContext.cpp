@@ -67,7 +67,7 @@ LevelContext::LevelContext(const std::string &name) : name(name) {
     );
 
     scriptState["this"] = this;
-    scriptState.dofile("scripts/levels/" + name + ".lua");
+    scriptState.dofile("scripts/levels/" + this->name + ".lua");
 
     for (Entity *e : map->getEntities()) {
         if (EntityPlayer *p = dynamic_cast<EntityPlayer *>(e)) {
@@ -75,4 +75,9 @@ LevelContext::LevelContext(const std::string &name) : name(name) {
             break;
         }
     }
+}
+
+void LevelContext::setMap(Map *map) {
+    this->map = map;
+    this->map->levelName = this->name;
 }

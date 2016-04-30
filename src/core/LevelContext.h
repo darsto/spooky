@@ -71,9 +71,7 @@ private:
     double defaultBlockSize;
     double blockSize;
 
-    void setMap(Map *map) {
-        this->map = map;
-    }
+    void setMap(Map *map);
 };
 
 #endif //C003_LEVELCONTEXT_H

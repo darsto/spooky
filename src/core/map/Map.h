@@ -95,10 +95,15 @@ public:
         return nullptr;
     }
 
+    const std::string &getLevelName() const {
+        return levelName;
+    }
+
     ~Map();
 
 private:
     const std::string fileName;
+    std::string levelName;
     const unsigned int width, height;
     double worldTime;
     b2World *const world;
@@ -106,6 +111,8 @@ private:
     std::vector<Entity *> entities;
     CollisionListener contactListener;
     ContactFilter contactFilter;
+
+    friend class LevelContext;
 };
 
 class MapLoader {
