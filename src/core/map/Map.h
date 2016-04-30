@@ -35,7 +35,18 @@ public:
 
     Block *getBlock(int x, int y);
 
-    Entity *getEntity(int id) { /* TODO */ };
+    template<class T = Entity>
+    T *getEntity(int id) {
+        for (Entity *e : this->entities) {
+            if (e->getId() == id) if (T *t = dynamic_cast<T *>(e)) return t;
+        }
+        return nullptr;
+    }
+
+    /* Deprecated, use getEntity<class T>(int id); */
+    Entity *getEntity(int id) {
+        return this->getEntity<Entity>(id);
+    }
 
     const std::vector<Chunk *> &getChunks() {
         return chunks;
