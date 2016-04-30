@@ -56,14 +56,14 @@ LevelContext::LevelContext(const std::string &name) : name(name) {
     );
 
     scriptState["Map"].setClass(kaguya::ClassMetatable<Map>()
-                                    .addStaticMember("getWidth", &Map::getWidth)
-                                    .addStaticMember("getHeight", &Map::getHeight)
-                                    .addStaticMember("getBlock", &Map::getBlock)
-                                    .addStaticMember("getEntities", &Map::getEntities)
-                                    .addStaticMember("getEntity", &Map::getEntity<>)
-                                    .addStaticMember("getEntityPlayer", &Map::getEntity<EntityPlayer>)
-                                    .addStaticMember("getEntityAt", &Map::getEntityAt<Entity>)
-                                    .addStaticMember("getWorldTime", &Map::getWorldTime)
+                                    .addMember("getWidth", &Map::getWidth)
+                                    .addMember("getHeight", &Map::getHeight)
+                                    .addMember("getBlock", &Map::getBlock)
+                                    .addMember("getEntities", &Map::getEntities)
+                                    .addMember("getEntity", &Map::getEntity<>)
+                                    .addMember("getEntityPlayer", &Map::getEntity<EntityPlayer>)
+                                    .addMember("getEntityAt", &Map::getEntityAt<Entity>)
+                                    .addMember("getWorldTime", &Map::getWorldTime)
     );
 
     scriptState["this"] = this;
