@@ -9,7 +9,7 @@
 
 class EntityWall : public Entity {
 public:
-    EntityWall(Map *map, double width, double height) : Entity(map, width, height) {
+    EntityWall(Map *map, double width, double height) : Entity(map, width + 0.05, height + 0.05) {
         b2PolygonShape shape;
         shape.SetAsBox(this->width / 2, this->height / 2);
         b2FixtureDef fixDef;

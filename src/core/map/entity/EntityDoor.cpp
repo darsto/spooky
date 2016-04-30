@@ -7,8 +7,8 @@
 EntityDoor::EntityDoor(Map *map, unsigned char type)
     : EntityFurniture(map,
                       new b2PolygonShape,
-                      ((type >> 7) & 1) ? (((type >> 6) & 1) ? 0.1 : 0.25) : (1.0 - 0.025),
-                      ((type >> 7) & 1) ? (1.0 - 0.025) : (((type >> 6) & 1) ? 0.1 : 0.25),
+                      ((type >> 7) & 1) ? (((type >> 6) & 1) ? 0.1 : 0.25) : (1.0 - 0.1),
+                      ((type >> 7) & 1) ? (1.0 - 0.1) : (((type >> 6) & 1) ? 0.1 : 0.25),
                       0),
       type(type) {
 
