@@ -1,0 +1,2 @@
+print(map:getWorldTime())
+

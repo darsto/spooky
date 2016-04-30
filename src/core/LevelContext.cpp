@@ -37,6 +37,10 @@ LevelContext::LevelContext(const std::string &name) : name(name) {
                                        .addMember("setAngle", &Entity::setAngle)
                                        .addMember("getBody", &Entity::getBody)
                                        .addMember("doesCollide", &Entity::doesCollide)
+                                       .addMember("setOnUpdateScript", &Entity::setScript<0>)
+                                       .addMember("setOnMoveScript", &Entity::setScript<1>)
+                                       .addMember("setOnCollisionScript", &Entity::setScript<2>)
+                                       .addMember("setOnDeathScript", &Entity::setScript<3>)
                                        .addMember("remove", &Entity::remove)
     );
 

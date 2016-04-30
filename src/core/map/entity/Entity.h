@@ -7,7 +7,9 @@
 #pragma once
 
 #define _USE_MATH_DEFINES
+
 #include <Box2D/Box2D.h>
+#include <kaguya/kaguya.hpp>
 #include "core/map/block/Block.h"
 #include "core/IPositionable.h"
 #include "core/Ray.h"
@@ -56,13 +58,7 @@ public:
         }
     }
 
-    /*
-     * Called when collision occurs
-     * State values:
-     *  0 - collision begin
-     *  1 - collision end
-     */
-    virtual void onCollision(IPositionable *object, char state) { };
+    virtual void onCollision(IPositionable *object, char state);;
 
     double getAngle() const {
         return this->body->GetAngle();
@@ -84,9 +80,10 @@ public:
         return this->redraw || this->body->IsAwake();
     }
 
-    void remove() {
-        this->toBeDeleted = true;
-    }
+    template<int type>
+    void setScript(std::string file);
+
+    void remove();
 
     bool isToBeDeleted() const {
         return toBeDeleted;
@@ -103,6 +100,14 @@ protected:
     b2BodyDef bodyDef;
     bool toBeDeleted = false;
     bool redraw = true;
+
+    struct Script {
+        kaguya::State state;
+        struct Handler {
+            kaguya::LuaFunction function;
+            bool loaded = false;
+        } update, move, collision, death;
+    } script;
 
     static unsigned int maxEntityId;
     static unsigned int getNextEntityId();
