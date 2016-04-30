@@ -9,6 +9,7 @@
 #include <ApplicationContext.h>
 #include <core/LevelData.h>
 #include <gui/GuiElement.h>
+#include <files.h>
 
 LoadingScreen::LoadingScreen(ApplicationContext *applicationContext) : Window(applicationContext) {
     kaguya::State initState;
@@ -17,7 +18,7 @@ LoadingScreen::LoadingScreen(ApplicationContext *applicationContext) : Window(ap
     );
     initState["levelData"] = applicationContext->getLevelData();
     initState["time"] = time(0);
-    initState.dofile("scripts/init.lua");
+    initState.dofile(getFilePath("scripts/init.lua"));
 }
 
 void LoadingScreen::reload(unsigned int windowWidth, unsigned int windowHeight) {

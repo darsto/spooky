@@ -2,6 +2,7 @@
 // Created by dar on 11/29/15.
 //
 
+#include <files.h>
 #include "Entity.h"
 #include "core/map/Map.h"
 #include "EntityPlayer.h"
@@ -100,7 +101,7 @@ void Entity::setX(double x) {
 
 template<int type>
 void Entity::setScript(std::string file) {
-    file = "scripts/levels/" + this->map->getLevelName() + "/" + file + ".lua";
+    file = getFilePath("scripts/levels/" + this->map->getLevelName() + "/" + file + ".lua");
     Script::Handler *handler = nullptr;
     switch (type) {
         case 0:

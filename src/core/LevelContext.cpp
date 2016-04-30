@@ -7,6 +7,7 @@
 #include <core/map/Map.h>
 #include <core/map/entity/EntityPlayer.h>
 #include <core/map/TiledTxtMapLoader.h>
+#include <files.h>
 
 LevelContext::LevelContext(const std::string &name) : name(name) {
 #ifdef __ANDROID__
@@ -71,7 +72,7 @@ LevelContext::LevelContext(const std::string &name) : name(name) {
     );
 
     scriptState["this"] = this;
-    scriptState.dofile("scripts/levels/" + this->name + ".lua");
+    scriptState.dofile(getFilePath("scripts/levels/" + this->name + ".lua"));
 
     for (Entity *e : map->getEntities()) {
         if (EntityPlayer *p = dynamic_cast<EntityPlayer *>(e)) {
