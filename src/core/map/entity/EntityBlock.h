@@ -27,12 +27,10 @@ private:
         static ShapeDef *createShapeDef(double width, double height);
     };
 
-    struct ShapeDefContainer {
+    static struct ShapeDefContainer {
         ShapeDefContainer();
         std::vector<ShapeDef *> shapeDefs;
-    };
-
-    static ShapeDefContainer shapeDefContainer;
+    } shapeDefContainer;
 };
 
 #endif //C003_SIMPLESHAPE_H
