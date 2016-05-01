@@ -41,13 +41,20 @@ public:
         return guiElements;
     }
 
+    bool isEditing() const {
+#ifdef EDITOR
+        return this->editing;
+#else
+        return false;
+#endif
+    }
+
     virtual ~Game() override;
 
 private:
     LevelContext *levelContext = nullptr;
     std::vector<GuiElement *> guiElements;
 
-#ifndef EDITOR
     GuiButton *controller;
 
     EntityToy *clickedToy = nullptr;
@@ -68,14 +75,18 @@ private:
     void resetButtons(const TouchPoint *const p) {
         this->resetButtons(p, nullptr);
     }
-#else
+
+private:
+#ifdef EDITOR
     Entity *heldEntity = nullptr;
 
     GuiElement *entityRotationRing;
     double defaultAngle;
     double relXClicked, relYClicked;
     int mouseLockX, mouseLockY;
-#endif //__ANDROID__
+
+    bool editing = true;
+#endif //EDITOR
 
     unsigned int windowWidth, windowHeight;
 

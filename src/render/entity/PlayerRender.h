@@ -14,7 +14,6 @@ public:
     PlayerRender() : DefaultEntityRender("player", "shader") { }
 
     virtual void render(const Entity *const entity, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, double scale) override {
-#ifndef EDITOR
         const EntityPlayer *const player = ((const EntityPlayer *const) entity);
         if (player->getToy() == nullptr || player->getEjectTime() > 0.0) {
             this->texture.bindTexture(0);
@@ -45,7 +44,6 @@ public:
             glBindVertexArray(this->vao);
             glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
         }
-#endif
     }
 
 protected:

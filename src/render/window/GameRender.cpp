@@ -75,6 +75,10 @@ void GameRender::render(Window *window, RenderContext *const renderContext) {
     int entitiesNum = 0;
     for (int i = levelContext->getMap()->getEntities().size() - 1; i >= 0; i--) {
         Entity *entity = levelContext->getMap()->getEntities().at(i);
+        if (game->isEditing()) if (dynamic_cast<EntityPlayer *>(entity)) {
+            continue;
+        }
+
         double maxSize = entity->getWidth() > entity->getHeight() ? entity->getWidth() : entity->getHeight();
         if (entity->getX() * scale > -(signed) windowWidth / 2.0f - camX &&
             (entity->getX() - 1 - maxSize) * scale < -(signed) windowWidth / 2.0f - camX + (signed) windowWidth &&
@@ -101,25 +105,6 @@ void GameRender::render(Window *window, RenderContext *const renderContext) {
             }
         }
     }
-
-#ifndef EDITOR
-    //TODO
-    /*static int grayout[][4] = {{20, 3, 4, 6},
-                               {21, 9, 1, 1},
-                               {25, 3, 5, 3},
-                               {30, 3, 1, 1},
-                               {31, 3, 4, 3},
-                               {35, 4, 1, 1},
-                               {34, 6, 1, 1},
-                               {31, 7, 7, 11}};
-
-    for (int i = 0; i < 8; i++) {
-        this->voidRender->render(grayout[i][0], grayout[i][1], grayout[i][2], grayout[i][3], projectionMatrix, glm::translate(viewMatrix, glm::vec3(
-            -(signed) windowWidth / 2.0f - camX,
-            (signed) windowHeight / 2.0f - camY,
-            0.0f)), core->getBlockSize() * core->getGeneralScale());
-    }*/
-#endif //EDITOR
 
     fbo.unbind();
     fbo.getShaderProgram()->useProgram();
