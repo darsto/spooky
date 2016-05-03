@@ -116,7 +116,7 @@ void ChunkRender::render(const Chunk *const chunk, glm::mat4 projectionMatrix, g
                 tCoords[8 * i + 6] = bleedfix + size * x;
                 tCoords[8 * i + 7] = size * (y + 1) - bleedfix;
             } else {
-                for (int j = 0; j < 7; j++) {
+                for (int j = 0; j < 8; j++) {
                     tCoords[8 * i + j] = 0;
                 }
             }
