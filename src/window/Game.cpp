@@ -19,7 +19,7 @@
 #include <core/map/entity/EntityGlassDebris.h>
 
 Game::Game(ApplicationContext *applicationContext, const std::string &levelName) : Window(applicationContext) {
-    this->levelContext = new LevelContext(levelName);
+    this->levelContext = new LevelContext(*this, levelName);
 
     auto nullController = [&](const TouchPoint *const touchPoint) {
         return true;
@@ -62,9 +62,7 @@ Game::Game(ApplicationContext *applicationContext, const std::string &levelName)
                     this->levelContext->getPlayer()->setToy();
                     int missionProgress = this->missionFlags & 0xFF;
                     if (missionProgress == 0) {
-                        this->newInfoText = "Head outside of the room.\nExplore the house.";
-                        this->infoWindowVisible = false;
-                        if (this->infoWindowAlpha == 0.0) this->infoWindowAlpha = 0.001;
+                        this->levelContext->updateInformation("Head outside of the room.\nExplore the house.");
                         this->missionFlags = (this->missionFlags >> 8) << 8;
                         this->missionFlags |= missionProgress;
                     }
@@ -84,8 +82,8 @@ Game::Game(ApplicationContext *applicationContext, const std::string &levelName)
     this->infoControl[0] = infoButton;
     auto infoAction = [=](const TouchPoint *const p) {
         if (p->state == 1) {
-            if ((this->infoWindowAlpha == 0.0 || this->infoWindowAlpha == 1.0) && infoButton->canBeClicked(p)) {
-                this->infoWindowVisible = !this->infoWindowVisible;
+            if ((this->levelContext->infoWindowAlpha == 0.0 || this->levelContext->infoWindowAlpha == 1.0) && infoButton->canBeClicked(p)) {
+                this->levelContext->infoWindowVisible = !this->levelContext->infoWindowVisible;
                 infoButton->setTexPos(0, 24);
             }
             return false;
@@ -246,19 +244,19 @@ void Game::tick(double deltaTime) {
             }
         }
 
-        if (this->infoWindowVisible) {
-            this->infoWindowAlpha += 0.05f * deltaTime;
-            if (this->infoWindowAlpha > 1.0f) {
-                this->infoWindowAlpha = 1.0f;
+        if (this->levelContext->infoWindowVisible) {
+            this->levelContext->infoWindowAlpha += 0.05f * deltaTime;
+            if (this->levelContext->infoWindowAlpha > 1.0f) {
+                this->levelContext->infoWindowAlpha = 1.0f;
             }
-        } else if (this->infoWindowAlpha > 0.0) {
-            this->infoWindowAlpha -= 0.05f * deltaTime;
-            if (this->infoWindowAlpha < 0.0f) {
-                this->infoWindowAlpha = 0.0f;
-                if (this->newInfoText.length() > 0 && ((GuiText *) this->infoControl[2])->getString().compare(this->newInfoText) != 0) {
-                    ((GuiText *) this->infoControl[2])->updateString(this->newInfoText);
+        } else if (this->levelContext->infoWindowAlpha > 0.0) {
+            this->levelContext->infoWindowAlpha -= 0.05f * deltaTime;
+            if (this->levelContext->infoWindowAlpha < 0.0f) {
+                this->levelContext->infoWindowAlpha = 0.0f;
+                if (this->levelContext->newInfoText.length() > 0 && ((GuiText *) this->infoControl[2])->getString().compare(this->levelContext->newInfoText) != 0) {
+                    ((GuiText *) this->infoControl[2])->updateString(this->levelContext->newInfoText);
                     if (this->infoControl[1]->isVisible()) {
-                        this->infoWindowVisible = true;
+                        this->levelContext->infoWindowVisible = true;
                     } else {
                         this->infoControl[0]->setTexPos(0, 33);
                     }
@@ -272,9 +270,9 @@ void Game::tick(double deltaTime) {
 
         for (int i = 1; i < 3; i++) {
             int color = this->infoControl[i]->getColor() & 0xFFFFFF00;
-            color |= (int) (this->infoWindowAlpha * 255);
+            color |= (int) (this->levelContext->infoWindowAlpha * 255);
             this->infoControl[i]->setColor(color);
-            this->infoControl[i]->setVisible(this->infoWindowAlpha > 0.0);
+            this->infoControl[i]->setVisible(this->levelContext->infoWindowAlpha > 0.0);
         }
 
         if (!((this->missionFlags >> 31) & 1)) {
@@ -282,11 +280,9 @@ void Game::tick(double deltaTime) {
                 if (this->levelContext->getPlayer()->getToy() != nullptr && (int) this->levelContext->getPlayer()->getX() == 24 && this->levelContext->getPlayer()->getX() < 24.8 && (int) this->levelContext->getPlayer()->getY() == 13 &&
                     this->levelContext->getPlayer()->getY() < 13.7) {
                     glass->remove();
-                    this->newInfoText = "A glass has shattered!\nYou have to clean it up\nbefore someone gets hurt!\nThere is a hoover toy\non the other side of the\nhouse. Go take it.";
-                    this->infoWindowVisible = false;
-                    if (this->infoWindowAlpha == 0.0) this->infoWindowAlpha = 0.001;
+                    this->levelContext->updateInformation("A glass has shattered!\nYou have to clean it up\nbefore someone gets hurt!\nThere is a hoover toy\non the other side of the\nhouse. Go take it.");
                     for (int i = 0; i < 3; i++) {
-                        EntityGlassDebris *p = new EntityGlassDebris(this->levelContext->getMap());
+                        EntityGlassDebris *p = new EntityGlassDebris(*this->levelContext);
                         p->setX(25.0571);
                         p->setY(14.01);
                         p->setAngle(i * M_PI * 0.35 - M_PI * 0.3);
@@ -301,9 +297,7 @@ void Game::tick(double deltaTime) {
         if (!((this->missionFlags >> 30) & 1)) {
             if (this->levelContext->getPlayer()->getToy() != nullptr && (int) this->levelContext->getPlayer()->getX() > 9.25 && this->levelContext->getPlayer()->getX() < 10.5 && this->levelContext->getPlayer()->getY() > 9.65 &&
                 this->levelContext->getPlayer()->getY() < 10.25) {
-                this->newInfoText = "This toy is too light\nto open the door.\nTry the bulldozer\nfrom the room on\nthe right.";
-                this->infoWindowVisible = false;
-                if (this->infoWindowAlpha == 0.0) this->infoWindowAlpha = 0.001;
+                this->levelContext->updateInformation("This toy is too light\nto open the door.\nTry the bulldozer\nfrom the room on\nthe right.");
                 this->missionFlags |= (1 << 30);
             }
         }

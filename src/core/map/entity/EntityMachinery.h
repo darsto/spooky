@@ -10,7 +10,7 @@
 class EntityTruck : public EntityToy {
 
 public:
-    EntityTruck(Map *map) : EntityToy(map, 0.68, 0.32) {
+    EntityTruck(LevelContext &levelContext) : EntityToy(levelContext, 0.68, 0.32) {
         b2PolygonShape shape;
         shape.SetAsBox(this->width / 2, this->height / 2);
         b2FixtureDef fixDef;
@@ -28,7 +28,7 @@ public:
 class EntityBulldozer : public EntityToy {
 
 public:
-    EntityBulldozer(Map *map) : EntityToy(map, 0.95, 0.64) {
+    EntityBulldozer(LevelContext &levelContext) : EntityToy(levelContext, 0.95, 0.64) {
         b2PolygonShape shape;
         shape.SetAsBox(0.47, 0.32);
         b2FixtureDef fixDef;
@@ -46,7 +46,7 @@ public:
 class EntityHoover : public EntityToy {
 
 public:
-    EntityHoover(Map *map) : EntityToy(map, 0.72, 0.72) {
+    EntityHoover(LevelContext &levelContext) : EntityToy(levelContext, 0.72, 0.72) {
         b2CircleShape shape;
         shape.m_radius = this->height / 2;
         b2FixtureDef fixDef;

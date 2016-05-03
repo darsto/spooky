@@ -13,7 +13,7 @@
 class EntityDoor : public EntityFurniture {
 
 public:
-    EntityDoor(Map *map, unsigned char type);
+    EntityDoor(LevelContext &levelContext, unsigned char type);
 
     virtual void setY(double y);
 
@@ -39,8 +39,8 @@ public:
     }
 
     virtual ~EntityDoor() override {
-        this->map->getWorld()->DestroyBody(this->body);
-        this->map->getWorld()->DestroyBody(this->hinge);
+        this->getMap()->getWorld()->DestroyBody(this->body);
+        this->getMap()->getWorld()->DestroyBody(this->hinge);
     }
 
     const unsigned char getType() const {

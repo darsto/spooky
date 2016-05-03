@@ -6,7 +6,7 @@
 #include "EntityPlayer.h"
 
 
-EntityFather::EntityFather(Map *map) : EntityMoving(map, 0.25, 0.25) {
+EntityFather::EntityFather(LevelContext &levelContext) : EntityMoving(levelContext, 0.25, 0.25) {
     b2PolygonShape shape;
     shape.SetAsBox(0.225, 0.435);
     b2FixtureDef fixDef;
@@ -20,7 +20,7 @@ void EntityFather::update(double deltaTime) {
     EntityMoving::update(deltaTime);
     this->applyForce(1.0f * cos(this->getAngle()), 1.0f * sin(this->getAngle()));
     double radius = 3.5;
-    for (Entity *e : this->map->getEntities()) {
+    for (Entity *e : this->getMap()->getEntities()) {
         if (x >= e->getX() - e->getWidth() - radius && x <= e->getX() + radius &&
             y >= e->getY() - e->getHeight() - radius && y <= e->getY() + radius) {
             if (EntityPlayer *p = dynamic_cast<EntityPlayer *>(e)) {

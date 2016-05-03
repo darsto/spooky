@@ -38,7 +38,7 @@ std::vector<std::string> split(const std::string &s, char delim) {
 class TiledTxtMapLoader : public MapLoader {
 
 public:
-    TiledTxtMapLoader(const std::string &fileName);
+    TiledTxtMapLoader(LevelContext &context, const std::string &fileName);
     virtual Map *loadMap() override;
 
 private:
@@ -53,7 +53,7 @@ inline int parseTiledVariable(const std::string &s) {
 }
 
 /* NOTE: There is also map saving at <core/map/Map.cpp> */
-TiledTxtMapLoader::TiledTxtMapLoader(const std::string &fileName) {
+TiledTxtMapLoader::TiledTxtMapLoader(LevelContext &levelContext, const std::string &fileName) {
     int width, height;
 
     std::string line;
@@ -67,6 +67,7 @@ TiledTxtMapLoader::TiledTxtMapLoader(const std::string &fileName) {
         getline(myfile, line), width = parseTiledVariable(line);
         getline(myfile, line), height = parseTiledVariable(line);
         this->map = new Map(fileName, width, height);
+        levelContext.setMap(this->map);
 
         while (line.find("[layer]") == std::string::npos) { //skip some lines, move to terrain data
             getline(myfile, line);
@@ -122,98 +123,98 @@ TiledTxtMapLoader::TiledTxtMapLoader(const std::string &fileName) {
                 i++;
                 switch (id) {
                     case 0:
-                        sshape = new EntityPlayer(this->map);
+                        sshape = new EntityPlayer(levelContext);
                         break;
                     case 1:
-                        sshape = new EntityTruck(this->map);
+                        sshape = new EntityTruck(levelContext);
                         break;
                     case 2:
-                        sshape = new EntityFather(this->map);
+                        sshape = new EntityFather(levelContext);
                         break;
                     case 3:
-                        sshape = new EntityBulldozer(this->map);
+                        sshape = new EntityBulldozer(levelContext);
                         break;
                     case 4:
-                        sshape = new EntityDoor(this->map, atoi(blockRow.at(i).c_str()));
+                        sshape = new EntityDoor(levelContext, atoi(blockRow.at(i).c_str()));
                         //((EntityDoor *) sshape)->setHingePos(atof(blockRow.at(i + 1).c_str()), atof(blockRow.at(i + 2).c_str()));
                         i += 3;
                         break;
                     case 5:
-                        sshape = new EntityBlock(this->map, atoi(blockRow.at(i).c_str()) % 8, atoi(blockRow.at(i).c_str()) / 8);
+                        sshape = new EntityBlock(levelContext, atoi(blockRow.at(i).c_str()) % 8, atoi(blockRow.at(i).c_str()) / 8);
                         i++;
                         break;
                     case 6:
-                        sshape = new EntityFridge(this->map);
+                        sshape = new EntityFridge(levelContext);
                         break;
                     case 7:
-                        sshape = new EntityWardrobe(this->map);
+                        sshape = new EntityWardrobe(levelContext);
                         break;
                     case 8:
-                        sshape = new EntityChair(this->map);
+                        sshape = new EntityChair(levelContext);
                         break;
                     case 9:
-                        sshape = new EntityTable(this->map);
+                        sshape = new EntityTable(levelContext);
                         break;
                     case 10:
-                        sshape = new EntityGlassDebris(this->map);
+                        sshape = new EntityGlassDebris(levelContext);
                         break;
                     case 11:
-                        sshape = new EntityHoover(this->map);
+                        sshape = new EntityHoover(levelContext);
                         break;
                     case 12:
-                        sshape = new EntityCoffeeTable(this->map);
+                        sshape = new EntityCoffeeTable(levelContext);
                         break;
                     case 13:
-                        sshape = new EntityCouch(this->map);
+                        sshape = new EntityCouch(levelContext);
                         break;
                     case 14:
-                        sshape = new EntityArmchair(this->map);
+                        sshape = new EntityArmchair(levelContext);
                         break;
                     case 15:
-                        sshape = new EntityPouf(this->map);
+                        sshape = new EntityPouf(levelContext);
                         break;
                     case 16:
-                        sshape = new EntityFlowerPot(this->map);
+                        sshape = new EntityFlowerPot(levelContext);
                         break;
                     case 17:
-                        sshape = new EntityToaster(this->map);
+                        sshape = new EntityToaster(levelContext);
                         break;
                     case 18:
-                        sshape = new EntityRadio(this->map);
+                        sshape = new EntityRadio(levelContext);
                         break;
                     case 19:
-                        sshape = new EntitySink(this->map);
+                        sshape = new EntitySink(levelContext);
                         break;
                     case 20:
-                        sshape = new EntityCuttingBoard(this->map);
+                        sshape = new EntityCuttingBoard(levelContext);
                         break;
                     case 21:
-                        sshape = new EntityTallLight(this->map);
+                        sshape = new EntityTallLight(levelContext);
                         break;
                     case 22:
-                        sshape = new EntityWallLight(this->map);
+                        sshape = new EntityWallLight(levelContext);
                         break;
                     case 23:
-                        sshape = new EntityChestHandle(this->map);
+                        sshape = new EntityChestHandle(levelContext);
                         break;
                     case 24:
-                        sshape = new EntityNotebook(this->map);
+                        sshape = new EntityNotebook(levelContext);
                         break;
                     case 25:
-                        sshape = new EntityCupboardTop(this->map);
+                        sshape = new EntityCupboardTop(levelContext);
                         break;
                     case 26:
-                        sshape = new EntityCupboardBottom(this->map);
+                        sshape = new EntityCupboardBottom(levelContext);
                         break;
                     case 27:
-                        sshape = new EntityToiletPaper(this->map);
+                        sshape = new EntityToiletPaper(levelContext);
                         break;
                     case 28:
-                        sshape = new EntityWall(this->map, atof(blockRow.at(i).c_str()), atof(blockRow.at(i + 1).c_str()));
+                        sshape = new EntityWall(levelContext, atof(blockRow.at(i).c_str()), atof(blockRow.at(i + 1).c_str()));
                         i += 2;
                         break;
                     case 29:
-                        sshape = new EntityGlass(this->map);
+                        sshape = new EntityGlass(levelContext);
                         break;
                     default:
                         break;

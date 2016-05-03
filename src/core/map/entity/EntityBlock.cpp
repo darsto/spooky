@@ -23,16 +23,16 @@ EntityBlock::ShapeDef *EntityBlock::ShapeDef::createShapeDef(double width, doubl
     return new EntityBlock::ShapeDef(width, height, fixtureDef);
 }
 
-EntityBlock::EntityBlock(Map *map, unsigned int shapeId, unsigned int variation)
-    : EntityMoving(map, shapeDefContainer.shapeDefs.at(shapeId)->width, shapeDefContainer.shapeDefs.at(shapeId)->height) {
+EntityBlock::EntityBlock(LevelContext &levelContext, unsigned int shapeId, unsigned int variation)
+    : EntityMoving(levelContext, shapeDefContainer.shapeDefs.at(shapeId)->width, shapeDefContainer.shapeDefs.at(shapeId)->height) {
     this->body->CreateFixture(shapeDefContainer.shapeDefs.at(shapeId)->fixtureDef);
     this->texPos = shapeId;
     this->variation = variation;
 }
 
-EntityBlock::EntityBlock(Map *map, unsigned int shapeId) : EntityBlock(map, shapeId, rand() % 8) { }
+EntityBlock::EntityBlock(LevelContext &levelContext, unsigned int shapeId) : EntityBlock(levelContext, shapeId, rand() % 8) { }
 
-EntityBlock::EntityBlock(Map *map, unsigned int shapeId, double width, double height) : EntityMoving(map, width, height) {
+EntityBlock::EntityBlock(LevelContext &levelContext, unsigned int shapeId, double width, double height) : EntityMoving(levelContext, width, height) {
     b2FixtureDef *fixtureDef = new b2FixtureDef();
     b2PolygonShape *shape = new b2PolygonShape();
     shape->SetAsBox((float) width / 2, (float) height / 2);

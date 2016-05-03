@@ -4,7 +4,7 @@
 
 #include "EntityFurniture.h"
 
-EntityFurniture::EntityFurniture(Map *map, b2Shape *shape, double width, double height, int texId) : EntityMoving(map, width, height), texId(texId) {
+EntityFurniture::EntityFurniture(LevelContext &levelContext, b2Shape *shape, double width, double height, int texId) : EntityMoving(levelContext, width, height), texId(texId) {
     if (b2PolygonShape *p = dynamic_cast<b2PolygonShape *>(shape)) {
         p->SetAsBox(this->width / 2, this->height / 2);
     } else if (b2CircleShape *c = dynamic_cast<b2CircleShape *>(shape)) {

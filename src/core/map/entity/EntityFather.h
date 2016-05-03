@@ -11,7 +11,7 @@
 class EntityFather : public EntityMoving {
 
 public:
-    EntityFather(Map *map);
+    EntityFather(LevelContext &levelContext);
     virtual void update(double deltaTime);
 
     virtual bool doesCollide(IPositionable *obj);

@@ -6,7 +6,7 @@
 #include "core/map/Map.h"
 #include "EntityToy.h"
 
-EntityPlayer::EntityPlayer(Map *map) : EntityMoving(map, 0.55, 0.55) {
+EntityPlayer::EntityPlayer(LevelContext &levelContext) : EntityMoving(levelContext, 0.55, 0.55) {
     b2CircleShape shape;
     shape.m_p.Set(0, 0);
     shape.m_radius = 1.5; // A bit more than our size because it is only a sensor
@@ -113,7 +113,7 @@ bool EntityPlayer::doesCollide(IPositionable *obj) {
 void EntityPlayer::setToy(bool force) {
     if (!force) {
         if (this->toyToMerge != nullptr) {
-            EntityToy *t = this->map->getEntityAt<EntityToy>(this->getX(), this->getY());
+            EntityToy *t = this->getMap()->getEntityAt<EntityToy>(this->getX(), this->getY());
             if (t != nullptr) {
                 this->toyToMerge = t;
             }

@@ -14,19 +14,19 @@
 #include "core/IPositionable.h"
 #include "core/Ray.h"
 
+class LevelContext;
+
 class Core;
 
 class Entity : public IPositionable {
 public:
-    Entity(Map *map, double width, double height);
+    Entity(LevelContext &levelContext, double width, double height);
 
     unsigned int getId() const {
         return id;
     }
 
-    Map *getMap() const {
-        return map;
-    }
+    Map * getMap() const;
 
     virtual double getX() const override {
         return x;
@@ -93,7 +93,7 @@ public:
 
 protected:
     const unsigned int id;
-    Map *map;
+    LevelContext &levelContext;
     double x = 0, y = 0;
     double width, height;
     b2Body *body;
@@ -111,6 +111,8 @@ protected:
 
     static unsigned int maxEntityId;
     static unsigned int getNextEntityId();
+
+    friend class LevelContext;
 };
 
 #endif //C003_ENTITY_H

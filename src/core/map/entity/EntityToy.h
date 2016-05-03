@@ -12,7 +12,7 @@ class EntityPlayer;
 class EntityToy : public EntityMoving {
 
 public:
-    EntityToy(Map *map, double width, double height);;
+    EntityToy(LevelContext &levelContext, double width, double height);;
     virtual double getSpeed() override = 0;
     virtual double getControllability();
     virtual void onCollision(IPositionable *object, char state);

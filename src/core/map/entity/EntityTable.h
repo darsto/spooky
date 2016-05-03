@@ -9,7 +9,7 @@
 
 class EntityTable : public EntityMoving {
 public:
-    EntityTable(Map *map) : EntityMoving(map, 3.0, 1.0) {
+    EntityTable(LevelContext &levelContext) : EntityMoving(levelContext, 3.0, 1.0) {
         b2PolygonShape shape;
         shape.SetAsBox(this->width / 2, this->height / 2);
         b2FixtureDef fixDef;
@@ -23,7 +23,7 @@ public:
 
 class EntityCoffeeTable : public EntityTable {
 public:
-    EntityCoffeeTable(Map *map) : EntityTable(map) { };
+    EntityCoffeeTable(LevelContext &levelContext) : EntityTable(levelContext) { };
 };
 
 #endif //C003_ENTITYTABLE_H

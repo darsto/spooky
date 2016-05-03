@@ -6,18 +6,23 @@
 #include "Entity.h"
 #include "core/map/Map.h"
 #include "EntityPlayer.h"
+#include <core/LevelContext.h>
 
-Entity::Entity(Map *map, double width, double height) : id(Entity::getNextEntityId()), map(map) {
+Entity::Entity(LevelContext &levelContext, double width, double height) : id(Entity::getNextEntityId()), levelContext(levelContext) {
     this->width = width - 0.025;
     this->height = height - 0.025;
     bodyDef.type = b2_staticBody;
-    body = this->map->getWorld()->CreateBody(&bodyDef);
+    body = this->getMap()->getWorld()->CreateBody(&bodyDef);
     body->SetUserData(this);
     body->SetAngularDamping(30.0);
     body->SetLinearDamping(30.0);
 
+    this->script.state["LevelContext"].setClass(kaguya::ClassMetatable<LevelContext>()
+                                                    .addMember("updateInformation", &LevelContext::updateInformation)
+    );
+
     this->script.state["Entity"].setClass(kaguya::ClassMetatable<Entity>()
-                                              .addConstructor<Map *, double, double>()
+                                              .addConstructor<LevelContext &, double, double>()
                                               .addMember("getId", &Entity::getId)
                                               .addMember("getX", &Entity::getX)
                                               .addMember("getY", &Entity::getY)
@@ -37,7 +42,7 @@ Entity::Entity(Map *map, double width, double height) : id(Entity::getNextEntity
     );
 
     this->script.state["EntityMoving"].setClass(kaguya::ClassMetatable<EntityMoving, Entity>()
-                                                    .addConstructor<Map *, double, double>()
+                                                    .addConstructor<LevelContext &, double, double>()
                                                     .addMember("setBodyType", &EntityMoving::setBodyType)
                                                     .addMember("applyForce", &EntityMoving::applyForce)
                                                     .addMember("applyImpulse", &EntityMoving::applyImpulse)
@@ -62,7 +67,8 @@ Entity::Entity(Map *map, double width, double height) : id(Entity::getNextEntity
                                            .addMember("getWorldTime", &Map::getWorldTime)
     );
 
-    this->script.state["map"] = this->map;
+    this->script.state["level"] = &this->levelContext;
+    this->script.state["map"] = this->getMap();
     this->script.state["this"] = this;
 }
 
@@ -101,7 +107,7 @@ void Entity::setX(double x) {
 
 template<int type>
 void Entity::setScript(std::string file) {
-    file = getFilePath("scripts/levels/" + this->map->getLevelName() + "/" + file + ".lua");
+    file = getFilePath("scripts/levels/" + this->getMap()->getLevelName() + "/" + file + ".lua");
     Script::Handler *handler = nullptr;
     switch (type) {
         case 0:
@@ -136,7 +142,7 @@ void Entity::remove() {
 }
 
 Entity::~Entity() {
-    this->map->getWorld()->DestroyBody(this->body);
+    this->getMap()->getWorld()->DestroyBody(this->body);
 }
 
 unsigned int Entity::maxEntityId = 0;
@@ -145,3 +151,7 @@ unsigned int Entity::getNextEntityId() {
     Entity::maxEntityId++;
     return Entity::maxEntityId;
 };
+
+Map *Entity::getMap() const {
+    return this->levelContext.getMap();
+}

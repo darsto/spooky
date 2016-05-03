@@ -62,6 +62,6 @@ void EntityToy::resetMovingTime() {
     this->movingTimer = 0.0;
 }
 
-EntityToy::EntityToy(Map *map, double width, double height) : EntityMoving(map, width, height) { }
+EntityToy::EntityToy(LevelContext &levelContext, double width, double height) : EntityMoving(levelContext, width, height) { }
 
 void EntityToy::onCollision(IPositionable *object, char state) { }

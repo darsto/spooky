@@ -16,7 +16,7 @@ class IPositionable;
 class EntityProjectile : public EntityMoving {
 
 public:
-    EntityProjectile(Map *map, double width, double height) : EntityMoving(map, width, height) { }
+    EntityProjectile(LevelContext &levelContext, double width, double height) : EntityMoving(levelContext, width, height) { }
 
     virtual ~EntityProjectile() { }
 };

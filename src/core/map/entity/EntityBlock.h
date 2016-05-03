@@ -9,9 +9,9 @@
 
 class EntityBlock : public EntityMoving {
 public:
-    EntityBlock(Map *map, unsigned int shapeId, unsigned int variation);
-    EntityBlock(Map *map, unsigned int shapeId);
-    EntityBlock(Map *map, unsigned int shapeId, double width, double height);
+    EntityBlock(LevelContext &levelContext, unsigned int shapeId, unsigned int variation);
+    EntityBlock(LevelContext &levelContext, unsigned int shapeId);
+    EntityBlock(LevelContext &levelContext, unsigned int shapeId, double width, double height);
     unsigned int getTexPos() const;
     virtual ~EntityBlock();
 

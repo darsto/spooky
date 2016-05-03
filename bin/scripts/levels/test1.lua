@@ -1,4 +1,4 @@
-mapLoader = TiledTxtMapLoader.new('test_map')
+mapLoader = TiledTxtMapLoader.new(this, 'test_map')
 map = mapLoader:loadMap();
 this:setMap(map)
 

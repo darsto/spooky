@@ -8,6 +8,8 @@
 #include <string>
 #include <kaguya/kaguya.hpp>
 
+class Game;
+
 class Map;
 
 class EntityPlayer;
@@ -15,7 +17,7 @@ class EntityPlayer;
 class LevelContext {
 
 public:
-    LevelContext(const std::string &name);
+    LevelContext(Game &game, const std::string &name);
 
     Map *getMap() const {
         return map;
@@ -61,6 +63,8 @@ public:
         this->blockSize = blockSize;
     }
 
+    void updateInformation(const std::string &text);
+
 private:
     const std::string name;
     kaguya::State scriptState;
@@ -71,7 +75,14 @@ private:
     double defaultBlockSize;
     double blockSize;
 
+    float infoWindowAlpha = 0.0f;
+    bool infoWindowVisible = false;
+    std::string newInfoText;
+
     void setMap(Map *map);
+
+    friend class TiledTxtMapLoader;
+    friend class Game;
 };
 
 #endif //C003_LEVELCONTEXT_H

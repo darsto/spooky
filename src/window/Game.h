@@ -64,9 +64,6 @@ private:
 
     GuiElement *toyController[3];
     GuiElement *infoControl[3];
-    float infoWindowAlpha = 0.0f;
-    bool infoWindowVisible = false;
-    std::string newInfoText;
 
     unsigned int missionFlags = 0;
 
@@ -90,6 +87,7 @@ private:
 
     unsigned int windowWidth, windowHeight;
 
+    friend class LevelContext;
 };
 
 #endif //C003_GAME_H

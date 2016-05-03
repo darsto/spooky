@@ -4,8 +4,8 @@
 
 #include "EntityDoor.h"
 
-EntityDoor::EntityDoor(Map *map, unsigned char type)
-    : EntityFurniture(map,
+EntityDoor::EntityDoor(LevelContext &levelContext, unsigned char type)
+    : EntityFurniture(levelContext,
                       new b2PolygonShape,
                       ((type >> 7) & 1) ? (((type >> 6) & 1) ? 0.1 : 0.25) : (1.0 - 0.1),
                       ((type >> 7) & 1) ? (1.0 - 0.1) : (((type >> 6) & 1) ? 0.1 : 0.25),
@@ -14,7 +14,7 @@ EntityDoor::EntityDoor(Map *map, unsigned char type)
 
     this->body->GetFixtureList()[0].SetDensity(0.9f);
 
-    this->hinge = this->map->getWorld()->CreateBody(&bodyDef);
+    this->hinge = this->getMap()->getWorld()->CreateBody(&bodyDef);
     b2FixtureDef fixDef;
     fixDef.density = 0.9f;
     fixDef.friction = 0.1f;
@@ -34,7 +34,7 @@ EntityDoor::EntityDoor(Map *map, unsigned char type)
 
     revoluteJointDef.bodyA = this->body;
     revoluteJointDef.bodyB = this->hinge;
-    this->map->getWorld()->CreateJoint(&revoluteJointDef);
+    this->getMap()->getWorld()->CreateJoint(&revoluteJointDef);
 }
 
 void EntityDoor::setX(double x) {

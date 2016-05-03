@@ -8,8 +8,9 @@
 #include <core/map/entity/EntityPlayer.h>
 #include <core/map/TiledTxtMapLoader.h>
 #include <files.h>
+#include <window/Game.h>
 
-LevelContext::LevelContext(const std::string &name) : name(name) {
+LevelContext::LevelContext(Game &game, const std::string &name) : name(name) {
 #ifdef __ANDROID__
     defaultBlockSize = blockSize = 96.0f;
 #else
@@ -18,15 +19,16 @@ LevelContext::LevelContext(const std::string &name) : name(name) {
 
     scriptState["LevelContext"].setClass(kaguya::ClassMetatable<LevelContext>()
                                              .addMember("setMap", &LevelContext::setMap)
+                                             .addMember("updateInformation", &LevelContext::updateInformation)
     );
 
     scriptState["TiledTxtMapLoader"].setClass(kaguya::ClassMetatable<TiledTxtMapLoader>()
-                                                  .addConstructor<std::string>()
+                                                  .addConstructor<LevelContext &, std::string>()
                                                   .addMember("loadMap", &TiledTxtMapLoader::loadMap)
     );
 
     scriptState["Entity"].setClass(kaguya::ClassMetatable<Entity>()
-                                       .addConstructor<Map *, double, double>()
+                                       .addConstructor<LevelContext &, double, double>()
                                        .addMember("getId", &Entity::getId)
                                        .addMember("getX", &Entity::getX)
                                        .addMember("getY", &Entity::getY)
@@ -46,7 +48,7 @@ LevelContext::LevelContext(const std::string &name) : name(name) {
     );
 
     scriptState["EntityMoving"].setClass(kaguya::ClassMetatable<EntityMoving, Entity>()
-                                             .addConstructor<Map *, double, double>()
+                                             .addConstructor<LevelContext &, double, double>()
                                              .addMember("setBodyType", &EntityMoving::setBodyType)
                                              .addMember("applyForce", &EntityMoving::applyForce)
                                              .addMember("applyImpulse", &EntityMoving::applyImpulse)
@@ -85,4 +87,10 @@ LevelContext::LevelContext(const std::string &name) : name(name) {
 void LevelContext::setMap(Map *map) {
     this->map = map;
     this->map->levelName = this->name;
+}
+
+void LevelContext::updateInformation(const std::string &text) {
+    this->newInfoText = text;
+    this->infoWindowVisible = false;
+    if (this->infoWindowAlpha == 0.0) this->infoWindowAlpha = 0.001;
 }

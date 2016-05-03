@@ -9,7 +9,7 @@
 
 class EntityCouch : public EntityMoving {
 public:
-    EntityCouch(Map *map) : EntityMoving(map, 3.0, 1.0) {
+    EntityCouch(LevelContext &levelContext) : EntityMoving(levelContext, 3.0, 1.0) {
         b2PolygonShape shape;
         shape.SetAsBox(this->width / 2, this->height / 2);
         b2FixtureDef fixDef;

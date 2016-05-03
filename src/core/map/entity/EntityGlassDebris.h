@@ -11,7 +11,7 @@
 class EntityGlassDebris : public EntityMoving {
 
 public:
-    EntityGlassDebris(Map *map) : EntityMoving(map, 0.3, 0.2) {
+    EntityGlassDebris(LevelContext &levelContext) : EntityMoving(levelContext, 0.3, 0.2) {
         b2PolygonShape shape;
         shape.SetAsBox(this->width / 2, this->height / 2);
         b2FixtureDef fixDef;

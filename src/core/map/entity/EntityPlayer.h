@@ -14,7 +14,7 @@
 class EntityPlayer : public EntityMoving, public IEntityLighted {
 
 public:
-    EntityPlayer(Map *map);
+    EntityPlayer(LevelContext &levelContext);
 
     virtual void update(double deltaTime);
     virtual void onCollision(IPositionable *object, char state) override;
