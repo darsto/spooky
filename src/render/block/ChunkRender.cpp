@@ -8,7 +8,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include "ChunkRender.h"
-#include "../../core/map/block/SimpleBlock.h"
+#include <core/map/chunk/block/SimpleBlock.h>
 
 ChunkRender::ChunkRender() : texVbos(1) {
     texture.loadTexture2D("terrain.png", true);

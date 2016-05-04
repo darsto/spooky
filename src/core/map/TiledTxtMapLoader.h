@@ -16,7 +16,7 @@
 #include <core/map/entity/EntityCouch.h>
 #include <core/map/entity/EntityWall.h>
 #include "Map.h"
-#include "../map/block/SimpleBlock.h"
+#include "../map/chunk/block/SimpleBlock.h"
 #include <core/map/entity/EntityBlock.h>
 #include "../map/entity/EntityPlayer.h"
 

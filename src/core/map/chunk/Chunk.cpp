@@ -14,12 +14,6 @@ void Chunk::addBlock(int relX, int relY, Block *block) {
     this->blocks[relY * Chunk::size + relX] = block;
 }
 
-void Chunk::update(double deltaTime) {
-    for (int i = 0; i < Chunk::size * Chunk::size; i++) {
-        this->blocks[i]->update(deltaTime);
-    }
-}
-
 unsigned int Chunk::maxChunkId = 0;
 
 unsigned int Chunk::getNextChunkId() {

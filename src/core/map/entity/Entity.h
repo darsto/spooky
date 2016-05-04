@@ -10,7 +10,7 @@
 
 #include <Box2D/Box2D.h>
 #include <kaguya/kaguya.hpp>
-#include "core/map/block/Block.h"
+#include "core/map/chunk/block/Block.h"
 #include "core/IPositionable.h"
 #include "core/Ray.h"
 

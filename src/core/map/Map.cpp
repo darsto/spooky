@@ -33,9 +33,6 @@ Block *Map::getBlock(int x, int y) {
 void Map::update(double deltaTime) {
     this->worldTime += deltaTime;
 
-    for (Chunk *chunk : this->chunks) {
-        chunk->update(deltaTime);
-    }
     for (Entity *entity : this->entities) {
         entity->update(deltaTime);
     }

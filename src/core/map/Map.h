@@ -8,7 +8,7 @@
 
 #include <vector>
 #include <fstream>
-#include "block/Block.h"
+#include "chunk/block/Block.h"
 #include "../map/entity/Entity.h"
 #include "CollisionListener.h"
 #include "../Utils.h"

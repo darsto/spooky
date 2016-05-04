@@ -14,7 +14,7 @@
 #include <window/Window.h>
 #include <render/block/ChunkRender.h>
 #include <render/entity/EntityRender.h>
-#include <core/map/block/Block.h>
+#include <core/map/chunk/block/Block.h>
 #include <core/map/entity/Entity.h>
 #include <render/block/VoidRender.h>
 #include "WindowRender.h"

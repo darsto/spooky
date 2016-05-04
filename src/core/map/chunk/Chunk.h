@@ -5,7 +5,7 @@
 #ifndef C003_CHUNK_H
 #define C003_CHUNK_H
 
-#include <core/map/block/Block.h>
+#include <core/map/chunk/block/Block.h>
 
 class Chunk {
 public:
@@ -28,8 +28,6 @@ public:
     }
 
     void addBlock(int relX, int relY, Block *block);
-
-    void update(double deltaTime);
 
     bool toBeRedrawn() const {
         return this->redraw;

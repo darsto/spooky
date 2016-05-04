@@ -3,7 +3,7 @@
 //
 
 #include "DefaultEntityRender.h"
-#include "../../core/map/block/Block.h"
+#include <core/map/chunk/block/Block.h>
 #include <string>
 
 DefaultEntityRender::DefaultEntityRender(const string &textureFile, const string &shader, int texId) : texId(texId) {

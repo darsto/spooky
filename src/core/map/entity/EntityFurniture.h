@@ -6,7 +6,7 @@
 #define C003_ENTITYFURNITURE_H
 
 #include "EntityMoving.h"
-#include <core/map/block/SimpleBlock.h>
+#include <core/map/chunk/block/SimpleBlock.h>
 
 class EntityFurniture : public EntityMoving {
 public:

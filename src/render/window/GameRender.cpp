@@ -17,7 +17,7 @@
 #include <core/map/entity/EntityGlassDebris.h>
 #include <core/map/entity/EntityCouch.h>
 #include <core/map/entity/EntityWall.h>
-#include <core/map/block/SimpleBlock.h>
+#include <core/map/chunk/block/SimpleBlock.h>
 #include <logging.h>
 #include <render/entity/EntityMachineryRender.h>
 #include <render/entity/EntityStaticRender.h>
