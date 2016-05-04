@@ -18,22 +18,8 @@
 #include "Map.h"
 #include "../map/chunk/block/SimpleBlock.h"
 #include <core/map/entity/EntityBlock.h>
+#include <stringutils.h>
 #include "../map/entity/EntityPlayer.h"
-
-std::vector<std::string> &split(const std::string &s, char delim, std::vector<std::string> &elems) {
-    std::stringstream ss(s);
-    std::string item;
-    while (std::getline(ss, item, delim)) {
-        elems.push_back(item);
-    }
-    return elems;
-}
-
-std::vector<std::string> split(const std::string &s, char delim) {
-    std::vector<std::string> elems;
-    split(s, delim, elems);
-    return elems;
-}
 
 class TiledTxtMapLoader : public MapLoader {
 
@@ -116,116 +102,8 @@ TiledTxtMapLoader::TiledTxtMapLoader(LevelContext &levelContext, const std::stri
         if (myfile2.is_open()) {
             std::string line;
             while (getline(myfile2, line) && line.size() > 0) {
-                std::vector<std::string> blockRow = split(line, ',');
-                Entity *sshape;
-                int i = 0;
-                int id = atoi(blockRow.at(i).c_str());
-                i++;
-                switch (id) {
-                    case 0:
-                        sshape = new EntityPlayer(levelContext);
-                        break;
-                    case 1:
-                        sshape = new EntityTruck(levelContext);
-                        break;
-                    case 2:
-                        sshape = new EntityFather(levelContext);
-                        break;
-                    case 3:
-                        sshape = new EntityBulldozer(levelContext);
-                        break;
-                    case 4:
-                        sshape = new EntityDoor(levelContext, atoi(blockRow.at(i).c_str()));
-                        //((EntityDoor *) sshape)->setHingePos(atof(blockRow.at(i + 1).c_str()), atof(blockRow.at(i + 2).c_str()));
-                        i += 3;
-                        break;
-                    case 5:
-                        sshape = new EntityBlock(levelContext, atoi(blockRow.at(i).c_str()) % 8, atoi(blockRow.at(i).c_str()) / 8);
-                        i++;
-                        break;
-                    case 6:
-                        sshape = new EntityFridge(levelContext);
-                        break;
-                    case 7:
-                        sshape = new EntityWardrobe(levelContext);
-                        break;
-                    case 8:
-                        sshape = new EntityChair(levelContext);
-                        break;
-                    case 9:
-                        sshape = new EntityTable(levelContext);
-                        break;
-                    case 10:
-                        sshape = new EntityGlassDebris(levelContext);
-                        break;
-                    case 11:
-                        sshape = new EntityHoover(levelContext);
-                        break;
-                    case 12:
-                        sshape = new EntityCoffeeTable(levelContext);
-                        break;
-                    case 13:
-                        sshape = new EntityCouch(levelContext);
-                        break;
-                    case 14:
-                        sshape = new EntityArmchair(levelContext);
-                        break;
-                    case 15:
-                        sshape = new EntityPouf(levelContext);
-                        break;
-                    case 16:
-                        sshape = new EntityFlowerPot(levelContext);
-                        break;
-                    case 17:
-                        sshape = new EntityToaster(levelContext);
-                        break;
-                    case 18:
-                        sshape = new EntityRadio(levelContext);
-                        break;
-                    case 19:
-                        sshape = new EntitySink(levelContext);
-                        break;
-                    case 20:
-                        sshape = new EntityCuttingBoard(levelContext);
-                        break;
-                    case 21:
-                        sshape = new EntityTallLight(levelContext);
-                        break;
-                    case 22:
-                        sshape = new EntityWallLight(levelContext);
-                        break;
-                    case 23:
-                        sshape = new EntityChestHandle(levelContext);
-                        break;
-                    case 24:
-                        sshape = new EntityNotebook(levelContext);
-                        break;
-                    case 25:
-                        sshape = new EntityCupboardTop(levelContext);
-                        break;
-                    case 26:
-                        sshape = new EntityCupboardBottom(levelContext);
-                        break;
-                    case 27:
-                        sshape = new EntityToiletPaper(levelContext);
-                        break;
-                    case 28:
-                        sshape = new EntityWall(levelContext, atof(blockRow.at(i).c_str()), atof(blockRow.at(i + 1).c_str()));
-                        i += 2;
-                        break;
-                    case 29:
-                        sshape = new EntityGlass(levelContext);
-                        break;
-                    default:
-                        break;
-                }
-                sshape->setX(atof(blockRow.at(i).c_str()));
-                i++;
-                sshape->setY(atof(blockRow.at(i).c_str()));
-                i++;
-                sshape->setAngle(atof(blockRow.at(i).c_str()));
-                i++;
-                this->map->addEntity(sshape);
+                Entity *entity = levelContext.getEntityManager().loadEntity(line);
+                this->map->addEntity(entity);
             }
             myfile2.close();
         }
