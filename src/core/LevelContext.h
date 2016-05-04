@@ -7,6 +7,7 @@
 
 #include <string>
 #include <kaguya/kaguya.hpp>
+#include <core/map/EntityManager.h>
 
 class Game;
 
@@ -65,10 +66,15 @@ public:
 
     void updateInformation(const std::string &text);
 
+    const EntityManager &getEntityManager() {
+        return entityManager;
+    }
+
 private:
     const std::string name;
     kaguya::State scriptState;
     Map *map = nullptr;
+    EntityManager entityManager;
     EntityPlayer *player = nullptr;
     double camX = 0, camY = 0;
     double generalScale = 1.0;

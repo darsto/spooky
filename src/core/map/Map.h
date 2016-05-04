@@ -76,7 +76,7 @@ public:
         SAFE_DELETE(entity);
     }
 
-    void saveEntities();
+    void saveEntities(LevelContext &levelContext);
 
     double getWorldTime() const {
         return worldTime;

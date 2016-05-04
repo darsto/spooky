@@ -10,7 +10,7 @@
 #include <files.h>
 #include <window/Game.h>
 
-LevelContext::LevelContext(Game &game, const std::string &name) : name(name) {
+LevelContext::LevelContext(Game &game, const std::string &name) : name(name), entityManager(EntityManager(*this)) {
 #ifdef __ANDROID__
     defaultBlockSize = blockSize = 96.0f;
 #else
