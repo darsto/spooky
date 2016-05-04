@@ -21,9 +21,9 @@ public:
 
     void setHingePos(double x, double y);
 
-    double getHingeX();
+    double getHingeX() const;
 
-    double getHingeY();
+    double getHingeY() const;
 
     virtual void onCollision(IPositionable *object, char state) override {
         if (!this->isLocked() && ((type >> 6) & 1) == 0) if (EntityToy *b = dynamic_cast<EntityToy *>(object)) {

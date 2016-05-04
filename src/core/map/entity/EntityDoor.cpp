@@ -47,11 +47,11 @@ void EntityDoor::setY(double y) {
     setHingePos(this->getHingeX(), y - this->height / 2 + this->getHingeOffsetY() * this->height);
 }
 
-double EntityDoor::getHingeX() {
+double EntityDoor::getHingeX() const {
     return this->hinge->GetPosition().x;
 }
 
-double EntityDoor::getHingeY() {
+double EntityDoor::getHingeY() const {
     return this->hinge->GetPosition().y;
 }
 
