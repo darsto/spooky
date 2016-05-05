@@ -14,9 +14,12 @@
 #include <core/map/entity/EntityCouch.h>
 #include <core/map/entity/EntityWall.h>
 
-#define registerEntityType(STATE, TYPE) STATE[#TYPE].setClass(kaguya::ClassMetatable<TYPE, Entity>() \
-                                                                 .addConstructor<LevelContext &>() \
-                                                             )
+#define registerEntityCustomTypeConstr(STATE, BASE, TYPE, ...) STATE[#TYPE].setClass(kaguya::ClassMetatable<TYPE, BASE>() \
+                                                                                        .addConstructor<__VA_ARGS__>() \
+                                                                                    )
+
+#define registerEntityType(STATE, TYPE) registerEntityCustomTypeConstr(STATE, Entity, TYPE, LevelContext &)
+#define registerEntityMovingType(STATE, TYPE) registerEntityCustomTypeConstr(STATE, EntityMoving, TYPE, LevelContext &)
 
 EntityManager::EntityManager(LevelContext &levelContext) : levelContext(levelContext) { }
 
