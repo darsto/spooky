@@ -17,7 +17,6 @@ LoadingScreen::LoadingScreen(ApplicationContext *applicationContext) : Window(ap
                                     .addMember("addLevel", &LevelData::addLevel)
     );
     initState["levelData"] = applicationContext->getLevelData();
-    initState["time"] = time(0);
     initState.dofile(getFilePath("scripts/init.lua"));
 }
 
