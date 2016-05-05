@@ -477,35 +477,41 @@ void Game::resetButtons(const TouchPoint *const p, const GuiButton *const b) {
 
 void Game::handleKeyboard(const Keypress *const keypress) {
 #if defined(EDITOR)
-    if (keypress[SDLK_t].isPressed()) {
+    if (keypress[SDL_SCANCODE_T].isPressed()) {
         this->editing = !this->editing;
     }
     if (this->isEditing()) {
         double playerSpeed = 1.0;
         if (!this->entityRotationRing->isVisible()) {
-            if (keypress[SDLK_w].isDown()) {
+            if (keypress[SDL_SCANCODE_W].isDown()) {
                 this->levelContext->getPlayer()->applyImpulse(0, -playerSpeed);
             }
-            if (keypress[SDLK_s].isDown()) {
+            if (keypress[SDL_SCANCODE_S].isDown()) {
                 this->levelContext->getPlayer()->applyImpulse(0, playerSpeed);
             }
-            if (keypress[SDLK_a].isDown()) {
+            if (keypress[SDL_SCANCODE_A].isDown()) {
                 this->levelContext->getPlayer()->applyImpulse(-playerSpeed, 0);
             }
-            if (keypress[SDLK_d].isDown()) {
+            if (keypress[SDL_SCANCODE_D].isDown()) {
                 this->levelContext->getPlayer()->applyImpulse(playerSpeed, 0);
             }
         }
-        if (keypress[SDLK_q].isPressed()) {
+        if (keypress[SDL_SCANCODE_Q].isPressed()) {
             this->applicationContext->switchWindow(nullptr);
         }
-        if (keypress[SDLK_p].isPressed()) {
+        if (keypress[SDL_SCANCODE_P].isPressed()) {
             this->levelContext->getMap()->saveEntities(*this->levelContext);
         }
-        if (keypress[SDLK_MINUS].isDown()) {
+        if (keypress[SDL_SCANCODE_F1].isPressed()) {
+            LevelContext *newContext = new LevelContext(*this, this->levelContext->name);
+            delete this->levelContext;
+            this->levelContext = newContext;
+
+        }
+        if (keypress[SDL_SCANCODE_MINUS].isDown()) {
             this->levelContext->setBlockSize(this->levelContext->getBlockSize() - 0.15);
         }
-        if (keypress[SDLK_EQUALS].isDown()) {
+        if (keypress[SDL_SCANCODE_EQUALS].isDown()) {
             this->levelContext->setBlockSize(this->levelContext->getBlockSize() + 0.15);
         }
     }

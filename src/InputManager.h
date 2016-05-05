@@ -60,15 +60,8 @@ public:
 
 private:
     std::unordered_map<int, TouchPoint *> touchPoints;
-    Keypress keypresses[256];
+    Keypress keypresses[SDL_NUM_SCANCODES];
 
-    /* WARNING!
-     * To handle clicks correctly and smoothly on Linux,
-     * execute following commands before starting the game:
-     * export SDL_MOUSE_RELATIVE=0
-     * export SDL_VIDEO_X11_DGAMOUSE=0
-     * export SDL_VIDEO_X11_MOUSEACCEL="1/1/1"
-     */
     void handleTouch(Window *window);
     void handleKeyboard(Window *window);
 };
