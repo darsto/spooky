@@ -38,7 +38,7 @@ public:
     template<class T = Entity>
     T *getEntity(int id) {
         for (Entity *e : this->entities) {
-            if (e->getId() == id) if (T *t = dynamic_cast<T *>(e)) return t;
+            if (id < 0 || e->getId() == id) if (T *t = dynamic_cast<T *>(e)) return t;
         }
         return nullptr;
     }
