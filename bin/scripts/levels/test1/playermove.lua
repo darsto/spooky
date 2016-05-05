@@ -1,5 +1,5 @@
-if b == nil then b = 0 end
-b = b + 1
+if a == nil then a = map:getWorldTime() end
+b = map:getWorldTime() - a
 print(b)
 
 if b > 100 then level:updateInformation('first!') end
