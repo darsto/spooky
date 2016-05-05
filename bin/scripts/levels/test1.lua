@@ -8,3 +8,12 @@ player:setY(4)
 player:setOnMoveScript('playermove')
 
 print(map:getWidth())
+c = EntityGlassDebris.new(level)
+c:setX(6)
+c:setY(8)
+map:addEntity(c)
+
+d = EntityToaster.new(level)
+d:setX(6)
+d:setY(10)
+map:addEntity(d)

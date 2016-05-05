@@ -2,6 +2,10 @@
 // Created by dar on 5/4/16.
 //
 
+#include <stringutils.h>
+#include "EntityManager.h"
+#include <core/LevelContext.h>
+#include <core/map/entity/EntityPlayer.h>
 #include <core/map/entity/EntityMachinery.h>
 #include <core/map/entity/EntityFather.h>
 #include <core/map/entity/EntityBlock.h>
@@ -9,8 +13,10 @@
 #include <core/map/entity/EntityGlassDebris.h>
 #include <core/map/entity/EntityCouch.h>
 #include <core/map/entity/EntityWall.h>
-#include <stringutils.h>
-#include "EntityManager.h"
+
+#define registerEntityType(STATE, TYPE) STATE[#TYPE].setClass(kaguya::ClassMetatable<TYPE, Entity>() \
+                                                                 .addConstructor<LevelContext &>() \
+                                                             )
 
 EntityManager::EntityManager(LevelContext &levelContext) : levelContext(levelContext) { }
 
@@ -96,3 +102,9 @@ Entity *EntityManager::loadEntity(const std::string &data) const {
     sshape->setAngle(atof(blockRow.at(i).c_str()));
     return sshape;
 }
+
+void EntityManager::registerEntityTypes(kaguya::State &state) {
+    registerEntityType(state, EntityGlassDebris);
+    registerEntityType(state, EntityToaster);
+}
+
