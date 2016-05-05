@@ -500,7 +500,7 @@ void Game::handleKeyboard(const Keypress *const keypress) {
             this->applicationContext->switchWindow(nullptr);
         }
         if (keypress[SDLK_p].isPressed()) {
-            this->levelContext->getMap()->saveEntities();
+            this->levelContext->getMap()->saveEntities(*this->levelContext);
         }
         if (keypress[SDLK_MINUS].isDown()) {
             this->levelContext->setBlockSize(this->levelContext->getBlockSize() - 0.15);
