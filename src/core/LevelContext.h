@@ -70,6 +70,62 @@ public:
         return entityManager;
     }
 
+    void initState(kaguya::State &state) {
+        state["LevelContext"].setClass(kaguya::ClassMetatable<LevelContext>()
+                                                 .addMember("setMap", &LevelContext::setMap)
+                                                 .addMember("updateInformation", &LevelContext::updateInformation)
+        );
+
+        state["Entity"].setClass(kaguya::ClassMetatable<Entity>()
+                                                  .addConstructor<LevelContext &, double, double>()
+                                                  .addMember("getId", &Entity::getId)
+                                                  .addMember("getX", &Entity::getX)
+                                                  .addMember("getY", &Entity::getY)
+                                                  .addMember("getAngle", &Entity::getAngle)
+                                                  .addMember("getWidth", &Entity::getWidth)
+                                                  .addMember("getHeight", &Entity::getHeight)
+                                                  .addMember("setX", &Entity::setX)
+                                                  .addMember("setY", &Entity::setY)
+                                                  .addMember("setAngle", &Entity::setAngle)
+                                                  .addMember("getBody", &Entity::getBody)
+                                                  .addMember("doesCollide", &Entity::doesCollide)
+                                                  .addMember("setOnUpdateScript", &Entity::setScript<0>)
+                                                  .addMember("setOnMoveScript", &Entity::setScript<1>)
+                                                  .addMember("setOnCollisionScript", &Entity::setScript<2>)
+                                                  .addMember("setOnDeathScript", &Entity::setScript<3>)
+                                                  .addMember("remove", &Entity::remove)
+        );
+
+        state["EntityMoving"].setClass(kaguya::ClassMetatable<EntityMoving, Entity>()
+                                                        .addConstructor<LevelContext &, double, double>()
+                                                        .addMember("setBodyType", &EntityMoving::setBodyType)
+                                                        .addMember("applyForce", &EntityMoving::applyForce)
+                                                        .addMember("applyImpulse", &EntityMoving::applyImpulse)
+        );
+
+        state["EntityPlayer"].setClass(kaguya::ClassMetatable<EntityPlayer, EntityMoving>()
+                                                        .addMember("getColorfulness", &EntityPlayer::getColorfulness)
+                                                        .addMember("getDamagedToy", &EntityPlayer::getDamagedToy)
+                                                        .addMember("getEjectTime", &EntityPlayer::getEjectTime)
+                                                        .addMember("getToyToMerge", &EntityPlayer::getToyToMerge)
+                                                        .addMember("getTailAnimation", &EntityPlayer::getTailAnimation)
+        );
+
+        state["Map"].setClass(kaguya::ClassMetatable<Map>()
+                                               .addMember("getWidth", &Map::getWidth)
+                                               .addMember("getHeight", &Map::getHeight)
+                                               .addMember("getBlock", &Map::getBlock)
+                                               .addMember("getEntities", &Map::getEntities)
+                                               .addMember("getEntity", &Map::getEntity<>)
+                                               .addMember("getEntityPlayer", &Map::getEntity<EntityPlayer>)
+                                               .addMember("getEntityAt", &Map::getEntityAt<Entity>)
+                                               .addMember("getWorldTime", &Map::getWorldTime)
+        );
+
+        state["level"] = this;
+        state["map"] = this->getMap();
+    }
+
 private:
     const std::string name;
     kaguya::State scriptState;
