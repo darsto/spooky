@@ -19,8 +19,11 @@ Map::~Map() {
 }
 
 Block *Map::getBlock(int x, int y) {
-    //TODO !
-    return nullptr;
+    int chx = x / Chunk::size;
+    int chy = y / Chunk::size;
+    int chunksNumX = (int) ceil((double) width / Chunk::size);
+    Chunk &ch = *this->chunks.at(chy * chunksNumX + chx);
+    return ch.getBlocks()[(y - chy * Chunk::size) * Chunk::size + x - chx];
 }
 
 void Map::update(double deltaTime) {
