@@ -25,7 +25,7 @@ public:
 
     virtual void setY(int y);
 
-    virtual bool doesCollide(IPositionable *obj);;
+    virtual bool doesCollide(IPositionable *obj);
 
     virtual double getWidth() const override {
         return 1;

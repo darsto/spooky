@@ -4,6 +4,8 @@
 
 #include "EntityToy.h"
 #include "EntityPlayer.h"
+#include <core/map/Map.h>
+#include <core/map/chunk/block/SimpleBlock.h>
 
 #ifndef M_PI
 #define M_PI        3.14159265358979323846
@@ -33,8 +35,12 @@ void EntityToy::damage(double value) {
     }
 }
 
+double EntityToy::getSpeed() {
+    return 1.0 / ((SimpleBlock *)(this->getMap()->getBlock(this->x, this->y)))->getFriction(*this);
+}
+
 double EntityToy::getControllability() {
-    return 0.03;
+    return 0.03 / ((SimpleBlock *)(this->getMap()->getBlock(this->x, this->y)))->getFriction(*this);
 }
 
 void EntityToy::applyForce(double x, double y) {

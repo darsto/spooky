@@ -21,7 +21,7 @@ public:
     }
 
     double getSpeed() override {
-        return 0.06;
+        return 0.06 * EntityToy::getSpeed();
     }
 };
 
@@ -39,7 +39,7 @@ public:
     }
 
     double getSpeed() override {
-        return 0.6;
+        return 0.6 * EntityToy::getSpeed();
     }
 };
 
@@ -57,7 +57,7 @@ public:
     }
 
     virtual double getSpeed() override {
-        return 0.05;
+        return 0.05 * EntityToy::getSpeed();
     }
 };
 

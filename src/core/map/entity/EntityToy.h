@@ -13,7 +13,7 @@ class EntityToy : public EntityMoving {
 
 public:
     EntityToy(LevelContext &levelContext, double width, double height);;
-    virtual double getSpeed() override = 0;
+    virtual double getSpeed() override;
     virtual double getControllability();
     virtual void onCollision(IPositionable *object, char state);
     virtual void update(double deltaTime);
