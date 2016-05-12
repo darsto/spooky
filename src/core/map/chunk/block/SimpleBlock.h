@@ -21,7 +21,7 @@ public:
         } else if ((texPos >= 240 && texPos <= 243)) {
             friction = 3.0;
         } else if (texPos == 245 || texPos == 246) {
-            friction = 0.5;
+            friction = 0.8;
         }
     };
 
