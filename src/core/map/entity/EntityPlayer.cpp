@@ -4,6 +4,7 @@
 
 #include "EntityPlayer.h"
 #include "core/map/Map.h"
+#include <core/map/chunk/block/SimpleBlock.h>
 #include "EntityToy.h"
 
 EntityPlayer::EntityPlayer(LevelContext &levelContext) : EntityMoving(levelContext, 0.55, 0.55) {
@@ -59,7 +60,8 @@ void EntityPlayer::update(double deltaTime) {
         this->applyForce(this->velX, this->velY);
     }
 
-    double deltaPow = std::pow(0.9, deltaTime);
+    double frictionMod = this->getToy() != nullptr ? ((SimpleBlock *)this->getMap()->getBlock(this->getX(), this->getY()))->getFriction(*this) : 1.0;
+    double deltaPow = std::pow(0.9, deltaTime * frictionMod);
     this->velX *= deltaPow;
     this->velY *= deltaPow;
 }

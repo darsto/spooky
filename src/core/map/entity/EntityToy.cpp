@@ -36,11 +36,11 @@ void EntityToy::damage(double value) {
 }
 
 double EntityToy::getSpeed() {
-    return 1.0 / ((SimpleBlock *)(this->getMap()->getBlock(this->x, this->y)))->getFriction(*this);
+    return 1.0;
 }
 
 double EntityToy::getControllability() {
-    return 0.03 / ((SimpleBlock *)(this->getMap()->getBlock(this->x, this->y)))->getFriction(*this);
+    return 0.03 * ((SimpleBlock *)(this->getMap()->getBlock(this->x, this->y)))->getFriction(*this);
 }
 
 void EntityToy::applyForce(double x, double y) {
