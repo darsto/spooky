@@ -59,15 +59,18 @@ void Entity::setScript(std::string file) {
     Script::Handler *handler = nullptr;
     switch (type) {
         case 0:
-            handler = &this->script.update;
+            handler = &this->script.init;
             break;
         case 1:
-            handler = &this->script.move;
+            handler = &this->script.update;
             break;
         case 2:
-            handler = &this->script.collision;
+            handler = &this->script.move;
             break;
         case 3:
+            handler = &this->script.collision;
+            break;
+        case 4:
             handler = &this->script.death;
             break;
         default:
@@ -81,6 +84,7 @@ template void Entity::setScript<0>(std::string);
 template void Entity::setScript<1>(std::string);
 template void Entity::setScript<2>(std::string);
 template void Entity::setScript<3>(std::string);
+template void Entity::setScript<4>(std::string);
 
 void Entity::remove() {
     if (this->script.death.loaded) {
@@ -102,4 +106,11 @@ unsigned int Entity::getNextEntityId() {
 
 Map *Entity::getMap() const {
     return this->levelContext.getMap();
+}
+
+void Entity::callInitScript() {
+    if (this->script.init.loaded) {
+        this->script.init.function();
+        this->script.init.loaded = false;
+    }
 }

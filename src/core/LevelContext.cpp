@@ -26,8 +26,8 @@ LevelContext::LevelContext(Game &game, const std::string &name) : name(name), en
     for (Entity *e : map->getEntities()) {
         if (EntityPlayer *p = dynamic_cast<EntityPlayer *>(e)) {
             this->player = p;
-            break;
         }
+        e->callInitScript();
     }
 }
 
@@ -61,10 +61,11 @@ void LevelContext::initState(kaguya::State &state) {
                                  .addMember("setAngle", &Entity::setAngle)
                                  .addMember("getBody", &Entity::getBody)
                                  .addMember("doesCollide", &Entity::doesCollide)
-                                 .addMember("setOnUpdateScript", &Entity::setScript<0>)
-                                 .addMember("setOnMoveScript", &Entity::setScript<1>)
-                                 .addMember("setOnCollisionScript", &Entity::setScript<2>)
-                                 .addMember("setOnDeathScript", &Entity::setScript<3>)
+                                 .addMember("setOnInitScript", &Entity::setScript<0>)
+                                 .addMember("setOnUpdateScript", &Entity::setScript<1>)
+                                 .addMember("setOnMoveScript", &Entity::setScript<2>)
+                                 .addMember("setOnCollisionScript", &Entity::setScript<3>)
+                                 .addMember("setOnDeathScript", &Entity::setScript<4>)
                                  .addMember("remove", &Entity::remove)
     );
 
@@ -97,4 +98,8 @@ void LevelContext::initState(kaguya::State &state) {
 
     state["level"] = this;
     state["map"] = this->getMap();
+}
+
+LevelContext::~LevelContext() {
+    //TODO delete this->map;
 }

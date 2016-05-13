@@ -5,6 +5,7 @@ level:setMap(map)
 player = map:getEntityPlayer(-1)
 player:setX(6)
 player:setY(4)
+player:setOnInitScript('playerinit')
 player:setOnMoveScript('playermove')
 
 print(map:getWidth())

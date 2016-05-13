@@ -1,6 +1,11 @@
-if a == nil then a = map:getWorldTime() end
-b = map:getWorldTime() - a
+b = map:getWorldTime() - lastEventTime
 print(b)
 
-if b > 100 then level:updateInformation('first!') end
-if b > 200 then level:updateInformation('second!') end
+if b > 300 and progress == 0 then
+    level:updateInformation('first!')
+    lastEventTime = map:getWorldTime()
+    progress = 1
+elseif b > 100 and progress == 1 then
+    level:updateInformation('second!')
+    progress = 2
+end

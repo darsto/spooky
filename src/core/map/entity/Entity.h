@@ -83,6 +83,8 @@ public:
     template<int type>
     void setScript(std::string file);
 
+    void callInitScript();
+
     void remove();
 
     bool isToBeDeleted() const {
@@ -106,7 +108,7 @@ protected:
         struct Handler {
             kaguya::LuaFunction function;
             bool loaded = false;
-        } update, move, collision, death;
+        } init, update, move, collision, death;
     } script;
 
     static unsigned int maxEntityId;

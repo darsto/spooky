@@ -72,6 +72,8 @@ public:
 
     void initState(kaguya::State &state);
 
+    virtual ~LevelContext();
+
 private:
     const std::string name;
     kaguya::State scriptState;
