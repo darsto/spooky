@@ -23,7 +23,7 @@ Block *Map::getBlock(int x, int y) {
     int chy = y / Chunk::size;
     int chunksNumX = (int) ceil((double) width / Chunk::size);
     Chunk &ch = *this->chunks.at(chy * chunksNumX + chx);
-    return ch.getBlocks()[(y - chy * Chunk::size) * Chunk::size + x - chx];
+    return ch.getBlocks()[(y - chy * Chunk::size) * Chunk::size + x - chx * Chunk::size];
 }
 
 void Map::update(double deltaTime) {
