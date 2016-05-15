@@ -22,7 +22,7 @@ void main(void) {
     gl_FragColor = texture2D(fbo_texture, texcoord);
 
     vec3 average = vec3(gl_FragColor.r + gl_FragColor.g + gl_FragColor.b) / 3.0;
-    gl_FragColor.rgb = mix(gl_FragColor.rgb, average, min((2.0 - colorfulness) * (0.5 + screenDist), 1.0));
+    gl_FragColor.rgb = mix(gl_FragColor.rgb, average, min((2.0 - colorfulness) * 0.5 * (0.5 + screenDist), 1.0));
 
     float dist;
     float alpha = 0.0;
