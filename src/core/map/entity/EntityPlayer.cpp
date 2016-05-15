@@ -37,10 +37,8 @@ void EntityPlayer::update(double deltaTime) {
     }
 
     if (this->getToy() == nullptr) {
-        double speed_x = this->getBody()->GetLinearVelocity().x;
-        double speed_y = this->getBody()->GetLinearVelocity().y;
-        double speed = speed_x * speed_x + speed_y * speed_y;
-        this->increaseTailAnimation((0.5 + speed * 0.9) * 0.3 * deltaTime);
+        double speed = velX * velX + velY * velY;
+        this->increaseTailAnimation((0.35 + speed * 0.6) * 0.3 * deltaTime);
     }
 
     if (this->getToy() != nullptr) {
