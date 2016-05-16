@@ -43,7 +43,7 @@ TiledTxtMapLoader::TiledTxtMapLoader(LevelContext &levelContext, const std::stri
     int width, height;
 
     std::string line;
-    std::string file_path = fileName;
+    std::string file_path = "data/map/" + fileName;
 #ifdef __ANDROID__
     file_path = "/sdcard/c003/" + fileName;
 #endif // __ANDROID__

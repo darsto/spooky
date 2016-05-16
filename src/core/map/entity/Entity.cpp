@@ -55,7 +55,7 @@ void Entity::setX(double x) {
 
 template<int type>
 void Entity::setScript(std::string file) {
-    file = getFilePath("scripts/levels/" + this->getMap()->getLevelName() + "/" + file + ".lua");
+    file = getFilePath("data/scripts/levels/" + this->getMap()->getLevelName() + "/" + file + ".lua");
     Script::Handler *handler = nullptr;
     switch (type) {
         case 0:

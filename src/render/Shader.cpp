@@ -14,9 +14,9 @@ Shader::~Shader() {
 }
 
 bool Shader::load(const string &file, int type) {
-    string file_path = file;
+    string file_path = "data/shaders/" + file;
 #ifdef __ANDROID__
-    file_path = "/sdcard/c003/" + file;
+    file_path = "/sdcard/c003/" + file_path;
 #endif // __ANDROID__
     FILE *fp = fopen(file_path.c_str(), "rt");
     if (!fp) return false;

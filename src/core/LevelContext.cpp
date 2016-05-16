@@ -21,7 +21,7 @@ LevelContext::LevelContext(Game &game, const std::string &name) : name(name), en
                                                   .addMember("loadMap", &TiledTxtMapLoader::loadMap)
     );
     entityManager.registerEntityTypes(scriptState);
-    scriptState.dofile(getFilePath("scripts/levels/" + this->name + ".lua"));
+    scriptState.dofile(getFilePath("data/scripts/levels/" + this->name + ".lua"));
 
     for (Entity *e : map->getEntities()) {
         if (EntityPlayer *p = dynamic_cast<EntityPlayer *>(e)) {

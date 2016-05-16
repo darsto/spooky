@@ -17,7 +17,7 @@ LoadingScreen::LoadingScreen(ApplicationContext *applicationContext) : Window(ap
                                     .addMember("addLevel", &LevelData::addLevel)
     );
     initState["levelData"] = applicationContext->getLevelData();
-    initState.dofile(getFilePath("scripts/init.lua"));
+    initState.dofile(getFilePath("data/scripts/init.lua"));
 }
 
 void LoadingScreen::reload(unsigned int windowWidth, unsigned int windowHeight) {
