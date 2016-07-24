@@ -26,9 +26,9 @@ public:
     RenderManager();
     ~RenderManager();
     bool init();
-    void render(Window *window);
-    void resize(Window *window, unsigned int width, unsigned int height);
-    void initWindow(Window *window);
+    void render(const Window &window);
+    void resize(const Window &window, unsigned int width, unsigned int height);
+    void initWindow(const Window &window);
 
     RenderContext *getRenderContext() const {
         return renderContext;
@@ -44,7 +44,7 @@ private:
     RenderContext *renderContext;
 
     std::map<const char *, WindowRender *> windowRenders;
-    WindowRender *getWindowRender(const Window *const window);
+    WindowRender *getWindowRender(const Window &window);
 
     bool initWindow();
     bool initGL();

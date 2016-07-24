@@ -17,11 +17,11 @@ class GuiButton;
 class MainMenu : public Window {
 
 public:
-    MainMenu(ApplicationContext *applicationContext);
+    MainMenu(ApplicationContext &applicationContext);
     virtual void reload(unsigned int windowWidth, unsigned int WindowHeight) override;
     virtual void tick(double deltaTime) override;
     virtual void handleKeyboard(const Keypress *const keypress) override;
-    virtual void handleClick(const TouchPoint *const p) override;
+    virtual void handleClick(const TouchPoint &p) override;
     virtual ~MainMenu() override;
 
     const std::vector<GuiElement *> &getGuiElements() const {
@@ -30,7 +30,6 @@ public:
 
 private:
     std::vector<GuiElement *> guiElements;
-    void resetButtons(const TouchPoint *const p, const GuiButton *const b);
 };
 
 #endif //C003_MAINMENU_H

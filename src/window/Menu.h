@@ -16,13 +16,13 @@ class Menu : public Window {
 
 public:
 
-    Menu(ApplicationContext *applicationContext) : Window(applicationContext) { }
+    Menu(ApplicationContext &applicationContext) : Window(applicationContext) { }
 
     virtual void reload(unsigned int windowWidth, unsigned int windowHeight) override;
     virtual void tick(double deltaTime) override;
 
     virtual void handleKeyboard(const Keypress *const keypress) override { };
-    virtual void handleClick(const TouchPoint *const touchPoint) override;
+    virtual void handleClick(const TouchPoint &touchPoint) override;
     virtual ~Menu() override;
 
     const std::vector<GuiElement *> &getGuiElements() const {
@@ -31,7 +31,6 @@ public:
 
 protected:
     std::vector<GuiElement *> guiElements;
-    void resetButtons(const TouchPoint *const p, const GuiButton *const b);
 };
 
 #endif //C003_MENU_H

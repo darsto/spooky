@@ -5,13 +5,12 @@
 #ifndef C003_APPLICATION_H
 #define C003_APPLICATION_H
 
+#include <memory>
+#include <window/Window.h>
 #include "core/Timer.h"
 #include "InputManager.h"
 #include "os.h"
-
-class Window;
-
-class RenderManager;
+#include "render/RenderManager.h"
 
 class Application {
 
@@ -21,32 +20,21 @@ public:
     void run();
     void update(bool dynamic);
     void resize(int width, int height);
-
-    Window *getCurrentWindow() const { //TODO make private, handle window operations indirectly through application layer
-        return window;
-    }
-
     void handleClick(int i, int action, float x, float y);
-
-    bool isRunning() const {
-        return running;
-    }
-
-    ~Application();
+    bool isRunning() const;
 
 private:
-    bool running = true;
-    Window *previousWindow = nullptr;
-    Window *window = nullptr;
-    RenderManager *renderer = nullptr;
-    InputManager *inputManager = nullptr;
-    Timer *timer = nullptr;
-    double deltaTimeHistory[15];
-    double averageDeltaTime = 0;
-    unsigned long long ticks = 0;
+    bool m_running = true;
+    std::unique_ptr<Window> m_window;
+    RenderManager m_renderer;
+    InputManager m_inputManager;
+    Timer m_timer;
+    double m_deltaTimeHistory[15];
+    double m_averageDeltaTime = 0;
+    unsigned long long m_ticks = 0;
 
 #ifndef __DEFMOBILE__
-    SDL_Event e;
+    SDL_Event m_sdlEvent;
 #endif //__DEFMOBILE__
 
     void handleEvents();

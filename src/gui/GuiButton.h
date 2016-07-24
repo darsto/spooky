@@ -22,8 +22,8 @@ public:
 
     GuiButton(char positionFlag, double x, double y, double width, double height, int texturePos) : GuiButton("", positionFlag, x, y, width, height, new int[1]{texturePos}, 1) { };
 
-    virtual bool onClick(const TouchPoint *const touchPoint);
-    virtual void setOnClickListener(std::function<bool(const TouchPoint *const)> onClickListener);
+    virtual bool onClick(const TouchPoint &touchPoint);
+    virtual void setOnClickListener(std::function<bool(const TouchPoint &)> onClickListener);
 
     bool isEnabled() const {
         return enabled;
@@ -44,7 +44,7 @@ public:
         return touchedBy;
     }
 
-    bool canBeClicked(const TouchPoint *const touchPoint);
+    bool canBeClicked(const TouchPoint &touchPoint);
 
     int getTexturesNum() const {
         return texturesNum;
@@ -63,7 +63,7 @@ protected:
     bool enabled = true;
     bool pressed = false;
     int touchedBy;
-    std::function<bool(const TouchPoint *const)> onClickListener;
+    std::function<bool(const TouchPoint &)> onClickListener;
 };
 
 #endif //C003_GUIBUTTON_H

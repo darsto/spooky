@@ -17,11 +17,11 @@ class GuiButton;
 class LoadingScreen : public Window {
 
 public:
-    LoadingScreen(ApplicationContext *applicationContext);
+    LoadingScreen(ApplicationContext &applicationContext);
     virtual void reload(unsigned int windowWidth, unsigned int WindowHeight) override;
     virtual void tick(double deltaTime) override;
     virtual void handleKeyboard(const Keypress *const keypress);
-    virtual void handleClick(const TouchPoint *const p);
+    virtual void handleClick(const TouchPoint &p);
 
     const std::vector<GuiElement *> &getGuiElements() const {
         return guiElements;

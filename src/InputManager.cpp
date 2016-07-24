@@ -26,7 +26,7 @@ void InputManager::handleClick(int i, int action, float x, float y) {
 
 void InputManager::handleKeypress(SDL_Event *e) {
     if (e->key.keysym.sym == SDLK_ESCAPE) {
-        //this->running = false; //TODO
+        //this->m_running = false; //TODO
     } else if (e->key.keysym.scancode >= 0 && e->key.keysym.scancode < SDL_NUM_SCANCODES && e->key.repeat == 0) {
         Keypress *key = &this->keypresses[e->key.keysym.scancode];
         key->state = (e->type == SDL_KEYDOWN ? KEY_STATE::PRESS : KEY_STATE::RELEASE);
@@ -38,14 +38,14 @@ void InputManager::handleKeypress(SDL_Event *e) {
 
 #endif //__DEFMOBILE__
 
-void InputManager::tick(Window *window) {
+void InputManager::tick(Window &window) {
     this->handleTouch(window);
     if (!IS_MOBILE) this->handleKeyboard(window);
 }
 
-void InputManager::handleKeyboard(Window *window) {
+void InputManager::handleKeyboard(Window &window) {
 #ifndef __DEFMOBILE__
-    window->handleKeyboard(this->keypresses);
+    window.handleKeyboard(keypresses);
     for (int i = 0; i < SDL_NUM_SCANCODES; i++) {
         if (this->keypresses[i].state == KEY_STATE::PRESS) {
             this->keypresses[i].state = KEY_STATE::REPEAT;
@@ -56,16 +56,16 @@ void InputManager::handleKeyboard(Window *window) {
 #endif //__DEFMOBILE__
 }
 
-void InputManager::handleTouch(Window *window) {
+void InputManager::handleTouch(Window &window) {
     for (auto it = touchPoints.begin(); it != touchPoints.end(); it++) {
         TouchPoint *p = it->second;
         if (p != nullptr) {
             if (p->state == 3) {
                 p->state = 0;
-                window->handleClick(p);
+                window.handleClick(*p);
                 p->state = 1;
             } else if (p->state >= 0) {
-                window->handleClick(p);
+                window.handleClick(*p);
                 if (p->state == 0) p->state = 2;
                 if (p->state == 1) {
                     if (IS_MOBILE) {

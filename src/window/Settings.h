@@ -14,10 +14,10 @@ class GuiButton;
 class Settings : public Menu {
 
 public:
-    Settings(ApplicationContext *applicationContext);
+    Settings(ApplicationContext &applicationContext);
     virtual void reload(unsigned int windowWidth, unsigned int windowHeight);
     virtual void tick(double deltaTime);
-    virtual void handleClick(const TouchPoint *const touchPoint);
+    virtual void handleClick(const TouchPoint &touchPoint);
     virtual ~Settings() override;
 
 private:

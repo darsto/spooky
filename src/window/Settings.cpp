@@ -17,17 +17,16 @@
 
 #endif //__ANDROID__
 
-Settings::Settings(ApplicationContext *applicationContext) : Menu(applicationContext) {
-    std::string joystickText = this->applicationContext->getSettingsData().joystick() ? "Joy: on" : "Joy: off";
+Settings::Settings(ApplicationContext &applicationContext) : Menu(applicationContext) {
+    std::string joystickText = applicationContext.getSettingsData().joystick() ? "Joy: on" : "Joy: off";
     GuiButton *b = new GuiButton(joystickText, GUI_MIDDLE_CENTER, 0, -80, 375, 125, new int[2]{3, 11}, 2);
-    auto button1Action = [=](const TouchPoint *const p) {
-        if (p->state == 1) {
+    auto button1Action = [&](const TouchPoint &p) {
+        if (p.state == 1) {
             if (b->canBeClicked(p)) {
-                this->applicationContext->getSettingsData().joystick(!this->applicationContext->getSettingsData().joystick());
-                std::string joystickText = this->applicationContext->getSettingsData().joystick() ? "Joy: on" : "Joy: off";
+                applicationContext.getSettingsData().joystick(!applicationContext.getSettingsData().joystick());
+                std::string joystickText = applicationContext.getSettingsData().joystick() ? "Joy: on" : "Joy: off";
                 b->getText()->updateString(joystickText);
                 b->reinit(windowWidth, windowHeight);
-
             }
             return false;
         }
@@ -35,13 +34,13 @@ Settings::Settings(ApplicationContext *applicationContext) : Menu(applicationCon
     };
     b->setOnClickListener(button1Action);
     this->guiElements.push_back(b);
-    std::string devText = this->applicationContext->getSettingsData().dev() ? "Dev: on" : "Dev: off";
+    std::string devText = applicationContext.getSettingsData().dev() ? "Dev: on" : "Dev: off";
     b = new GuiButton(devText, GUI_MIDDLE_CENTER, 0, 80, 375, 125, new int[2]{3, 11}, 2);
-    auto button2Action = [=](const TouchPoint *const p) {
-        if (p->state == 1) {
+    auto button2Action = [&](const TouchPoint &p) {
+        if (p.state == 1) {
             if (b->canBeClicked(p)) {
-                this->applicationContext->getSettingsData().dev(!this->applicationContext->getSettingsData().dev());
-                std::string devText = this->applicationContext->getSettingsData().dev() ? "Dev: on" : "Dev: off";
+                applicationContext.getSettingsData().dev(!applicationContext.getSettingsData().dev());
+                std::string devText = applicationContext.getSettingsData().dev() ? "Dev: on" : "Dev: off";
                 b->getText()->updateString(devText);
                 b->reinit(windowWidth, windowHeight);
             }
@@ -52,10 +51,10 @@ Settings::Settings(ApplicationContext *applicationContext) : Menu(applicationCon
     b->setOnClickListener(button2Action);
     this->guiElements.push_back(b);
     b = new GuiButton(GUI_TOP_LEFT, 25, 25, 100, 100, new int[2]{8, 16}, 2);
-    auto backAction = [=](const TouchPoint *const p) {
-        if (p->state == 1) {
+    auto backAction = [&](const TouchPoint &p) {
+        if (p.state == 1) {
             if (b->canBeClicked(p)) {
-                this->applicationContext->switchWindow(new MainMenu(this->applicationContext));
+                applicationContext.switchWindow(new MainMenu(applicationContext));
             }
             return false;
         }
@@ -79,28 +78,8 @@ void Settings::tick(double deltaTime) {
 
 }
 
-void Settings::handleClick(const TouchPoint *const p) {
-    bool clicked = false;
-    for (GuiElement *e : this->guiElements) {
-        if (GuiButton *b = dynamic_cast<GuiButton *>(e)) {
-            if (b->canBeClicked(p)) {
-                if (p->state == 1) this->resetButtons(p, b);
-                if ((p->state == 0 && (!b->isPressed()) || b->getTouchedBy() == p->id) ||
-                    (b->getTouchedBy() == p->id && p->state == 2)) {
-                    if (b->onClick(p)) {
-                        clicked = true;
-                        break;
-                    }
-                }
-            }
-        }
-    }
+void Settings::handleClick(const TouchPoint &p) {
 
-    if (!clicked) {
-        if (p->state == 1) {
-            this->resetButtons(p, nullptr);
-        }
-    }
 }
 
 Settings::~Settings() {

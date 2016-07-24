@@ -12,16 +12,16 @@ GuiButton::GuiButton(const std::string &string, char positionFlag, double x, dou
     }
 }
 
-bool GuiButton::onClick(const TouchPoint *const touchPoint) {
+bool GuiButton::onClick(const TouchPoint &touchPoint) {
     if (!this->isEnabled()) return false;
-    this->touchedBy = touchPoint != nullptr ? touchPoint->id : -1;
+    this->touchedBy = touchPoint.id;
     if (onClickListener == NULL || !this->isVisible()) this->setPressed(false);
     else this->setPressed(onClickListener(touchPoint));
     return this->isPressed();
 
 }
 
-void GuiButton::setOnClickListener(std::function<bool(const TouchPoint *const)> onClickListener) {
+void GuiButton::setOnClickListener(std::function<bool(const TouchPoint &)> onClickListener) {
     this->onClickListener = onClickListener;
 }
 
@@ -33,10 +33,10 @@ void GuiButton::setPressed(bool pressed) {
     if (!this->pressed) this->touchedBy = -1;
 }
 
-bool GuiButton::canBeClicked(const TouchPoint *const p) {
+bool GuiButton::canBeClicked(const TouchPoint &p) {
     return this->isVisible() &&
-           p->x > this->getX() && p->x < this->getX() + this->getWidth() &&
-           p->y > this->getY() && p->y < this->getY() + this->getHeight();
+           p.x > this->getX() && p.x < this->getX() + this->getWidth() &&
+           p.y > this->getY() && p.y < this->getY() + this->getHeight();
 }
 
 void GuiButton::reinit(unsigned int windowWidth, unsigned int windowHeight) {

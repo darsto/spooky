@@ -3,7 +3,6 @@
 //
 
 #include <window/MainMenu.h>
-#include <window/Window.h>
 #include "Application.h"
 #include "render/RenderManager.h"
 #include "logging.h"
@@ -11,30 +10,27 @@
 #include <window/LoadingScreen.h>
 
 Application::Application() {
-    this->renderer = new RenderManager();
     auto switchWindow = [&](Window *window) {
-        if (window == nullptr) {
-            this->running = false;
-            return false;
-        }
-        this->previousWindow = this->window;
-        this->window = window;
-        this->renderer->initWindow(this->window);
-        this->resize(this->renderer->getRenderContext()->getWindowWidth(), this->renderer->getRenderContext()->getWindowHeight());
+        m_window = std::unique_ptr<Window>(window);
+        m_renderer.initWindow(*window);
+
+        auto renderContext = m_renderer.getRenderContext();
+        resize(renderContext->getWindowWidth(), renderContext->getWindowHeight());
+
         return true;
     };
-    this->window = new LoadingScreen(new ApplicationContext(switchWindow));
-    this->timer = new Timer();
-    this->inputManager = new InputManager();
-    this->reinit();
-    this->resize(1366, 750);
+
+    //todo
+    m_window = std::unique_ptr<Window>(new LoadingScreen(*new ApplicationContext(switchWindow)));
+    reinit();
+    resize(1366, 750);
 }
 
 void Application::reinit() {
-    this->renderer->init();
-    this->renderer->initWindow(this->window); //TODO
-    timer->GetDelta(); //if not called right now, first call in game loop would return a very huge value
-    this->inputManager->reload();
+    m_renderer.init();
+    m_renderer.initWindow(*m_window); //TODO
+    m_timer.GetDelta(); //if not called right now, first call in game loop would return a very huge value
+    m_inputManager.reload();
 }
 
 
@@ -45,33 +41,25 @@ void Application::run() {
 }
 
 void Application::update(bool dynamic) {
-    if (this->previousWindow != nullptr) {
-        delete this->previousWindow;
-        this->previousWindow = nullptr;
-    }
     if (dynamic) {
-        this->deltaTimeHistory[this->ticks] = timer->GetDelta();
-        if (this->ticks == 14) {
-            this->averageDeltaTime = 0.0;
+        m_deltaTimeHistory[m_ticks] = m_timer.GetDelta();
+        if (m_ticks == 14) {
+            m_averageDeltaTime = 0.0;
             for (int i = 0; i < 15; i++) {
-                this->averageDeltaTime += this->deltaTimeHistory[i];
+                m_averageDeltaTime += this->m_deltaTimeHistory[i];
             }
         }
-        this->getCurrentWindow()->tick(this->averageDeltaTime * 4.0); //multiplied by 4.0 to make the whole equal ~1.0
+        m_window->tick(m_averageDeltaTime * 4.0); //multiplied by 4.0 to make the whole equal ~1.0
     } else {
-        this->getCurrentWindow()->tick(1.0);
+        m_window->tick(1.0);
     }
-    this->renderer->render(this->getCurrentWindow());
+    this->m_renderer.render(*m_window);
     if (!IS_MOBILE) this->handleEvents();
-    this->inputManager->tick(this->getCurrentWindow());
-    this->ticks++;
-    if (this->ticks > 14) {
-        this->ticks = 0;
+    m_inputManager.tick(*m_window);
+    this->m_ticks++;
+    if (this->m_ticks > 14) {
+        this->m_ticks = 0;
     }
-}
-
-Application::~Application() {
-    delete this->window;
 }
 
 #ifdef __ANDROID__
@@ -122,39 +110,39 @@ JNIEXPORT void JNICALL Java_tk_approach_android_spookytom_JniBridge_handleTouch(
 #endif //__ANDROID__
 
 void Application::resize(int width, int height) {
-    this->getCurrentWindow()->reload(width, height);
-    this->renderer->resize(this->getCurrentWindow(), width, height);
+    m_window->reload(width, height);
+    this->m_renderer.resize(*m_window, width, height);
 }
 
 void Application::handleClick(int i, int action, float x, float y) {
-    this->inputManager->handleClick(i, action, x, y);
+    m_inputManager.handleClick(i, action, x, y);
 }
 
 void Application::handleEvents() {
 #ifndef __ANDROID__
-    while (SDL_PollEvent(&e) != 0) {
-        switch (e.type) {
+    while (SDL_PollEvent(&m_sdlEvent) != 0) {
+        switch (m_sdlEvent.type) {
             case SDL_QUIT:
-                this->running = false;
+                this->m_running = false;
                 break;
             case SDL_WINDOWEVENT:
-                if (e.window.event == SDL_WINDOWEVENT_RESIZED || e.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
-                    this->resize((unsigned int) e.window.data1, (unsigned int) e.window.data2);
+                if (m_sdlEvent.window.event == SDL_WINDOWEVENT_RESIZED || m_sdlEvent.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
+                    this->resize((unsigned int) m_sdlEvent.window.data1, (unsigned int) m_sdlEvent.window.data2);
                 }
                 break;
             case SDL_KEYDOWN:
             case SDL_KEYUP:
-                this->inputManager->handleKeypress(&e);
+                m_inputManager.handleKeypress(&m_sdlEvent);
                 break;
             case SDL_MOUSEBUTTONDOWN:
             case SDL_MOUSEBUTTONUP:
-                Log::debug("%s button with id %d\n", e.type == SDL_MOUSEBUTTONDOWN ? "Pressed" : "Unpressed", e.button.button);
+                Log::debug("%s button with id %d\n", m_sdlEvent.type == SDL_MOUSEBUTTONDOWN ? "Pressed" : "Unpressed", m_sdlEvent.button.button);
             case SDL_MOUSEMOTION: {
-                int button = (int) round(log((double) e.button.button) / log(2.0)) + 1;
+                int button = (int) round(log((double) m_sdlEvent.button.button) / log(2.0)) + 1;
                 if (button < 0 || button >= 5) break;
                 int x, y;
                 SDL_GetMouseState(&x, &y);
-                this->handleClick(button, e.type == SDL_MOUSEBUTTONDOWN ? 0 : (e.type == SDL_MOUSEBUTTONUP ? 1 : 2), x, y);
+                this->handleClick(button, m_sdlEvent.type == SDL_MOUSEBUTTONDOWN ? 0 : (m_sdlEvent.type == SDL_MOUSEBUTTONUP ? 1 : 2), x, y);
                 break;
             }
         }
@@ -163,4 +151,8 @@ void Application::handleEvents() {
     LOGW("SDL is not supported on this platform\n");
 #endif //__ANDROID__
 
+}
+
+bool Application::isRunning() const {
+    return m_running;
 }

@@ -12,9 +12,9 @@ class MenuRender : public WindowRender {
 
 public:
     MenuRender();
-    virtual void init(RenderContext *const renderContext) override;
-    virtual void render(Window *window, RenderContext *const renderContext) override;
-    virtual void resize(RenderContext *const renderContext) override;
+    virtual void init(const RenderContext &renderContext) override;
+    virtual void render(const Window &window, const RenderContext &renderContext) override;
+    virtual void resize(const RenderContext &renderContext) override;
 
 private:
     glm::mat4 viewMatrix;

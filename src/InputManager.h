@@ -50,7 +50,7 @@ class InputManager {
 public:
     InputManager();
     void handleClick(int i, int action, float x, float y);
-    void tick(Window *window);
+    void tick(Window &window);
     void reload();
 
 #ifndef __DEFMOBILE__
@@ -61,8 +61,8 @@ private:
     std::unordered_map<int, TouchPoint *> touchPoints;
     Keypress keypresses[SDL_NUM_SCANCODES];
 
-    void handleTouch(Window *window);
-    void handleKeyboard(Window *window);
+    void handleTouch(Window &window);
+    void handleKeyboard(Window &window);
 };
 
 #endif //C003_INPUTMANAGER_H

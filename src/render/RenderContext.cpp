@@ -9,9 +9,9 @@
 #include <gui/GuiText.h>
 #include <render/gui/GuiTextBubbleRender.h>
 
-GuiElementRender *RenderContext::getGuiElementRender(const GuiElement *const element) {
-    GuiElementRender *render = this->guiRenders[typeid(*element).name()];
-    if (render == nullptr) render = this->guiRenders[typeid(GuiElement).name()];
+GuiElementRender *RenderContext::getGuiElementRender(const GuiElement &element) const {
+    GuiElementRender *render = guiRenders.at(typeid(element).name());
+    if (render == nullptr) render = guiRenders.at(typeid(GuiElement).name());
     return render;
 }
 

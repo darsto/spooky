@@ -14,12 +14,12 @@ RenderManager::RenderManager() { }
 
 bool RenderManager::init() {
     if (!IS_MOBILE && !this->initWindow()) {
-        printf("Failed to initialize window!\n");
+        printf("Failed to initialize m_window!\n");
     } else
     if (!this->initGL()) {
         printf("Unable to initialize OpenGL!\n");
     } else if (!this->initRenders()) {
-        printf("Unable to initialize window renders!\n");
+        printf("Unable to initialize m_window renders!\n");
     } else {
 #ifdef __ANDROID__
         initBindings();
@@ -35,7 +35,7 @@ bool RenderManager::initWindow() {
 
 #ifdef __ANDROID__
     success = false;
-    printf("Cannot initialize window on Android device.");
+    printf("Cannot initialize m_window on Android device.");
 #else // non __ANDROID__
     if (SDL_Init(SDL_INIT_VIDEO) < 0) { //Initialize SDL
         printf("SDL could not initialize! SDL Error: %d\n", SDL_GetError());
@@ -46,7 +46,7 @@ bool RenderManager::initWindow() {
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 
-        //Create window
+        //Create m_window
         gWindow = SDL_CreateWindow("Spooky Tom - dev", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, windowWidth, windowHeight, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
         if (gWindow == NULL) {
             printf("Window could not be created! SDL Error: %s\n", SDL_GetError());
@@ -88,20 +88,20 @@ bool RenderManager::initRenders() {
     return true;
 }
 
-void RenderManager::render(Window *window) {
-    this->getWindowRender(window)->render(window, this->renderContext);
+void RenderManager::render(const Window &window) {
+    this->getWindowRender(window)->render(window, *this->renderContext);
 #ifndef __ANDROID__
     SDL_GL_SwapWindow(gWindow);
 #endif // __ANDROID__
 }
 
-void RenderManager::resize(Window *window, unsigned int width, unsigned int height) {
+void RenderManager::resize(const Window &window, unsigned int width, unsigned int height) {
     if (width != this->windowWidth || height != this->windowHeight) {
         this->windowWidth = width;
         this->windowHeight = height;
         this->renderContext->resize(width, height);
         glViewport(0, 0, windowWidth, windowHeight);
-        this->getWindowRender(window)->resize(this->renderContext);
+        this->getWindowRender(window)->resize(*this->renderContext);
     }
 }
 
@@ -112,10 +112,10 @@ RenderManager::~RenderManager() {
 #endif // __ANDROID__
 }
 
-WindowRender *RenderManager::getWindowRender(const Window *const window) {
-    return windowRenders[typeid(*window).name()];
+WindowRender *RenderManager::getWindowRender(const Window &window) {
+    return windowRenders[typeid(window).name()];
 }
 
-void RenderManager::initWindow(Window *window) {
-    this->getWindowRender(window)->init(this->renderContext);
+void RenderManager::initWindow(const Window &window) {
+    this->getWindowRender(window)->init(*this->renderContext);
 }

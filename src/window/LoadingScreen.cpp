@@ -9,7 +9,7 @@
 #include <gui/GuiElement.h>
 #include <files.h>
 
-LoadingScreen::LoadingScreen(ApplicationContext *applicationContext) : Window(applicationContext) {
+LoadingScreen::LoadingScreen(ApplicationContext &applicationContext) : Window(applicationContext) {
     kaguya::State initState;
     initState.dofile(Files::getFilePath("data/scripts/init.lua"));
 }
@@ -24,13 +24,13 @@ void LoadingScreen::tick(double deltaTime) {
     this->progress = 1.0;
     if (this->progress >= 1.0) {
 #if !defined(EDITOR) && !defined(DEBUG)
-        this->applicationContext->switchWindow(new MainMenu(this->applicationContext));
+        applicationContext->switchWindow(new MainMenu(this->applicationContext));
 #else
-        this->applicationContext->switchWindow(new MainMenu(this->applicationContext));
+        applicationContext.switchWindow(new MainMenu(applicationContext));
 #endif
     }
 }
 
-void LoadingScreen::handleClick(const TouchPoint *const p) { }
+void LoadingScreen::handleClick(const TouchPoint &p) { }
 
 void LoadingScreen::handleKeyboard(const Keypress *const keypress) { }

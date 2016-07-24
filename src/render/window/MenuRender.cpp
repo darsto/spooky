@@ -13,34 +13,34 @@ MenuRender::MenuRender() : WindowRender() {
 
 }
 
-void MenuRender::init(RenderContext *const renderContext) {
+void MenuRender::init(const RenderContext &renderContext) {
     glEnable(GL_BLEND);
     glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
     this->resize(renderContext);
 }
 
-void MenuRender::render(Window *window, RenderContext *const renderContext) {
-    Menu *menu = ((Menu *) window);
+void MenuRender::render(const Window &window, const RenderContext &renderContext) {
+    Menu &menu = (Menu &) window;
 
     glClearColor(0.7, 0.7, 0.7, 0.0);
     glClear(GL_COLOR_BUFFER_BIT);
-    for (GuiElement *guiElement : menu->getGuiElements()) {
-        renderContext->getGuiElementRender(guiElement)->render(guiElement, projectionMatrix, glm::translate(viewMatrix, glm::vec3(
+    for (GuiElement *guiElement : menu.getGuiElements()) {
+        renderContext.getGuiElementRender(*guiElement)->render(guiElement, projectionMatrix, glm::translate(viewMatrix, glm::vec3(
             0,
-            (int) ((signed) renderContext->getWindowHeight()),
+            (int) ((signed) renderContext.getWindowHeight()),
             0.0f)), 1.0f);
         if (GuiButton *b = dynamic_cast<GuiButton *>(guiElement)) {
             if (b->getText() != nullptr) {
-                renderContext->getGuiElementRender(b->getText())->render(b->getText(), projectionMatrix, glm::translate(viewMatrix, glm::vec3(
+                renderContext.getGuiElementRender(*b->getText())->render(b->getText(), projectionMatrix, glm::translate(viewMatrix, glm::vec3(
                     0,
-                    (int) ((signed) renderContext->getWindowHeight() - (b->isPressed() * (b->getHeight() * 0.04))),
+                    (int) ((signed) renderContext.getWindowHeight() - (b->isPressed() * (b->getHeight() * 0.04))),
                     0.0f)), 1.0f);
             }
         }
     }
 }
 
-void MenuRender::resize(RenderContext *const renderContext) {
+void MenuRender::resize(const RenderContext &renderContext) {
     viewMatrix = glm::lookAt(glm::vec3(0, 0, 0.0f), glm::vec3(0, 0, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-    this->projectionMatrix = glm::ortho(0.0f, float(renderContext->getWindowWidth()), 0.0f, float(renderContext->getWindowHeight()));
+    this->projectionMatrix = glm::ortho(0.0f, float(renderContext.getWindowWidth()), 0.0f, float(renderContext.getWindowHeight()));
 }

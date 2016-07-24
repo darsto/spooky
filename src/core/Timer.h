@@ -31,7 +31,7 @@ public:
         // 3. Reset the timePrev to the current point in time
         timePrev = high_resolution_clock::now();
 
-        // 4. Returns the number of ticks in delta
+        // 4. Returns the number of m_ticks in delta
         return delta.count();
     }
 
