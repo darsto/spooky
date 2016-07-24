@@ -12,7 +12,7 @@ public:
         return m_joystick;
     }
 
-    void joystick(bool m_joystick) {
+    void joystick(bool joystick) {
         m_joystick = joystick;
     }
 
@@ -20,7 +20,7 @@ public:
         return m_dev;
     }
 
-    void dev(bool m_dev) {
+    void dev(bool dev) {
         m_dev = dev;
     }
 
