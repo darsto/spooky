@@ -7,6 +7,9 @@
 
 #include <string>
 
-std::string getFilePath(const std::string &file);
+//TODO refactor to FileManager
+namespace Files {
+    std::string getFilePath(const std::string &file);
+}
 
 #endif //C003_FILES_H

@@ -4,7 +4,7 @@
 
 #include "files.h"
 
-std::string getFilePath(const std::string &file) {
+std::string Files::getFilePath(const std::string &file) {
 #ifdef __ANDROID__
     return "/sdcard/c003/" + file;
 #else
