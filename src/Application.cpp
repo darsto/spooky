@@ -78,7 +78,8 @@ Application::~Application() {
 
 #include <jni.h>
 
-Application *application = nullptr;
+Application application;
+bool initialized = false;
 
 extern "C" {
 JNIEXPORT void JNICALL Java_tk_approach_android_spookytom_JniBridge_init(JNIEnv *env, jobject obj);
@@ -88,10 +89,8 @@ JNIEXPORT void JNICALL Java_tk_approach_android_spookytom_JniBridge_handleTouch(
 };
 
 JNIEXPORT void JNICALL Java_tk_approach_android_spookytom_JniBridge_init(JNIEnv *env, jobject obj) {
-    if (application == nullptr || application->getCurrentWindow() == nullptr) {
-        application =  new Application();
-    } else {
-        application->reinit();
+    if (initialized) {
+        application.reinit();
     }
     /*jclass cls = env->GetObjectClass(obj);
     jmethodID mid = env->GetMethodID(cls, "loadTexture", "()V");
@@ -102,23 +101,22 @@ JNIEXPORT void JNICALL Java_tk_approach_android_spookytom_JniBridge_init(JNIEnv 
 }
 
 JNIEXPORT void JNICALL Java_tk_approach_android_spookytom_JniBridge_resize(JNIEnv *env, jobject obj, jint width, jint height) {
-    application->resize(width, height);
+    application.resize(width, height);
 }
 
 JNIEXPORT void JNICALL Java_tk_approach_android_spookytom_JniBridge_tick(JNIEnv *env, jobject obj) {
-    application->update(false);
-    if (!application->isRunning()) {
+    application.update(false);
+    if (!application.isRunning()) {
         jclass cls = env->GetObjectClass(obj);
         jmethodID mid = env->GetMethodID(cls, "exit", "()V");
         if (mid != 0) {
-            delete application;
             env->CallVoidMethod(obj, mid);
         }
     }
 }
 
 JNIEXPORT void JNICALL Java_tk_approach_android_spookytom_JniBridge_handleTouch(JNIEnv *env, jobject obj, jint i,  jint action, jfloat x, jfloat y) {
-    application->handleClick(i, action, x, y);
+    application.handleClick(i, action, x, y);
 }
 
 #endif //__ANDROID__
