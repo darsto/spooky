@@ -5,32 +5,46 @@
 #ifndef C003_LOGGING_H
 #define C003_LOGGING_H
 
+namespace Log {
+    constexpr const char *LOG_TAG = "SpookyTom";
+
+    template<typename... Args>
+    constexpr const void info(Args &&...args) {
 #ifdef __ANDROID__
+        __android_log_print(ANDROID_LOG_INFO, LOG_TAG, std::forward<Args>(args)...)
+#else
+        printf(std::forward<Args>(args)...);
+#endif
+    };
 
-#include <android/log.h>
+    template<typename... Args>
+    constexpr const void debug(Args &&...args) {
+#ifdef DEBUG
+#ifdef __ANDROID__
+        __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, std::forward<Args>(args)...)
+#else
+        printf(std::forward<Args>(args)...);
+#endif
+#endif
+    };
 
-#define  LOG_TAG    "SpookyTom"
-#define  LOGE(...)  __android_log_print(ANDROID_LOG_ERROR,LOG_TAG,__VA_ARGS__)
-#define  LOGW(...)  __android_log_print(ANDROID_LOG_WARN,LOG_TAG,__VA_ARGS__)
-#ifdef __DEBUG__
-#define  LOGD(...)  __android_log_print(ANDROID_LOG_DEBUG,LOG_TAG,__VA_ARGS__)
-#endif //__DEBUG__
-#define  LOGI(...)  __android_log_print(ANDROID_LOG_INFO,LOG_TAG,__VA_ARGS__)
+    template<typename... Args>
+    constexpr const void warning(Args &&...args) {
+#ifdef __ANDROID__
+        __android_log_print(ANDROID_LOG_WARN, ANDROID_LOG_DEBUG, std::forward<Args>(args)...)
+#else
+        printf(std::forward<Args>(args)...);
+#endif
+    };
 
-#else //__ANDROID__
-
-#define  LOGE(...)  printf(__VA_ARGS__)
-#define  LOGW(...)  printf(__VA_ARGS__)
-#ifdef __DEBUG__
-#define  LOGD(...)  printf(__VA_ARGS__)
-#endif //__DEBUG__
-
-#define  LOGI(...)  printf(__VA_ARGS__)
-
-#endif //__ANDROID__
-
-#ifndef __DEBUG__
-#define LOGD(...)
-#endif //__DEBUG__
+    template<typename... Args>
+    constexpr const void error(Args &&...args) {
+#ifdef __ANDROID__
+        __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, std::forward<Args>(args)...)
+#else
+        printf(std::forward<Args>(args)...);
+#endif
+    };
+};
 
 #endif //C003_LOGGING_H
