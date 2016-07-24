@@ -8,16 +8,25 @@
 class SettingsData {
 
 public:
-    bool &joystick() {
-        return _joystick;
+    bool joystick() const {
+        return m_joystick;
     }
-    bool &dev() {
-        return _dev;
+
+    void joystick(bool m_joystick) {
+        m_joystick = m_joystick;
+    }
+
+    bool dev() const {
+        return m_dev;
+    }
+
+    void dev(bool m_dev) {
+        m_dev = m_dev;
     }
 
 private:
-    bool _joystick = 1;
-    bool _dev = 0;
+    bool m_joystick = 1;
+    bool m_dev = 0;
 };
 
 #endif //C003_SETTINGSDATA_H

@@ -23,7 +23,7 @@ Settings::Settings(ApplicationContext *applicationContext) : Menu(applicationCon
     auto button1Action = [=](const TouchPoint *const p) {
         if (p->state == 1) {
             if (b->canBeClicked(p)) {
-                this->applicationContext->getSettingsData().joystick() = !this->applicationContext->getSettingsData().joystick();
+                this->applicationContext->getSettingsData().joystick(!this->applicationContext->getSettingsData().joystick());
                 std::string joystickText = this->applicationContext->getSettingsData().joystick() ? "Joy: on" : "Joy: off";
                 b->getText()->updateString(joystickText);
                 b->reinit(windowWidth, windowHeight);
@@ -40,7 +40,7 @@ Settings::Settings(ApplicationContext *applicationContext) : Menu(applicationCon
     auto button2Action = [=](const TouchPoint *const p) {
         if (p->state == 1) {
             if (b->canBeClicked(p)) {
-                this->applicationContext->getSettingsData().dev() = !this->applicationContext->getSettingsData().dev();
+                this->applicationContext->getSettingsData().dev(!this->applicationContext->getSettingsData().dev());
                 std::string devText = this->applicationContext->getSettingsData().dev() ? "Dev: on" : "Dev: off";
                 b->getText()->updateString(devText);
                 b->reinit(windowWidth, windowHeight);
