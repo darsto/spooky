@@ -13,7 +13,7 @@ public:
     }
 
     void joystick(bool m_joystick) {
-        m_joystick = m_joystick;
+        m_joystick = joystick;
     }
 
     bool dev() const {
@@ -21,12 +21,12 @@ public:
     }
 
     void dev(bool m_dev) {
-        m_dev = m_dev;
+        m_dev = dev;
     }
 
 private:
-    bool m_joystick = 1;
-    bool m_dev = 0;
+    bool m_joystick = true;
+    bool m_dev = false;
 };
 
 #endif //C003_SETTINGSDATA_H
