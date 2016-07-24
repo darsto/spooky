@@ -15,16 +15,16 @@ public:
     ApplicationContext(const std::function<bool(Window *)> &switchWindow);
 
     bool switchWindow(Window *window) {
-        return switchWindowFunc(window);
+        return m_switchWindow(window);
     }
 
-    SettingsData &getSettingsData() {
-        return settingsData;
+    SettingsData &settingsData() {
+        return m_settingsData;
     }
 
 private:
-    const std::function<bool(Window *window)> switchWindowFunc;
-    SettingsData settingsData;
+    const std::function<bool(Window *window)> m_switchWindow;
+    SettingsData m_settingsData;
 };
 
 #endif //C003_APPLICATIONCONTEXT_H

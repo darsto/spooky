@@ -58,8 +58,8 @@ public:
 #endif // __DEFMOBILE__
 
 private:
-    std::unordered_map<int, TouchPoint *> touchPoints;
-    Keypress keypresses[SDL_NUM_SCANCODES];
+    std::unordered_map<int, TouchPoint *> m_touchPoints;
+    Keypress m_keypresses[SDL_NUM_SCANCODES];
 
     void handleTouch(Window &window);
     void handleKeyboard(Window &window);

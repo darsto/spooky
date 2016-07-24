@@ -4,4 +4,4 @@
 
 #include "ApplicationContext.h"
 
-ApplicationContext::ApplicationContext(const std::function<bool(Window *)> &switchWindowFunc) : switchWindowFunc(switchWindowFunc) { }
+ApplicationContext::ApplicationContext(const std::function<bool(Window *)> &switchWindowFunc) : m_switchWindow(switchWindowFunc) { }

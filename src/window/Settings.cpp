@@ -18,13 +18,13 @@
 #endif //__ANDROID__
 
 Settings::Settings(ApplicationContext &applicationContext) : Menu(applicationContext) {
-    std::string joystickText = applicationContext.getSettingsData().joystick() ? "Joy: on" : "Joy: off";
+    std::string joystickText = applicationContext.settingsData().joystick() ? "Joy: on" : "Joy: off";
     GuiButton *b = new GuiButton(joystickText, GUI_MIDDLE_CENTER, 0, -80, 375, 125, new int[2]{3, 11}, 2);
     auto button1Action = [&](const TouchPoint &p) {
         if (p.state == 1) {
             if (b->canBeClicked(p)) {
-                applicationContext.getSettingsData().joystick(!applicationContext.getSettingsData().joystick());
-                std::string joystickText = applicationContext.getSettingsData().joystick() ? "Joy: on" : "Joy: off";
+                applicationContext.settingsData().joystick(!applicationContext.settingsData().joystick());
+                std::string joystickText = applicationContext.settingsData().joystick() ? "Joy: on" : "Joy: off";
                 b->getText()->updateString(joystickText);
                 b->reinit(windowWidth, windowHeight);
             }
@@ -34,13 +34,13 @@ Settings::Settings(ApplicationContext &applicationContext) : Menu(applicationCon
     };
     b->setOnClickListener(button1Action);
     this->guiElements.push_back(b);
-    std::string devText = applicationContext.getSettingsData().dev() ? "Dev: on" : "Dev: off";
+    std::string devText = applicationContext.settingsData().dev() ? "Dev: on" : "Dev: off";
     b = new GuiButton(devText, GUI_MIDDLE_CENTER, 0, 80, 375, 125, new int[2]{3, 11}, 2);
     auto button2Action = [&](const TouchPoint &p) {
         if (p.state == 1) {
             if (b->canBeClicked(p)) {
-                applicationContext.getSettingsData().dev(!applicationContext.getSettingsData().dev());
-                std::string devText = applicationContext.getSettingsData().dev() ? "Dev: on" : "Dev: off";
+                applicationContext.settingsData().dev(!applicationContext.settingsData().dev());
+                std::string devText = applicationContext.settingsData().dev() ? "Dev: on" : "Dev: off";
                 b->getText()->updateString(devText);
                 b->reinit(windowWidth, windowHeight);
             }
