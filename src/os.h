@@ -12,7 +12,7 @@ enum class OS {
     APPLE
 };
 
-constexpr static const OS OPERATING_SYTEM =
+constexpr const OS OPERATING_SYTEM =
 #ifdef _WIN32
     OS::WIN32
 #elif __APPLE__
@@ -24,6 +24,6 @@ constexpr static const OS OPERATING_SYTEM =
 #endif
 ;
 
-constexpr static const bool IS_MOBILE = OPERATING_SYTEM == OS::ANDROID || OPERATING_SYTEM == OS::APPLE;
+constexpr const bool IS_MOBILE = OPERATING_SYTEM == OS::ANDROID || OPERATING_SYTEM == OS::APPLE;
 
 #endif //C003_OS_H
