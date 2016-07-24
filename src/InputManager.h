@@ -8,7 +8,9 @@
 #include "os.h"
 
 #ifndef __DEFMOBILE__
+
 #include "SDL2/SDL.h"
+
 #endif // __DEFMOBILE__
 
 #include <unordered_map>
@@ -16,18 +18,21 @@
 class Window;
 
 struct TouchPoint {
-    TouchPoint(char id) : id(id) { };
+    TouchPoint(char id) : id(id) {};
     char id;
     float x, y;
     char state;
 };
 
-#define KEY_PRESS 1
-#define KEY_RELEASE 2
-#define KEY_REPEAT 3
+enum class KEY_STATE {
+    NONE = 0,
+    PRESS,
+    RELEASE,
+    REPEAT
+};
 
 struct Keypress {
-    char state;
+    KEY_STATE state;
     /* An array of delays after each keyboard click.
      * Decrements with each frame.
      * Used to detect double keyboard presses */
@@ -35,15 +40,15 @@ struct Keypress {
     unsigned char pressCounter;
 
     bool isPressed() const {
-        return this->state == KEY_PRESS;
+        return this->state == KEY_STATE::PRESS;
     }
 
     bool isDown() const {
-        return this->state == KEY_PRESS || this->state == KEY_REPEAT;
+        return this->state == KEY_STATE::PRESS || this->state == KEY_STATE::REPEAT;
     }
 
     bool isReleased() const {
-        return this->state == KEY_RELEASE;
+        return this->state == KEY_STATE::RELEASE;
     }
 };
 

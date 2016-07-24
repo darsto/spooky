@@ -29,8 +29,8 @@ void InputManager::handleKeypress(SDL_Event *e) {
         //this->running = false; //TODO
     } else if (e->key.keysym.scancode >= 0 && e->key.keysym.scancode < SDL_NUM_SCANCODES && e->key.repeat == 0) {
         Keypress *key = &this->keypresses[e->key.keysym.scancode];
-        key->state = (e->type == SDL_KEYDOWN ? KEY_PRESS : KEY_RELEASE);
-        if (key->state == KEY_PRESS) key->pressDelay = 255;
+        key->state = (e->type == SDL_KEYDOWN ? KEY_STATE::PRESS : KEY_STATE::RELEASE);
+        if (key->state == KEY_STATE::PRESS) key->pressDelay = 255;
         if (key->pressDelay > 0 && e->type == SDL_KEYUP)
             key->pressCounter++;
     }
@@ -47,8 +47,8 @@ void InputManager::handleKeyboard(Window *window) {
 #ifndef __DEFMOBILE__
     window->handleKeyboard(this->keypresses);
     for (int i = 0; i < SDL_NUM_SCANCODES; i++) {
-        if (this->keypresses[i].state == KEY_PRESS) {
-            this->keypresses[i].state = KEY_REPEAT;
+        if (this->keypresses[i].state == KEY_STATE::PRESS) {
+            this->keypresses[i].state = KEY_STATE::REPEAT;
         }
     }
 #else //__DEFMOBILE__
@@ -84,6 +84,7 @@ void InputManager::reload() {
     this->touchPoints.clear();
     for (int i = 0; i < SDL_NUM_SCANCODES; i++) {
         Keypress *key = &this->keypresses[i];
-        key->state = key->pressDelay = key->pressCounter = 0;
+        key->state = KEY_STATE::NONE;
+        key->pressDelay = key->pressCounter = 0;
     }
 }
