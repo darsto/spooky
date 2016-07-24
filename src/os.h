@@ -5,22 +5,25 @@
 #ifndef C003_OS_H
 #define C003_OS_H
 
-#define OS_WIN32 0
-#define OS_UNIX 1
-#define OS_ANDROID 2
-#define OS_APPLE 3
+enum class OS {
+    WIN32 = 0,
+    UNIX,
+    ANDROID,
+    APPLE
+};
 
+constexpr static const OS OPERATING_SYTEM =
 #ifdef _WIN32
-#define OS OS_WIN32
+    OS::WIN32
 #elif __APPLE__
-#define OS OS_APPLE
+    OS::APPLE
 #elif __ANDROID__
-#define OS OS_ANDROID
-#define __DEFMOBILE__ 1
+    OS::ANDROID
 #elif __unix__
-#define OS OS_UNIX
+    OS::UNIX
 #endif
+;
 
-#define MOBILE (OS == OS_ANDROID)
+constexpr static const bool IS_MOBILE = OPERATING_SYTEM == OS::ANDROID || OPERATING_SYTEM == OS::APPLE;
 
 #endif //C003_OS_H

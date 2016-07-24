@@ -13,7 +13,7 @@
 RenderManager::RenderManager() { }
 
 bool RenderManager::init() {
-    if (!MOBILE && !this->initWindow()) {
+    if (!IS_MOBILE && !this->initWindow()) {
         printf("Failed to initialize window!\n");
     } else
     if (!this->initGL()) {

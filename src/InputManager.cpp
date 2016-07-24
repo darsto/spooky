@@ -40,7 +40,7 @@ void InputManager::handleKeypress(SDL_Event *e) {
 
 void InputManager::tick(Window *window) {
     this->handleTouch(window);
-    if (!MOBILE) this->handleKeyboard(window);
+    if (!IS_MOBILE) this->handleKeyboard(window);
 }
 
 void InputManager::handleKeyboard(Window *window) {
@@ -68,7 +68,7 @@ void InputManager::handleTouch(Window *window) {
                 window->handleClick(p);
                 if (p->state == 0) p->state = 2;
                 if (p->state == 1) {
-                    if (MOBILE) {
+                    if (IS_MOBILE) {
                         delete p;
                         this->touchPoints[it->first] = nullptr;
                     } else {

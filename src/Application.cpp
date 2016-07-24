@@ -55,7 +55,7 @@ void Application::update(bool dynamic) {
         this->getCurrentWindow()->tick(1.0);
     }
     this->renderer->render(this->getCurrentWindow());
-    if (!MOBILE) this->handleEvents();
+    if (!IS_MOBILE) this->handleEvents();
     this->inputManager->tick(this->getCurrentWindow());
     this->ticks++;
     if (this->ticks > 14) {
