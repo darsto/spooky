@@ -31,7 +31,7 @@ enum class KEY_STATE {
     REPEAT
 };
 
-struct Keypress {
+class Keypress {
     KEY_STATE state;
     /* An array of delays after each keyboard click.
      * Decrements with each frame.
@@ -39,17 +39,11 @@ struct Keypress {
     unsigned char pressDelay;
     unsigned char pressCounter;
 
-    bool isPressed() const {
-        return this->state == KEY_STATE::PRESS;
-    }
+    bool isPressed() const;
+    bool isDown() const;
+    bool isReleased() const;
 
-    bool isDown() const {
-        return this->state == KEY_STATE::PRESS || this->state == KEY_STATE::REPEAT;
-    }
-
-    bool isReleased() const {
-        return this->state == KEY_STATE::RELEASE;
-    }
+    friend class InputManager;
 };
 
 class InputManager {

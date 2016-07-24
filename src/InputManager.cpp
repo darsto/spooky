@@ -88,3 +88,17 @@ void InputManager::reload() {
         key->pressDelay = key->pressCounter = 0;
     }
 }
+
+// Keypress
+
+bool Keypress::isPressed() const {
+    return this->state == KEY_STATE::PRESS;
+}
+
+bool Keypress::isDown() const {
+    return this->state == KEY_STATE::PRESS || this->state == KEY_STATE::REPEAT;
+}
+
+bool Keypress::isReleased() const {
+    return this->state == KEY_STATE::RELEASE;
+}
