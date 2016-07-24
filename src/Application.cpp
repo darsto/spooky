@@ -37,6 +37,13 @@ void Application::reinit() {
     this->inputManager->reload();
 }
 
+
+void Application::run() {
+    while (isRunning()) {
+        update(true);
+    }
+}
+
 void Application::update(bool dynamic) {
     if (this->previousWindow != nullptr) {
         delete this->previousWindow;
