@@ -5,7 +5,6 @@
 #include <window/MainMenu.h>
 #include <window/Window.h>
 #include "Application.h"
-#include "window/Game.h"
 #include "render/RenderManager.h"
 #include "logging.h"
 #include <ApplicationContext.h>

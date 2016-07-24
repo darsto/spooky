@@ -5,7 +5,6 @@
 #include <gui/GuiButton.h>
 #include <gui/GuiText.h>
 #include "MainMenu.h"
-#include "Game.h"
 #include "Settings.h"
 #include <string>
 #include <InputManager.h>
@@ -23,7 +22,6 @@ MainMenu::MainMenu(ApplicationContext *applicationContext) : Window(applicationC
     auto playAction = [=](const TouchPoint *const p) {
         if (p->state == 1) {
             if (b->canBeClicked(p)) {
-                this->applicationContext->switchWindow(new Game(this->applicationContext, applicationContext->getLevelData()->getLevels()[0]));
             }
             return false;
         }

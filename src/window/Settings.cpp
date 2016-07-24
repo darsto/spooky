@@ -6,7 +6,6 @@
 #include <gui/GuiButton.h>
 #include <gui/GuiText.h>
 #include "MainMenu.h"
-#include "Game.h"
 #include <string>
 #include <InputManager.h>
 #include <logging.h>
