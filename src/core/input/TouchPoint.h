@@ -23,13 +23,6 @@ namespace Input {
 
         friend class InputManager;
     };
-
-    enum class KEY_STATE {
-        NONE = 0,
-        PRESS,
-        RELEASE,
-        REPEAT
-    };
 }
 
 #endif //C003_TOUCHPOINT_H
