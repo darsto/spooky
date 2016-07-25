@@ -31,6 +31,6 @@ void LoadingScreen::tick(double deltaTime) {
     }
 }
 
-void LoadingScreen::handleClick(const TouchPoint &p) { }
+void LoadingScreen::handleClick(const Input::TouchPoint &p) { }
 
-void LoadingScreen::handleKeyboard(const Keypress *const keypress) { }
+void LoadingScreen::handleKeypress(const Input::Keypress &keypress) { }

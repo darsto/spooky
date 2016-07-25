@@ -21,8 +21,8 @@ public:
     virtual void reload(unsigned int windowWidth, unsigned int windowHeight) override;
     virtual void tick(double deltaTime) override;
 
-    virtual void handleKeyboard(const Keypress *const keypress) override { };
-    virtual void handleClick(const TouchPoint &touchPoint) override;
+    virtual void handleKeypress(const Input::Keypress &keypress) override { };
+    virtual void handleClick(const Input::TouchPoint &touchPoint) override;
     virtual ~Menu() override;
 
     const std::vector<GuiElement *> &getGuiElements() const {

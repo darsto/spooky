@@ -5,9 +5,8 @@
 #include <gui/GuiButton.h>
 #include <gui/GuiText.h>
 #include "MainMenu.h"
-#include "Settings.h"
 #include <string>
-#include <InputManager.h>
+#include <core/input/InputManager.h>
 #include <logging.h>
 #include <ApplicationContext.h>
 
@@ -34,11 +33,11 @@ void MainMenu::tick(double deltaTime) {
 
 }
 
-void MainMenu::handleKeyboard(const Keypress *const keypress) {
+void MainMenu::handleKeypress(const Input::Keypress &keypress) {
     //nothing
 }
 
-void MainMenu::handleClick(const TouchPoint &p) {
+void MainMenu::handleClick(const Input::TouchPoint &p) {
 }
 
 MainMenu::~MainMenu() {

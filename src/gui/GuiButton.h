@@ -6,10 +6,9 @@
 #define C003_GUIBUTTON_H
 
 #include <functional>
+#include <core/input/TouchPoint.h>
 #include "GuiElement.h"
 #include "GuiText.h"
-
-class TouchPoint;
 
 class GuiButton : public GuiElement {
 
@@ -22,8 +21,8 @@ public:
 
     GuiButton(char positionFlag, double x, double y, double width, double height, int texturePos) : GuiButton("", positionFlag, x, y, width, height, new int[1]{texturePos}, 1) { };
 
-    virtual bool onClick(const TouchPoint &touchPoint);
-    virtual void setOnClickListener(std::function<bool(const TouchPoint &)> onClickListener);
+    virtual bool onClick(const Input::TouchPoint &touchPoint);
+    virtual void setOnClickListener(std::function<bool(const Input::TouchPoint &)> onClickListener);
 
     bool isEnabled() const {
         return enabled;
@@ -44,7 +43,7 @@ public:
         return touchedBy;
     }
 
-    bool canBeClicked(const TouchPoint &touchPoint);
+    bool canBeClicked(const Input::TouchPoint &touchPoint);
 
     int getTexturesNum() const {
         return texturesNum;
@@ -63,7 +62,7 @@ protected:
     bool enabled = true;
     bool pressed = false;
     int touchedBy;
-    std::function<bool(const TouchPoint &)> onClickListener;
+    std::function<bool(const Input::TouchPoint &)> onClickListener;
 };
 
 #endif //C003_GUIBUTTON_H

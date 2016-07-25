@@ -8,7 +8,7 @@
 #include <memory>
 #include <window/Window.h>
 #include "core/Timer.h"
-#include "InputManager.h"
+#include "core/input/InputManager.h"
 #include "os.h"
 #include "render/RenderManager.h"
 
@@ -27,7 +27,7 @@ private:
     bool m_running = true;
     std::unique_ptr<Window> m_window;
     RenderManager m_renderer;
-    InputManager m_inputManager;
+    Input::InputManager m_inputManager;
     Timer m_timer;
     double m_deltaTimeHistory[15];
     double m_averageDeltaTime = 0;

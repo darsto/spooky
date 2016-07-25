@@ -10,8 +10,6 @@
 
 class GuiElement;
 
-class TouchPoint;
-
 class GuiButton;
 
 class MainMenu : public Window {
@@ -20,8 +18,8 @@ public:
     MainMenu(ApplicationContext &applicationContext);
     virtual void reload(unsigned int windowWidth, unsigned int WindowHeight) override;
     virtual void tick(double deltaTime) override;
-    virtual void handleKeyboard(const Keypress *const keypress) override;
-    virtual void handleClick(const TouchPoint &p) override;
+    virtual void handleKeypress(const Input::Keypress &keypress) override;
+    virtual void handleClick(const Input::TouchPoint &p) override;
     virtual ~MainMenu() override;
 
     const std::vector<GuiElement *> &getGuiElements() const {

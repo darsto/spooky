@@ -8,7 +8,6 @@
 #include <logging.h>
 #include <window/LoadingScreen.h>
 #include "../window/MainMenu.h"
-#include "../window/Settings.h"
 
 RenderManager::RenderManager() { }
 
@@ -84,7 +83,6 @@ bool RenderManager::initGL() {
 bool RenderManager::initRenders() {
     windowRenders.insert(std::make_pair(typeid(LoadingScreen).name(), new MenuRender()));
     windowRenders.insert(std::make_pair(typeid(MainMenu).name(), new MenuRender()));
-    windowRenders.insert(std::make_pair(typeid(Settings).name(), new MenuRender()));
     return true;
 }
 

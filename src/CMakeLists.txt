@@ -9,58 +9,61 @@ else ()
 endif ()
 
 SET(SOURCE_FILES
-render/Shader.cpp
-render/Shader.h
-render/ShaderProgram.cpp
-render/ShaderProgram.h
-render/Texture.cpp
-render/Texture.h
-render/Fbo.cpp
-render/Fbo.h
-render/RenderManager.cpp
-render/RenderManager.h
-core/Timer.h
-render/opengl.h
-render/opengl.cpp
-logging.h
-window/Window.h
-Application.cpp
-Application.h
-render/window/WindowRender.h
-gui/GuiButton.h
-gui/GuiButton.cpp
-render/gui/GuiElementRender.cpp
-render/gui/GuiElementRender.h
-gui/GuiElement.h
-InputManager.cpp
-InputManager.h
-os.h
-render/gui/GuiButtonRender.h
-render/font/TextRender.cpp
-render/font/TextRender.h
-gui/GuiText.h
-window/MainMenu.cpp
-window/MainMenu.h
-render/window/MenuRender.cpp
-render/window/MenuRender.h
-render/RenderContext.cpp
-render/RenderContext.h
-window/Settings.cpp
-window/Settings.h
-window/Menu.h
-window/Menu.cpp
-gui/GuiElement.cpp
-gui/GuiTextBubble.cpp
-gui/GuiTextBubble.h
-render/gui/GuiTextBubbleRender.h
-ApplicationContext.cpp
-ApplicationContext.h
-SettingsData.h
-window/LoadingScreen.cpp
-window/LoadingScreen.h
-files.h
-files.cpp
-stringutils.h)
+        render/Shader.cpp
+        render/Shader.h
+        render/ShaderProgram.cpp
+        render/ShaderProgram.h
+        render/Texture.cpp
+        render/Texture.h
+        render/Fbo.cpp
+        render/Fbo.h
+        render/RenderManager.cpp
+        render/RenderManager.h
+        core/Timer.h
+        render/opengl.h
+        render/opengl.cpp
+        logging.h
+        window/Window.h
+        Application.cpp
+        Application.h
+        render/window/WindowRender.h
+        gui/GuiButton.h
+        gui/GuiButton.cpp
+        render/gui/GuiElementRender.cpp
+        render/gui/GuiElementRender.h
+        gui/GuiElement.h
+        core/input/InputManager.cpp
+        core/input/InputManager.h
+        os.h
+        render/gui/GuiButtonRender.h
+        render/font/TextRender.cpp
+        render/font/TextRender.h
+        gui/GuiText.h
+        window/MainMenu.cpp
+        window/MainMenu.h
+        render/window/MenuRender.cpp
+        render/window/MenuRender.h
+        render/RenderContext.cpp
+        render/RenderContext.h
+        window/Menu.h
+        window/Menu.cpp
+        gui/GuiElement.cpp
+        gui/GuiTextBubble.cpp
+        gui/GuiTextBubble.h
+        render/gui/GuiTextBubbleRender.h
+        ApplicationContext.cpp
+        ApplicationContext.h
+        SettingsData.h
+        window/LoadingScreen.cpp
+        window/LoadingScreen.h
+        files.h
+        files.cpp
+        stringutils.h
+        core/input/TouchPoint.h
+        core/input/TouchPoint.cpp
+        core/input/Keypress.cpp
+        core/input/Keypress.h
+        core/input/TouchPoint.cpp)
 SET(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/../cmake)
 
 INCLUDE(FindPkgConfig)

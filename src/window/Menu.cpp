@@ -6,9 +6,8 @@
 #include <gui/GuiButton.h>
 #include <gui/GuiText.h>
 #include "MainMenu.h"
-#include "Settings.h"
 #include <string>
-#include <InputManager.h>
+#include <core/input/InputManager.h>
 #include <logging.h>
 
 #ifndef __ANDROID__
@@ -28,7 +27,7 @@ void Menu::tick(double deltaTime) {
 
 }
 
-void Menu::handleClick(const TouchPoint &p) {
+void Menu::handleClick(const Input::TouchPoint &p) {
 
 }
 
