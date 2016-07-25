@@ -1,12 +1,9 @@
-# Spooky Tom
-C++ cross-platform OpenGL 2.1/OpenGL ES 2.0 game.
+# Spooky
+C++11 cross-platform OpenGL 2.1/OpenGL ES 2.0 game (engine)
 
-Spooky Tom is a top-down game for children aged 7 to 13 years old. Action takes place in a single-family house, inhabited by a child and a parent. The player takes on the role of a ghost, that flies through the walls and is invisible. Due to the fact, that there is a child in a house, there are many different toys laying around. Our ghost can possess them, making them "come to life". This way, a ghost is able to interact with people and the world. Different toys have different abilities. For example, a bulldozer-toy pushes all objects very easily, a car makes you travel quickly, and a helicopter lets you move objects by air. The gameplay consists of interacting, moving, or breaking various objects in the house. The key goal of the game is to use the right combination of available toys.
+Under construction. For updates, take a look here:
+https://darsto.github.io/2016/07/24/Resurrecting-a-zombie-working-on-c11-cross-platform-game-engine.html
 
-![Screenshot by 15.04.2016]
-(http://i.imgur.com/QwTOmBz.png)
+All the work is being done on the c++11 branch (for now).
 
-<!--![Screenshot by 5.12.15]
-(http://i.imgur.com/atZIiPz.png)-->
-
-Copyright 2015-2016 Game Development Accident
+Copyright 2015-2016 Dariusz Stojaczyk
