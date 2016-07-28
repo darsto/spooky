@@ -45,9 +45,9 @@ void InputManager::tick(Window &window) {
 
 void InputManager::handleKeyboard(Window &window) {
 #ifndef __DEFMOBILE__
-    for (int i = 0; i < m_keypresses.size(); i++) {
-        window.handleKeypress(m_keypresses);
+    window.handleKeypress(m_keypresses);
 
+    for (int i = 0; i < m_keypresses.size(); i++) {
         if (m_keypresses[i].m_state == Keypress::State::PRESS) {
             m_keypresses[i].m_state = Keypress::State::REPEAT;
         }
