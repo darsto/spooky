@@ -21,7 +21,7 @@ public:
     virtual void reload(unsigned int windowWidth, unsigned int windowHeight) override;
     virtual void tick(double deltaTime) override;
 
-    virtual void handleKeypress(const Input::Keypress &keypress) override { };
+    virtual void handleKeypress(const Input::KeypressTable &keypresses) override { };
     virtual void handleClick(const Input::TouchPoint &touchPoint) override;
     virtual ~Menu() override;
 

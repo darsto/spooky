@@ -9,19 +9,10 @@
 #include <ApplicationContext.h>
 #include <window/LoadingScreen.h>
 
-Application::Application() {
-    auto switchWindow = [&](Window *window) {
-        m_window = std::unique_ptr<Window>(window);
-        m_renderer.initWindow(*window);
+Application::Application()
+    : m_context(*this),
+      m_window(new LoadingScreen(m_context)) {
 
-        auto renderContext = m_renderer.getRenderContext();
-        resize(renderContext->getWindowWidth(), renderContext->getWindowHeight());
-
-        return true;
-    };
-
-    //todo
-    m_window = std::unique_ptr<Window>(new LoadingScreen(*new ApplicationContext(switchWindow)));
     reinit();
     resize(1366, 750);
 }
@@ -33,14 +24,19 @@ void Application::reinit() {
     m_inputManager.reload();
 }
 
-
 void Application::run() {
     while (isRunning()) {
         update(true);
     }
+    onQuit();
 }
 
 void Application::update(bool dynamic) {
+    if (m_newWindow) {
+        switchWindow();
+        m_newWindow = nullptr;
+    }
+
     if (dynamic) {
         m_deltaTimeHistory[m_ticks] = m_timer.GetDelta();
         if (m_ticks == 14) {
@@ -155,4 +151,21 @@ void Application::handleEvents() {
 
 bool Application::isRunning() const {
     return m_running;
+}
+
+void Application::switchWindow() {
+    if (m_newWindow == nullptr) {
+        m_running = false;
+    } else {
+        m_window.swap(m_newWindow);
+        m_newWindow.reset();
+        m_renderer.initWindow(*m_window);
+
+        auto renderContext = m_renderer.getRenderContext();
+        resize(renderContext->getWindowWidth(), renderContext->getWindowHeight());
+    }
+}
+
+void Application::onQuit() {
+
 }

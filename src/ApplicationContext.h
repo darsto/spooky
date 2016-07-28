@@ -6,24 +6,21 @@
 #define C003_APPLICATIONCONTEXT_H
 
 #include <functional>
+#include <memory>
 #include "SettingsData.h"
 
 class Window;
 
+class Application;
+
 class ApplicationContext {
 public:
-    ApplicationContext(const std::function<bool(Window *)> &switchWindow);
-
-    bool switchWindow(Window *window) {
-        return m_switchWindow(window);
-    }
-
-    SettingsData &settingsData() {
-        return m_settingsData;
-    }
+    ApplicationContext(Application &application);
+    void switchWindow(Window *window);
+    SettingsData &settingsData();
 
 private:
-    const std::function<bool(Window *window)> m_switchWindow;
+    Application &m_application;
     SettingsData m_settingsData;
 };
 

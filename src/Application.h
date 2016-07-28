@@ -11,6 +11,7 @@
 #include "core/input/InputManager.h"
 #include "os.h"
 #include "render/RenderManager.h"
+#include "ApplicationContext.h"
 
 class Application {
 
@@ -25,6 +26,7 @@ public:
 
 private:
     bool m_running = true;
+    ApplicationContext m_context;
     std::unique_ptr<Window> m_window;
     RenderManager m_renderer;
     Input::InputManager m_inputManager;
@@ -32,12 +34,18 @@ private:
     double m_deltaTimeHistory[15];
     double m_averageDeltaTime = 0;
     unsigned long long m_ticks = 0;
+    std::unique_ptr<Window> m_newWindow;
 
 #ifndef __DEFMOBILE__
     SDL_Event m_sdlEvent;
 #endif //__DEFMOBILE__
 
     void handleEvents();
+    void switchWindow();
+
+    friend class ApplicationContext;
+
+    void onQuit();
 };
 
 #endif //C003_APPLICATION_H

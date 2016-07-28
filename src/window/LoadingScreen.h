@@ -20,7 +20,7 @@ public:
     LoadingScreen(ApplicationContext &applicationContext);
     virtual void reload(unsigned int windowWidth, unsigned int WindowHeight) override;
     virtual void tick(double deltaTime) override;
-    virtual void handleKeypress(const Input::Keypress &keypress) override;
+    virtual void handleKeypress(const Input::KeypressTable &keypresses) override;
     virtual void handleClick(const Input::TouchPoint &p) override;
 
     const std::vector<GuiElement *> &getGuiElements() const {

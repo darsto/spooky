@@ -27,9 +27,7 @@ void InputManager::handleClick(int i, int action, float x, float y) {
 #ifndef __DEFMOBILE__
 
 void InputManager::handleKeypress(SDL_Event *e) {
-    if (e->key.keysym.sym == SDLK_ESCAPE) {
-        //m_running = false; //TODO
-    } else if (e->key.keysym.scancode >= 0 && e->key.keysym.scancode < SDL_NUM_SCANCODES && e->key.repeat == 0) {
+    if (e->key.keysym.scancode >= 0 && e->key.keysym.scancode < SDL_NUM_SCANCODES && e->key.repeat == 0) {
         Keypress *key = &m_keypresses[e->key.keysym.scancode];
         key->m_state = (e->type == SDL_KEYDOWN ? Keypress::State::PRESS : Keypress::State::RELEASE);
         if (key->m_state == Keypress::State::PRESS) key->m_pressDelay = 255;
@@ -48,7 +46,7 @@ void InputManager::tick(Window &window) {
 void InputManager::handleKeyboard(Window &window) {
 #ifndef __DEFMOBILE__
     for (int i = 0; i < m_keypresses.size(); i++) {
-        window.handleKeypress(m_keypresses[i]);
+        window.handleKeypress(m_keypresses);
 
         if (m_keypresses[i].m_state == Keypress::State::PRESS) {
             m_keypresses[i].m_state = Keypress::State::REPEAT;

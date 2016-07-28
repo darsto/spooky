@@ -5,6 +5,7 @@
 #include <gui/GuiButton.h>
 #include <gui/GuiText.h>
 #include "MainMenu.h"
+#include "LoadingScreen.h"
 #include <string>
 #include <core/input/InputManager.h>
 #include <logging.h>
@@ -33,8 +34,11 @@ void MainMenu::tick(double deltaTime) {
 
 }
 
-void MainMenu::handleKeypress(const Input::Keypress &keypress) {
-    //nothing
+void MainMenu::handleKeypress(const Input::KeypressTable &keypresses) {
+    if (keypresses[SDL_SCANCODE_W].isPressed()) {
+        printf("W Pressed\n");
+        m_applicationContext.switchWindow(new LoadingScreen(m_applicationContext));
+    }
 }
 
 void MainMenu::handleClick(const Input::TouchPoint &p) {
