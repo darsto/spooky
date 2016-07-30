@@ -16,7 +16,7 @@
 class GuiElementRender {
 public:
     GuiElementRender() { };
-    GuiElementRender(const string &textureFile, const string &shader);
+    GuiElementRender(const std::string &textureFile, const std::string &shader);
     ~GuiElementRender();
     virtual void render(const GuiElement &element, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, double scale);
 protected:

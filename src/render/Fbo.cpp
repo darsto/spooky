@@ -22,7 +22,7 @@ unsigned char Fbo::initShader() {
     return errCode;
 }
 
-int Fbo::init(int texId, unsigned int width, unsigned int height, float bgColor[], string shaderName) {
+int Fbo::init(int texId, unsigned int width, unsigned int height, float bgColor[], std::string shaderName) {
     this->texId = texId;
     this->width = width;
     this->height = height;

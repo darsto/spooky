@@ -4,12 +4,12 @@
 
 #include "GuiElementRender.h"
 
-GuiElementRender::GuiElementRender(const string &textureFile, const string &shader) {
-    texture.loadTexture2D(textureFile + string(".png"), true);
+GuiElementRender::GuiElementRender(const std::string &textureFile, const std::string &shader) {
+    texture.loadTexture2D(textureFile + std::string(".png"), true);
     texture.filtering(TEXTURE_FILTER_MAG_NEAREST, TEXTURE_FILTER_MIN_TRILINEAR_MIPMAP);
 
-    int a = this->vertShader.load(shader + string(".vert"), GL_VERTEX_SHADER);
-    int b = this->fragShader.load(shader + string(".frag"), GL_FRAGMENT_SHADER);
+    int a = this->vertShader.load(shader + std::string(".vert"), GL_VERTEX_SHADER);
+    int b = this->fragShader.load(shader + std::string(".frag"), GL_FRAGMENT_SHADER);
 
     this->shaderProgram.createProgram();
     this->shaderProgram.addShaderToProgram(&this->vertShader);

@@ -17,7 +17,7 @@ public:
     /*
      * Inits whole fbo, initial varables, shaders, programs, texture.
      */
-    int init(int texId, unsigned int width, unsigned int height, float bgColor[], string shaderName);
+    int init(int texId, unsigned int width, unsigned int height, float bgColor[], std::string shaderName);
 
     void resize(unsigned int width, unsigned int height);
 
@@ -39,7 +39,7 @@ private:
     float *bgColor = nullptr;
     GLuint fbo_texture;
     int texId;
-    string shaderName;
+    std::string shaderName;
     Shader vert_shader, frag_shader;
     ShaderProgram shader_program;
     GLuint vaoId, texture_vertices;

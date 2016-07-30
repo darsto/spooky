@@ -4,6 +4,9 @@
 
 #include "ShaderProgram.h"
 
+using namespace std;
+using namespace glm;
+
 ShaderProgram::ShaderProgram() {
     linked = false;
 }
