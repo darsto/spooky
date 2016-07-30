@@ -27,7 +27,7 @@ public:
     Texture();
     ~Texture();
     void createFromData(unsigned char* data);
-    bool loadTexture2D(std::string fileName, bool mipmaps = false);
+    bool loadTexture2D(const std::string &fileName, bool mipmaps = false);
     void bindTexture(int bindId = 0);
 
     void setFiltering(int filterMag, int filterMin);

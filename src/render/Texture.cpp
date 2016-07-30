@@ -19,7 +19,7 @@ void Texture::createFromData(unsigned char *data) {
     }
 }
 
-bool Texture::loadTexture2D(std::string fileName, bool mipmaps) {
+bool Texture::loadTexture2D(const std::string &fileName, bool mipmaps) {
     this->path = IO::getFilePath<IO::Data::TEXTURE>(fileName);
     this->mipmaps = mipmaps;
     this->width = width;
