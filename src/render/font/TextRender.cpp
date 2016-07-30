@@ -30,12 +30,12 @@ void TextRender::render(const GuiElement &element, glm::mat4 projectionMatrix, g
         for (int i = 0; i < text.getString().length(); i++) {
             if (text.getString().at(i) == '\n') {
                 x = text.getX();
-                y += scale + 2 * text.SPACING_PX;
+                y += scale + 2 * text.TEXT_SPACING;
                 continue;
             }
             int texId = text.getTexPos(i);
             if (texId == -1) {
-                x += text.TEXT_SPACESIZE * scale + text.SPACING_PX;
+                x += text.TEXT_SPACESIZE * scale + text.TEXT_SPACING;
                 continue;
             }
             this->tmpModelMatrix = glm::translate(this->modelMatrix, glm::vec3(-(x + scale), -(y + scale), 0.0f));
@@ -50,7 +50,7 @@ void TextRender::render(const GuiElement &element, glm::mat4 projectionMatrix, g
             glBindVertexArray(this->vao);
             glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
-            x += text.getGlyphSize(texId) * scale + text.SPACING_PX;
+            x += (text.getGlyphSize(texId) + text.TEXT_SPACING) * scale;
         }
     }
 }

@@ -106,7 +106,7 @@ public:
     }
 
     const float TEXT_SPACESIZE = 0.2f;
-    const float SPACING_PX = 4; //space between letters (in pixels)
+    const float TEXT_SPACING = 0.125f; //space between letters
 
     virtual int getTexPos(int i) const override {
         return this->getGlyphPos(string.at(i));
@@ -129,11 +129,11 @@ private:
             if (i == this->getString().length() || this->getString().at(i) == '\n') {
                 if (tmp_width > this->width) this->width = tmp_width;
                 tmp_width = 0;
-                this->height += this->getScale() + 2 * SPACING_PX;
+                this->height += this->getScale() + 2 * TEXT_SPACING;
                 continue;
             }
             char pos = this->getGlyphPos(this->getString().at(i));
-            tmp_width += this->getGlyphSize(pos) * this->getScale() + SPACING_PX;
+            tmp_width += this->getGlyphSize(pos) * this->getScale() + TEXT_SPACING;
         }
         this->height -= 0.61f * this->getScale();
     }
