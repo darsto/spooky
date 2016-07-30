@@ -55,7 +55,7 @@ void Texture::setFiltering(int filterMag, int filterMin) {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
     else if (filterMin == TEXTURE_FILTER_MIN_BILINEAR_MIPMAP)
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
-    else if (filterMin == TEXTURE_FILTER_MIN_TRILINEAR)
+    else if (filterMin == TEXTURE_FILTER_MIN_TRILINEAR_MIPMAP)
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 
     this->filterMin = filterMin;

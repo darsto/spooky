@@ -18,7 +18,7 @@ enum ETextureFiltering
     TEXTURE_FILTER_MIN_BILINEAR, // Bilinear criterion for minification
     TEXTURE_FILTER_MIN_NEAREST_MIPMAP, // Nearest criterion for minification, but on closest mipmap
     TEXTURE_FILTER_MIN_BILINEAR_MIPMAP, // Bilinear criterion for minification, but on closest mipmap
-    TEXTURE_FILTER_MIN_TRILINEAR, // Bilinear criterion for minification on two closest mipmaps, then averaged
+    TEXTURE_FILTER_MIN_TRILINEAR_MIPMAP, // Bilinear criterion for minification on two closest mipmaps, then averaged
 };
 
 class Texture
