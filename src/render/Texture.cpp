@@ -3,12 +3,13 @@
 //
 
 #include "Texture.h"
+#include "src/files.h"
 #include <SOIL.h>
 
 int Texture::boundTexId = -1;
 int Texture::activeTexId = -1;
 
-Texture::Texture() { }
+Texture::Texture() {}
 
 void Texture::createFromData(unsigned char *data) {
     this->id = SOIL_create_OGL_texture(data, this->width, this->height, this->channels, 0, SOIL_FLAG_MULTIPLY_ALPHA);
@@ -18,13 +19,8 @@ void Texture::createFromData(unsigned char *data) {
     }
 }
 
-bool Texture::loadTexture2D(std::string path, bool mipmaps) {
-    path = "data/textures/" + path;
-#ifdef __ANDROID__
-    path = "/sdcard/c003/" + path; //TODO Move files inside apk
-#endif // __ANDROID__
-
-    this->path = path;
+bool Texture::loadTexture2D(std::string fileName, bool mipmaps) {
+    this->path = IO::getFilePath<IO::Data::TEXTURE>(fileName);
     this->mipmaps = mipmaps;
     this->width = width;
     this->height = height;

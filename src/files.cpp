@@ -4,10 +4,10 @@
 
 #include "files.h"
 
-std::string Files::getFilePath(const std::string &file) {
+std::string IO::getFilePath(const std::string &file) {
 #ifdef __ANDROID__
-    return "/sdcard/c003/" + file;
+    return "/sdcard/c003/data/" + file;
 #else
-    return file;
+    return "data/" + file;
 #endif
 }
