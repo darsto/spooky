@@ -5,8 +5,8 @@
 #include "GuiElementRender.h"
 
 GuiElementRender::GuiElementRender(const string &textureFile, const string &shader) {
-    texture.loadTexture2D(textureFile + string(".png"), false);
-    texture.setFiltering(TEXTURE_FILTER_MAG_BILINEAR, TEXTURE_FILTER_MIN_BILINEAR);
+    texture.loadTexture2D(textureFile + string(".png"), true);
+    texture.setFiltering(TEXTURE_FILTER_MAG_NEAREST, TEXTURE_FILTER_MIN_TRILINEAR_MIPMAP);
 
     int a = this->vertShader.load(shader + string(".vert"), GL_VERTEX_SHADER);
     int b = this->fragShader.load(shader + string(".frag"), GL_FRAGMENT_SHADER);
@@ -42,12 +42,13 @@ GuiElementRender::GuiElementRender(const string &textureFile, const string &shad
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
-    float size = 1.0f / atlasSize - 1.0f / texture.getWidth();
+    float tWidth = 1.0f / atlasSize - 1.0f / texture.getWidth();
+    float tHeight = 1.0f / atlasSize - 1.0f / texture.getHeight();
     float tCoords[] = {
-        size, 0.0f,
-        size, size,
+        tWidth, 0.0f,
+        tWidth, tHeight,
         0.0f, 0.0f,
-        0.0f, size,
+        0.0f, tHeight,
     };
 
     glBindBuffer(GL_ARRAY_BUFFER, this->vbo[1]); /* texture coords vbo */
@@ -79,9 +80,9 @@ void GuiElementRender::render(const GuiElement &element, glm::mat4 projectionMat
 
         this->tmpModelMatrix = glm::translate(this->modelMatrix, glm::vec3(-(element.getX() + element.getWidth()) * scale, -(element.getY() + element.getHeight()) * scale, 0.0f));
 
-        this->tmpModelMatrix = glm::translate(this->tmpModelMatrix, glm::vec3(0.5 * element.getWidth() * scale, 0.5 *  element.getHeight() * scale, 0.0)); // Translate to the middle of the entity
+        this->tmpModelMatrix = glm::translate(this->tmpModelMatrix, glm::vec3(0.5 * element.getWidth() * scale, 0.5 * element.getHeight() * scale, 0.0)); // Translate to the middle of the entity
         this->tmpModelMatrix = glm::rotate(this->tmpModelMatrix, (const float) element.getAngle(), glm::vec3(0.0f, 0.0f, 1.0f)); // Apply rotation
-        this->tmpModelMatrix = glm::translate(this->tmpModelMatrix, glm::vec3(-0.5 *  element.getWidth() * scale, -0.5 *  element.getHeight() * scale, 0.0)); // Translate back to the origin
+        this->tmpModelMatrix = glm::translate(this->tmpModelMatrix, glm::vec3(-0.5 * element.getWidth() * scale, -0.5 * element.getHeight() * scale, 0.0)); // Translate back to the origin
 
         this->tmpModelMatrix = glm::scale(this->tmpModelMatrix, glm::vec3(element.getWidth() * scale, element.getHeight() * scale, 1.0f));
 
