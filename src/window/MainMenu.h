@@ -7,12 +7,13 @@
 
 #include <vector>
 #include "Window.h"
+#include "Menu.h"
 
 class GuiElement;
 
 class GuiButton;
 
-class MainMenu : public Window {
+class MainMenu : public Menu {
 
 public:
     MainMenu(ApplicationContext &applicationContext);
@@ -21,13 +22,6 @@ public:
     virtual void handleKeypress(const Input::KeypressTable &keypresses) override;
     virtual void handleClick(const Input::TouchPoint &p) override;
     virtual ~MainMenu() override;
-
-    const std::vector<GuiElement *> &getGuiElements() const {
-        return guiElements;
-    }
-
-private:
-    std::vector<GuiElement *> guiElements;
 };
 
 #endif //C003_MAINMENU_H

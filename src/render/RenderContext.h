@@ -5,14 +5,17 @@
 #ifndef C003_RENDERCONTEXT_H
 #define C003_RENDERCONTEXT_H
 
-#include <gui/GuiElement.h>
-#include <render/gui/GuiElementRender.h>
-#include <map>
+#include <vector>
+#include <memory>
+
+class GuiElement;
+
+class GuiElementRender;
 
 struct RenderContext {
 public:
     RenderContext(unsigned int windowWidth, unsigned int windowHeight);
-    GuiElementRender *getGuiElementRender(const GuiElement &element) const;
+    GuiElementRender &getGuiElementRender(const GuiElement &element);
 
     unsigned int getWindowWidth() const {
         return windowWidth;
@@ -27,12 +30,12 @@ public:
         this->windowHeight = windowHeight;
     }
 
+    ~RenderContext();
+
 private:
     unsigned int windowWidth;
     unsigned int windowHeight;
-
-    void initGuiRenders();
-    std::map<const char *, GuiElementRender *> guiRenders;
+    std::vector<std::unique_ptr<GuiElementRender>> guiRenders;
 };
 
 #endif //C003_RENDERCONTEXT_H

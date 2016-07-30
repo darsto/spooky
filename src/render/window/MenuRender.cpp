@@ -8,6 +8,9 @@
 #include "MenuRender.h"
 #include <gui/GuiButton.h>
 #include <window/Menu.h>
+#include "render/opengl.h"
+#include "render/gui/GuiElementRender.h"
+#include "render/RenderContext.h"
 
 MenuRender::MenuRender() : WindowRender() {
 
@@ -19,24 +22,16 @@ void MenuRender::init(const RenderContext &renderContext) {
     this->resize(renderContext);
 }
 
-void MenuRender::render(const Window &window, const RenderContext &renderContext) {
+void MenuRender::render(const Window &window, RenderContext &renderContext) {
     Menu &menu = (Menu &) window;
 
     glClearColor(0.7, 0.7, 0.7, 0.0);
     glClear(GL_COLOR_BUFFER_BIT);
-    for (GuiElement *guiElement : menu.getGuiElements()) {
-        renderContext.getGuiElementRender(*guiElement)->render(guiElement, projectionMatrix, glm::translate(viewMatrix, glm::vec3(
+    for (auto &guiElement : menu.guiElements()) {
+        renderContext.getGuiElementRender(*guiElement).render(*guiElement, projectionMatrix, glm::translate(viewMatrix, glm::vec3(
             0,
             (int) ((signed) renderContext.getWindowHeight()),
             0.0f)), 1.0f);
-        if (GuiButton *b = dynamic_cast<GuiButton *>(guiElement)) {
-            if (b->getText() != nullptr) {
-                renderContext.getGuiElementRender(*b->getText())->render(b->getText(), projectionMatrix, glm::translate(viewMatrix, glm::vec3(
-                    0,
-                    (int) ((signed) renderContext.getWindowHeight() - (b->isPressed() * (b->getHeight() * 0.04))),
-                    0.0f)), 1.0f);
-            }
-        }
     }
 }
 

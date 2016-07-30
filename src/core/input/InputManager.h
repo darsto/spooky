@@ -29,7 +29,7 @@ namespace Input {
     class InputManager {
     public:
         InputManager();
-        void handleClick(int i, int action, float x, float y);
+        void handleClick(int i, TouchPoint::State state, float x, float y);
         void tick(Window &window);
         void reload();
         void handleKeypress(SDL_Event *e);

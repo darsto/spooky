@@ -18,6 +18,18 @@ float TouchPoint::y() const {
     return m_y;
 }
 
-char TouchPoint::state() const {
+TouchPoint::State TouchPoint::state() const {
     return m_state;
+}
+
+bool TouchPoint::isPressed() const {
+    return m_state == State::PRESS;
+}
+
+bool TouchPoint::isDown() const {
+    return m_state == State::PRESS || m_state == State::REPEAT;
+}
+
+bool TouchPoint::isReleased() const {
+    return m_state == State::RELEASE;
 }

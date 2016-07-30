@@ -6,6 +6,7 @@
 #define C003_KEYPRESS_H
 
 namespace Input {
+
     class Keypress {
     public:
         enum class State {
@@ -15,6 +16,12 @@ namespace Input {
             REPEAT
         };
 
+        bool isPressed() const;
+        bool isDown() const;
+        bool isReleased() const;
+
+        friend class InputManager;
+
     private:
         State m_state;
         /* An array of delays after each keyboard click.
@@ -22,13 +29,6 @@ namespace Input {
          * Used to detect double keyboard presses */
         unsigned char m_pressDelay;
         unsigned char m_pressCounter;
-
-    public:
-        bool isPressed() const;
-        bool isDown() const;
-        bool isReleased() const;
-
-        friend class InputManager;
     };
 }
 

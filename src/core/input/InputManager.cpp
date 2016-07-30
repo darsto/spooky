@@ -12,16 +12,15 @@ InputManager::InputManager() {
     reload();
 }
 
-void InputManager::handleClick(int i, int action, float x, float y) {
+void InputManager::handleClick(int i, TouchPoint::State state, float x, float y) {
     TouchPoint *p = m_touchPoints[i];
-    if (p != nullptr && p->m_state == 0) {
-        if (action == 2) return;
-        else if (action == 1) action = 3;
+    if (p != nullptr && p->m_state == TouchPoint::State::PRESS) {
+        if (state == TouchPoint::State::REPEAT) return;
     }
     if (p == nullptr) m_touchPoints[i] = p = new TouchPoint((char) i);
     p->m_x = x;
     p->m_y = y;
-    p->m_state = (char) action;
+    p->m_state = state;
 }
 
 #ifndef __DEFMOBILE__
@@ -61,7 +60,7 @@ void InputManager::handleTouch(Window &window) {
     for (auto it = m_touchPoints.begin(); it != m_touchPoints.end(); it++) {
         TouchPoint *p = it->second;
         if (p != nullptr) {
-
+            window.handleClick(*p);
         }
     }
 }

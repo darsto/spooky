@@ -15,6 +15,10 @@
 #define GUI_BOTTOM_CENTER 7
 #define GUI_BOTTOM_LEFT 8
 
+namespace Input {
+    class TouchPoint;
+}
+
 class GuiElement {
 public:
     GuiElement(char positionFlag, double x, double y, double width, double height, int *texturePos, int texturesNum, int color = 0xFFFFFFFF);
@@ -76,6 +80,12 @@ public:
     void setVisible(bool visible) {
         GuiElement::visible = visible;
     }
+
+    bool contains(double x, double y) {
+        return x >= this->x && y >= this->y && x <= this->x + this->width && y < this->y + this->height;
+    }
+
+    bool contains(const Input::TouchPoint &p);
 
     virtual void reinit(unsigned int windowWidth, unsigned int windowHeight) {
         double px = rawX;

@@ -11,7 +11,7 @@
 
 Application::Application()
     : m_context(*this),
-      m_window(new LoadingScreen(m_context)) {
+      m_window(new MainMenu(m_context)) {
 
     reinit();
     resize(1366, 750);
@@ -110,8 +110,8 @@ void Application::resize(int width, int height) {
     this->m_renderer.resize(*m_window, width, height);
 }
 
-void Application::handleClick(int i, int action, float x, float y) {
-    m_inputManager.handleClick(i, action, x, y);
+void Application::handleClick(int i, Input::TouchPoint::State state, float x, float y) {
+    m_inputManager.handleClick(i, state, x, y);
 }
 
 void Application::handleEvents() {
@@ -138,7 +138,7 @@ void Application::handleEvents() {
                 if (button < 0 || button >= 5) break;
                 int x, y;
                 SDL_GetMouseState(&x, &y);
-                this->handleClick(button, m_sdlEvent.type == SDL_MOUSEBUTTONDOWN ? 0 : (m_sdlEvent.type == SDL_MOUSEBUTTONUP ? 1 : 2), x, y);
+                this->handleClick(button, m_sdlEvent.type == SDL_MOUSEBUTTONDOWN ? Input::TouchPoint::State::PRESS : (m_sdlEvent.type == SDL_MOUSEBUTTONUP ? Input::TouchPoint::State::RELEASE : Input::TouchPoint::State::REPEAT), x, y);
                 break;
             }
         }

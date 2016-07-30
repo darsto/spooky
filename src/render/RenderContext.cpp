@@ -2,28 +2,18 @@
 // Created by dar on 2/15/16.
 //
 
-#include <render/window/WindowRender.h>
-#include <render/gui/GuiButtonRender.h>
-#include <render/font/TextRender.h>
 #include "RenderContext.h"
-#include <gui/GuiText.h>
-#include <render/gui/GuiTextBubbleRender.h>
+#include "gui/GuiElement.h"
+#include "render/gui/GuiElementRender.h"
 
-GuiElementRender *RenderContext::getGuiElementRender(const GuiElement &element) const {
-    GuiElementRender *render = guiRenders.at(typeid(element).name());
-    if (render == nullptr) render = guiRenders.at(typeid(GuiElement).name());
-    return render;
-}
-
-void RenderContext::initGuiRenders() {
-    guiRenders.insert(std::make_pair(typeid(GuiElement).name(), new GuiElementRender("gui", "gui")));
-    guiRenders.insert(std::make_pair(typeid(GuiButton).name(), new GuiButtonRender("gui", "gui")));
-    guiRenders.insert(std::make_pair(typeid(GuiText).name(), new TextRender()));
-    guiRenders.insert(std::make_pair(typeid(GuiTextBubble).name(), new GuiTextBubbleRender("gui", "gui")));
+GuiElementRender &RenderContext::getGuiElementRender(const GuiElement &element) {
+    return *guiRenders[0].get();
 }
 
 RenderContext::RenderContext(unsigned int windowWidth, unsigned int windowHeight) {
     this->windowWidth = windowWidth;
     this->windowHeight = windowHeight;
-    this->initGuiRenders();
+    guiRenders.push_back(std::make_unique<GuiElementRender>("gui", "gui"));
 }
+
+RenderContext::~RenderContext() = default;

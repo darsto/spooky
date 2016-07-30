@@ -9,17 +9,29 @@ namespace Input {
 
     class TouchPoint {
     public:
+        enum class State {
+            PRESS = 0,
+            RELEASE,
+            REPEAT
+        };
+
         TouchPoint(char id) : m_id(id) {};
 
         char id() const;
         float x() const;
         float y() const;
-        char state() const;
+        State state() const;
+
+        bool isPressed() const;
+
+        bool isDown() const;
+
+        bool isReleased() const;
 
     private:
         char m_id;
         float m_x, m_y;
-        char m_state;
+        State m_state;
 
         friend class InputManager;
     };

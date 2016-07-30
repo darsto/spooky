@@ -7,13 +7,10 @@
 #pragma once
 
 #include <functional>
+#include <ApplicationContext.h>
 #include <core/input/Keypress.h>
 #include <core/input/TouchPoint.h>
 #include <core/input/InputManager.h>
-
-class RenderManager;
-
-class ApplicationContext;
 
 class Window {
 public:

@@ -5,7 +5,9 @@
 #ifndef C003_MAINMENURENDER_H
 #define C003_MAINMENURENDER_H
 
-#include <render/RenderContext.h>
+#define GLM_FORCE_RADIANS
+#include <glm/gtc/matrix_transform.hpp>
+
 #include "WindowRender.h"
 
 class MenuRender : public WindowRender {
@@ -13,7 +15,7 @@ class MenuRender : public WindowRender {
 public:
     MenuRender();
     virtual void init(const RenderContext &renderContext) override;
-    virtual void render(const Window &window, const RenderContext &renderContext) override;
+    virtual void render(const Window &window, RenderContext &renderContext) override;
     virtual void resize(const RenderContext &renderContext) override;
 
 private:

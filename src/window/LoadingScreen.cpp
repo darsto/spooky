@@ -6,16 +6,15 @@
 #include "LoadingScreen.h"
 #include "MainMenu.h"
 #include <ApplicationContext.h>
-#include <gui/GuiElement.h>
 #include <files.h>
 
-LoadingScreen::LoadingScreen(ApplicationContext &applicationContext) : Window(applicationContext) {
+LoadingScreen::LoadingScreen(ApplicationContext &applicationContext) : Menu(applicationContext) {
     kaguya::State initState;
     initState.dofile(Files::getFilePath("data/scripts/init.lua"));
 }
 
 void LoadingScreen::reload(unsigned int windowWidth, unsigned int windowHeight) {
-    for (GuiElement *e : this->guiElements) {
+    for (auto &e : this->m_guiElements) {
         e->reinit(windowWidth, windowHeight);
     }
 }
@@ -24,7 +23,7 @@ void LoadingScreen::tick(double deltaTime) {
     this->progress = 1.0;
     if (this->progress >= 1.0) {
 #if !defined(EDITOR) && !defined(DEBUG)
-        m_applicationContext->switchWindow(new MainMenu(this->m_applicationContext));
+        m_applicationContext.switchWindow(new MainMenu(this->m_applicationContext));
 #else
 #endif
     }

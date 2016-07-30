@@ -62,14 +62,14 @@ GuiElementRender::GuiElementRender(const string &textureFile, const string &shad
     this->shaderProgram.useProgram();
 }
 
-void GuiElementRender::render(const GuiElement *const element, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, double scale) {
-    if (element->isVisible()) {
+void GuiElementRender::render(const GuiElement &element, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, double scale) {
+    if (element.isVisible()) {
         this->texture.bindTexture(0);
         this->shaderProgram.useProgram();
         this->shaderProgram.setUniform("projectionMatrix", projectionMatrix);
         this->shaderProgram.setUniform("gSampler", texture.getBoundId());
 
-        int color = element->getColor();
+        int color = element.getColor();
         float ca = (color & 0x000000FF) / 255.0f;
         float cr = ((color & 0xFF000000) >> 24) / 255.0f * ca;
         float cg = ((color & 0x00FF0000) >> 16) / 255.0f * ca;
@@ -77,13 +77,13 @@ void GuiElementRender::render(const GuiElement *const element, glm::mat4 project
 
         shaderProgram.setUniform("colorMod", glm::vec4(cr, cg, cb, ca));
 
-        this->tmpModelMatrix = glm::translate(this->modelMatrix, glm::vec3(-(element->getX() + element->getWidth()) * scale, -(element->getY() + element->getHeight()) * scale, 0.0f));
+        this->tmpModelMatrix = glm::translate(this->modelMatrix, glm::vec3(-(element.getX() + element.getWidth()) * scale, -(element.getY() + element.getHeight()) * scale, 0.0f));
 
-        this->tmpModelMatrix = glm::translate(this->tmpModelMatrix, glm::vec3(0.5 * element->getWidth() * scale, 0.5 *  element->getHeight() * scale, 0.0)); // Translate to the middle of the entity
-        this->tmpModelMatrix = glm::rotate(this->tmpModelMatrix, (const float) element->getAngle(), glm::vec3(0.0f, 0.0f, 1.0f)); // Apply rotation
-        this->tmpModelMatrix = glm::translate(this->tmpModelMatrix, glm::vec3(-0.5 *  element->getWidth() * scale, -0.5 *  element->getHeight() * scale, 0.0)); // Translate back to the origin
+        this->tmpModelMatrix = glm::translate(this->tmpModelMatrix, glm::vec3(0.5 * element.getWidth() * scale, 0.5 *  element.getHeight() * scale, 0.0)); // Translate to the middle of the entity
+        this->tmpModelMatrix = glm::rotate(this->tmpModelMatrix, (const float) element.getAngle(), glm::vec3(0.0f, 0.0f, 1.0f)); // Apply rotation
+        this->tmpModelMatrix = glm::translate(this->tmpModelMatrix, glm::vec3(-0.5 *  element.getWidth() * scale, -0.5 *  element.getHeight() * scale, 0.0)); // Translate back to the origin
 
-        this->tmpModelMatrix = glm::scale(this->tmpModelMatrix, glm::vec3(element->getWidth() * scale, element->getHeight() * scale, 1.0f));
+        this->tmpModelMatrix = glm::scale(this->tmpModelMatrix, glm::vec3(element.getWidth() * scale, element.getHeight() * scale, 1.0f));
 
         shaderProgram.setUniform("modelViewMatrix", viewMatrix * this->tmpModelMatrix);
         float x = (float) (this->getTexPos(element) % atlasSize);
@@ -96,8 +96,8 @@ void GuiElementRender::render(const GuiElement *const element, glm::mat4 project
     }
 }
 
-int GuiElementRender::getTexPos(const GuiElement *const element) {
-    return element->getTexPos(0);
+int GuiElementRender::getTexPos(const GuiElement &element) const {
+    return element.getTexPos(0);
 }
 
 GuiElementRender::~GuiElementRender() {

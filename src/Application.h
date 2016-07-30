@@ -21,7 +21,7 @@ public:
     void run();
     void update(bool dynamic);
     void resize(int width, int height);
-    void handleClick(int i, int action, float x, float y);
+    void handleClick(int i, Input::TouchPoint::State state, float x, float y);
     bool isRunning() const;
 
 private:

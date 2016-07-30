@@ -7,6 +7,7 @@
 
 #include <vector>
 #include "Window.h"
+#include "Menu.h"
 
 class GuiElement;
 
@@ -14,7 +15,7 @@ class TouchPoint;
 
 class GuiButton;
 
-class LoadingScreen : public Window {
+class LoadingScreen : public Menu {
 
 public:
     LoadingScreen(ApplicationContext &applicationContext);
@@ -23,12 +24,7 @@ public:
     virtual void handleKeypress(const Input::KeypressTable &keypresses) override;
     virtual void handleClick(const Input::TouchPoint &p) override;
 
-    const std::vector<GuiElement *> &getGuiElements() const {
-        return guiElements;
-    }
-
 private:
-    std::vector<GuiElement *> guiElements;
     double progress = 0.0;
 
 };

@@ -2,6 +2,7 @@
 // Created by dar on 2/15/16.
 //
 
+#include <gui/GuiElement.h>
 #include <gui/GuiButton.h>
 #include <gui/GuiText.h>
 #include "MainMenu.h"
@@ -17,17 +18,17 @@
 
 #endif //__ANDROID__
 
-MainMenu::MainMenu(ApplicationContext &applicationContext) : Window(applicationContext) {
+MainMenu::MainMenu(ApplicationContext &applicationContext) : Menu(applicationContext) {
+    GuiElement *e = new GuiElement(0, 0, 0, 100, 100, 3);
+    m_guiElements.push_back(std::unique_ptr<GuiElement>(e));
     GuiButton *b = new GuiButton("About", GUI_MIDDLE_CENTER, 0, 0, 375, 125, new int[2]{3, 11}, 2);
-    this->guiElements.push_back(b);
+    this->m_guiElements.push_back(std::unique_ptr<GuiElement>(b));
     GuiText *t = new GuiText(std::string("Dev Build: ") + __DATE__ + " " + __TIME__, 15, 15, GUI_BOTTOM_LEFT, 32, 0, 0);
-    this->guiElements.push_back(t);
+    this->m_guiElements.push_back(std::unique_ptr<GuiElement>(t));
 }
 
 void MainMenu::reload(unsigned int windowWidth, unsigned int windowHeight) {
-    for (GuiElement *e : this->guiElements) {
-        e->reinit(windowWidth, windowHeight);
-    }
+    Menu::reload(windowWidth, windowHeight);
 }
 
 void MainMenu::tick(double deltaTime) {
@@ -35,13 +36,16 @@ void MainMenu::tick(double deltaTime) {
 }
 
 void MainMenu::handleKeypress(const Input::KeypressTable &keypresses) {
-    if (keypresses[SDL_SCANCODE_W].isPressed()) {
-        printf("W Pressed\n");
-        m_applicationContext.switchWindow(new LoadingScreen(m_applicationContext));
-    }
 }
 
 void MainMenu::handleClick(const Input::TouchPoint &p) {
+    if (p.isPressed()) {
+        for (auto &e : guiElements()) {
+            if (e->contains(p)) {
+                m_applicationContext.switchWindow(new LoadingScreen(m_applicationContext));
+            }
+        }
+    }
 }
 
 MainMenu::~MainMenu() {

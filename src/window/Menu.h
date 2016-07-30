@@ -6,11 +6,9 @@
 #define C003_MENU_H
 
 #include <vector>
+#include <memory>
 #include "Window.h"
-
-class GuiElement;
-
-class GuiButton;
+#include <gui/GuiElement.h>
 
 class Menu : public Window {
 
@@ -25,12 +23,10 @@ public:
     virtual void handleClick(const Input::TouchPoint &touchPoint) override;
     virtual ~Menu() override;
 
-    const std::vector<GuiElement *> &getGuiElements() const {
-        return guiElements;
-    }
+    const std::vector<std::unique_ptr<GuiElement>> &guiElements() const;
 
 protected:
-    std::vector<GuiElement *> guiElements;
+    std::vector<std::unique_ptr<GuiElement>> m_guiElements;
 };
 
 #endif //C003_MENU_H
