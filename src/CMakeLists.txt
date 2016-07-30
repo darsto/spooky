@@ -1,7 +1,7 @@
 PROJECT(c003_game)
 CMAKE_MINIMUM_REQUIRED(VERSION 3.0)
 
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 if (ANDROID)
     SET(TYPE SHARED)
 else ()
@@ -35,7 +35,6 @@ SET(SOURCE_FILES
         core/input/InputManager.cpp
         core/input/InputManager.h
         os.h
-        render/gui/GuiButtonRender.h
         render/font/TextRender.cpp
         render/font/TextRender.h
         gui/GuiText.h
@@ -50,7 +49,6 @@ SET(SOURCE_FILES
         gui/GuiElement.cpp
         gui/GuiTextBubble.cpp
         gui/GuiTextBubble.h
-        render/gui/GuiTextBubbleRender.h
         ApplicationContext.cpp
         ApplicationContext.h
         SettingsData.h
