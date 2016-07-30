@@ -7,7 +7,7 @@
 #pragma once
 
 #include <string>
-#include <map>
+
 #include "opengl.h"
 
 enum ETextureFiltering
@@ -27,31 +27,30 @@ public:
     Texture();
     ~Texture();
     void createFromData(unsigned char* data);
-    bool loadTexture2D(const std::string &fileName, bool mipmaps = false);
+    void loadTexture2D(const std::string &fileName, bool mipmaps = false);
     void bindTexture(int bindId = 0);
+    void filtering(int filterMag, int filterMin);
+    void samplerParameter(GLenum parameter, GLenum value);
 
-    void setFiltering(int filterMag, int filterMin);
-
-    void setSamplerParameter(GLenum parameter, GLenum value);
-
-    int getMinificationFilter() const;
-    int getMagnificationFilter() const;
-    int getWidth() const;
-    int getHeight() const;
-    int getChannels() const;
-
-    int getBoundId() const;
+    int minificationFilter() const;
+    int magnificationFilter() const;
+    int width() const;
+    int height() const;
+    int channels() const;
+    int boundId() const;
 
 private:
-    int width, height, channels;
-    GLuint id;
-    bool mipmaps;
-    int boundId = -1;
-    int filterMin, filterMag;
-    std::string path;
+    int m_width;
+    int m_height;
+    int m_channels;
+    GLuint m_id;
+    bool m_mipmapEnabled;
+    int m_boundId = -1;
+    int m_filterMin, m_filterMag;
+    std::string m_path;
 
-    static int boundTexId;
-    static int activeTexId;
+    static int m_boundTexId;
+    static int m_activeTexId;
 };
 
 #endif //C003_TEXTURE_H

@@ -13,7 +13,7 @@ void TextRender::render(const GuiElement &element, glm::mat4 projectionMatrix, g
         texture.bindTexture(0);
         this->shaderProgram.useProgram();
         this->shaderProgram.setUniform("projectionMatrix", projectionMatrix);
-        this->shaderProgram.setUniform("gSampler", texture.getBoundId());
+        this->shaderProgram.setUniform("gSampler", texture.boundId());
 
         int color = element.getColor();
         float ca = (color & 0x000000FF) / 255.0f;
@@ -44,8 +44,8 @@ void TextRender::render(const GuiElement &element, glm::mat4 projectionMatrix, g
             shaderProgram.setUniform("modelViewMatrix", viewMatrix * this->tmpModelMatrix);
 
             int texX = texId % atlasSize, texY = texId / atlasSize;
-            shaderProgram.setUniform("texPosX", 0.5f / texture.getWidth() + (float) texX / atlasSize);
-            shaderProgram.setUniform("texPosY", 0.5f / texture.getHeight() + (float) texY / atlasSize);
+            shaderProgram.setUniform("texPosX", 0.5f / texture.width() + (float) texX / atlasSize);
+            shaderProgram.setUniform("texPosY", 0.5f / texture.height() + (float) texY / atlasSize);
 
             glBindVertexArray(this->vao);
             glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);

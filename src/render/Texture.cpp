@@ -2,98 +2,100 @@
 // Created by dar on 11/21/15.
 //
 
+#include <SOIL.h>
+#include <memory>
+
 #include "Texture.h"
 #include "src/files.h"
-#include <SOIL.h>
 
-int Texture::boundTexId = -1;
-int Texture::activeTexId = -1;
+int Texture::m_boundTexId = -1;
+int Texture::m_activeTexId = -1;
 
 Texture::Texture() {}
 
 void Texture::createFromData(unsigned char *data) {
-    this->id = SOIL_create_OGL_texture(data, this->width, this->height, this->channels, 0, SOIL_FLAG_MULTIPLY_ALPHA);
+    m_id = SOIL_create_OGL_texture(data, m_width, m_height, m_channels, 0, SOIL_FLAG_MULTIPLY_ALPHA);
 
-    if (this->mipmaps) {
+    if (m_mipmapEnabled) {
         glGenerateMipmap(GL_TEXTURE_2D);
     }
 }
 
-bool Texture::loadTexture2D(const std::string &fileName, bool mipmaps) {
-    this->path = IO::getFilePath<IO::Data::TEXTURE>(fileName);
-    this->mipmaps = mipmaps;
-    this->width = width;
-    this->height = height;
-    this->channels = channels;
+void Texture::loadTexture2D(const std::string &fileName, bool mipmaps) {
+    m_path = IO::getFilePath<IO::Data::TEXTURE>(fileName);
+    m_mipmapEnabled = mipmaps;
 
-    unsigned char *data_ptr = SOIL_load_image(this->path.c_str(), &this->width, &this->height, &this->channels, SOIL_LOAD_RGBA);
-    createFromData(data_ptr);
-    delete data_ptr;
+    int width, height, channels;
+    auto data_ptr = std::unique_ptr<unsigned char[]>(SOIL_load_image(m_path.c_str(), &width, &height, &channels, SOIL_LOAD_RGBA));
 
-    return true;
+    m_width = width;
+    m_height = height;
+    m_channels = channels;
+
+    createFromData(data_ptr.get());
 }
 
-void Texture::setSamplerParameter(GLenum parameter, GLenum value) {
+void Texture::samplerParameter(GLenum parameter, GLenum value) {
     glTexParameteri(GL_TEXTURE_2D, parameter, value);
 }
 
-void Texture::setFiltering(int filterMag, int filterMin) {
+void Texture::filtering(int filterMag, int filterMin) {
     if (filterMag == TEXTURE_FILTER_MAG_NEAREST)
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        samplerParameter(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     else if (filterMag == TEXTURE_FILTER_MAG_BILINEAR)
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        samplerParameter(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
     if (filterMin == TEXTURE_FILTER_MIN_NEAREST)
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        samplerParameter(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     else if (filterMin == TEXTURE_FILTER_MIN_BILINEAR)
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        samplerParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     else if (filterMin == TEXTURE_FILTER_MIN_NEAREST_MIPMAP)
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
+        samplerParameter(GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
     else if (filterMin == TEXTURE_FILTER_MIN_BILINEAR_MIPMAP)
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
+        samplerParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
     else if (filterMin == TEXTURE_FILTER_MIN_TRILINEAR_MIPMAP)
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        samplerParameter(GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 
-    this->filterMin = filterMin;
-    this->filterMag = filterMag;
+    m_filterMin = filterMin;
+    m_filterMag = filterMag;
 }
 
 void Texture::bindTexture(int bindId) {
-    this->boundId = bindId;
-    if (Texture::boundTexId != bindId || Texture::activeTexId != bindId) {
+    m_boundId = bindId;
+    if (Texture::m_boundTexId != bindId || Texture::m_activeTexId != bindId) {
         glActiveTexture(GL_TEXTURE0 + bindId);
-        Texture::activeTexId = bindId;
+        Texture::m_activeTexId = bindId;
     }
-    if (Texture::boundTexId != this->id) {
-        glBindTexture(GL_TEXTURE_2D, this->id);
-        Texture::boundTexId = this->id;
+    if (Texture::m_boundTexId != m_id) {
+        glBindTexture(GL_TEXTURE_2D, m_id);
+        Texture::m_boundTexId = m_id;
     }
 }
 
-int Texture::getMinificationFilter() const {
-    return filterMin;
+int Texture::minificationFilter() const {
+    return m_filterMin;
 }
 
-int Texture::getMagnificationFilter() const {
-    return filterMag;
+int Texture::magnificationFilter() const {
+    return m_filterMag;
 }
 
-int Texture::getWidth() const {
-    return width;
+int Texture::width() const {
+    return m_width;
 }
 
-int Texture::getHeight() const {
-    return height;
+int Texture::height() const {
+    return m_height;
 }
 
-int Texture::getChannels() const {
-    return channels;
+int Texture::channels() const {
+    return m_channels;
 }
 
-int Texture::getBoundId() const {
-    return boundId;
+int Texture::boundId() const {
+    return m_boundId;
 }
 
 Texture::~Texture() {
-    glDeleteTextures(1, &id);
+    glDeleteTextures(1, &m_id);
 }
