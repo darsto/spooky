@@ -25,6 +25,12 @@ public:
 
     GuiElement(char positionFlag, double x, double y, double width, double height, int texturePos, int color = 0xFFFFFFFF) : GuiElement(positionFlag, x, y, width, height, new int[1]{texturePos}, 1, color) { };
 
+    static const unsigned int TYPE = 0;
+
+    virtual const unsigned int type() const {
+        return TYPE;
+    }
+
     char getPositionFlag() const {
         return positionFlag;
     }

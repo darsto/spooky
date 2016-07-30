@@ -11,7 +11,7 @@ class TextRender : public GuiElementRender {
 
 public:
     TextRender();
-    void render(const GuiElement *const entity, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, double scale);
+    virtual void render(const GuiElement &element, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, double scale) override;
 
 private:
 };

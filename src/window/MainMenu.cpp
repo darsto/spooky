@@ -19,11 +19,9 @@
 #endif //__ANDROID__
 
 MainMenu::MainMenu(ApplicationContext &applicationContext) : Menu(applicationContext) {
-    GuiElement *e = new GuiElement(0, 0, 0, 100, 100, 3);
+    GuiElement *e = new GuiElement(0, GUI_MIDDLE_CENTER, 0, 100, 100, 17);
     m_guiElements.push_back(std::unique_ptr<GuiElement>(e));
-    GuiButton *b = new GuiButton("About", GUI_MIDDLE_CENTER, 0, 0, 375, 125, new int[2]{3, 11}, 2);
-    this->m_guiElements.push_back(std::unique_ptr<GuiElement>(b));
-    GuiText *t = new GuiText(std::string("Dev Build: ") + __DATE__ + " " + __TIME__, 15, 15, GUI_BOTTOM_LEFT, 32, 0, 0);
+    GuiText *t = new GuiText(std::string("Dev Build: ") + __DATE__ + " " + __TIME__, 15, 15, GUI_BOTTOM_LEFT, 32, 0xffffffff, 0);
     this->m_guiElements.push_back(std::unique_ptr<GuiElement>(t));
 }
 

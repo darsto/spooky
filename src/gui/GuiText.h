@@ -26,6 +26,12 @@ public:
         this->recalculateSize();
     }
 
+    static const unsigned int TYPE = 1;
+
+    const unsigned int type() const override {
+        return TYPE;
+    }
+
     const std::string &getString() const {
         return string;
     }

@@ -14,6 +14,12 @@ public:
     GuiTextBubble(char positionFlag, double x, double y, double width, double height) : GuiElement(positionFlag, x, y, width, height, 0) {
     }
 
+    static const unsigned int TYPE = 2;
+
+    const unsigned int type() const override {
+        return TYPE;
+    }
+
     void setupDimensions(GuiText *text) {
         this->width = text->getWidth() + 20;
         this->height = text->getHeight() > 0 ? text->getHeight() + 34 : 0;
