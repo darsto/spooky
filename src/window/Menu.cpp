@@ -3,12 +3,22 @@
 //
 
 #include "Menu.h"
+#include "src/gui/GuiText.h"
 
 #ifndef __ANDROID__
 
 #include <SDL_keyboard.h>
 
 #endif //__ANDROID__
+
+Menu::Menu(ApplicationContext &applicationContext) : Window(applicationContext) {
+#ifdef DEBUG
+    GuiElement *e = new GuiElement(GUI_BOTTOM_LEFT, 8, 8, 30, 30, 17);
+    m_guiElements.push_back(std::unique_ptr<GuiElement>(e));
+    GuiText *t = new GuiText(std::string("Dev Build: ") + __DATE__ + " " + __TIME__, 45, 20, GUI_BOTTOM_LEFT, 22, 0xffffffff, 0);
+    this->m_guiElements.push_back(std::unique_ptr<GuiElement>(t));
+#endif
+}
 
 
 void Menu::reload(unsigned int windowWidth, unsigned int windowHeight) {

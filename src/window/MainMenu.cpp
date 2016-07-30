@@ -19,10 +19,6 @@
 #endif //__ANDROID__
 
 MainMenu::MainMenu(ApplicationContext &applicationContext) : Menu(applicationContext) {
-    GuiElement *e = new GuiElement(0, GUI_MIDDLE_CENTER, 0, 100, 100, 17);
-    m_guiElements.push_back(std::unique_ptr<GuiElement>(e));
-    GuiText *t = new GuiText(std::string("Dev Build: ") + __DATE__ + " " + __TIME__, 15, 15, GUI_BOTTOM_LEFT, 32, 0xffffffff, 0);
-    this->m_guiElements.push_back(std::unique_ptr<GuiElement>(t));
 }
 
 void MainMenu::reload(unsigned int windowWidth, unsigned int windowHeight) {

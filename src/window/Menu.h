@@ -14,7 +14,7 @@ class Menu : public Window {
 
 public:
 
-    Menu(ApplicationContext &applicationContext) : Window(applicationContext) { }
+    Menu(ApplicationContext &applicationContext);
 
     virtual void reload(unsigned int windowWidth, unsigned int windowHeight) override;
     virtual void tick(double deltaTime) override;
