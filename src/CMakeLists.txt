@@ -51,7 +51,6 @@ SET(SOURCE_FILES
         gui/GuiTextBubble.h
         ApplicationContext.cpp
         ApplicationContext.h
-        SettingsData.h
         window/LoadingScreen.cpp
         window/LoadingScreen.h
         files.h

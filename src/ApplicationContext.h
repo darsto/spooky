@@ -7,7 +7,6 @@
 
 #include <functional>
 #include <memory>
-#include "SettingsData.h"
 
 class Window;
 
