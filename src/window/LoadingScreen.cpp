@@ -34,6 +34,6 @@ void LoadingScreen::handleClick(const Input::TouchPoint &p) {
 
 void LoadingScreen::handleKeypress(const Input::KeypressTable &keypresses) {
     if (keypresses[SDL_SCANCODE_W].isPressed()) {
-        m_applicationContext.switchWindow(new MainMenu(m_applicationContext));
+        m_applicationContext.switchWindow<MainMenu>();
     }
 }

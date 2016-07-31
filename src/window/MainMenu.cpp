@@ -36,7 +36,7 @@ void MainMenu::handleClick(const Input::TouchPoint &p) {
     if (p.isPressed()) {
         for (auto &e : guiElements()) {
             if (e->contains(p)) {
-                m_applicationContext.switchWindow(new LoadingScreen(m_applicationContext));
+                m_applicationContext.switchWindow<LoadingScreen>();
             }
         }
     }
