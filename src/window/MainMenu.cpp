@@ -19,6 +19,8 @@
 #endif //__ANDROID__
 
 MainMenu::MainMenu(ApplicationContext &applicationContext) : Menu(applicationContext) {
+    GuiText *t = new GuiText("Main menu", 20, 20, GuiElement::PositionFlag::BOTTOM_RIGHT, 22, 0xffffffff, 0);
+    this->m_guiElements.push_back(std::unique_ptr<GuiElement>(t));
 }
 
 void MainMenu::reload(unsigned int windowWidth, unsigned int windowHeight) {
@@ -35,7 +37,7 @@ void MainMenu::handleKeypress(const Input::KeypressTable &keypresses) {
 void MainMenu::handleClick(const Input::TouchPoint &p) {
     if (p.isPressed()) {
         for (auto &e : guiElements()) {
-            if (e->contains(p)) {
+            if (e->contains(p.x(), p.y())) {
                 m_applicationContext.switchWindow<LoadingScreen>();
             }
         }

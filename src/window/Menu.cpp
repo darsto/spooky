@@ -13,9 +13,9 @@
 
 Menu::Menu(ApplicationContext &applicationContext) : Window(applicationContext) {
 #ifdef DEBUG
-    GuiElement *e = new GuiElement(GUI_BOTTOM_LEFT, 8, 8, 30, 30, 17);
+    GuiElement *e = new GuiElement(GuiElement::PositionFlag::BOTTOM_LEFT, 8, 8, 30, 30, 17);
     m_guiElements.push_back(std::unique_ptr<GuiElement>(e));
-    GuiText *t = new GuiText(std::string("Dev Build: ") + __DATE__ + " " + __TIME__, 45, 20, GUI_BOTTOM_LEFT, 22, 0xffffffff, 0);
+    GuiText *t = new GuiText(std::string("Dev Build: ") + __DATE__ + " " + __TIME__, 45, 20, GuiElement::PositionFlag::BOTTOM_LEFT, 22, 0xffffffff, 0);
     this->m_guiElements.push_back(std::unique_ptr<GuiElement>(t));
 #endif
 }

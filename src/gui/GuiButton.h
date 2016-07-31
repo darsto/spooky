@@ -13,13 +13,7 @@
 class GuiButton : public GuiElement {
 
 public:
-    GuiButton(const std::string &string, char positionFlag, double x, double y, double width, double height, int *texturePos, int texturesNum);
-
-    GuiButton(const std::string &string, char positionFlag, double x, double y, double width, double height, int texturePos) : GuiButton(string, positionFlag, x, y, width, height, new int[1]{texturePos}, 1) { };
-
-    GuiButton(char positionFlag, double x, double y, double width, double height, int *texturePos, int texturesNum) : GuiButton("", positionFlag, x, y, width, height, texturePos, texturesNum) { };
-
-    GuiButton(char positionFlag, double x, double y, double width, double height, int texturePos) : GuiButton("", positionFlag, x, y, width, height, new int[1]{texturePos}, 1) { };
+    GuiButton(const std::string &string, PositionFlag positionFlag, double x, double y, double width, double height, int texturePos);
 
     virtual bool onClick(const Input::TouchPoint &touchPoint);
     virtual void setOnClickListener(std::function<bool(const Input::TouchPoint &)> onClickListener);
@@ -44,10 +38,6 @@ public:
     }
 
     bool canBeClicked(const Input::TouchPoint &touchPoint);
-
-    int getTexturesNum() const {
-        return texturesNum;
-    }
 
     GuiText *getText() const {
         return text;

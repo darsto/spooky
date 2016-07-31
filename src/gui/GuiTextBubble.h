@@ -11,7 +11,7 @@
 class GuiTextBubble : public GuiElement {
 
 public:
-    GuiTextBubble(char positionFlag, double x, double y, double width, double height) : GuiElement(positionFlag, x, y, width, height, 0) {
+    GuiTextBubble(PositionFlag positionFlag, double x, double y, double width, double height) : GuiElement(positionFlag, x, y, width, height, 0) {
     }
 
     static const unsigned int TYPE = 2;
@@ -21,8 +21,8 @@ public:
     }
 
     void setupDimensions(GuiText *text) {
-        this->width = text->getWidth() + 20;
-        this->height = text->getHeight() > 0 ? text->getHeight() + 34 : 0;
+        this->m_width = text->width() + 20;
+        this->m_height = text->height() > 0 ? text->height() + 34 : 0;
     }
 
     const double resolution = 50.0;

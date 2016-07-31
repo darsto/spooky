@@ -8,14 +8,14 @@
 TextRender::TextRender() : GuiElementRender("font", "font") { }
 
 void TextRender::render(const GuiElement &element, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, double scale) {
-    if (element.isVisible()) {
+    if (element.visible()) {
         const GuiText &text = (const GuiText &) element;
         texture.bindTexture(0);
         this->shaderProgram.useProgram();
         this->shaderProgram.setUniform("projectionMatrix", projectionMatrix);
         this->shaderProgram.setUniform("gSampler", texture.boundId());
 
-        int color = element.getColor();
+        int color = element.color();
         float ca = (color & 0x000000FF) / 255.0f;
         float cr = ((color & 0xFF000000) >> 24) / 255.0f * ca;
         float cg = ((color & 0x00FF0000) >> 16) / 255.0f * ca;
@@ -25,15 +25,15 @@ void TextRender::render(const GuiElement &element, glm::mat4 projectionMatrix, g
 
         scale *= text.getScale();
 
-        double x = text.getX();
-        double y = text.getY();
+        double x = text.x();
+        double y = text.y();
         for (int i = 0; i < text.getString().length(); i++) {
             if (text.getString().at(i) == '\n') {
-                x = text.getX();
+                x = text.x();
                 y += scale + 2 * text.TEXT_SPACING;
                 continue;
             }
-            int texId = text.getTexPos(i);
+            int texId = text.texPos(i);
             if (texId == -1) {
                 x += text.TEXT_SPACESIZE * scale + text.TEXT_SPACING;
                 continue;

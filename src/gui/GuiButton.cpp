@@ -7,7 +7,7 @@
 #include "core/input/TouchPoint.h"
 #include <string>
 
-GuiButton::GuiButton(const std::string &string, char positionFlag, double x, double y, double width, double height, int *texturePos, int texturesNum) : GuiElement(positionFlag, x, y, width, height, texturePos, texturesNum) {
+GuiButton::GuiButton(const std::string &string, PositionFlag positionFlag, double x, double y, double width, double height, int texturePos) : GuiElement(positionFlag, x, y, width, height, texturePos) {
     if (string.length() > 0) {
         this->text = new GuiText(string, x, y, positionFlag, height / 2.5, 0xFFFFFFFF, 0);
     }
@@ -16,7 +16,7 @@ GuiButton::GuiButton(const std::string &string, char positionFlag, double x, dou
 bool GuiButton::onClick(const Input::TouchPoint &touchPoint) {
     if (!this->isEnabled()) return false;
     this->touchedBy = touchPoint.id();
-    if (onClickListener == NULL || !this->isVisible()) this->setPressed(false);
+    if (onClickListener == NULL || !this->visible()) this->setPressed(false);
     else this->setPressed(onClickListener(touchPoint));
     return this->isPressed();
 
@@ -35,9 +35,9 @@ void GuiButton::setPressed(bool pressed) {
 }
 
 bool GuiButton::canBeClicked(const Input::TouchPoint &p) {
-    return this->isVisible() &&
-           p.x() > this->getX() && p.x() < this->getX() + this->getWidth() &&
-           p.y() > this->getY() && p.y() < this->getY() + this->getHeight();
+    return this->visible() &&
+           p.x() > this->x() && p.x() < this->x() + this->width() &&
+           p.y() > this->y() && p.y() < this->y() + this->height();
 }
 
 void GuiButton::reinit(unsigned int windowWidth, unsigned int windowHeight) {

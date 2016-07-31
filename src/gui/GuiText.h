@@ -19,7 +19,7 @@ const int GLYPH_SIZE[] = {39, 103, 166, 231, 295, 359, 423, 487,
 
 class GuiText : public GuiElement {
 public:
-    GuiText(const std::string &string, int x, int y, char position, float scale, int color, char flags) : GuiElement(position, x, y, 0, 0, 0, color) {
+    GuiText(const std::string &string, int x, int y, PositionFlag position, float scale, int color, char flags) : GuiElement(position, x, y, 0, 0, 0, color) {
         this->string = string;
         this->scale = scale;
         this->flags = flags;
@@ -108,13 +108,9 @@ public:
     const float TEXT_SPACESIZE = 0.2f;
     const float TEXT_SPACING = 0.125f; //space between letters
 
-    virtual int getTexPos(int i) const override {
+    virtual int texPos(int i) const {
         return this->getGlyphPos(string.at(i));
     }
-
-    virtual void setTexPos(int i, int texturePos) override {
-        //you can't change font atlas bindings
-    };
 
 private:
     std::string string;
@@ -123,19 +119,19 @@ private:
 
     void recalculateSize() {
         double tmp_width = 0; //incrementing with each iteration
-        this->width = 0; //maximum of all tmp_width(s)
-        this->height = 0;
+        this->m_width = 0; //maximum of all tmp_width(s)
+        this->m_height = 0;
         for (int i = 0; i <= this->getString().length(); i++) {
             if (i == this->getString().length() || this->getString().at(i) == '\n') {
-                if (tmp_width > this->width) this->width = tmp_width;
+                if (tmp_width > this->m_width) this->m_width = tmp_width;
                 tmp_width = 0;
-                this->height += this->getScale() + 2 * TEXT_SPACING;
+                this->m_height += this->getScale() + 2 * TEXT_SPACING;
                 continue;
             }
             char pos = this->getGlyphPos(this->getString().at(i));
             tmp_width += this->getGlyphSize(pos) * this->getScale() + TEXT_SPACING;
         }
-        this->height -= 0.61f * this->getScale();
+        this->m_height -= 0.61f * this->getScale();
     }
 };
 
