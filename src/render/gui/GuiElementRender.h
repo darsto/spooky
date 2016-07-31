@@ -21,7 +21,7 @@ public:
     virtual void render(const GuiElement &element, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, double scale);
 protected:
     const unsigned int atlasSize = 8;
-    float vertices[12];
+    float vertices[8];
     GLuint vbo[2];
     GLuint vao;
     Shader vertShader, fragShader;
