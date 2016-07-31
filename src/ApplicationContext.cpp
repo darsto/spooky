@@ -10,7 +10,3 @@ ApplicationContext::ApplicationContext(Application &application) : m_application
 void ApplicationContext::switchWindow(Window *window) {
     m_application.m_newWindow = std::unique_ptr<Window>(window);
 }
-
-SettingsData &ApplicationContext::settingsData() {
-    return m_settingsData;
-}

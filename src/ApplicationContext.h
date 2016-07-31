@@ -17,11 +17,9 @@ class ApplicationContext {
 public:
     ApplicationContext(Application &application);
     void switchWindow(Window *window);
-    SettingsData &settingsData();
 
 private:
     Application &m_application;
-    SettingsData m_settingsData;
 };
 
 #endif //C003_APPLICATIONCONTEXT_H
