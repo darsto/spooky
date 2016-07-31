@@ -5,21 +5,14 @@
 #ifndef C003_INPUTMANAGER_H
 #define C003_INPUTMANAGER_H
 
-#include "os.h"
-
 union SDL_Event;
 
-#ifndef __DEFMOBILE__
-
-#include "SDL2/SDL.h"
-#include "Keypress.h"
-#include "TouchPoint.h"
-
-#endif // __DEFMOBILE__
+class Window;
 
 #include <unordered_map>
-
-class Window;
+#include "os.h"
+#include "Keypress.h"
+#include "TouchPoint.h"
 
 namespace Input {
 

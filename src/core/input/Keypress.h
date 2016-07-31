@@ -5,6 +5,14 @@
 #ifndef C003_KEYPRESS_H
 #define C003_KEYPRESS_H
 
+#include "os.h"
+
+#ifdef USES_SDL
+
+#include "SDL2/SDL.h"
+
+#endif // USES_SDL
+
 namespace Input {
 
     class Keypress {

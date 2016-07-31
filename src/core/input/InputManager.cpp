@@ -3,7 +3,8 @@
 //
 
 #include "InputManager.h"
-#include <window/Window.h>
+#include "window/Window.h"
+#include "os.h"
 #include "logging.h"
 
 using namespace Input;
@@ -23,7 +24,7 @@ void InputManager::handleClick(int i, TouchPoint::State state, float x, float y)
     p->m_state = state;
 }
 
-#ifndef __DEFMOBILE__
+#ifdef USES_SDL
 
 void InputManager::handleKeypress(SDL_Event *e) {
     if (e->key.keysym.scancode >= 0 && e->key.keysym.scancode < SDL_NUM_SCANCODES && e->key.repeat == 0) {
@@ -35,15 +36,18 @@ void InputManager::handleKeypress(SDL_Event *e) {
     }
 }
 
-#endif //__DEFMOBILE__
+#endif // !IS_MOBILE
 
 void InputManager::tick(Window &window) {
     handleTouch(window);
-    if (!IS_MOBILE) handleKeyboard(window);
+
+#ifdef USES_KEYBOARD
+    handleKeyboard(window);
+#endif
 }
 
 void InputManager::handleKeyboard(Window &window) {
-#ifndef __DEFMOBILE__
+#ifdef USES_KEYBOARD
     window.handleKeypress(m_keypresses);
 
     for (int i = 0; i < m_keypresses.size(); i++) {
@@ -51,8 +55,8 @@ void InputManager::handleKeyboard(Window &window) {
             m_keypresses[i].m_state = Keypress::State::REPEAT;
         }
     }
-#else //__DEFMOBILE__
-    LOGW("SDL is not supported on this platform\n");
+#else //USES_KEYBOARD
+    Log::warning("Keyboard support is not implemented on your platform");
 #endif //__DEFMOBILE__
 }
 

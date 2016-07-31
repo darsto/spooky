@@ -5,6 +5,16 @@
 #ifndef C003_OS_H
 #define C003_OS_H
 
+/**
+ * Variables which are conditionally defined by this header
+ */
+#undef IS_MOBILE
+#undef USES_SDL
+#undef USES_KEYBOARD
+
+/**
+ * Operating systems enum
+ */
 enum class OS {
     WIN32 = 0,
     UNIX,
@@ -13,30 +23,47 @@ enum class OS {
     MAC
 };
 
-#ifdef __APPLE__
-#include "TargetConditionals.h"
-#endif
-
-constexpr const OS OPERATING_SYTEM =
 #ifdef _WIN32
-    OS::WIN32
+#define DEF_WINDOWS
+//------------WINDOWS------------
+    constexpr const OS OPERATING_SYSTEM = OS::WIN32;
+    #define USES_SDL
+    #define USES_KEYBOARD
+
 #elif __APPLE__
-    #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
-        OS::IOS
-    #elif TARGET_OS_MAC
-        OS::MAC
-    #else
-        #error "Unknown Apple platform"
-    #endif
+#define DEF_APPLE
+//------------APPLE--------------
+#include "TargetConditionals.h"
+
+#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+#define DEF_IOS
+//------------IOS----------------
+    constexpr const OS OPERATING_SYSTEM = OS::IOS;
+
+#elif TARGET_OS_MAC
+#define DEF_MAC
+//------------MAC----------------
+    constexpr const OS OPERATING_SYSTEM = OS::MAC;
+    #define USES_SDL
+    #define USES_KEYBOARD
+
+#else
+    #error "Unknown Apple platform"
+#endif
 #elif __ANDROID__
-    OS::ANDROID
+#define DEF_ANDROID
+//------------ANDROID------------
+    constexpr const OS OPERATING_SYSTEM = OS::ANDROID;
+
 #elif __unix__
-    OS::UNIX
+#define DEF_UNIX
+//------------UNIX---------------
+    constexpr const OS OPERATING_SYSTEM = OS::UNIX;
+    #define USES_SDL
+    #define USES_KEYBOARD
+
 #else
     #error "Unknown platform"
 #endif
-;
-
-constexpr const bool IS_MOBILE = OPERATING_SYTEM == OS::ANDROID || OPERATING_SYTEM == OS::IOS;
 
 #endif //C003_OS_H

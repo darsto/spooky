@@ -2,16 +2,15 @@
 // Created by dar on 1/23/16.
 //
 
-#include <window/MainMenu.h>
 #include "Application.h"
-#include "render/RenderManager.h"
+#include "os.h"
 #include "logging.h"
-#include <ApplicationContext.h>
-#include <window/LoadingScreen.h>
+#include "ApplicationContext.h"
+#include "window/LoadingScreen.h"
 
 Application::Application()
     : m_context(*this),
-      m_window(new MainMenu(m_context)) {
+      m_window(new LoadingScreen(m_context)) {
 
     reinit();
     resize(1366, 750);
@@ -25,7 +24,7 @@ void Application::reinit() {
 }
 
 void Application::run() {
-    while (isRunning()) {
+    while (running()) {
         update(true);
     }
     onQuit();
@@ -50,7 +49,7 @@ void Application::update(bool dynamic) {
         m_window->tick(1.0);
     }
     this->m_renderer.render(*m_window);
-    if (!IS_MOBILE) this->handleEvents();
+    this->handleEvents();
     m_inputManager.tick(*m_window);
     this->m_ticks++;
     if (this->m_ticks > 14) {
@@ -58,7 +57,7 @@ void Application::update(bool dynamic) {
     }
 }
 
-#ifdef __ANDROID__
+#ifdef DEF_ANDROID
 
 #include <jni.h>
 
@@ -103,7 +102,7 @@ JNIEXPORT void JNICALL Java_tk_approach_android_spookytom_JniBridge_handleTouch(
     application.handleClick(i, action, x, y);
 }
 
-#endif //__ANDROID__
+#endif // DEF_ANDROID
 
 void Application::resize(int width, int height) {
     m_window->reload(width, height);
@@ -115,7 +114,7 @@ void Application::handleClick(int i, Input::TouchPoint::State state, float x, fl
 }
 
 void Application::handleEvents() {
-#ifndef __ANDROID__
+#ifdef USES_SDL
     while (SDL_PollEvent(&m_sdlEvent) != 0) {
         switch (m_sdlEvent.type) {
             case SDL_QUIT:
@@ -143,13 +142,10 @@ void Application::handleEvents() {
             }
         }
     }
-#else //__ANDROID__
-    LOGW("SDL is not supported on this platform\n");
-#endif //__ANDROID__
-
+#endif // USES_SDL
 }
 
-bool Application::isRunning() const {
+bool Application::running() const {
     return m_running;
 }
 

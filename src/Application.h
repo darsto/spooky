@@ -6,12 +6,12 @@
 #define C003_APPLICATION_H
 
 #include <memory>
-#include <window/Window.h>
+#include "ApplicationContext.h"
+#include "os.h"
 #include "core/Timer.h"
 #include "core/input/InputManager.h"
-#include "os.h"
+#include "window/Window.h"
 #include "render/RenderManager.h"
-#include "ApplicationContext.h"
 
 class Application {
 
@@ -22,7 +22,7 @@ public:
     void update(bool dynamic);
     void resize(int width, int height);
     void handleClick(int i, Input::TouchPoint::State state, float x, float y);
-    bool isRunning() const;
+    bool running() const;
 
 private:
     bool m_running = true;
@@ -36,16 +36,16 @@ private:
     unsigned long long m_ticks = 0;
     std::unique_ptr<Window> m_newWindow;
 
-#ifndef __DEFMOBILE__
+#if !IS_MOBILE
     SDL_Event m_sdlEvent;
-#endif //__DEFMOBILE__
+#endif // !IS_MOBILE
 
     void handleEvents();
     void switchWindow();
+    void onQuit();
 
     friend class ApplicationContext;
 
-    void onQuit();
 };
 
 #endif //C003_APPLICATION_H
