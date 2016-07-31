@@ -65,13 +65,14 @@ void GuiText::recalculateSize() {
         if (i == this->text().length() || this->text().at(i) == '\n') {
             if (tmp_width > this->m_width) this->m_width = tmp_width;
             tmp_width = 0;
-            this->m_height += this->scale() + 2 * TEXT_SPACING;
+            this->m_height += (0.61 + 2 * TEXT_SPACING) * this->scale();
             continue;
         }
         char pos = this->glyphPos(this->text().at(i));
-        tmp_width += this->getGlyphSize(pos) * this->scale() + TEXT_SPACING;
+        tmp_width += (this->getGlyphSize(pos) + TEXT_SPACING) * this->scale();
     }
-    this->m_height -= 0.61f * this->scale();
+    m_width -= TEXT_SPACING * scale();
+    m_height -= 2 * TEXT_SPACING * scale();
 }
 
 const std::string &GuiText::text() const {

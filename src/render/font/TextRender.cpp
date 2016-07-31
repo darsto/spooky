@@ -30,15 +30,15 @@ void TextRender::render(const GuiElement &element, glm::mat4 projectionMatrix, g
         for (int i = 0; i < text.text().length(); i++) {
             if (text.text().at(i) == '\n') {
                 x = text.x();
-                y += scale + 2 * text.TEXT_SPACING;
+                y += (0.61 + 2 * text.TEXT_SPACING) * scale;
                 continue;
             }
             int texId = text.texPos(i);
             if (texId == -1) {
-                x += text.TEXT_SPACESIZE * scale + text.TEXT_SPACING;
+                x += (text.TEXT_SPACESIZE + text.TEXT_SPACING) * scale;
                 continue;
             }
-            this->tmpModelMatrix = glm::translate(this->modelMatrix, glm::vec3(-(x + scale), -(y + scale), 0.0f));
+            this->tmpModelMatrix = glm::translate(this->modelMatrix, -glm::vec3(x, y, 0.0f));
             this->tmpModelMatrix = glm::scale(this->tmpModelMatrix, glm::vec3(scale, scale, 1.0f));
 
             shaderProgram.setUniform("modelViewMatrix", viewMatrix * this->tmpModelMatrix);

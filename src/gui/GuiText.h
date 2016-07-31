@@ -20,7 +20,7 @@ public:
                                                0, 0, 0, 0, 0, 0, 0, 0};
 
     static constexpr const double TEXT_SPACESIZE = 0.2;
-    static constexpr const double TEXT_SPACING = 0.125; //space between letters
+    static constexpr const double TEXT_SPACING = 0.1; //space between letters
 
     static constexpr const double getGlyphSize(char character) {
         if (character >= 0 && character < 64) return (double) (GLYPH_SIZE[character] % 64) / 64;
