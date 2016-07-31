@@ -8,6 +8,13 @@
 /**
  * Variables which are conditionally defined by this header
  */
+#undef OPERATING_SYSTEM
+#undef DEF_WINDOWS
+#undef DEF_APPLE
+#undef DEF_IOS
+#undef DEF_MAC
+#undef DEF_ANDROID
+#undef DEF_UNIX
 #undef IS_MOBILE
 #undef USES_SDL
 #undef USES_KEYBOARD
@@ -26,26 +33,30 @@ enum class OS {
 #ifdef _WIN32
 #define DEF_WINDOWS
 //------------WINDOWS------------
-    constexpr const OS OPERATING_SYSTEM = OS::WIN32;
+    #define OPERATING_SYSTEM OS::WIN32
     #define USES_SDL
     #define USES_KEYBOARD
+
 
 #elif __APPLE__
 #define DEF_APPLE
 //------------APPLE--------------
 #include "TargetConditionals.h"
 
+
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
 #define DEF_IOS
 //------------IOS----------------
-    constexpr const OS OPERATING_SYSTEM = OS::IOS;
+    #define OPERATING_SYSTEM OS::IOS
+
 
 #elif TARGET_OS_MAC
 #define DEF_MAC
 //------------MAC----------------
-    constexpr const OS OPERATING_SYSTEM = OS::MAC;
+    #define OPERATING_SYSTEM OS::MAC
     #define USES_SDL
     #define USES_KEYBOARD
+
 
 #else
     #error "Unknown Apple platform"
@@ -53,14 +64,16 @@ enum class OS {
 #elif __ANDROID__
 #define DEF_ANDROID
 //------------ANDROID------------
-    constexpr const OS OPERATING_SYSTEM = OS::ANDROID;
+    #define OPERATING_SYSTEM OS::ANDROID
+
 
 #elif __unix__
 #define DEF_UNIX
 //------------UNIX---------------
-    constexpr const OS OPERATING_SYSTEM = OS::UNIX;
+    #define OPERATING_SYSTEM OS::UNIX
     #define USES_SDL
     #define USES_KEYBOARD
+
 
 #else
     #error "Unknown platform"
