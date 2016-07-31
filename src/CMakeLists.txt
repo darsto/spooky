@@ -60,7 +60,7 @@ SET(SOURCE_FILES
         core/input/TouchPoint.cpp
         core/input/Keypress.cpp
         core/input/Keypress.h
-        core/input/TouchPoint.cpp)
+        core/input/TouchPoint.cpp gui/GuiText.cpp)
 SET(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/../cmake)
 
 INCLUDE(FindPkgConfig)

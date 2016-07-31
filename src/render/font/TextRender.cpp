@@ -23,12 +23,12 @@ void TextRender::render(const GuiElement &element, glm::mat4 projectionMatrix, g
 
         shaderProgram.setUniform("colorMod", glm::vec4(cr, cg, cb, ca));
 
-        scale *= text.getScale();
+        scale *= text.scale();
 
         double x = text.x();
         double y = text.y();
-        for (int i = 0; i < text.getString().length(); i++) {
-            if (text.getString().at(i) == '\n') {
+        for (int i = 0; i < text.text().length(); i++) {
+            if (text.text().at(i) == '\n') {
                 x = text.x();
                 y += scale + 2 * text.TEXT_SPACING;
                 continue;
