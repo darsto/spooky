@@ -39,8 +39,8 @@ GuiElementRender::GuiElementRender(const std::string &textureFile, const std::st
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
 
-    float tWidth = 1.0f / atlasSize - 1.0f / texture.width();
-    float tHeight = 1.0f / atlasSize - 1.0f / texture.height();
+    float tWidth = 1.0f / atlasSize - 0.5f / texture.width();
+    float tHeight = 1.0f / atlasSize - 0.5f / texture.height();
     float tCoords[] = {
         tWidth, tHeight,
         tWidth, 0.0f,
