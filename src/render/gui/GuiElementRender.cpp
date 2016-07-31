@@ -16,16 +16,16 @@ GuiElementRender::GuiElementRender(const std::string &textureFile, const std::st
     this->shaderProgram.addShaderToProgram(&this->fragShader);
 
     /* initializing square's vertices */
-    this->vertices[0] = 0.0f;
-    this->vertices[1] = 1.0f;
+    this->vertices[0] = -1.0f;
+    this->vertices[1] = -1.0f;
 
-    this->vertices[3] = 0.0f;
+    this->vertices[3] = -1.0f;
     this->vertices[4] = 0.0f;
 
-    this->vertices[6] = 1.0f;
-    this->vertices[7] = 1.0f;
+    this->vertices[6] = 0.0f;
+    this->vertices[7] = -1.0f;
 
-    this->vertices[9] = 1.0f;
+    this->vertices[9] = 0.0f;
     this->vertices[10] = 0.0f;
 
     /* 3rd dimension vertices (unused) */
@@ -45,10 +45,10 @@ GuiElementRender::GuiElementRender(const std::string &textureFile, const std::st
     float tWidth = 1.0f / atlasSize - 1.0f / texture.width();
     float tHeight = 1.0f / atlasSize - 1.0f / texture.height();
     float tCoords[] = {
-        tWidth, 0.0f,
         tWidth, tHeight,
-        0.0f, 0.0f,
+        tWidth, 0.0f,
         0.0f, tHeight,
+        0.0f, 0.0f,
     };
 
     glBindBuffer(GL_ARRAY_BUFFER, this->vbo[1]); /* texture coords vbo */
@@ -78,7 +78,7 @@ void GuiElementRender::render(const GuiElement &element, glm::mat4 projectionMat
 
         shaderProgram.setUniform("colorMod", glm::vec4(cr, cg, cb, ca));
 
-        this->tmpModelMatrix = glm::translate(this->modelMatrix, glm::vec3(-(element.x() + element.width()) * scale, -(element.y() + element.height()) * scale, 0.0f));
+        this->tmpModelMatrix = glm::translate(this->modelMatrix, -glm::vec3(element.x() * scale, element.y() * scale, 0.0f));
 
         this->tmpModelMatrix = glm::translate(this->tmpModelMatrix, glm::vec3(0.5 * element.width() * scale, 0.5 * element.height() * scale, 0.0)); // Translate to the middle of the entity
         this->tmpModelMatrix = glm::rotate(this->tmpModelMatrix, (const float) element.angle(), glm::vec3(0.0f, 0.0f, 1.0f)); // Apply rotation
