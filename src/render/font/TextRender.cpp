@@ -44,8 +44,8 @@ void TextRender::render(const GuiElement &element, glm::mat4 projectionMatrix, g
             shaderProgram.setUniform("modelViewMatrix", viewMatrix * this->tmpModelMatrix);
 
             int texX = texId % atlasSize, texY = texId / atlasSize;
-            shaderProgram.setUniform("texPosX", 0.5f / texture.width() + (float) texX / atlasSize);
-            shaderProgram.setUniform("texPosY", 0.5f / texture.height() + (float) texY / atlasSize);
+            shaderProgram.setUniform("texPosX", (float) texX / atlasSize);
+            shaderProgram.setUniform("texPosY", (float) texY / atlasSize);
 
             glBindVertexArray(this->vao);
             glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);

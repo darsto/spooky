@@ -7,6 +7,7 @@
 #pragma once
 
 #include <string>
+#include <memory>
 
 #include "opengl.h"
 
@@ -26,7 +27,7 @@ class Texture
 public:
     Texture();
     ~Texture();
-    void createFromData(unsigned char* data);
+    void createFromData(std::unique_ptr<unsigned char[]> data, size_t width, size_t height, uint8_t channels);
     void loadTexture2D(const std::string &fileName, bool mipmaps = false);
     void bindTexture(int bindId = 0);
     void filtering(int filterMag, int filterMin);
@@ -40,9 +41,9 @@ public:
     int boundId() const;
 
 private:
-    int m_width;
-    int m_height;
-    int m_channels;
+    size_t m_width;
+    size_t m_height;
+    uint8_t m_channels;
     GLuint m_id;
     bool m_mipmapEnabled;
     int m_boundId = -1;

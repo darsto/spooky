@@ -4,7 +4,7 @@
 
 #include <vector>
 #include "Shader.h"
-#include "src/files.h"
+#include "files.h"
 
 using namespace std;
 

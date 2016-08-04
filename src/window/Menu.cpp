@@ -3,7 +3,7 @@
 //
 
 #include "Menu.h"
-#include "src/gui/GuiText.h"
+#include "gui/GuiText.h"
 
 #ifndef __ANDROID__
 

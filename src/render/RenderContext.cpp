@@ -5,8 +5,8 @@
 #include "RenderContext.h"
 #include "gui/GuiElement.h"
 #include "render/gui/GuiElementRender.h"
-#include "src/render/font/TextRender.h"
-#include "src/gui/GuiText.h"
+#include "render/font/TextRender.h"
+#include "gui/GuiText.h"
 
 GuiElementRender &RenderContext::getGuiElementRender(const GuiElement &element) {
     return *guiRenders[element.type()];

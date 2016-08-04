@@ -6,7 +6,7 @@
 
 GuiElementRender::GuiElementRender(const std::string &textureFile, const std::string &shader) {
     texture.loadTexture2D(textureFile + std::string(".png"), true);
-    texture.filtering(TEXTURE_FILTER_MAG_NEAREST, TEXTURE_FILTER_MIN_TRILINEAR_MIPMAP);
+    texture.filtering(TEXTURE_FILTER_MAG_BILINEAR, TEXTURE_FILTER_MIN_BILINEAR_MIPMAP);
 
     int a = this->vertShader.load(shader + std::string(".vert"), GL_VERTEX_SHADER);
     int b = this->fragShader.load(shader + std::string(".frag"), GL_FRAGMENT_SHADER);
@@ -39,8 +39,8 @@ GuiElementRender::GuiElementRender(const std::string &textureFile, const std::st
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
 
-    float tWidth = 1.0f / atlasSize - 0.5f / texture.width();
-    float tHeight = 1.0f / atlasSize - 0.5f / texture.height();
+    float tWidth = 1.0f / atlasSize;
+    float tHeight = 1.0f / atlasSize;
     float tCoords[] = {
         tWidth, tHeight,
         tWidth, 0.0f,
@@ -86,8 +86,8 @@ void GuiElementRender::render(const GuiElement &element, glm::mat4 projectionMat
         shaderProgram.setUniform("modelViewMatrix", viewMatrix * this->tmpModelMatrix);
         float x = (float) (this->getTexPos(element) % atlasSize);
         float y = (float) (this->getTexPos(element) / atlasSize);
-        shaderProgram.setUniform("texPosX", x / atlasSize + 0.5f / texture.width());
-        shaderProgram.setUniform("texPosY", y / atlasSize + 0.5f / texture.height());
+        shaderProgram.setUniform("texPosX", x / atlasSize);
+        shaderProgram.setUniform("texPosY", y / atlasSize);
 
         glBindVertexArray(this->vao);
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
