@@ -64,7 +64,12 @@ SET(SOURCE_FILES
         core/input/TouchPoint.cpp
         gui/GuiText.cpp
         render/texture/Resampler.cpp
-        render/texture/Resampler.h)
+        render/texture/Resampler.h
+        render/texture/Packer.cpp
+        render/texture/Packer.h
+        render/texture/Rectangle.cpp
+        render/texture/Rectangle.h
+        )
 SET(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/../cmake)
 
 INCLUDE(FindPkgConfig)
