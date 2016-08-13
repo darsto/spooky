@@ -1,0 +1,13 @@
+dependencies:
+  pre:
+    # TODO: Add some simulation target to c003_game, which won't require SDL2, SOIL and Box2D
+    - cd tests/extsrc/googletest; mkdir build; cd build; cmake ..; make
+  override:
+    - mkdir build; cd build; cmake ..; make c003_tests
+test:
+  override:
+    - cd tests/bin; ./c003_tests
+checkout:
+  post:
+    - git submodule init
+    - git submodule update
