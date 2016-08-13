@@ -22,7 +22,13 @@ public:
     static constexpr const double TEXT_SPACESIZE = 0.2;
     static constexpr const double TEXT_SPACING = 0.1; //space between letters
 
-    static constexpr const double getGlyphSize(char character);
+    static constexpr const double getGlyphSize(char character) {
+        if (character >= 0 && character < 64) {
+            return (double) (GLYPH_SIZE[character] % 64) / 64;
+        } else {
+            return TEXT_SPACESIZE;
+        }
+    }
 
     GuiText(const std::string &string, int x, int y, PositionFlag position, float scale, int color, char flags);
     const std::string &text() const;

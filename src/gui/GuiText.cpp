@@ -6,14 +6,6 @@
 
 constexpr const int GuiText::GLYPH_SIZE[];
 
-constexpr const double GuiText::getGlyphSize(char character) {
-    if (character >= 0 && character < 64) {
-        return (double) (GLYPH_SIZE[character] % 64) / 64;
-    } else {
-        return TEXT_SPACESIZE;
-    }
-}
-
 GuiText::GuiText(const std::string &string, int x, int y, GuiElement::PositionFlag position, float scale, int color, char flags)
     : GuiElement(position, x, y, 0, 0, 0, color),
       m_text(string),
