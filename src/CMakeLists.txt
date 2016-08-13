@@ -123,10 +123,10 @@ else ()
     endif ()
 endif ()
 
-INCLUDE_DIRECTORIES(${Kaguya_SOURCE_DIR}/include)
-
 INCLUDE_DIRECTORIES(${LUA_INCLUDE_DIR} ${LUA_INCLUDE_DIR}/lua5.1 ${LUA_INCLUDE_DIR}/lua5.2 ${LUA_INCLUDE_DIR}/lua5.3)
 TARGET_LINK_LIBRARIES(${PROJECT_NAME} ${LUA_LIBRARIES})
+
+INCLUDE_DIRECTORIES(ext/kaguya/include)
 
 if (MINGW)
     TARGET_LINK_LIBRARIES(${PROJECT_NAME} m dinput8 dxguid dxerr8 gdi32 winmm imm32 ole32 oleaut32 shell32 version uuid)
