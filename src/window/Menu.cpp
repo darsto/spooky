@@ -5,12 +5,6 @@
 #include "Menu.h"
 #include "gui/GuiText.h"
 
-#ifndef __ANDROID__
-
-#include <SDL_keyboard.h>
-
-#endif //__ANDROID__
-
 Menu::Menu(ApplicationContext &applicationContext) : Window(applicationContext) {
 #ifdef DEBUG
     GuiElement *e = new GuiElement(GuiElement::PositionFlag::BOTTOM_LEFT, 8, 8, 30, 30, 0);

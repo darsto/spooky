@@ -6,9 +6,9 @@
 
 #include "gtest/gtest.h"
 
-#include "render/texture/Packer.h"
+#include "util/Packer.h"
 
-using namespace texture;
+using namespace util;
 
 class TestPacker : public Packer {
 public:

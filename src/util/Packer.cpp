@@ -6,7 +6,7 @@
 
 #include "Packer.h"
 
-using namespace texture;
+using namespace util;
 
 Packer::Packer()
     : m_size(0, 0) {

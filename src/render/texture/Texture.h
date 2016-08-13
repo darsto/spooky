@@ -15,7 +15,7 @@
 #include <unordered_map>
 
 #include "render/opengl.h"
-#include "Packer.h"
+#include "util/Packer.h"
 
 class invalid_texture_error : public std::runtime_error {
 public:
@@ -75,7 +75,7 @@ private:
     MagFilter m_filterMag;
     std::string m_path;
 
-    texture::Packer packer;
+    util::Packer packer;
     std::unordered_map<uint64_t, TexData> m_texData;
 
     std::vector<std::string> m_tiles;

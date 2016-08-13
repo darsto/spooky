@@ -12,11 +12,11 @@
 #include <logging.h>
 #include <ApplicationContext.h>
 
-#ifndef __ANDROID__
+#if defined(USES_SDL) && defined(USES_KEYBOARD)
 
 #include <SDL_keyboard.h>
 
-#endif //__ANDROID__
+#endif // USES_SDL && USES_KEYBOARD
 
 MainMenu::MainMenu(ApplicationContext &applicationContext) : Menu(applicationContext) {
     GuiText *t = new GuiText("Main menu", 20, 20, GuiElement::PositionFlag::BOTTOM_RIGHT, 22, 0xffffffff, 0);

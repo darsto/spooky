@@ -11,10 +11,10 @@
 
 #include "TextureAtlas.h"
 #include "util.h"
-#include "Packer.h"
+#include "util/Packer.h"
 #include "Resampler.h"
 
-using namespace texture;
+using namespace util;
 
 class TextureAtlas::impl {
 public:
@@ -64,7 +64,7 @@ private:
             throw invalid_texture_error("Trying to write data into an image beyond it's borders.");
         }
 
-        auto resampled = texture::Resampler::downsample(texIn.getData().get(), texIn.width(), texIn.height(), texIn.channels(), downsample);
+        auto resampled = util::Resampler::downsample(texIn.getData().get(), texIn.width(), texIn.height(), texIn.channels(), downsample);
 
         for (int yIn = 0; yIn < texIn.height() / downsample; ++yIn) {
             for (int xIn = 0; xIn < texIn.width() / downsample; ++xIn) {

@@ -16,7 +16,12 @@ class Window;
 
 namespace Input {
 
+#if defined(USES_SDL) && defined(USES_KEYBOARD)
     using KeypressTable = std::array<Keypress, SDL_NUM_SCANCODES>;
+#else
+    class KeypressTable;
+#endif
+
     using TouchPointTable = std::unordered_map<int, TouchPoint *>;
 
     class InputManager {
@@ -29,7 +34,9 @@ namespace Input {
 
     private:
         TouchPointTable m_touchPoints;
+#if defined(USES_SDL) && defined(USES_KEYBOARD)
         KeypressTable m_keypresses;
+#endif
 
         void handleTouch(Window &window);
         void handleKeyboard(Window &window);

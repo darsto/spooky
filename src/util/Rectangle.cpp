@@ -6,7 +6,7 @@
 
 #include "Rectangle.h"
 
-using namespace texture;
+using namespace util;
 
 Rectangle::Rectangle(const uint32_t x, const uint32_t y, const uint32_t width, const uint32_t height)
     : m_x(x),

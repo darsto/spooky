@@ -17,8 +17,10 @@ Application::Application()
 }
 
 void Application::reinit() {
+#ifndef SIMULATION
     m_renderer.init();
     m_renderer.initWindow(*m_window); //TODO
+#endif
     m_timer.GetDelta(); //if not called right now, first call in game loop would return a very huge value
     m_inputManager.reload();
 }
@@ -48,7 +50,11 @@ void Application::update(bool dynamic) {
     } else {
         m_window->tick(1.0);
     }
+
+#ifndef SIMULATION
     this->m_renderer.render(*m_window);
+#endif
+
     this->handleEvents();
     m_inputManager.tick(*m_window);
     this->m_ticks++;
@@ -106,7 +112,9 @@ JNIEXPORT void JNICALL Java_tk_approach_android_spookytom_JniBridge_handleTouch(
 
 void Application::resize(int width, int height) {
     m_window->reload(width, height);
+#ifndef SIMULATION
     this->m_renderer.resize(*m_window, width, height);
+#endif
 }
 
 void Application::handleClick(int i, Input::TouchPoint::State state, float x, float y) {
@@ -155,10 +163,12 @@ void Application::switchWindow() {
     } else {
         m_window.swap(m_newWindow);
         m_newWindow.reset();
+#ifndef SIMULATION
         m_renderer.initWindow(*m_window);
 
         auto renderContext = m_renderer.getRenderContext();
         resize(renderContext->getWindowWidth(), renderContext->getWindowHeight());
+#endif
     }
 }
 

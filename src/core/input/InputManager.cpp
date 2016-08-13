@@ -24,7 +24,7 @@ void InputManager::handleClick(int i, TouchPoint::State state, float x, float y)
     p->m_state = state;
 }
 
-#ifdef USES_SDL
+#if defined(USES_SDL) && defined(USES_KEYBOARD)
 
 void InputManager::handleKeypress(SDL_Event *e) {
     if (e->key.keysym.scancode >= 0 && e->key.keysym.scancode < SDL_NUM_SCANCODES && e->key.repeat == 0) {
@@ -36,7 +36,7 @@ void InputManager::handleKeypress(SDL_Event *e) {
     }
 }
 
-#endif // !IS_MOBILE
+#endif // USES_SDL && USES_KEYBOARD
 
 void InputManager::tick(Window &window) {
     handleTouch(window);
@@ -71,9 +71,12 @@ void InputManager::handleTouch(Window &window) {
 
 void InputManager::reload() {
     m_touchPoints.clear();
+    
+#if defined(USES_SDL) && defined(USES_KEYBOARD)
     for (int i = 0; i < m_keypresses.size(); i++) {
         Keypress *key = &m_keypresses[i];
         key->m_state = Keypress::State::NONE;
         key->m_pressDelay = key->m_pressCounter = 0;
     }
+#endif
 }

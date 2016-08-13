@@ -8,12 +8,12 @@
  * TODO: refactor this class using c++ operators (?)
  */
 
-#ifndef C003_RECTANGLE_H
-#define C003_RECTANGLE_H
+#ifndef C003_UTIL_RECTANGLE_H
+#define C003_UTIL_RECTANGLE_H
 
 #include <cstdint>
 
-namespace texture {
+namespace util {
 
     /**
      * Rectangle class providing various transform operations.
@@ -216,4 +216,4 @@ namespace texture {
     };
 }
 
-#endif //C003_RECTANGLE_H
+#endif //C003_UTIL_RECTANGLE_H

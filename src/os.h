@@ -79,4 +79,11 @@ enum class OS {
     #error "Unknown platform"
 #endif
 
+
+
+#ifdef SIMULATION
+    #undef USES_SDL
+    #undef USES_KEYBOARD
+#endif // SIMULATION
+
 #endif //C003_OS_H

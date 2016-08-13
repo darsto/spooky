@@ -9,7 +9,7 @@
 #include <memory>
 #include <cmath>
 
-namespace texture {
+namespace util {
 
     class Resampler {
     public:

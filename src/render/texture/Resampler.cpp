@@ -4,7 +4,7 @@
 
 #include "Resampler.h"
 
-using namespace texture;
+using namespace util;
 
 std::unique_ptr<uint8_t[]> Resampler::downsample(uint8_t *inData, size_t inWidth, size_t inHeight, size_t channels, size_t downscaleRate) {
     size_t outWidth = inWidth / downscaleRate;

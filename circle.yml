@@ -1,6 +1,6 @@
 dependencies:
   pre:
-    # TODO: Add some simulation target to c003_game, which won't require SDL2, SOIL and Box2D
+    - sudo apt-get install liblua5.3-dev
     - cd tests/extsrc/googletest; mkdir build; cd build; cmake ..; make
   override:
     - mkdir build; cd build; cmake ..; make c003_tests

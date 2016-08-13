@@ -44,8 +44,8 @@ Texture::Texture(const std::string &fileName)
 
         for (auto &el : packer.elements()) {
             TexData &tex = m_texData.find(el.first)->second;
-            auto resampled = texture::Resampler::downsample(tex.getData().get(), tex.width(), tex.height(), tex.channels(), downsample);
-            texture::Rectangle rect(el.second.x() / downsample, el.second.y() / downsample, el.second.width() / downsample, el.second.height() / downsample);
+            auto resampled = util::Resampler::downsample(tex.getData().get(), tex.width(), tex.height(), tex.channels(), downsample);
+            util::Rectangle rect(el.second.x() / downsample, el.second.y() / downsample, el.second.width() / downsample, el.second.height() / downsample);
 
             uint32_t inWidth = tex.width() / downsample;
             uint32_t inHeight = tex.height() / downsample;
@@ -148,7 +148,7 @@ void Texture::loadTile(const std::string &path) {
     auto bytes = std::unique_ptr<uint8_t[]>(SOIL_load_image(path.c_str(), &width, &height, &channels, SOIL_LOAD_AUTO));
 
     if (width > 0 && height > 0 && channels > 0) {
-        uint64_t id = packer.add(texture::Rectangle((uint32_t) width, (const uint32_t) height));
+        uint64_t id = packer.add(util::Rectangle((uint32_t) width, (const uint32_t) height));
         TexData tex((uint32_t) width, (uint32_t) height, (uint32_t) channels, std::move(bytes));
         m_texData.emplace(id, std::move(tex));
     } else {

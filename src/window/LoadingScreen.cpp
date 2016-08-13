@@ -32,8 +32,12 @@ void LoadingScreen::tick(double deltaTime) {
 void LoadingScreen::handleClick(const Input::TouchPoint &p) {
 }
 
+#if defined(USES_SDL) && defined(USES_KEYBOARD)
+
 void LoadingScreen::handleKeypress(const Input::KeypressTable &keypresses) {
     if (keypresses[SDL_SCANCODE_W].isPressed()) {
         m_applicationContext.switchWindow<MainMenu>();
     }
 }
+
+#endif

@@ -11,7 +11,10 @@
 #include "core/Timer.h"
 #include "core/input/InputManager.h"
 #include "window/Window.h"
+
+#ifndef SIMULATION
 #include "render/RenderManager.h"
+#endif
 
 class Application {
 
@@ -28,7 +31,6 @@ private:
     bool m_running = true;
     ApplicationContext m_context;
     std::unique_ptr<Window> m_window;
-    RenderManager m_renderer;
     Input::InputManager m_inputManager;
     Timer m_timer;
     double m_deltaTimeHistory[15];
@@ -36,9 +38,13 @@ private:
     unsigned long long m_ticks = 0;
     std::unique_ptr<Window> m_newWindow;
 
-#if !IS_MOBILE
+#ifndef SIMULATION
+    RenderManager m_renderer;
+#endif
+
+#ifdef USES_SDL
     SDL_Event m_sdlEvent;
-#endif // !IS_MOBILE
+#endif // USES_SDL
 
     void handleEvents();
     void switchWindow();

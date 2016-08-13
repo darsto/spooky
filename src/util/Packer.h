@@ -4,8 +4,8 @@
  * that can be found in the LICENSE file.
  */
 
-#ifndef C003_PACKER_H
-#define C003_PACKER_H
+#ifndef C003_UTIL_PACKER_H
+#define C003_UTIL_PACKER_H
 
 #include <cstdint>
 #include <memory>
@@ -15,7 +15,7 @@
 
 #include "Rectangle.h"
 
-namespace texture {
+namespace util {
 
     /**
      * 2D binary packer.
@@ -163,4 +163,4 @@ namespace texture {
 
 }
 
-#endif //C003_PACKER_H
+#endif //C003_UTIL_PACKER_H

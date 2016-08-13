@@ -10,7 +10,7 @@
 #include "Texture.h"
 #include "files.h"
 
-namespace texture {
+namespace util {
 
     class TextureAtlas {
     public:
