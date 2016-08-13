@@ -8,6 +8,7 @@
 #include "MenuRender.h"
 #include <gui/GuiButton.h>
 #include <window/Menu.h>
+#include <iostream>
 #include "render/opengl.h"
 #include "render/gui/GuiElementRender.h"
 #include "render/RenderContext.h"
@@ -29,6 +30,11 @@ void MenuRender::render(const Window &window, RenderContext &renderContext) {
     glClear(GL_COLOR_BUFFER_BIT);
     for (auto &guiElement : menu.guiElements()) {
         renderContext.getGuiElementRender(*guiElement).render(*guiElement, projectionMatrix, viewMatrix, 1.0f);
+    }
+
+    GLenum err;
+    while ((err = glGetError()) != GL_NO_ERROR) {
+        std::cerr << "OpenGL error: " << err << std::endl;
     }
 }
 

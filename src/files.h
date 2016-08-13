@@ -6,8 +6,12 @@
 #define C003_FILES_H
 
 #include <string>
+#include <vector>
+#include <dirent.h>
 
-namespace IO {
+#include "os.h"
+
+namespace files {
 
     enum class Data {
         MAP = 0,
@@ -16,28 +20,33 @@ namespace IO {
         TEXTURE
     };
 
+    extern const char fileSeparator;
+
     std::string getFilePath(const std::string &file);
 
     template<Data data>
     std::string getFilePath(const std::string &fileName) {
-        std::string ret;
+        std::string dir;
         switch (data) {
             case Data::MAP:
-                ret = "map/";
+                dir = "map";
                 break;
             case Data::SCRIPT:
-                ret = "scripts/";
+                dir = "scripts";
                 break;
             case Data::SHADER:
-                ret = "shaders/";
+                dir = "shaders";
                 break;
             case Data::TEXTURE:
-                ret = "textures/";
+                dir = "textures";
                 break;
         }
 
-        return getFilePath(ret + fileName);
+        dir += fileSeparator;
+        return getFilePath(dir + fileName);
     }
+
+    std::vector<std::string> listdir(const char *path);
 }
 
 #endif //C003_FILES_H

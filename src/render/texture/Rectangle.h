@@ -4,6 +4,10 @@
  * that can be found in the LICENSE file.
  */
 
+/*
+ * TODO: refactor this class using c++ operators (?)
+ */
+
 #ifndef C003_RECTANGLE_H
 #define C003_RECTANGLE_H
 
@@ -200,10 +204,11 @@ namespace texture {
         Rectangle expandY(uint32_t y) const;
 
         /**
-         * Check if current field is smaller than the one of the given rectangle
-         * @return if current field is smaller than the one of the given rectangle
+         * Scales both the coordinates and size of the rectangle
+         * @param scale modifier to scale by; newVal = oldVal * scale
+         * @return new Rectangle with applied changes
          */
-        bool operator<(const Rectangle &rhs) const;
+        Rectangle scale(double scale) const;
 
     private:
         uint32_t m_x, m_y;

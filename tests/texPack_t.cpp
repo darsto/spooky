@@ -9,7 +9,6 @@
 #include "render/texture/Packer.h"
 
 using namespace texture;
-using Node = Packer::Node;
 
 class TestPacker : public Packer {
 public:
@@ -17,6 +16,9 @@ public:
         : Packer(),
           m_expectedSize(expectedWidth){
     }
+
+    using Node = Packer::Node;
+    using Packer::nodes;
 
     uint32_t m_expectedSize;
 };
@@ -77,7 +79,8 @@ void EXPECT_EQ_TEX(uint32_t width, uint32_t height, const Rectangle &tex) {
 TEST(TexturePackerTest, binTreeSquaresSorted) {
     TestPacker packer = basicSquarePacker(true);
 
-    const Node *node = packer.pack();
+    packer.pack();
+    const TestPacker::Node *node = packer.nodes();
 
     EXPECT_EQ(packer.m_expectedSize, packer.size().width());
     EXPECT_EQ(packer.m_expectedSize, packer.size().height());
@@ -103,7 +106,8 @@ TEST(TexturePackerTest, binTreeSquaresSorted) {
 TEST(TexturePackerTest, binTreeRectanglesSorted) {
     TestPacker packer = basicRectanglePacker(true);
 
-    const Node *node = packer.pack();
+    packer.pack();
+    const TestPacker::Node *node = packer.nodes();
 
     EXPECT_EQ(packer.m_expectedSize, packer.size().width());
     EXPECT_EQ(packer.m_expectedSize, packer.size().height());
@@ -131,7 +135,8 @@ TEST(TexturePackerTest, binTreeRectanglesSorted) {
 TEST(TexturePackerTest, binTreeSquaresUnorted) {
     TestPacker packer = basicSquarePacker(false);
 
-    const Node *node = packer.pack();
+    packer.pack();
+    const TestPacker::Node *node = packer.nodes();
 
     EXPECT_EQ(packer.m_expectedSize, packer.size().width());
     EXPECT_EQ(packer.m_expectedSize, packer.size().height());
@@ -157,7 +162,8 @@ TEST(TexturePackerTest, binTreeSquaresUnorted) {
 TEST(TexturePackerTest, binTreeRectanglesUnsorted) {
     TestPacker packer = basicRectanglePacker(false);
 
-    const Node *node = packer.pack();
+    packer.pack();
+    const TestPacker::Node *node = packer.nodes();
 
     EXPECT_EQ(packer.m_expectedSize, packer.size().width());
     EXPECT_EQ(packer.m_expectedSize, packer.size().height());

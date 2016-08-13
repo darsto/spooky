@@ -10,7 +10,7 @@ TextRender::TextRender() : GuiElementRender("font", "font") { }
 void TextRender::render(const GuiElement &element, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, double scale) {
     if (element.visible()) {
         const GuiText &text = (const GuiText &) element;
-        texture.bindTexture(0);
+        texture.bindTexture();
         this->shaderProgram.useProgram();
         this->shaderProgram.setUniform("projectionMatrix", projectionMatrix);
         this->shaderProgram.setUniform("gSampler", texture.boundId());

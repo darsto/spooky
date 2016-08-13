@@ -11,6 +11,7 @@
 #include <memory>
 #include <vector>
 #include <algorithm>
+#include <atomic>
 
 #include "Rectangle.h"
 
@@ -21,7 +22,7 @@ namespace texture {
      * Provides generic interface for packing any Rectangle shapes into a square area of dynamic size.
      */
     class Packer {
-    public:
+    protected:
         /**
          * A node representing single element in generated binary tree.
          */
@@ -29,10 +30,17 @@ namespace texture {
         public:
             /**
              * The constructor.
+             * @param id unique id to be associated with this node
              * @param rect area of this node
              * @param unused unused surrounding area of this node (must contain rect). This is used to calculate if other textures can fit next to this one.
              */
-            Node(Rectangle rect, Rectangle unused);
+            Node(uint64_t id, Rectangle rect, Rectangle unused);
+
+            /**
+             * Get the unique id associated with this node
+             * @return unique id associated with this node
+             */
+            const uint64_t id() const;
 
             /**
              * Get the area of this node.
@@ -89,6 +97,7 @@ namespace texture {
             const Rectangle &rectDown() const;
 
         private:
+            const uint64_t m_id;
             const Rectangle m_occupied;
             const Rectangle m_rectRight;
             const Rectangle m_rectDown;
@@ -99,6 +108,12 @@ namespace texture {
 
     public:
         /**
+         * Basic type of objects leaving scope of this class.
+         * Consists of a single Rectangle object and it's corresponding id.
+         */
+        using Element = std::pair<uint64_t, Rectangle>;
+
+        /**
          * The constructor.
          */
         Packer();
@@ -106,15 +121,21 @@ namespace texture {
         /**
          * Adds given rectangle to the internal container.
          * @param rectangle rectangle to be packed
+         * @return unique id assigned to just-created internal node
          */
-        void add(Rectangle rectangle);
+        uint64_t add(Rectangle rectangle);
 
         /**
-         * Pack all the stored rectangles and return the generated tree.
-         * This method clears the internal rectangles container.
-         * @return generated tree containing all the stored rectangles
+         * Pack all the stored rectangles.
+         * Once this method is called, it's no longer possible to add shapes into the same packer.
          */
-        const Node *pack();
+        void pack();
+
+        /**
+         * Get all the stored rectangles
+         * @return container of all the stored rectangles
+         */
+        const std::vector<Element> elements() const;
 
         /**
          * Get the (possible) size of the area containing packed rectangles.
@@ -123,14 +144,21 @@ namespace texture {
          */
         const Rectangle &size() const;
 
+    protected:
+        const Node *nodes() const;
+
     private:
-        std::vector<Rectangle> m_rectangles;
+        void calculateSize();
+        void growTree();
+        bool positionObject(std::pair<uint64_t, Rectangle> obj, Node *node);
+        void buildPackedVec(const Node *node, std::vector<Element> &vec) const;
+
+        bool m_built = false;
+        std::vector<std::pair<uint64_t, Rectangle>> m_rectangles;
         Rectangle m_size;
         std::unique_ptr<Node> m_topNode = nullptr;
 
-        void calculateSize();
-        void growTree();
-        bool insertTex(Rectangle tex, Node *node);;
+        static std::atomic<uint64_t> s_idCounter;
     };
 
 }

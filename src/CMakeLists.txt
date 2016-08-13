@@ -14,8 +14,8 @@ SET(SOURCE_FILES
         render/Shader.h
         render/ShaderProgram.cpp
         render/ShaderProgram.h
-        render/Texture.cpp
-        render/Texture.h
+        render/texture/Texture.cpp
+        render/texture/Texture.h
         render/Fbo.cpp
         render/Fbo.h
         render/RenderManager.cpp
@@ -69,6 +69,10 @@ SET(SOURCE_FILES
         render/texture/Packer.h
         render/texture/Rectangle.cpp
         render/texture/Rectangle.h
+        render/texture/TextureAtlas.cpp
+        render/texture/TextureAtlas.h
+        util.cpp
+        util.h
         )
 SET(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/../cmake)
 
@@ -89,6 +93,8 @@ endif ()
 
 INCLUDE_DIRECTORIES(${SOIL_INCLUDE_DIR} ${BOX2D_INCLUDE_DIRS})
 TARGET_LINK_LIBRARIES(${PROJECT_NAME} ${SOIL_LIBRARIES} ${BOX2D_LIBRARIES})
+
+TARGET_COMPILE_DEFINITIONS(${PROJECT_NAME} PRIVATE __DEBUG__=1 DEBUG=1)
 
 IF (DEBUG)
     TARGET_COMPILE_DEFINITIONS(${PROJECT_NAME} PRIVATE __DEBUG__=1 DEBUG=1)

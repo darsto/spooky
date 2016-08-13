@@ -113,6 +113,6 @@ Rectangle Rectangle::expandY(uint32_t y) const {
     return expand(0, y);
 }
 
-bool Rectangle::operator<(const Rectangle &rhs) const {
-    return field() < rhs.field();
+Rectangle Rectangle::scale(double scale) const {
+    return Rectangle((uint32_t) (m_x * scale), (uint32_t) (m_y * scale), (uint32_t) (m_width * scale), (uint32_t) (m_height * scale));
 }

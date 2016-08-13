@@ -12,76 +12,110 @@ Packer::Packer()
     : m_size(0, 0) {
 }
 
-void Packer::add(Rectangle rectangle) {
-    m_rectangles.push_back(std::move(rectangle));
+uint64_t Packer::add(Rectangle rectangle) {
+    if (m_built) {
+        throw std::runtime_error("Trying to add a shape into an already built packer.");
+    }
+
+    uint64_t id = s_idCounter++;
+    m_rectangles.push_back({id, std::move(rectangle)});
+    return id;
 }
 
-const Packer::Node *Packer::pack() {
+void Packer::pack() {
+    if (m_built) {
+        throw std::runtime_error("Trying to pack an already built packer.");
+    }
+
+    m_built = true;
     calculateSize();
     growTree();
-    return m_topNode.get();
+}
+
+const std::vector<Packer::Element> Packer::elements() const {
+    std::vector<Packer::Element> vec;
+    buildPackedVec(m_topNode.get(), vec);
+    return vec;
 }
 
 const Rectangle &Packer::size() const {
     return m_size;
 }
 
+const Packer::Node *Packer::nodes() const {
+    return m_topNode.get();
+}
+
 void Packer::calculateSize() {
     uint32_t field = 0;
 
-    for (const Rectangle &t : m_rectangles) {
-        field += t.field();
+    for (auto &t : m_rectangles) {
+        field += t.second.field();
     }
 
     uint32_t edge = (uint32_t) std::ceil(std::sqrt(field));
 
-    m_size = Rectangle(0, 0, edge, edge);
+    m_size = Rectangle(edge, edge);
 }
 
 void Packer::growTree() {
     // expecting m_textures.size() > 0
-    std::sort(m_rectangles.begin(), m_rectangles.end());
+    std::sort(m_rectangles.begin(), m_rectangles.end(), [](const std::pair<uint64_t, Rectangle> &lhs, const std::pair<uint64_t, Rectangle> &rhs) {
+        return lhs.second.field() < rhs.second.field();
+    });
 
     while (!m_rectangles.empty()) {
-        insertTex(std::move(m_rectangles.back()), m_topNode.get());
+        positionObject(std::move(m_rectangles.back()), m_topNode.get());
         m_rectangles.pop_back();
     }
 }
 
-bool Packer::insertTex(Rectangle tex, Packer::Node *node) {
+bool Packer::positionObject(std::pair<uint64_t, Rectangle> obj, Packer::Node *node) {
     if (m_topNode.get() == nullptr) { //first node
-        m_topNode = std::make_unique<Node>(tex, m_size);
+        m_topNode = std::make_unique<Node>(obj.first, std::move(obj.second), m_size);
         return true;
     } else if (node == nullptr) {
         return false;
     } else {
-        bool right = insertTex(std::move(tex), node->right());
-        bool down = right || insertTex(std::move(tex), node->down());
+        bool right = positionObject(std::move(obj), node->right());
+        bool down = right || positionObject(std::move(obj), node->down());
 
         if (right || down) {
             return true;
         } else {
             if (node->right() == nullptr
-                && node->rectRight().fits(tex.position(node->rectRight()))) {
+                && node->rectRight().fits(obj.second.position(node->rectRight()))) {
 
-                node->right(std::make_unique<Node>(tex.position(node->rectRight()), node->rectRight()));
+                node->right(std::make_unique<Node>(obj.first, obj.second.position(node->rectRight()), node->rectRight()));
                 return true;
             } else if (node->down() == nullptr
-                       && node->rectDown().fits(tex.position(node->rectDown()))) {
+                       && node->rectDown().fits(obj.second.position(node->rectDown()))) {
 
-                node->down(std::make_unique<Node>(tex.position(node->rectDown()), node->rectDown()));
+                node->down(std::make_unique<Node>(obj.first, obj.second.position(node->rectDown()), node->rectDown()));
                 return true;
             }
         }
     }
 }
 
+void Packer::buildPackedVec(const Packer::Node *node, std::vector<Packer::Element> &vec) const {
+    if (node == nullptr) return;
+    vec.push_back(Element(node->id(), node->rectangle()));
+    buildPackedVec(node->right(), vec);
+    buildPackedVec(node->down(), vec);
+}
+
 // ===== Node =====
 
-Packer::Node::Node(Rectangle rect, Rectangle unused)
-    : m_occupied(std::move(rect)),
+Packer::Node::Node(uint64_t id, Rectangle rect, Rectangle unused)
+    : m_id(id),
+      m_occupied(std::move(rect)),
       m_rectRight(Rectangle(unused.x() + rect.width(), unused.y(), unused.width() - rect.width(), rect.height())),
       m_rectDown(Rectangle(unused.x(), unused.y() + rect.height(), unused.width(), unused.height() - rect.height())) {
+}
+
+const uint64_t Packer::Node::id() const {
+    return m_id;
 }
 
 const Rectangle &Packer::Node::rectangle() const {
@@ -119,3 +153,5 @@ void Packer::Node::right(std::unique_ptr<Packer::Node> right) {
 void Packer::Node::down(std::unique_ptr<Packer::Node> down) {
     m_down = std::move(down);
 }
+
+std::atomic<uint64_t> Packer::s_idCounter(0);

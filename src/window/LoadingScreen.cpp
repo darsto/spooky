@@ -10,7 +10,7 @@
 
 LoadingScreen::LoadingScreen(ApplicationContext &applicationContext) : Menu(applicationContext) {
     kaguya::State initState;
-    initState.dofile(IO::getFilePath<IO::Data::SCRIPT>("init.lua"));
+    initState.dofile(files::getFilePath<files::Data::SCRIPT>("init.lua"));
 }
 
 void LoadingScreen::reload(unsigned int windowWidth, unsigned int windowHeight) {
@@ -23,7 +23,7 @@ void LoadingScreen::tick(double deltaTime) {
     this->progress = 1.0;
     if (this->progress >= 1.0) {
 #if !defined(EDITOR) && !defined(DEBUG)
-        m_applicationContext.switchWindow(new MainMenu(this->m_applicationContext));
+        //m_applicationContext.switchWindow(new MainMenu(this->m_applicationContext));
 #else
 #endif
     }

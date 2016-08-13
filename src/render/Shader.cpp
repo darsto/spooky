@@ -15,7 +15,7 @@ Shader::~Shader() {
 }
 
 bool Shader::load(const string &fileName, int type) {
-    std::string file = IO::getFilePath<IO::Data::SHADER>(fileName);
+    std::string file = files::getFilePath<files::Data::SHADER>(fileName);
     FILE *fp = fopen(file.c_str(), "rt");
     if (!fp) return false;
     this->type = type;
