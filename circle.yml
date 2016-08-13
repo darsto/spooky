@@ -2,8 +2,8 @@ dependencies:
   pre:
     - sudo add-apt-repository ppa:george-edison55/precise-backports -y
     - sudo apt-get update
-    - sudo apt-get install cmake liblua5.2-dev
-    - cd tests/extsrc/googletest; mkdir build; cd build; cmake ..; make
+    - sudo apt-get install cmake liblua5.2-dev -y
+    #- cd tests/extsrc/googletest; mkdir build; cd build; cmake ..; make
   override:
     - mkdir build; cd build; cmake .. -DCMAKE_BUILD_TYPE=Simulation; make c003_tests
 test:
