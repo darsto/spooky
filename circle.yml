@@ -3,7 +3,7 @@ dependencies:
     - sudo apt-get install liblua5.3-dev
     - cd tests/extsrc/googletest; mkdir build; cd build; cmake ..; make
   override:
-    - mkdir build; cd build; cmake ..; make c003_tests
+    - mkdir build; cd build; cmake .. -DCMAKE_BUILD_TYPE=Simulation; make c003_tests
 test:
   override:
     - cd tests/bin; ./c003_tests
