@@ -1,5 +1,5 @@
-[submodule "tests/extsrc/googletest"]
-	path = tests/extsrc/googletest
+[submodule "tests/src/ext/googletest"]
+	path = tests/src/ext/googletest
 	url = git@github.com:google/googletest.git
 [submodule "src/ext/kaguya"]
 	path = src/ext/kaguya
