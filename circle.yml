@@ -4,9 +4,20 @@ general:
       - gh-pages
       - android-wrapper
 dependencies:
+  cache_directories:
+    - "~/.local/cache"
   pre:
-    - sudo apt-get update
-    - sudo apt-get install cmake liblua5.2-dev -y
+    - >-
+      if [[ ! -d "$HOME/.local/cache" ]]; then \
+        mkdir "$HOME/.local/cache" && cd "$HOME/.local/cache" \
+        && mkdir "debs" && cd "debs" \
+        && sudo apt-get update \
+        && sudo apt-get --print-uris --yes -d --reinstall install \
+            cmake liblua5.2-dev \
+            | grep "http://" |  awk '{print$1}' | xargs -I'{}' echo {} | tee files.list \
+        && wget --input-file files.list \
+      ; fi
+    - cd "$HOME/.local/cache/debs" && sudo dpkg --force-all -i *.deb
   override:
     - mkdir build; cd build; cmake .. -DCMAKE_BUILD_TYPE=Simulation; make c003_tests
 test:
