@@ -5,6 +5,9 @@
 #ifndef C003_LOGGING_H
 #define C003_LOGGING_H
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat-security" // disable "format not a string literal and no format arguments" warning at printf(...) lines
+
 namespace Log {
     constexpr const char *LOG_TAG = "SpookyTom";
 
@@ -46,5 +49,7 @@ namespace Log {
 #endif
     };
 };
+
+#pragma GCC diagnostic pop
 
 #endif //C003_LOGGING_H
