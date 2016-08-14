@@ -2,6 +2,7 @@ PROJECT(c003_game)
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8.12)
 
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -iquote ${CMAKE_CURRENT_SOURCE_DIR}")
+SET(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/../cmake)
 
 if (ANDROID)
     SET(TYPE SHARED)
@@ -79,8 +80,6 @@ if (NOT SIMULATION)
             render/texture/TextureAtlas.h
             )
 endif ()
-
-SET(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/../cmake)
 
 INCLUDE(FindPkgConfig)
 
