@@ -5,7 +5,8 @@ general:
       - android-wrapper
 dependencies:
   pre:
-    - sudo apt-get install liblua5.2-dev -y
+    - sudo apt-get update
+    - sudo apt-get install cmake liblua5.2-dev -y
   override:
     - mkdir build; cd build; cmake .. -DCMAKE_BUILD_TYPE=Simulation; make c003_tests
 test:
