@@ -13,7 +13,7 @@ void TextRender::render(const GuiElement &element, glm::mat4 projectionMatrix, g
         texture.bindTexture();
         this->shaderProgram.useProgram();
         this->shaderProgram.setUniform("projectionMatrix", projectionMatrix);
-        this->shaderProgram.setUniform("gSampler", texture.boundId());
+        this->shaderProgram.setUniform("gSampler", texture.activeTex());
 
         int color = element.color();
         float ca = (color & 0x000000FF) / 255.0f;

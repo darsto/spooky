@@ -2,8 +2,8 @@
 // Created by dar on 8/3/16.
 //
 
-#ifndef C003_RESAMPLER_H
-#define C003_RESAMPLER_H
+#ifndef C003_RENDER_TEXTURE_RESAMPLER_H
+#define C003_RENDER_TEXTURE_RESAMPLER_H
 
 #include <cstdint>
 #include <memory>
@@ -23,4 +23,4 @@ namespace util {
 
 }
 
-#endif //C003_RESAMPLER_H
+#endif //C003_RENDER_TEXTURE_RESAMPLER_H

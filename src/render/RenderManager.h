@@ -13,7 +13,7 @@
 #include <SDL2/SDL.h>
 #endif // __ANDROID__
 #include <glm/gtc/matrix_transform.hpp>
-#include "render/texture/Texture.h"
+#include "render/texture/Atlas.h"
 #include "Fbo.h"
 #include "opengl.h"
 #include <sstream>

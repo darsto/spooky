@@ -59,8 +59,8 @@ if (NOT SIMULATION)
             render/Shader.h
             render/ShaderProgram.cpp
             render/ShaderProgram.h
-            render/texture/Texture.cpp
-            render/texture/Texture.h
+            render/texture/Atlas.cpp
+            render/texture/Atlas.h
             render/Fbo.cpp
             render/Fbo.h
             render/RenderManager.cpp
@@ -74,11 +74,9 @@ if (NOT SIMULATION)
             render/window/MenuRender.h
             render/RenderContext.cpp
             render/RenderContext.h
-            render/texture/Resampler.cpp
-            render/texture/Resampler.h
-            render/texture/TextureAtlas.cpp
-            render/texture/TextureAtlas.h
-            )
+            util/Resampler.cpp
+            util/Resampler.h
+            render/texture/exceptions.h render/texture/exceptions.cpp render/texture/Data.cpp render/texture/Data.h)
 endif ()
 
 INCLUDE(FindPkgConfig)

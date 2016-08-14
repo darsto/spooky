@@ -11,7 +11,7 @@
 #include "gui/GuiElement.h"
 #include "render/opengl.h"
 #include "render/ShaderProgram.h"
-#include "render/texture/Texture.h"
+#include "render/texture/Atlas.h"
 
 class GuiElementRender {
 public:
@@ -25,7 +25,7 @@ protected:
     GLuint vao;
     Shader vertShader, fragShader;
     ShaderProgram shaderProgram;
-    Texture texture;
+    texture::Atlas texture;
     glm::mat4 modelMatrix = glm::mat4(1.0);
 
     virtual int getTexPos(const GuiElement &element) const;

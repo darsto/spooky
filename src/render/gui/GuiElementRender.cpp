@@ -6,7 +6,7 @@
 
 GuiElementRender::GuiElementRender(const std::string &textureFile, const std::string &shader)
     : texture(textureFile) {
-    texture.filtering(Texture::MagFilter::BILINEAR, Texture::MinFilter::BILINEAR_MIPMAP);
+    texture.filtering(texture::Atlas::MagFilter::BILINEAR, texture::Atlas::MinFilter::BILINEAR_MIPMAP);
 
     atlasSize = (uint32_t) sqrt(texture.getElementsNum());
 
@@ -67,7 +67,7 @@ void GuiElementRender::render(const GuiElement &element, glm::mat4 projectionMat
         this->texture.bindTexture();
         this->shaderProgram.useProgram();
         this->shaderProgram.setUniform("projectionMatrix", projectionMatrix);
-        this->shaderProgram.setUniform("gSampler", texture.boundId());
+        this->shaderProgram.setUniform("gSampler", texture.activeTex());
 
         int color = element.color();
         float ca = (color & 0x000000FF) / 255.0f;

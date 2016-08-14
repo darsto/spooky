@@ -37,9 +37,7 @@ std::vector<std::string> files::listdir(const char *path) {
 
     try {
         while ((entry = readdir(dp))) {
-            std::string dir = std::string(path);
-            dir.push_back(fileSeparator);
-            ret.push_back(dir + entry->d_name);
+            ret.push_back(entry->d_name);
         }
     } catch (std::exception e) {
         closedir(dp);
