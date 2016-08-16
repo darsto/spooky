@@ -10,7 +10,7 @@
 
 LoadingScreen::LoadingScreen(ApplicationContext &applicationContext) : Menu(applicationContext) {
     kaguya::State initState;
-    initState.dofile(files::getFilePath<files::type::script>("init.lua"));
+    initState.dofile(files::path<files::type::script>("init.lua"));
 }
 
 void LoadingScreen::reload(unsigned int windowWidth, unsigned int windowHeight) {

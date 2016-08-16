@@ -1,6 +1,8 @@
-//
-// Created by dar on 4/30/16.
-//
+/*
+ * Copyright (c) 2016 Dariusz Stojaczyk. All Rights Reserved.
+ * The following source code is released under an MIT-style license,
+ * that can be found in the LICENSE file.
+ */
 
 #ifndef C003_FILES_H
 #define C003_FILES_H
@@ -11,8 +13,15 @@
 
 #include "os.h"
 
+/**
+ * Set of useful functions and variables for IO operations
+ */
 namespace files {
 
+    /**
+     * Types of available files.
+     * They represent folder names inside data directory.
+     */
     namespace type {
         constexpr const char map[] = "map";
         constexpr const char script[] = "scripts";
@@ -20,18 +29,40 @@ namespace files {
         constexpr const char texture[] = "textures";
     }
 
-    extern const char fileSeparator;
+    /**
+     * Platform-specific file separator.
+     */
+    extern const char file_separator;
 
-    std::string getFilePath(const std::string &file);
+    /**
+     * Get the path of given asset.
+     * The usual output is <path to data dir><file_separator><file>.
+     * However, the output path might be absolute or not, depending on the platform.
+     * @param file path relative to data/ directory
+     * @return path relative to application's binary directory, or absolute path to the given file
+     */
+    std::string path(const std::string &file);
 
+    /**
+     * Get the path of given asset.
+     * The usual output is <path to data dir><file_separator><type><file_separator><file>.
+     * However, the output path might be absolute or not, depending on the platform.
+     * @param file path relative to data/<type>/ directory
+     * @return path relative to application's binary directory, or absolute path to the given file
+     */
     template<const char *type>
-    std::string getFilePath(const std::string &fileName) {
+    std::string path(const std::string &file) {
         std::string dir(type);
-        dir += fileSeparator;
-        return getFilePath(dir + fileName);
+        dir += file_separator;
+        return path(dir + file);
     }
 
-    std::vector<std::string> listdir(const char *path);
+    /**
+     * Get the list of files in given directory (non-recursive)
+     * @param path directory to list
+     * @return vector of filenames inside given dir
+     */
+    std::vector<std::string> list(const char *path);
 }
 
 #endif //C003_FILES_H

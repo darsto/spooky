@@ -1,6 +1,8 @@
-//
-// Created by dar on 5/1/16.
-//
+/*
+ * Copyright (c) 2016 Dariusz Stojaczyk. All Rights Reserved.
+ * The following source code is released under an MIT-style license,
+ * that can be found in the LICENSE file.
+ */
 
 #include <vector>
 #include <iostream>
@@ -8,14 +10,16 @@
 
 #include "files.h"
 
-const char files::fileSeparator =
+using namespace files;
+
+const char file_separator =
 #ifdef DEF_WINDOWS
     '\\';
 #else
     '/';
 #endif
 
-std::string files::getFilePath(const std::string &file) {
+std::string path(const std::string &file) {
 #ifdef DEF_ANDROID
     return "/sdcard/c003/data/" + file;
 #else
@@ -23,7 +27,7 @@ std::string files::getFilePath(const std::string &file) {
 #endif
 }
 
-std::vector<std::string> files::listdir(const char *path) {
+std::vector<std::string> list(const char *path) {
     struct dirent *entry;
     DIR *dp;
 

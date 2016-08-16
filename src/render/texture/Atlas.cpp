@@ -101,14 +101,14 @@ const std::regex Atlas::impl::FILE_EXTENSION_REGEX = std::regex("(.*)(\\.(jpg|pn
 int Atlas::m_boundTexId = 0;
 
 Atlas::Atlas(const std::string &name)
-    : m_path(files::getFilePath<files::type::texture>(name)),
-      m_impl(std::make_unique<Atlas::impl>(files::listdir(files::getFilePath<files::type::texture>(name).c_str()))),
+    : m_path(files::path<files::type::texture>(name)),
+      m_impl(std::make_unique<Atlas::impl>(files::list(files::path<files::type::texture>(name).c_str()))),
       m_minFilter(MinFilter::NEAREST),
       m_magFilter(MagFilter::NEAREST) {
 
     for (const std::string &tile : m_impl->m_tiles) {
         std::string dir = name;
-        dir.push_back(files::fileSeparator);
+        dir.push_back(files::file_separator);
         loadTile(dir + tile);
     }
 
