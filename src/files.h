@@ -13,35 +13,20 @@
 
 namespace files {
 
-    enum class Data {
-        MAP = 0,
-        SCRIPT,
-        SHADER,
-        TEXTURE
-    };
+    namespace type {
+        constexpr const char map[] = "map";
+        constexpr const char script[] = "scripts";
+        constexpr const char shader[] = "shaders";
+        constexpr const char texture[] = "textures";
+    }
 
     extern const char fileSeparator;
 
     std::string getFilePath(const std::string &file);
 
-    template<Data data>
+    template<const char *type>
     std::string getFilePath(const std::string &fileName) {
-        std::string dir;
-        switch (data) {
-            case Data::MAP:
-                dir = "map";
-                break;
-            case Data::SCRIPT:
-                dir = "scripts";
-                break;
-            case Data::SHADER:
-                dir = "shaders";
-                break;
-            case Data::TEXTURE:
-                dir = "textures";
-                break;
-        }
-
+        std::string dir(type);
         dir += fileSeparator;
         return getFilePath(dir + fileName);
     }

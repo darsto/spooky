@@ -16,7 +16,7 @@ const char files::fileSeparator =
 #endif
 
 std::string files::getFilePath(const std::string &file) {
-#ifdef __ANDROID__
+#ifdef DEF_ANDROID
     return "/sdcard/c003/data/" + file;
 #else
     return "data/" + file;
