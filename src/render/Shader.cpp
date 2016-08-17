@@ -4,7 +4,7 @@
 
 #include <vector>
 #include "Shader.h"
-#include "files.h"
+#include "util/files.h"
 
 using namespace std;
 
@@ -15,7 +15,7 @@ Shader::~Shader() {
 }
 
 bool Shader::load(const string &fileName, int type) {
-    std::string file = files::path<files::type::shader>(fileName);
+    std::string file = util::files::path<util::files::type::shader>(fileName);
     FILE *fp = fopen(file.c_str(), "rt");
     if (!fp) return false;
     this->type = type;

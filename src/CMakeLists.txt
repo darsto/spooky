@@ -18,13 +18,13 @@ SET(SOURCE_FILES
         Application.h
         ApplicationContext.cpp
         ApplicationContext.h
-        os.h
-        util.h
-        util.cpp
-        logging.h
-        files.h
-        files.cpp
-        stringutils.h
+        util/os.h
+        util/collections.h
+        util/collections.cpp
+        util/log.h
+        util/files.h
+        util/files.cpp
+        util/strings.h
         core/Timer.h
         core/input/InputManager.cpp
         core/input/InputManager.h
@@ -51,8 +51,8 @@ SET(SOURCE_FILES
         util/Packer.h
         util/Rectangle.cpp
         util/Rectangle.h
-        util/Resampler.cpp
-        util/Resampler.h
+        render/texture/Resampler.cpp
+        render/texture/Resampler.h
         )
 
 IF (NOT SIMULATION)

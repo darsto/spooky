@@ -4,6 +4,8 @@
  * that can be found in the LICENSE file.
  */
 
+#include <algorithm>
+
 #include "Packer.h"
 
 using namespace util;

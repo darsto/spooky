@@ -3,7 +3,7 @@
 //
 
 #include "RenderManager.h"
-#include "os.h"
+#include "util/os.h"
 #include <Application.h>
 #include <render/window/MenuRender.h>
 #include <window/LoadingScreen.h>

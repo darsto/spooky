@@ -1,15 +1,16 @@
-//
-// Created by dar on 8/3/16.
-//
+/*
+ * Copyright (c) 2016 Dariusz Stojaczyk. All Rights Reserved.
+ * The following source code is released under an MIT-style license,
+ * that can be found in the LICENSE file.
+ */
 
 #ifndef C003_RENDER_TEXTURE_RESAMPLER_H
 #define C003_RENDER_TEXTURE_RESAMPLER_H
 
 #include <cstdint>
 #include <memory>
-#include <cmath>
 
-namespace util {
+namespace texture {
 
     class Resampler {
     public:

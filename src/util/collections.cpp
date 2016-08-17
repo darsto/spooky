@@ -4,7 +4,7 @@
  * that can be found in the LICENSE file.
  */
 
-#include "util.h"
+#include "collections.h"
 
 std::vector<std::string> util::filter(const std::vector<std::string> &vector, const std::regex &regex) {
     std::vector<std::string> ret;

@@ -9,7 +9,7 @@
 #include "LoadingScreen.h"
 #include <string>
 #include <core/input/InputManager.h>
-#include <logging.h>
+#include <util/log.h>
 #include <ApplicationContext.h>
 
 #if defined(USES_SDL) && defined(USES_KEYBOARD)

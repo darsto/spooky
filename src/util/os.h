@@ -1,9 +1,11 @@
-//
-// Created by dar on 1/29/16.
-//
+/*
+ * Copyright (c) 2016 Dariusz Stojaczyk. All Rights Reserved.
+ * The following source code is released under an MIT-style license,
+ * that can be found in the LICENSE file.
+ */
 
-#ifndef C003_OS_H
-#define C003_OS_H
+#ifndef C003_UTIL_OS_H
+#define C003_UTIL_OS_H
 
 /**
  * Variables which are conditionally defined by this header
@@ -30,6 +32,9 @@ enum class OS {
     MAC
 };
 
+/**
+ * Main logic of the platform-specific choices
+ */
 #ifdef _WIN32
 #define DEF_WINDOWS
 //------------WINDOWS------------
@@ -79,11 +84,12 @@ enum class OS {
     #error "Unknown platform"
 #endif
 
-
-
+/**
+ * Disable particular features if it's a simulation
+ */
 #ifdef SIMULATION
     #undef USES_SDL
     #undef USES_KEYBOARD
 #endif // SIMULATION
 
-#endif //C003_OS_H
+#endif //C003_UTIL_OS_H

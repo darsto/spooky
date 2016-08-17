@@ -10,7 +10,7 @@ union SDL_Event;
 class Window;
 
 #include <unordered_map>
-#include "os.h"
+#include "util/os.h"
 #include "Keypress.h"
 #include "TouchPoint.h"
 

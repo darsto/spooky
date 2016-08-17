@@ -4,8 +4,8 @@
  * that can be found in the LICENSE file.
  */
 
-#ifndef C003_UTILS_H
-#define C003_UTILS_H
+#ifndef C003_UTIL_COLLECTIONS_H
+#define C003_UTIL_COLLECTIONS_H
 
 #include <vector>
 #include <string>
@@ -16,4 +16,4 @@ namespace util {
     std::vector<std::string> filter(const std::vector<std::string> &vector, const std::regex &regex);
 }
 
-#endif //C003_UTILS_H
+#endif //C003_UTIL_COLLECTIONS_H

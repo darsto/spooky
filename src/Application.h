@@ -7,7 +7,7 @@
 
 #include <memory>
 #include "ApplicationContext.h"
-#include "os.h"
+#include "util/os.h"
 #include "core/Timer.h"
 #include "core/input/InputManager.h"
 #include "window/Window.h"

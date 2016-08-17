@@ -15,9 +15,9 @@
 
 #include "Atlas.h"
 #include "Data.h"
-#include "util.h"
-#include "files.h"
-#include "util/Resampler.h"
+#include "util/collections.h"
+#include "util/files.h"
+#include "Resampler.h"
 #include "util/Packer.h"
 #include "exceptions.h"
 
@@ -101,14 +101,14 @@ const std::regex Atlas::impl::FILE_EXTENSION_REGEX = std::regex("(.*)(\\.(jpg|pn
 int Atlas::m_boundTexId = 0;
 
 Atlas::Atlas(const std::string &name)
-    : m_path(files::path<files::type::texture>(name)),
-      m_impl(std::make_unique<Atlas::impl>(files::list(files::path<files::type::texture>(name).c_str()))),
+    : m_path(util::files::path<util::files::type::texture>(name)),
+      m_impl(std::make_unique<Atlas::impl>(util::files::list(util::files::path<util::files::type::texture>(name).c_str()))),
       m_minFilter(MinFilter::NEAREST),
       m_magFilter(MagFilter::NEAREST) {
 
     for (const std::string &tile : m_impl->m_tiles) {
         std::string dir = name;
-        dir.push_back(files::file_separator);
+        dir.push_back(util::files::file_separator);
         loadTile(dir + tile);
     }
 
@@ -128,7 +128,7 @@ Atlas::Atlas(const std::string &name)
 
         for (auto &el : m_impl->packer.elements()) {
             Data &tile = m_impl->m_texData.find(el.first)->second;
-            auto resampled = util::Resampler::downsample(tile.getData().get(), tile.width(), tile.height(), tile.channels(), downsample);
+            auto resampled = texture::Resampler::downsample(tile.getData().get(), tile.width(), tile.height(), tile.channels(), downsample);
             util::Rectangle rect(el.second.x() / downsample, el.second.y() / downsample, el.second.width() / downsample, el.second.height() / downsample);
 
             uint32_t inWidth = tile.width() / downsample;

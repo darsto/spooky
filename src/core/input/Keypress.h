@@ -5,7 +5,7 @@
 #ifndef C003_KEYPRESS_H
 #define C003_KEYPRESS_H
 
-#include "os.h"
+#include "util/os.h"
 
 #ifdef USES_SDL
 

@@ -1,10 +1,12 @@
-//
-// Created by dar on 8/3/16.
-//
+/*
+ * Copyright (c) 2016 Dariusz Stojaczyk. All Rights Reserved.
+ * The following source code is released under an MIT-style license,
+ * that can be found in the LICENSE file.
+ */
 
 #include "Resampler.h"
 
-using namespace util;
+using namespace texture;
 
 std::unique_ptr<uint8_t[]> Resampler::downsample(uint8_t *inData, size_t inWidth, size_t inHeight, size_t channels, size_t downscaleRate) {
     size_t outWidth = inWidth / downscaleRate;

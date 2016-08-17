@@ -6,11 +6,11 @@
 #include "LoadingScreen.h"
 #include "MainMenu.h"
 #include <ApplicationContext.h>
-#include <files.h>
+#include <util/files.h>
 
 LoadingScreen::LoadingScreen(ApplicationContext &applicationContext) : Menu(applicationContext) {
     kaguya::State initState;
-    initState.dofile(files::path<files::type::script>("init.lua"));
+    initState.dofile(util::files::path<util::files::type::script>("init.lua"));
 }
 
 void LoadingScreen::reload(unsigned int windowWidth, unsigned int windowHeight) {

@@ -1,12 +1,15 @@
-//
-// Created by dar on 1/23/16.
-//
+/*
+ * Copyright (c) 2016 Dariusz Stojaczyk. All Rights Reserved.
+ * The following source code is released under an MIT-style license,
+ * that can be found in the LICENSE file.
+ */
 
-#ifndef C003_LOGGING_H
-#define C003_LOGGING_H
+#ifndef C003_UTIL_LOG_H
+#define C003_UTIL_LOG_H
 
 #pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wformat-security" // disable "format not a string literal and no format arguments" warning at printf(...) lines
+#pragma GCC diagnostic ignored "-Wformat-security"
+// disables "format not a string literal and no format arguments" warning at printf(...) lines
 
 namespace Log {
     constexpr const char *LOG_TAG = "SpookyTom";
@@ -52,4 +55,4 @@ namespace Log {
 
 #pragma GCC diagnostic pop
 
-#endif //C003_LOGGING_H
+#endif //C003_UTIL_LOG_H

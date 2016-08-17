@@ -3,8 +3,8 @@
 //
 
 #include "Application.h"
-#include "os.h"
-#include "logging.h"
+#include "util/os.h"
+#include "util/log.h"
 #include "ApplicationContext.h"
 #include "window/LoadingScreen.h"
 

@@ -10,7 +10,6 @@
 #include <cstdint>
 #include <memory>
 #include <vector>
-#include <algorithm>
 #include <atomic>
 
 #include "Rectangle.h"

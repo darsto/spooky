@@ -4,8 +4,8 @@
 
 #include "InputManager.h"
 #include "window/Window.h"
-#include "os.h"
-#include "logging.h"
+#include "util/os.h"
+#include "util/log.h"
 
 using namespace Input;
 
