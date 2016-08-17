@@ -4,9 +4,11 @@
  * that can be found in the LICENSE file.
  */
 
-#include "collections.h"
+#include "collection.h"
 
-std::vector<std::string> util::filter(const std::vector<std::string> &vector, const std::regex &regex) {
+using namespace util;
+
+std::vector<std::string> collection::filter(const std::vector<std::string> &vector, const std::regex &regex) {
     std::vector<std::string> ret;
 
     for (const std::string &str : vector) {

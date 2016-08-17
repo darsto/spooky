@@ -4,8 +4,8 @@
  * that can be found in the LICENSE file.
  */
 
-#ifndef C003_UTIL_FILES_H
-#define C003_UTIL_FILES_H
+#ifndef C003_UTIL_FILE_H
+#define C003_UTIL_FILE_H
 
 #include <string>
 #include <vector>
@@ -15,7 +15,7 @@ namespace util {
     /**
      * Set of useful functions and variables for IO operations
      */
-    namespace files {
+    namespace file {
 
         /**
          * Types of available files.
@@ -65,4 +65,4 @@ namespace util {
     }
 }
 
-#endif //C003_UTIL_FILES_H
+#endif //C003_UTIL_FILE_H

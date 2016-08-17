@@ -10,7 +10,7 @@
 
 #include "Data.h"
 #include "exceptions.h"
-#include "util/files.h"
+#include "util/file.h"
 #include <SOIL.h>
 
 using namespace texture;
@@ -30,7 +30,7 @@ Data::Data(uint32_t width, uint32_t height, uint32_t channels)
 
 Data::Data(const std::string &fileName, int flags) {
     int width, height, channels;
-    std::string path = util::files::path<util::files::type::texture>(fileName).c_str();
+    std::string path = util::file::path<util::file::type::texture>(fileName).c_str();
     std::unique_ptr<uint8_t[]> data(SOIL_load_image(path.c_str(), &width, &height, &channels, flags & 0x7)); // use mask of 3 LSB
     if (width > 0 && height > 0 && channels > 0) {
         m_width = (uint32_t) width;

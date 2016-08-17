@@ -15,8 +15,8 @@
 
 #include "Atlas.h"
 #include "Data.h"
-#include "util/collections.h"
-#include "util/files.h"
+#include "util/collection.h"
+#include "util/file.h"
 #include "Resampler.h"
 #include "util/Packer.h"
 #include "exceptions.h"
@@ -25,7 +25,7 @@ using namespace texture;
 
 struct Atlas::impl {
     impl(std::vector<std::string> tiles)
-        : m_tiles(util::filter(tiles, FILE_EXTENSION_REGEX)) {
+        : m_tiles(util::collection::filter(tiles, FILE_EXTENSION_REGEX)) {
 
     }
 
@@ -101,14 +101,14 @@ const std::regex Atlas::impl::FILE_EXTENSION_REGEX = std::regex("(.*)(\\.(jpg|pn
 int Atlas::m_boundTexId = 0;
 
 Atlas::Atlas(const std::string &name)
-    : m_path(util::files::path<util::files::type::texture>(name)),
-      m_impl(std::make_unique<Atlas::impl>(util::files::list(util::files::path<util::files::type::texture>(name).c_str()))),
+    : m_path(util::file::path<util::file::type::texture>(name)),
+      m_impl(std::make_unique<Atlas::impl>(util::file::list(util::file::path<util::file::type::texture>(name).c_str()))),
       m_minFilter(MinFilter::NEAREST),
       m_magFilter(MagFilter::NEAREST) {
 
     for (const std::string &tile : m_impl->m_tiles) {
         std::string dir = name;
-        dir.push_back(util::files::file_separator);
+        dir.push_back(util::file::file_separator);
         loadTile(dir + tile);
     }
 

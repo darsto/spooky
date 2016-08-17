@@ -4,6 +4,11 @@
  * that can be found in the LICENSE file.
  */
 
+/**
+ * TODO: Custom cross-platform logging system (?)
+ * This would require a lot of thread-safety code
+ */
+
 #ifndef C003_UTIL_LOG_H
 #define C003_UTIL_LOG_H
 
@@ -11,48 +16,78 @@
 #pragma GCC diagnostic ignored "-Wformat-security"
 // disables "format not a string literal and no format arguments" warning at printf(...) lines
 
-namespace Log {
-    constexpr const char *LOG_TAG = "SpookyTom";
+namespace util {
 
-    template<typename... Args>
-    constexpr const void info(const char *msg, Args &&...args) {
+    /**
+     * Set of useful functions and variables for clogging
+     */
+    namespace log {
+
+        /**
+         * Log entry identifier.
+         * On some mobile platforms logs of many different applications are contained within one file.
+         * This identifier lets the user identify which application given log entry comes from.
+         */
+        constexpr const char *LOG_TAG = "Spooky";
+
+        /**
+         * Standard log message, lowest priority.
+         */
+        template<typename... Args>
+        constexpr const void info(const char *msg, Args &&...args) {
 #ifdef __ANDROID__
-        __android_log_print(ANDROID_LOG_INFO, LOG_TAG, msg, std::forward<Args>(args)...)
+            __android_log_print(ANDROID_LOG_INFO, LOG_TAG, msg, std::forward<Args>(args)...)
 #else
-        printf(msg, std::forward<Args>(args)...);
+            printf(msg, std::forward<Args>(args)...);
 #endif
-    };
+        };
 
-    template<typename... Args>
-    constexpr const void debug(const char *msg, Args &&...args) {
+        /**
+         * Debug log message, lowest priority.
+         * Enabled only in debug builds
+         */
+        template<typename... Args>
+        constexpr const void debug(const char *msg, Args &&...args) {
 #ifdef DEBUG
 #ifdef __ANDROID__
-        __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, msg, std::forward<Args>(args)...)
+            __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, msg, std::forward<Args>(args)...)
 #else
-        printf(msg, std::forward<Args>(args)...);
+            printf(msg, std::forward<Args>(args)...);
 #endif
 #endif
-    };
+        };
 
-    template<typename... Args>
-    constexpr const void warning(const char *msg, Args &&...args) {
+        /**
+         * Warning log message, medium priority.
+         */
+        template<typename... Args>
+        constexpr const void warning(const char *msg, Args &&...args) {
 #ifdef __ANDROID__
-        __android_log_print(ANDROID_LOG_WARN, ANDROID_LOG_DEBUG, msg, std::forward<Args>(args)...)
+            __android_log_print(ANDROID_LOG_WARN, ANDROID_LOG_DEBUG, msg, std::forward<Args>(args)...)
 #else
-        printf(msg, std::forward<Args>(args)...);
+            printf(msg, std::forward<Args>(args)...);
 #endif
-    };
+        };
 
-    template<typename... Args>
-    constexpr const void error(const char *msg, Args &&...args) {
+        /**
+         * Error log message, highest priority.
+         */
+        template<typename... Args>
+        constexpr const void error(const char *msg, Args &&...args) {
 #ifdef __ANDROID__
-        __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, msg, std::forward<Args>(args)...)
+            __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, msg, std::forward<Args>(args)...)
 #else
-        printf(msg, std::forward<Args>(args)...);
+            printf(msg, std::forward<Args>(args)...);
 #endif
-    };
-};
+        };
+    }
+}
 
 #pragma GCC diagnostic pop
+
+/**
+ * Helper namespace to use logging functions.
+ */
+namespace Log = util::log;
 
 #endif //C003_UTIL_LOG_H

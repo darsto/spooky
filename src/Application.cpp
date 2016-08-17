@@ -139,7 +139,7 @@ void Application::handleEvents() {
                 break;
             case SDL_MOUSEBUTTONDOWN:
             case SDL_MOUSEBUTTONUP:
-                Log::debug("%s button with id %d\n", m_sdlEvent.type == SDL_MOUSEBUTTONDOWN ? "Pressed" : "Unpressed", m_sdlEvent.button.button);
+            Log::debug("%s button with id %d\n", m_sdlEvent.type == SDL_MOUSEBUTTONDOWN ? "Pressed" : "Unpressed", m_sdlEvent.button.button);
             case SDL_MOUSEMOTION: {
                 int button = (int) round(log((double) m_sdlEvent.button.button) / log(2.0)) + 1;
                 if (button < 0 || button >= 5) break;

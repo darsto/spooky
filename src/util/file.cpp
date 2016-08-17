@@ -9,17 +9,17 @@
 #include <fstream>
 #include <dirent.h>
 
-#include "files.h"
+#include "file.h"
 #include "os.h"
 
-const char util::files::file_separator =
+const char util::file::file_separator =
 #ifdef DEF_WINDOWS
     '\\';
 #else
     '/';
 #endif
 
-std::string util::files::path(const std::string &file) {
+std::string util::file::path(const std::string &file) {
 #ifdef DEF_ANDROID
     return "/sdcard/c003/data/" + file;
 #else
@@ -27,7 +27,7 @@ std::string util::files::path(const std::string &file) {
 #endif
 }
 
-std::vector<std::string> util::files::list(const char *path) {
+std::vector<std::string> util::file::list(const char *path) {
     struct dirent *entry;
     DIR *dp;
 

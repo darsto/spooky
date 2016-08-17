@@ -19,12 +19,12 @@ SET(SOURCE_FILES
         ApplicationContext.cpp
         ApplicationContext.h
         util/os.h
-        util/collections.h
-        util/collections.cpp
+        util/collection.h
+        util/collection.cpp
         util/log.h
-        util/files.h
-        util/files.cpp
-        util/strings.h
+        util/file.h
+        util/file.cpp
+        util/string.h
         core/Timer.h
         core/input/InputManager.cpp
         core/input/InputManager.h
@@ -82,7 +82,7 @@ IF (NOT SIMULATION)
             render/texture/exceptions.h
             render/texture/Data.cpp
             render/texture/Data.h
-            )
+            util/string.cpp)
 ENDIF ()
 
 IF (EDITOR)
