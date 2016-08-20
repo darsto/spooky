@@ -1,10 +1,17 @@
-//
-// Created by dar on 7/25/16.
-//
+/*
+ * Copyright (c) 2016 Dariusz Stojaczyk. All Rights Reserved.
+ * The following source code is released under an MIT-style license,
+ * that can be found in the LICENSE file.
+ */
 
 #include "TouchPoint.h"
 
 using namespace Input;
+
+TouchPoint::TouchPoint(char id)
+    : m_id(id) {
+
+}
 
 char TouchPoint::id() const {
     return m_id;
@@ -22,14 +29,14 @@ TouchPoint::State TouchPoint::state() const {
     return m_state;
 }
 
-bool TouchPoint::isPressed() const {
+bool TouchPoint::pressed() const {
     return m_state == State::PRESS;
 }
 
-bool TouchPoint::isDown() const {
+bool TouchPoint::down() const {
     return m_state == State::PRESS || m_state == State::REPEAT;
 }
 
-bool TouchPoint::isReleased() const {
+bool TouchPoint::released() const {
     return m_state == State::RELEASE;
 }

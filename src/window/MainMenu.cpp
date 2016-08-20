@@ -18,7 +18,7 @@
 
 #endif // USES_SDL && USES_KEYBOARD
 
-MainMenu::MainMenu(ApplicationContext &applicationContext) : Menu(applicationContext) {
+MainMenu::MainMenu() : Menu() {
     GuiText *t = new GuiText("Main menu", 20, 20, GuiElement::PositionFlag::BOTTOM_RIGHT, 22, 0xffffffff, 0);
     this->m_guiElements.push_back(std::unique_ptr<GuiElement>(t));
 }
@@ -35,10 +35,10 @@ void MainMenu::handleKeypress(const Input::KeypressTable &keypresses) {
 }
 
 void MainMenu::handleClick(const Input::TouchPoint &p) {
-    if (p.isPressed()) {
+    if (p.pressed()) {
         for (auto &e : guiElements()) {
             if (e->contains(p.x(), p.y())) {
-                m_applicationContext.switchWindow<LoadingScreen>();
+                getApplicationContext().switchWindow(std::make_unique<LoadingScreen>());
             }
         }
     }

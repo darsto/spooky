@@ -8,7 +8,7 @@
 #include <ApplicationContext.h>
 #include <util/file.h>
 
-LoadingScreen::LoadingScreen(ApplicationContext &applicationContext) : Menu(applicationContext) {
+LoadingScreen::LoadingScreen() : Menu() {
     kaguya::State initState;
     initState.dofile(util::file::path<util::file::type::script>("init.lua"));
 }
@@ -35,8 +35,8 @@ void LoadingScreen::handleClick(const Input::TouchPoint &p) {
 #if defined(USES_SDL) && defined(USES_KEYBOARD)
 
 void LoadingScreen::handleKeypress(const Input::KeypressTable &keypresses) {
-    if (keypresses[SDL_SCANCODE_W].isPressed()) {
-        m_applicationContext.switchWindow<MainMenu>();
+    if (keypresses[SDL_SCANCODE_W].pressed()) {
+        getApplicationContext().switchWindow(std::make_unique<MainMenu>());
     }
 }
 

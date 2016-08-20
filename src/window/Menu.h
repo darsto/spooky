@@ -11,10 +11,8 @@
 #include <gui/GuiElement.h>
 
 class Menu : public Window {
-
 public:
-
-    Menu(ApplicationContext &applicationContext);
+    Menu();
 
     virtual void reload(unsigned int windowWidth, unsigned int windowHeight) override;
     virtual void tick(double deltaTime) override;

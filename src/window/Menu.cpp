@@ -5,7 +5,7 @@
 #include "Menu.h"
 #include "gui/GuiText.h"
 
-Menu::Menu(ApplicationContext &applicationContext) : Window(applicationContext) {
+Menu::Menu() : Window() {
 #ifdef DEBUG
     GuiElement *e = new GuiElement(GuiElement::PositionFlag::BOTTOM_LEFT, 8, 8, 30, 30, 0);
     m_guiElements.push_back(std::unique_ptr<GuiElement>(e));

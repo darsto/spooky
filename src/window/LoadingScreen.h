@@ -18,7 +18,7 @@ class GuiButton;
 class LoadingScreen : public Menu {
 
 public:
-    LoadingScreen(ApplicationContext &applicationContext);
+    LoadingScreen();
     virtual void reload(unsigned int windowWidth, unsigned int WindowHeight) override;
     virtual void tick(double deltaTime) override;
     virtual void handleKeypress(const Input::KeypressTable &keypresses) override;
