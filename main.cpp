@@ -1,7 +1,11 @@
-#include "src/Application.h"
+#include "Application.h"
 
 int main(int argc, char *args[]) {
-    Application application;
-    application.run();
+    Application app;
+
+    while (app.running()) {
+        app.update();
+    }
+
     return 0;
 }

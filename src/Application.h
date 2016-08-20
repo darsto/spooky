@@ -1,11 +1,14 @@
-//
-// Created by dar on 1/23/16.
-//
+/*
+ * Copyright (c) 2016 Dariusz Stojaczyk. All Rights Reserved.
+ * The following source code is released under an MIT-style license,
+ * that can be found in the LICENSE file.
+ */
 
 #ifndef C003_APPLICATION_H
 #define C003_APPLICATION_H
 
 #include <memory>
+
 #include "ApplicationContext.h"
 #include "util/os.h"
 #include "core/Timer.h"
@@ -16,42 +19,74 @@
 #include "render/RenderManager.h"
 #endif
 
+/**
+ * Main entry point of the engine.
+ * This class is not referenced anywhere.
+ * To control the state from within e.g. windows, see ApplicationContext
+ */
 class Application {
-
 public:
+    /**
+     * The constructor.
+     * @return initialized application
+     */
     Application();
+
+    /**
+     * Reinitializes rendering, input capture, etc.
+     * Doesn't reset application's state.
+     */
     void reinit();
-    void run();
-    void update(bool dynamic);
+
+    /**
+     * Do a single tick of the application.
+     */
+    void update();
+
+    /**
+     * Set internal window dimensions.
+     * This method does not resize the system window.
+     * @param width width to be set
+     * @param height height to be set
+     */
     void resize(int width, int height);
+
+    /**
+     * Simulate a touch/click at given coordinates.
+     * @param i type of the button clicked
+     * @param state state of the touch/click
+     * @param x x coordinate (in range 0 - <window_width>)
+     * @param y y coordinate (in rage 0 - <window_height>)
+     */
     void handleClick(int i, Input::TouchPoint::State state, float x, float y);
+
+    /**
+     * Check if application is still running.
+     * @return whether or not application is still running
+     */
     bool running() const;
 
+    /**
+     * The destructor.
+     */
+    ~Application();
+
 private:
+    void handleEvents();
+    void switchWindow();
+
     bool m_running = true;
     ApplicationContext m_context;
     std::unique_ptr<Window> m_window;
     Input::InputManager m_inputManager;
     Timer m_timer;
-    double m_deltaTimeHistory[15];
-    double m_averageDeltaTime = 0;
-    unsigned long long m_ticks = 0;
     std::unique_ptr<Window> m_newWindow;
 
 #ifndef SIMULATION
     RenderManager m_renderer;
 #endif
 
-#ifdef USES_SDL
-    SDL_Event m_sdlEvent;
-#endif // USES_SDL
-
-    void handleEvents();
-    void switchWindow();
-    void onQuit();
-
     friend class ApplicationContext;
-
 };
 
 #endif //C003_APPLICATION_H
