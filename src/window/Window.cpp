@@ -7,6 +7,8 @@
 #include "Window.h"
 #include "ApplicationContext.h"
 
+Window::Window() { }
+
 void Window::context(ApplicationContext *applicationContext) {
     m_applicationContext = applicationContext;
 }
@@ -18,7 +20,5 @@ const ApplicationContext &Window::getApplicationContext() const {
 ApplicationContext &Window::getApplicationContext() {
     return *m_applicationContext;
 }
-
-Window::Window() { }
 
 Window::~Window() { }
