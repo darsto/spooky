@@ -51,8 +51,8 @@ void Application::resize(int width, int height) {
 #endif
 }
 
-void Application::handleClick(int i, Input::TouchPoint::State state, float x, float y) {
-    m_inputManager.handleClick(i, state, x, y);
+void Application::handleClick(int button, Input::TouchPoint::State state, float x, float y) {
+    m_inputManager.handleClick(button, state, x, y);
 }
 
 void Application::handleEvents() {

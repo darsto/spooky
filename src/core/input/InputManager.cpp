@@ -1,6 +1,8 @@
-//
-// Created by dar on 1/28/16.
-//
+/*
+ * Copyright (c) 2016 Dariusz Stojaczyk. All Rights Reserved.
+ * The following source code is released under an MIT-style license,
+ * that can be found in the LICENSE file.
+ */
 
 #include "InputManager.h"
 #include "window/Window.h"
@@ -13,12 +15,12 @@ InputManager::InputManager() {
     reload();
 }
 
-void InputManager::handleClick(int i, TouchPoint::State state, float x, float y) {
-    TouchPoint *p = m_touchPoints[i];
+void InputManager::handleClick(int button, TouchPoint::State state, float x, float y) {
+    TouchPoint *p = m_touchPoints[button];
     if (p != nullptr && p->m_state == TouchPoint::State::PRESS) {
         if (state == TouchPoint::State::REPEAT) return;
     }
-    if (p == nullptr) m_touchPoints[i] = p = new TouchPoint((char) i);
+    if (p == nullptr) m_touchPoints[button] = p = new TouchPoint((char) button);
     p->m_x = x;
     p->m_y = y;
     p->m_state = state;
@@ -26,12 +28,12 @@ void InputManager::handleClick(int i, TouchPoint::State state, float x, float y)
 
 #if defined(USES_SDL) && defined(USES_KEYBOARD)
 
-void InputManager::handleKeypress(SDL_Event *e) {
-    if (e->key.keysym.scancode >= 0 && e->key.keysym.scancode < SDL_NUM_SCANCODES && e->key.repeat == 0) {
-        Keypress *key = &m_keypresses[e->key.keysym.scancode];
-        key->m_state = (e->type == SDL_KEYDOWN ? Keypress::State::PRESS : Keypress::State::RELEASE);
+void InputManager::handleKeypress(SDL_Event *event) {
+    if (event->key.keysym.scancode >= 0 && event->key.keysym.scancode < SDL_NUM_SCANCODES && event->key.repeat == 0) {
+        Keypress *key = &m_keypresses[event->key.keysym.scancode];
+        key->m_state = (event->type == SDL_KEYDOWN ? Keypress::State::PRESS : Keypress::State::RELEASE);
         if (key->m_state == Keypress::State::PRESS) key->m_pressDelay = 255;
-        if (key->m_pressDelay > 0 && e->type == SDL_KEYUP)
+        if (key->m_pressDelay > 0 && event->type == SDL_KEYUP)
             key->m_pressCounter++;
     }
 }

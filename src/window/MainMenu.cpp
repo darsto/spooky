@@ -35,7 +35,7 @@ void MainMenu::handleKeypress(const Input::KeypressTable &keypresses) {
 }
 
 void MainMenu::handleClick(const Input::TouchPoint &p) {
-    if (p.isPressed()) {
+    if (p.pressed()) {
         for (auto &e : guiElements()) {
             if (e->contains(p.x(), p.y())) {
                 getApplicationContext().switchWindow(std::make_unique<LoadingScreen>());

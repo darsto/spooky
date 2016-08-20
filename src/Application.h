@@ -53,12 +53,12 @@ public:
 
     /**
      * Simulate a touch/click at given coordinates.
-     * @param i type of the button clicked
+     * @param button type of the button clicked
      * @param state state of the touch/click
      * @param x x coordinate (in range 0 - <window_width>)
      * @param y y coordinate (in rage 0 - <window_height>)
      */
-    void handleClick(int i, Input::TouchPoint::State state, float x, float y);
+    void handleClick(int button, Input::TouchPoint::State state, float x, float y);
 
     /**
      * Check if application is still running.
