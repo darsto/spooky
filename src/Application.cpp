@@ -11,7 +11,9 @@
 
 Application::Application()
     : m_context(*this),
-      m_window(new LoadingScreen(m_context)) {
+      m_window(std::make_unique<LoadingScreen>()) {
+
+    m_window->context(&m_context);
 
     reinit();
     resize(1366, 750); // TODO

@@ -16,7 +16,7 @@ class GuiButton;
 class MainMenu : public Menu {
 
 public:
-    MainMenu(ApplicationContext &applicationContext);
+    MainMenu();
     virtual void reload(unsigned int windowWidth, unsigned int WindowHeight) override;
     virtual void tick(double deltaTime) override;
     virtual void handleKeypress(const Input::KeypressTable &keypresses) override;

@@ -25,6 +25,11 @@ SET(SOURCE_FILES
         util/file.h
         util/file.cpp
         util/string.h
+        util/Packer.cpp
+        util/Packer.h
+        util/Rectangle.cpp
+        util/Rectangle.h
+        util/string.cpp
         core/Timer.h
         core/input/InputManager.cpp
         core/input/InputManager.h
@@ -32,6 +37,7 @@ SET(SOURCE_FILES
         core/input/TouchPoint.h
         core/input/Keypress.cpp
         core/input/Keypress.h
+        window/Window.cpp
         window/Window.h
         window/MainMenu.cpp
         window/MainMenu.h
@@ -47,12 +53,7 @@ SET(SOURCE_FILES
         gui/GuiButton.h
         gui/GuiTextBubble.cpp
         gui/GuiTextBubble.h
-        util/Packer.cpp
-        util/Packer.h
-        util/Rectangle.cpp
-        util/Rectangle.h
-        render/texture/Resampler.cpp
-        render/texture/Resampler.h
+
         )
 
 IF (NOT SIMULATION)
@@ -82,7 +83,10 @@ IF (NOT SIMULATION)
             render/texture/exceptions.h
             render/texture/Data.cpp
             render/texture/Data.h
-            util/string.cpp)
+            render/texture/Resampler.cpp
+            render/texture/Resampler.h
+
+            )
 ENDIF ()
 
 IF (EDITOR)

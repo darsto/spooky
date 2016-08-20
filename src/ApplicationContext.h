@@ -1,31 +1,42 @@
-//
-// Created by dar on 4/8/16.
-//
+/*
+ * Copyright (c) 2016 Dariusz Stojaczyk. All Rights Reserved.
+ * The following source code is released under an MIT-style license,
+ * that can be found in the LICENSE file.
+ */
 
 #ifndef C003_APPLICATIONCONTEXT_H
 #define C003_APPLICATIONCONTEXT_H
 
-#include <functional>
 #include <memory>
 
 class Application;
-
 class Window;
 
+/**
+ * The supplement of the Application class.
+ * It features publicly available part of the application's interface
+ */
 class ApplicationContext {
 public:
+    /**
+     * The constructor.
+     * @param application application to create this context for\
+     */
     ApplicationContext(Application &application);
 
-    template <class W, typename ...Args>
-    void switchWindow(Args && ...args) {
-        newWindow(std::make_unique<W>(*this, std::forward(args)...));
-    };
+    /**
+     * Switch current window to the given one.
+     * @param window window to switch to
+     */
+    void switchWindow(std::unique_ptr<Window> &&window);
 
+    /**
+     * The destructor
+     */
     ~ApplicationContext();
 
 private:
     Application &m_application;
-    void newWindow(std::unique_ptr<Window> &&window);
 };
 
 #endif //C003_APPLICATIONCONTEXT_H
