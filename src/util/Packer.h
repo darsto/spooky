@@ -96,12 +96,56 @@ namespace util {
             const Rectangle &rectDown() const;
 
         private:
+            /**
+             * Fancy image presenting Node's internals:
+             * o--------------o-----------------------o
+             * |              |                       |
+             * |              |                       |
+             * |  m_occupied  |      m_rectRight      |
+             * |              |                       |
+             * |              |                       |
+             * o--------------o-----------------------o
+             * |              |                       |
+             * |              |                       |
+             * |              |                       |
+             * |              |                       |
+             * |  m_rectDown  |                       |
+             * |              |                       |
+             * |              |                       |
+             * |              |                       |
+             * |              |                       |
+             * |              |            The canvas |
+             * o--------------o-----------------------o
+             */
+
+            /**
+             * Unique id of the node.
+             */
             const uint64_t m_id;
+
+            /**
+             * The rectangle occupied by this node.
+             */
             const Rectangle m_occupied;
+
+            /**
+             * The free space on the right of the rectangle occupied by this node.
+             */
             const Rectangle m_rectRight;
+
+            /**
+             * The free space on the bottom of the rectangle occupied by this node.
+             */
             const Rectangle m_rectDown;
 
+            /**
+             * Node on the right
+             */
             std::unique_ptr<Node> m_right = nullptr;
+
+            /**
+             * Node on the bottom
+             */
             std::unique_ptr<Node> m_down = nullptr;
         };
 
@@ -144,19 +188,61 @@ namespace util {
         const Rectangle &size() const;
 
     protected:
+        /**
+         * Get internal binary tree of packed rectangles.
+         * @return internal binary tree of packed rectangles
+         */
         const Node *nodes() const;
 
     private:
+        /**
+         * Calculate the approximate size of the canvas (the one all rectangles are packed into).
+         */
         void calculateSize();
+
+        /**
+         * Build internal binary tree of packed rectangles.
+         */
         void growTree();
-        bool positionObject(std::pair<uint64_t, Rectangle> obj, Node *node);
+
+        /**
+         * Put given Element onto the canvas. (via binary tree)
+         * @param obj element to put on the canvas
+         * @param node node to try to put the element to
+         * @return if element could fit at given position
+         */
+        bool positionObject(Element obj, Node *node);
+
+        /**
+         * Put given binary tree to the given vector.
+         * @param node binary tree of packed elements
+         * @param vec vector to insert elements into
+         */
         void buildPackedVec(const Node *node, std::vector<Element> &vec) const;
 
+        /**
+         * Whether or not pack() method has been called already.
+         */
         bool m_built = false;
+
+        /**
+         * Unpacked elements.
+         */
         std::vector<Element> m_rectangles;
+
+        /**
+         * The canvas.
+         */
         Rectangle m_size;
+
+        /**
+         * Binary tree of packed elements
+         */
         std::unique_ptr<Node> m_topNode = nullptr;
 
+        /**
+         * Static counter of unique identifiers
+         */
         static std::atomic<uint64_t> s_idCounter;
     };
 
