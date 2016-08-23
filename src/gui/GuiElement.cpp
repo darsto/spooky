@@ -5,20 +5,20 @@
 #include "GuiElement.h"
 #include <core/input/TouchPoint.h>
 
-GuiElement::GuiElement(PositionFlag positionFlag, double x, double y, double width, double height, int texturePos, int color)
+GuiElement::GuiElement(PositionFlag positionFlag, double x, double y, double width, double height, const std::string &tex, int color)
     : m_positionFlag(positionFlag),
       m_offsetX(x),
       m_offsetY(y),
       m_width(width),
       m_height(height),
-      m_texturePos(texturePos),
+      m_tex(tex),
       m_color(color),
       m_angle(0) {
 
 }
 
-GuiElement::GuiElement(int positionFlag, double x, double y, double width, double height, int texturePos, int color)
-    : GuiElement(static_cast<PositionFlag>(positionFlag), x, y, width, height, texturePos, color) {
+GuiElement::GuiElement(int positionFlag, double x, double y, double width, double height, const std::string &tex, int color)
+    : GuiElement(static_cast<PositionFlag>(positionFlag), x, y, width, height, tex, color) {
 
 }
 
@@ -130,12 +130,12 @@ void GuiElement::angle(double angle) {
     m_angle = angle;
 }
 
-int GuiElement::texPos() const {
-    return m_texturePos;
+const std::string & GuiElement::texPos() const {
+    return m_tex;
 }
 
 void GuiElement::texPos(int texturePos) {
-    m_texturePos = texturePos;
+    m_tex = texturePos;
 }
 
 int GuiElement::color() const {

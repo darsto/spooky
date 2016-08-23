@@ -3,7 +3,6 @@
 //
 
 #include <gui/GuiElement.h>
-#include <gui/GuiButton.h>
 #include <gui/GuiText.h>
 #include "MainMenu.h"
 #include "LoadingScreen.h"
@@ -24,7 +23,7 @@ MainMenu::MainMenu()
       m_guiFile(util::file::path<util::file::type::script>("mainmenu.gui")) {
 
     m_luaState["GuiElement"].setClass(kaguya::UserdataMetatable<GuiElement>()
-                                          .setConstructors<GuiElement(int, int, int, int, int, int, int)>()
+                                          .setConstructors<GuiElement(int, int, int, int, int, const std::string&, int)>()
     );
 
     m_luaState["registerGuiElement"] = kaguya::function([this](GuiElement &element) {
@@ -43,11 +42,13 @@ void MainMenu::tick(double deltaTime) {
 }
 
 void MainMenu::handleKeypress(const Input::KeypressTable &keypresses) {
+#if defined(USES_KEYBOARD) && defined(USES_SDL)
     if (keypresses[SDL_SCANCODE_F5].pressed()) {
         m_guiElements.clear();
         m_luaState.dofile(m_guiFile);
         reload(m_windowWidth, m_windowHeight);
     }
+#endif
 }
 
 void MainMenu::handleClick(const Input::TouchPoint &p) {

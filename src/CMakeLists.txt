@@ -49,10 +49,6 @@ SET(SOURCE_FILES
         gui/GuiElement.h
         gui/GuiText.cpp
         gui/GuiText.h
-        gui/GuiButton.cpp
-        gui/GuiButton.h
-        gui/GuiTextBubble.cpp
-        gui/GuiTextBubble.h
 
         )
 

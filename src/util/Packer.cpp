@@ -14,14 +14,12 @@ Packer::Packer()
     : m_size(0, 0) {
 }
 
-uint64_t Packer::add(Rectangle rectangle) {
+void Packer::add(Packer::Element element) {
     if (m_built) {
-        throw std::runtime_error("Trying to add a shape into an already built packer.");
+        throw std::runtime_error("Trying to add an element into an already built packer.");
     }
 
-    uint64_t id = s_idCounter++;
-    m_rectangles.push_back({id, std::move(rectangle)});
-    return id;
+    m_rectangles.push_back(std::move(element));
 }
 
 void Packer::pack() {
@@ -39,6 +37,8 @@ const std::vector<Packer::Element> Packer::elements() const {
     buildPackedVec(m_topNode.get(), vec);
     return vec;
 }
+
+
 
 const Rectangle &Packer::size() const {
     return m_size;
@@ -155,5 +155,3 @@ void Packer::Node::right(std::unique_ptr<Packer::Node> right) {
 void Packer::Node::down(std::unique_ptr<Packer::Node> down) {
     m_down = std::move(down);
 }
-
-std::atomic<uint64_t> Packer::s_idCounter(0);

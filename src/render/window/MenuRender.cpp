@@ -6,7 +6,6 @@
 #include <render/RenderContext.h>
 #include <window/MainMenu.h>
 #include "MenuRender.h"
-#include <gui/GuiButton.h>
 #include <window/Menu.h>
 #include <iostream>
 #include "render/opengl.h"

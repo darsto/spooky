@@ -19,6 +19,13 @@ const char util::file::file_separator =
     '/';
 #endif
 
+const char util::file::file_separator_str[] =
+#ifdef DEF_WINDOWS
+    "\\";
+#else
+    "/";
+#endif
+
 std::string util::file::path(const std::string &file) {
 #ifdef DEF_ANDROID
     return "/sdcard/c003/data/" + file;

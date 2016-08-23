@@ -5,6 +5,8 @@
 #ifndef C003_GUIELEMENT_H
 #define C003_GUIELEMENT_H
 
+#include <string>
+
 class GuiElement {
 public:
     enum class PositionFlag {
@@ -19,8 +21,8 @@ public:
         BOTTOM_LEFT = 8
     };
 
-    GuiElement(PositionFlag positionFlag, double x, double y, double width, double height, int texturePos, int color = 0xFFFFFFFF);
-    GuiElement(int positionFlag, double x, double y, double width, double height, int texturePos, int color = 0xFFFFFFFF);
+    GuiElement(PositionFlag positionFlag, double x, double y, double width, double height, const std::string &tex, int color = 0xFFFFFFFF);
+    GuiElement(int positionFlag, double x, double y, double width, double height, const std::string &tex, int color = 0xFFFFFFFF);
     bool contains(double x, double y);
     virtual void reinit(unsigned int windowWidth, unsigned int windowHeight);
     PositionFlag positionFlag() const;
@@ -39,7 +41,7 @@ public:
     void visible(bool visible);
     double angle() const;
     void angle(double angle);
-    virtual int texPos() const;
+    virtual const std::string & texPos() const;
     virtual void texPos(int texturePos);
     int color() const;
     void color(int color);
@@ -58,7 +60,7 @@ protected:
     double m_width, m_height;
     double m_angle;
     bool m_visible = true;
-    int m_texturePos;
+    std::string m_tex;
     int m_color;
 };
 

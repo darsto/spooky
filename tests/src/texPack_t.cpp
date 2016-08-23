@@ -26,21 +26,21 @@ public:
 TestPacker basicSquarePacker(bool sort) {
     TestPacker data(6);
     if (sort) {
-        data.add(Rectangle(3, 3));
-        data.add(Rectangle(3, 3));
-        data.add(Rectangle(2, 2));
-        data.add(Rectangle(2, 2));
-        data.add(Rectangle(1, 1));
-        data.add(Rectangle(1, 1));
-        data.add(Rectangle(1, 1));
+       data.add({0, Rectangle(3, 3)});
+       data.add({1, Rectangle(3, 3)});
+       data.add({2, Rectangle(2, 2)});
+       data.add({3, Rectangle(2, 2)});
+       data.add({4, Rectangle(1, 1)});
+       data.add({5, Rectangle(1, 1)});
+       data.add({6, Rectangle(1, 1)});
     } else {
-        data.add(Rectangle(1, 1));
-        data.add(Rectangle(3, 3));
-        data.add(Rectangle(2, 2));
-        data.add(Rectangle(1, 1));
-        data.add(Rectangle(2, 2));
-        data.add(Rectangle(1, 1));
-        data.add(Rectangle(3, 3));
+       data.add({0, Rectangle(1, 1)});
+       data.add({1, Rectangle(3, 3)});
+       data.add({2, Rectangle(2, 2)});
+       data.add({3, Rectangle(1, 1)});
+       data.add({4, Rectangle(2, 2)});
+       data.add({5, Rectangle(1, 1)});
+       data.add({6, Rectangle(3, 3)});
 
     }
     return data;
@@ -49,25 +49,40 @@ TestPacker basicSquarePacker(bool sort) {
 TestPacker basicRectanglePacker(bool sort) {
     TestPacker data(6);
     if (sort) {
-        data.add(Rectangle(3, 3));
-        data.add(Rectangle(3, 2));
-        data.add(Rectangle(1, 3));
-        data.add(Rectangle(1, 2));
-        data.add(Rectangle(2, 1));
-        data.add(Rectangle(2, 1));
-        data.add(Rectangle(2, 1));
-        data.add(Rectangle(1, 1));
+       data.add({0, Rectangle(3, 3)});
+       data.add({1, Rectangle(3, 2)});
+       data.add({2, Rectangle(1, 3)});
+       data.add({3, Rectangle(1, 2)});
+       data.add({4, Rectangle(2, 1)});
+       data.add({5, Rectangle(2, 1)});
+       data.add({6, Rectangle(2, 1)});
+       data.add({7, Rectangle(1, 1)});
     } else {
-        data.add(Rectangle(1, 2));
-        data.add(Rectangle(2, 1));
-        data.add(Rectangle(3, 2));
-        data.add(Rectangle(2, 1));
-        data.add(Rectangle(3, 3));
-        data.add(Rectangle(2, 1));
-        data.add(Rectangle(1, 1));
-        data.add(Rectangle(1, 3));
+       data.add({0, Rectangle(1, 2)});
+       data.add({1, Rectangle(2, 1)});
+       data.add({2, Rectangle(3, 2)});
+       data.add({3, Rectangle(2, 1)});
+       data.add({4, Rectangle(3, 3)});
+       data.add({5, Rectangle(2, 1)});
+       data.add({6, Rectangle(1, 1)});
+       data.add({7, Rectangle(1, 3)});
 
     }
+    return data;
+}
+
+TestPacker sameIdPacker() {
+    TestPacker data(6);
+
+   data.add({0, Rectangle(3, 3)});
+   data.add({0, Rectangle(3, 2)});
+   data.add({2, Rectangle(1, 3)});
+   data.add({3, Rectangle(1, 2)});
+   data.add({5, Rectangle(2, 1)});
+   data.add({5, Rectangle(2, 1)});
+   data.add({2, Rectangle(2, 1)});
+   data.add({0, Rectangle(1, 1)});
+
     return data;
 }
 
@@ -161,6 +176,35 @@ TEST(TexturePackerTest, binTreeSquaresUnorted) {
 
 TEST(TexturePackerTest, binTreeRectanglesUnsorted) {
     TestPacker packer = basicRectanglePacker(false);
+
+    packer.pack();
+    const TestPacker::Node *node = packer.nodes();
+
+    EXPECT_EQ(packer.m_expectedSize, packer.size().width());
+    EXPECT_EQ(packer.m_expectedSize, packer.size().height());
+
+    EXPECT_EQ_TEX(3, 3, node->rectangle());
+    EXPECT_EQ_TEX(3, 2, node->right()->rectangle());
+    EXPECT_EQ_TEX(2, 1, node->right()->down()->rectangle());
+    EXPECT_EQ_TEX(1, 1, node->right()->down()->right()->rectangle());
+    EXPECT_EQ_TEX(1, 3, node->down()->rectangle());
+    EXPECT_EQ_TEX(2, 1, node->down()->right()->rectangle());
+    EXPECT_EQ_TEX(2, 1, node->down()->right()->right()->rectangle());
+    EXPECT_EQ_TEX(1, 2, node->down()->right()->down()->rectangle());
+
+    EXPECT_EQ(nullptr, node->right()->right());
+    EXPECT_EQ(nullptr, node->right()->down()->right()->right());
+    EXPECT_EQ(nullptr, node->right()->down()->right()->down());
+    EXPECT_EQ(nullptr, node->right()->down()->down());
+    EXPECT_EQ(nullptr, node->down()->right()->right()->right());
+    EXPECT_EQ(nullptr, node->down()->right()->right()->down());
+    EXPECT_EQ(nullptr, node->down()->right()->down()->right());
+    EXPECT_EQ(nullptr, node->down()->right()->down()->down());
+    EXPECT_EQ(nullptr, node->down()->down());
+}
+
+TEST(TexturePackerTest, sameId) {
+    TestPacker packer = sameIdPacker();
 
     packer.pack();
     const TestPacker::Node *node = packer.nodes();

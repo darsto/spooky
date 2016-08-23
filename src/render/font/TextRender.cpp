@@ -5,7 +5,30 @@
 #include "TextRender.h"
 #include <gui/GuiText.h>
 
-TextRender::TextRender() : GuiElementRender("font", "font") { }
+TextRender::TextRender() : GuiElementRender("font", "font") {
+    atlasSize = 8;
+
+    // TODO dirty hack, remove
+
+    float tWidth = 1.0f / atlasSize - 1.0f / texture.width();
+    float tHeight = 1.0f / atlasSize - 1.0f / texture.height();
+
+    float tCoords[] = {
+        tWidth, tHeight,
+        tWidth, 0.0f,
+        0.0f, tHeight,
+        0.0f, 0.0f,
+    };
+
+    glBindVertexArray(this->vao);
+
+    glBindBuffer(GL_ARRAY_BUFFER, this->vbo[1]); /* texture coords vbo */
+    glBufferData(GL_ARRAY_BUFFER, 4 * 2 * sizeof(float), tCoords, GL_STATIC_DRAW);
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
+
+}
 
 void TextRender::render(const GuiElement &element, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, double scale) {
     if (element.visible()) {

@@ -28,7 +28,7 @@ protected:
     texture::Atlas texture;
     glm::mat4 modelMatrix = glm::mat4(1.0);
 
-    virtual int getTexPos(const GuiElement &element) const;
+    virtual util::Rectangle getTexPos(const GuiElement &element) const;
 
     /* -- tmp -- */
     glm::mat4 tmpModelMatrix;

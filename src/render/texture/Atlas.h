@@ -12,6 +12,7 @@
 #include <memory>
 
 #include "render/opengl.h"
+#include "util/Rectangle.h"
 
 namespace texture {
 
@@ -106,6 +107,8 @@ namespace texture {
          */
         int activeTex() const;
 
+        const util::Rectangle element(const std::string &name) const;
+
         /**
          * Get number of tiles in this atlas.
          * @return number of tiles in this atlas
@@ -118,7 +121,7 @@ namespace texture {
         ~Atlas();
 
     private:
-        void loadTile(const std::string &path);
+        void loadTile(const std::string &fileName);
 
         GLuint m_id;
         MinFilter m_minFilter;

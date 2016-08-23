@@ -89,7 +89,8 @@ struct Atlas::impl {
         glTexImage2D(GL_TEXTURE_2D, level, tex.channels(), tex.width(), tex.height(), 0, getTexGLFormat(tex.channels()), GL_UNSIGNED_BYTE, tex.getData().get());
     }
 
-    util::Packer packer;
+    util::Packer m_packer;
+    std::hash<std::string> m_hash;
     std::unordered_map<uint64_t, Data> m_texData;
 
     std::vector<std::string> m_tiles;
@@ -101,18 +102,16 @@ const std::regex Atlas::impl::FILE_EXTENSION_REGEX = std::regex("(.*)(\\.(jpg|pn
 int Atlas::m_boundTexId = 0;
 
 Atlas::Atlas(const std::string &name)
-    : m_path(util::file::path<util::file::type::texture>(name)),
+    : m_path(name + util::file::file_separator_str),
       m_impl(std::make_unique<Atlas::impl>(util::file::list(util::file::path<util::file::type::texture>(name).c_str()))),
       m_minFilter(MinFilter::NEAREST),
       m_magFilter(MagFilter::NEAREST) {
 
     for (const std::string &tile : m_impl->m_tiles) {
-        std::string dir = name;
-        dir.push_back(util::file::file_separator);
-        loadTile(dir + tile);
+        loadTile(tile);
     }
 
-    m_impl->packer.pack();
+    m_impl->m_packer.pack();
 
     glGenTextures(1, &m_id);
     bindTexture();
@@ -126,14 +125,14 @@ Atlas::Atlas(const std::string &name)
         uint32_t downsample = 1u << level;
         Data atlas(width() / downsample, height() / downsample, channels());
 
-        for (auto &el : m_impl->packer.elements()) {
+        for (auto &el : m_impl->m_packer.elements()) {
             Data &tile = m_impl->m_texData.find(el.first)->second;
             auto resampled = texture::Resampler::downsample(tile.getData().get(), tile.width(), tile.height(), tile.channels(), downsample);
             util::Rectangle rect(el.second.x() / downsample, el.second.y() / downsample, el.second.width() / downsample, el.second.height() / downsample);
 
             uint32_t inWidth = tile.width() / downsample;
             uint32_t inHeight = tile.height() / downsample;
-            uint32_t outWidth = m_impl->packer.size().width() / downsample;
+            uint32_t outWidth = m_impl->m_packer.size().width() / downsample;
 
             for (int yIn = 0; yIn < inHeight; ++yIn) {
                 for (int xIn = 0; xIn < inWidth; ++xIn) {
@@ -178,11 +177,11 @@ Atlas::MagFilter Atlas::magFilter() const {
 }
 
 int Atlas::width() const {
-    return m_impl->packer.size().width();
+    return m_impl->m_packer.size().width();
 }
 
 int Atlas::height() const {
-    return m_impl->packer.size().height();
+    return m_impl->m_packer.size().height();
 }
 
 int Atlas::channels() const {
@@ -197,10 +196,29 @@ Atlas::~Atlas() {
     glDeleteTextures(1, &m_id);
 }
 
-void Atlas::loadTile(const std::string &path) {
-    Data tex(path);
-    uint64_t id = m_impl->packer.add(util::Rectangle(tex.width(), tex.height()));
+void Atlas::loadTile(const std::string &fileName) {
+    Data tex(m_path + fileName);
+    uint64_t id = m_impl->m_hash(fileName);
+
+    m_impl->m_packer.add({id, util::Rectangle(tex.width(), tex.height())});
     m_impl->m_texData.emplace(id, std::move(tex));
+}
+
+const util::Rectangle Atlas::element(const std::string &name) const {
+    uint64_t id = m_impl->m_hash(name);
+    auto elements = m_impl->m_packer.elements();
+
+    auto it = std::find_if(elements.begin(), elements.end(), [id](const util::Packer::Element &element) {
+        return element.first == id;
+    });
+
+    if (it == elements.end()) {
+        char msg[100];
+        snprintf(msg, sizeof(msg), "Trying to get inexistent element (\"%d\") from texture atlas.", name);
+        throw invalid_texture_error(msg);
+    }
+
+    return it->second;
 }
 
 const uint64_t Atlas::getElementsNum() const {

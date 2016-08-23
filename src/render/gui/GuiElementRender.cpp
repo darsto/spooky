@@ -86,18 +86,22 @@ void GuiElementRender::render(const GuiElement &element, glm::mat4 projectionMat
         this->tmpModelMatrix = glm::scale(this->tmpModelMatrix, glm::vec3(element.width() * scale, element.height() * scale, 1.0f));
 
         shaderProgram.setUniform("modelViewMatrix", viewMatrix * this->tmpModelMatrix);
-        float x = (float) (this->getTexPos(element) % atlasSize);
-        float y = (float) (this->getTexPos(element) / atlasSize);
-        shaderProgram.setUniform("texPosX", x / atlasSize + 0.5f / texture.width());
-        shaderProgram.setUniform("texPosY", y / atlasSize + 0.5f / texture.height());
+
+        util::Rectangle tex = getTexPos(element);
+
+        float x = (float) tex.x() / texture.width();
+        float y = (float) tex.y() / texture.height();
+
+        shaderProgram.setUniform("texPosX", x + 0.5f / texture.width());
+        shaderProgram.setUniform("texPosY", y + 0.5f / texture.height());
 
         glBindVertexArray(this->vao);
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     }
 }
 
-int GuiElementRender::getTexPos(const GuiElement &element) const {
-    return element.texPos();
+util::Rectangle GuiElementRender::getTexPos(const GuiElement &element) const {
+    return texture.element(element.texPos());
 }
 
 GuiElementRender::~GuiElementRender() {

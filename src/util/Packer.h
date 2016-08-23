@@ -4,6 +4,10 @@
  * that can be found in the LICENSE file.
  */
 
+/**
+ * TODO: implement iterator for the binary tree
+ */
+
 #ifndef C003_UTIL_PACKER_H
 #define C003_UTIL_PACKER_H
 
@@ -162,11 +166,10 @@ namespace util {
         Packer();
 
         /**
-         * Adds given rectangle to the internal container.
-         * @param rectangle rectangle to be packed
-         * @return unique id assigned to just-created internal node
+         * Adds given element to the internal container.
+         * @param element element to be packed
          */
-        uint64_t add(Rectangle rectangle);
+        void add(Element element);
 
         /**
          * Pack all the stored rectangles.
@@ -239,11 +242,6 @@ namespace util {
          * Binary tree of packed elements
          */
         std::unique_ptr<Node> m_topNode = nullptr;
-
-        /**
-         * Static counter of unique identifiers
-         */
-        static std::atomic<uint64_t> s_idCounter;
     };
 
 }

@@ -33,6 +33,8 @@ namespace util {
          */
         extern const char file_separator;
 
+        extern const char file_separator_str[];
+
         /**
          * Get the path of given asset.
          * The usual output is <path to data dir><file_separator><file>.
