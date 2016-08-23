@@ -1,0 +1,5 @@
+print 'File: mainmenu.gui'
+e = GuiElement.new(0, 0, 0, 30, 30, 1, 0xFFFFFF77)
+registerGuiElement(e)
+e = GuiElement.new(0, 15, 15, 30, 30, 2, 0xFF000077)
+registerGuiElement(e)

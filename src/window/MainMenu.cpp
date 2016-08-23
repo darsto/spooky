@@ -7,6 +7,7 @@
 #include <gui/GuiText.h>
 #include "MainMenu.h"
 #include "LoadingScreen.h"
+#include "util/file.h"
 #include <string>
 #include <core/input/InputManager.h>
 #include <util/log.h>
@@ -18,9 +19,19 @@
 
 #endif // USES_SDL && USES_KEYBOARD
 
-MainMenu::MainMenu() : Menu() {
-    GuiText *t = new GuiText("Main menu", 20, 20, GuiElement::PositionFlag::BOTTOM_RIGHT, 22, 0xffffffff, 0);
-    this->m_guiElements.push_back(std::unique_ptr<GuiElement>(t));
+MainMenu::MainMenu()
+    : Menu(),
+      m_guiFile(util::file::path<util::file::type::script>("mainmenu.gui")) {
+
+    m_luaState["GuiElement"].setClass(kaguya::UserdataMetatable<GuiElement>()
+                                          .setConstructors<GuiElement(int, int, int, int, int, int, int)>()
+    );
+
+    m_luaState["registerGuiElement"] = kaguya::function([this](GuiElement &element) {
+        m_guiElements.push_back(std::make_unique<GuiElement>(element));
+    });
+
+    m_luaState.dofile(m_guiFile);
 }
 
 void MainMenu::reload(unsigned int windowWidth, unsigned int windowHeight) {
@@ -32,16 +43,14 @@ void MainMenu::tick(double deltaTime) {
 }
 
 void MainMenu::handleKeypress(const Input::KeypressTable &keypresses) {
+    if (keypresses[SDL_SCANCODE_F5].pressed()) {
+        m_guiElements.clear();
+        m_luaState.dofile(m_guiFile);
+        reload(m_windowWidth, m_windowHeight);
+    }
 }
 
 void MainMenu::handleClick(const Input::TouchPoint &p) {
-    if (p.pressed()) {
-        for (auto &e : guiElements()) {
-            if (e->contains(p.x(), p.y())) {
-                getApplicationContext().switchWindow(std::make_unique<LoadingScreen>());
-            }
-        }
-    }
 }
 
 MainMenu::~MainMenu() {

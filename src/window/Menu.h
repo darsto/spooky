@@ -24,6 +24,8 @@ public:
     const std::vector<std::unique_ptr<GuiElement>> &guiElements() const;
 
 protected:
+    uint32_t m_windowWidth = 0;
+    uint32_t m_windowHeight = 0;
     std::vector<std::unique_ptr<GuiElement>> m_guiElements;
 };
 

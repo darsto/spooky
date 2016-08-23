@@ -17,6 +17,11 @@ GuiElement::GuiElement(PositionFlag positionFlag, double x, double y, double wid
 
 }
 
+GuiElement::GuiElement(int positionFlag, double x, double y, double width, double height, int texturePos, int color)
+    : GuiElement(static_cast<PositionFlag>(positionFlag), x, y, width, height, texturePos, color) {
+
+}
+
 void GuiElement::reinit(unsigned int windowWidth, unsigned int windowHeight) {
     double px = m_offsetX;
     double py = m_offsetY;

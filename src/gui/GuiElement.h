@@ -20,6 +20,7 @@ public:
     };
 
     GuiElement(PositionFlag positionFlag, double x, double y, double width, double height, int texturePos, int color = 0xFFFFFFFF);
+    GuiElement(int positionFlag, double x, double y, double width, double height, int texturePos, int color = 0xFFFFFFFF);
     bool contains(double x, double y);
     virtual void reinit(unsigned int windowWidth, unsigned int windowHeight);
     PositionFlag positionFlag() const;
