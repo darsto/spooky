@@ -153,7 +153,7 @@ namespace util {
         void buildPackedVec(const Node *node, std::vector<Element> &vec) const;
 
         bool m_built = false;
-        std::vector<std::pair<uint64_t, Rectangle>> m_rectangles;
+        std::vector<Element> m_rectangles;
         Rectangle m_size;
         std::unique_ptr<Node> m_topNode = nullptr;
 

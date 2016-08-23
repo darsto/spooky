@@ -62,7 +62,7 @@ void Packer::calculateSize() {
 
 void Packer::growTree() {
     // expecting m_textures.size() > 0
-    std::sort(m_rectangles.begin(), m_rectangles.end(), [](const std::pair<uint64_t, Rectangle> &lhs, const std::pair<uint64_t, Rectangle> &rhs) {
+    std::sort(m_rectangles.begin(), m_rectangles.end(), [](const Element &lhs, const Element &rhs) {
         return lhs.second.field() < rhs.second.field();
     });
 
@@ -72,7 +72,7 @@ void Packer::growTree() {
     }
 }
 
-bool Packer::positionObject(std::pair<uint64_t, Rectangle> obj, Packer::Node *node) {
+bool Packer::positionObject(Element obj, Packer::Node *node) {
     if (m_topNode.get() == nullptr) { //first node
         m_topNode = std::make_unique<Node>(obj.first, std::move(obj.second), m_size);
         return true;
