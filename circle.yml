@@ -1,7 +1,8 @@
 general:
   branches:
-    only:
-      - master
+    ignore:
+      - gh-pages
+      - android-wrapper
 dependencies:
   cache_directories:
     - "~/.local/cache"
