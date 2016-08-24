@@ -30,6 +30,7 @@ SET(SOURCE_FILES
         util/Rectangle.cpp
         util/Rectangle.h
         util/string.cpp
+        core/Timer.cpp
         core/Timer.h
         core/input/InputManager.cpp
         core/input/InputManager.h
@@ -49,7 +50,6 @@ SET(SOURCE_FILES
         gui/GuiElement.h
         gui/GuiText.cpp
         gui/GuiText.h
-
         )
 
 IF (NOT SIMULATION)
@@ -81,8 +81,9 @@ IF (NOT SIMULATION)
             render/texture/Data.h
             render/texture/Resampler.cpp
             render/texture/Resampler.h
-
-            render/texture/Texture.cpp render/texture/Texture.h)
+            render/texture/Texture.cpp
+            render/texture/Texture.h
+            )
 ENDIF ()
 
 IF (EDITOR)

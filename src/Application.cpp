@@ -24,7 +24,7 @@ void Application::reinit() {
     m_renderer.init();
     m_renderer.initWindow(*m_window); // TODO
 #endif
-    m_timer.GetDelta(); //if not called right now, first call in game loop would return a very huge value
+    m_timer.delta(); //if not called right now, first call in game loop would return a very huge value
     m_inputManager.reload();
 }
 
@@ -34,7 +34,7 @@ void Application::update() {
         m_newWindow = nullptr;
     }
 
-    m_window->tick(m_timer.GetDelta());
+    m_window->tick(m_timer.delta());
 
 #ifndef SIMULATION
     this->m_renderer.render(*m_window);
