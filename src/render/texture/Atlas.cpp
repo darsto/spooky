@@ -153,7 +153,7 @@ void Atlas::load() {
 
 void Atlas::loadTile(const std::string &fileName) {
     Data tex(m_path + util::file::file_separator_str + fileName);
-    uint64_t id = m_impl->m_hash(fileName);
+    uint64_t id = m_impl->m_hash(fileName.substr(0, fileName.find_last_of('.')));
 
     m_impl->m_packer.add({id, util::Rectangle(tex.width(), tex.height())});
     m_impl->m_texData.emplace(id, std::move(tex));
@@ -169,7 +169,7 @@ const util::Rectangle Atlas::element(const std::string &name) const {
 
     if (it == elements.end()) {
         char msg[100];
-        snprintf(msg, sizeof(msg), "Trying to get inexistent element (\"%d\") from texture atlas.", name);
+        snprintf(msg, sizeof(msg), "Trying to get inexistent element (\"%d\") from texture atlas.", name.c_str());
         throw invalid_texture_error(msg);
     }
 
