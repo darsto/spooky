@@ -6,6 +6,7 @@
 
 GuiElementRender::GuiElementRender(const std::string &textureFile, const std::string &shader)
     : texture(textureFile) {
+    texture.load();
     texture.filtering(texture::Atlas::MagFilter::BILINEAR, texture::Atlas::MinFilter::BILINEAR_MIPMAP);
 
     atlasSize = (uint32_t) sqrt(texture.getElementsNum());

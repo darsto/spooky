@@ -82,7 +82,7 @@ IF (NOT SIMULATION)
             render/texture/Resampler.cpp
             render/texture/Resampler.h
 
-            )
+            render/texture/Texture.cpp render/texture/Texture.h)
 ENDIF ()
 
 IF (EDITOR)

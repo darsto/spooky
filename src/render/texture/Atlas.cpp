@@ -99,19 +99,22 @@ struct Atlas::impl {
 
 const std::regex Atlas::impl::FILE_EXTENSION_REGEX = std::regex("(.*)(\\.(jpg|png|gif))", std::regex::ECMAScript | std::regex::icase);
 
-int Atlas::m_boundTexId = 0;
-
 Atlas::Atlas(const std::string &name)
-    : m_path(name + util::file::file_separator_str),
-      m_impl(std::make_unique<Atlas::impl>(util::file::list(util::file::path<util::file::type::texture>(name).c_str()))),
-      m_minFilter(MinFilter::NEAREST),
-      m_magFilter(MagFilter::NEAREST) {
+    : Texture(name),
+      m_impl(std::make_unique<Atlas::impl>(util::file::list(util::file::path<util::file::type::texture>(name).c_str()))) {
 
+}
+
+void Atlas::load() {
     for (const std::string &tile : m_impl->m_tiles) {
         loadTile(tile);
     }
 
     m_impl->m_packer.pack();
+
+    m_width = m_impl->m_packer.size().width();
+    m_height = m_impl->m_packer.size().height();
+    m_channels = 4;
 
     glGenTextures(1, &m_id);
     bindTexture();
@@ -148,56 +151,8 @@ Atlas::Atlas(const std::string &name)
     }
 }
 
-void Atlas::samplerParameter(GLenum parameter, GLint value) {
-    glTexParameteri(GL_TEXTURE_2D, parameter, value);
-}
-
-void Atlas::filtering(MagFilter filterMag, MinFilter filterMin) {
-    samplerParameter(GL_TEXTURE_MAG_FILTER, static_cast<std::underlying_type_t<MagFilter>>(filterMag));
-    samplerParameter(GL_TEXTURE_MIN_FILTER, static_cast<std::underlying_type_t<MinFilter>>(filterMin));
-
-    m_minFilter = filterMin;
-    m_magFilter = filterMag;
-}
-
-void Atlas::bindTexture() {
-    if (Atlas::m_boundTexId != m_id) {
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, m_id);
-        Atlas::m_boundTexId = m_id;
-    }
-}
-
-Atlas::MinFilter Atlas::minFilter() const {
-    return m_minFilter;
-}
-
-Atlas::MagFilter Atlas::magFilter() const {
-    return m_magFilter;
-}
-
-int Atlas::width() const {
-    return m_impl->m_packer.size().width();
-}
-
-int Atlas::height() const {
-    return m_impl->m_packer.size().height();
-}
-
-int Atlas::channels() const {
-    return 4;
-}
-
-int Atlas::activeTex() const {
-    return 0; // TODO currently unused, we always set GL_TEXTURE0 as active texture
-}
-
-Atlas::~Atlas() {
-    glDeleteTextures(1, &m_id);
-}
-
 void Atlas::loadTile(const std::string &fileName) {
-    Data tex(m_path + fileName);
+    Data tex(m_path + util::file::file_separator_str + fileName);
     uint64_t id = m_impl->m_hash(fileName);
 
     m_impl->m_packer.add({id, util::Rectangle(tex.width(), tex.height())});
@@ -224,3 +179,5 @@ const util::Rectangle Atlas::element(const std::string &name) const {
 const uint64_t Atlas::getElementsNum() const {
     return m_impl->m_texData.size();
 }
+
+Atlas::~Atlas() {}
