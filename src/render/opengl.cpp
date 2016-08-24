@@ -1,11 +1,12 @@
-//
-// Created by dar on 1/16/16.
-//
+/*
+ * Copyright (c) 2016 Dariusz Stojaczyk. All Rights Reserved.
+ * The following source code is released under an MIT-style license,
+ * that can be found in the LICENSE file.
+ */
 
 #include "opengl.h"
 
-#ifndef SIMULATION
-    #ifdef __ANDROID__
+#ifdef DEF_ANDROID
 
     PFNGLGENVERTEXARRAYSOESPROC glGenVertexArraysOES;
     PFNGLBINDVERTEXARRAYOESPROC glBindVertexArrayOES;
@@ -21,5 +22,4 @@
         glIsVertexArrayOES = (PFNGLISVERTEXARRAYOESPROC) dlsym(libhandle, "glIsVertexArrayOES");
     }
 
-    #endif // __ANDROID__
-#endif // SIMULATION
+#endif // DEF_ANDROID
