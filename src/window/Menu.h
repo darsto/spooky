@@ -1,14 +1,17 @@
-//
-// Created by dar on 2/20/16.
-//
+/*
+ * Copyright (c) 2016 Dariusz Stojaczyk. All Rights Reserved.
+ * The following source code is released under an MIT-style license,
+ * that can be found in the LICENSE file.
+ */
 
-#ifndef C003_MENU_H
-#define C003_MENU_H
+#ifndef C003_WINDOW_MENU_H
+#define C003_WINDOW_MENU_H
 
 #include <vector>
 #include <memory>
+
 #include "Window.h"
-#include <gui/GuiElement.h>
+#include "gui/GuiElement.h"
 
 class Menu : public Window {
 public:
@@ -17,7 +20,7 @@ public:
     virtual void reload(unsigned int windowWidth, unsigned int windowHeight) override;
     virtual void tick(double deltaTime) override;
 
-    virtual void handleKeypress(const Input::KeypressTable &keypresses) override { };
+    virtual void handleKeypress(const Input::KeypressTable &keypresses) override;;
     virtual void handleClick(const Input::TouchPoint &touchPoint) override;
     virtual ~Menu() override;
 
@@ -29,4 +32,4 @@ protected:
     std::vector<std::unique_ptr<GuiElement>> m_guiElements;
 };
 
-#endif //C003_MENU_H
+#endif //C003_WINDOW_MENU_H
