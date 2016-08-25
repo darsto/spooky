@@ -9,18 +9,20 @@
 
 #include <memory>
 
+#include "Config.h"
+
 class Application;
 class Window;
 
 /**
  * The supplement of the Application class.
- * It features publicly available part of the application's interface
+ * It features the publicly available part of the application's interface.
  */
 class ApplicationContext {
 public:
     /**
      * The constructor.
-     * @param application application to create this context for\
+     * @param application application to create this context for
      */
     ApplicationContext(Application &application);
 
@@ -31,12 +33,19 @@ public:
     void switchWindow(std::unique_ptr<Window> &&window);
 
     /**
-     * The destructor
+     * Get the global config.
+     * @return global config
+     */
+    const Config &config() const;
+
+    /**
+     * The destructor.
      */
     ~ApplicationContext();
 
 private:
     Application &m_application;
+    Config m_config;
 };
 
 #endif //C003_APPLICATIONCONTEXT_H

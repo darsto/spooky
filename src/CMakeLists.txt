@@ -50,7 +50,7 @@ SET(SOURCE_FILES
         gui/GuiElement.h
         gui/GuiText.cpp
         gui/GuiText.h
-        )
+        Config.cpp Config.h)
 
 IF (NOT SIMULATION)
     SET(SOURCE_RENDER_FILES
@@ -60,8 +60,6 @@ IF (NOT SIMULATION)
             render/Shader.h
             render/ShaderProgram.cpp
             render/ShaderProgram.h
-            render/Fbo.cpp
-            render/Fbo.h
             render/RenderManager.cpp
             render/RenderManager.h
             render/RenderContext.cpp

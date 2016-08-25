@@ -26,6 +26,7 @@ namespace util {
             constexpr const char script[] = "scripts";
             constexpr const char shader[] = "shaders";
             constexpr const char texture[] = "textures";
+            constexpr const char conf[] = "conf";
         }
 
         /**

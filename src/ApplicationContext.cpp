@@ -10,13 +10,18 @@
 #include "window/LoadingScreen.h"
 
 ApplicationContext::ApplicationContext(Application &application)
-    : m_application(application) {
+    : m_application(application),
+      m_config("global.conf") {
 
 }
 
 void ApplicationContext::switchWindow(std::unique_ptr<Window> &&window) {
     window->context(this);
     m_application.m_newWindow = std::move(window);
+}
+
+const Config &ApplicationContext::config() const {
+    return m_config;
 }
 
 ApplicationContext::~ApplicationContext() = default;
