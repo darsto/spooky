@@ -50,7 +50,9 @@ SET(SOURCE_FILES
         gui/GuiElement.h
         gui/GuiText.cpp
         gui/GuiText.h
-        Config.cpp Config.h)
+        Config.cpp
+        Config.h
+        )
 
 IF (NOT SIMULATION)
     SET(SOURCE_RENDER_FILES
@@ -64,6 +66,7 @@ IF (NOT SIMULATION)
             render/RenderManager.h
             render/RenderContext.cpp
             render/RenderContext.h
+            render/window/WindowRender.cpp
             render/window/WindowRender.h
             render/window/MenuRender.cpp
             render/window/MenuRender.h

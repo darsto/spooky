@@ -22,7 +22,7 @@
 /**
  * Main entry point of the engine.
  * This class is not referenced anywhere.
- * To control the state from within e.g. windows, see ApplicationContext
+ * To control the state from within e.g. windows, see ApplicationContext.
  */
 class Application {
 public:
@@ -44,12 +44,12 @@ public:
     void update();
 
     /**
-     * Set internal window dimensions.
-     * This method does not resize the system window.
-     * @param width width to be set
-     * @param height height to be set
+     * Updates internally-held window dimensions.
+     * Note that this method does not change the size of the window.
+     * @param width new width of the window
+     * @param height new height of the window
      */
-    void resize(int width, int height);
+    void resize(uint32_t width, uint32_t height);
 
     /**
      * Simulate a touch/click at given coordinates.

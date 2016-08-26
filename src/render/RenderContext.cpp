@@ -1,22 +1,22 @@
-//
-// Created by dar on 2/15/16.
-//
+/*
+ * Copyright (c) 2016 Dariusz Stojaczyk. All Rights Reserved.
+ * The following source code is released under an MIT-style license,
+ * that can be found in the LICENSE file.
+ */
 
 #include "RenderContext.h"
-#include "gui/GuiElement.h"
-#include "render/gui/GuiElementRender.h"
-#include "render/font/TextRender.h"
-#include "gui/GuiText.h"
 
-GuiElementRender &RenderContext::getGuiElementRender(const GuiElement &element) {
-    return *guiRenders[element.type()];
+RenderContext::RenderContext() {}
+
+void RenderContext::resize(uint32_t width, uint32_t height) {
+    m_windowWidth = width;
+    m_windowHeight = height;
 }
 
-RenderContext::RenderContext(unsigned int windowWidth, unsigned int windowHeight) {
-    this->windowWidth = windowWidth;
-    this->windowHeight = windowHeight;
-    guiRenders.insert(guiRenders.begin() + GuiElement::TYPE, std::make_unique<GuiElementRender>("gui", "gui"));
-    guiRenders.insert(guiRenders.begin() + GuiText::TYPE, std::make_unique<TextRender>());
+uint32_t RenderContext::windowWidth() const {
+    return m_windowWidth;
 }
 
-RenderContext::~RenderContext() = default;
+uint32_t RenderContext::windowHeight() const {
+    return m_windowHeight;
+}

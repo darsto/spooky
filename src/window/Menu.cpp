@@ -14,11 +14,9 @@ Menu::Menu() : Window() {
 #endif
 }
 
-void Menu::reload(unsigned int windowWidth, unsigned int windowHeight) {
-    m_windowWidth = windowWidth;
-    m_windowHeight = windowHeight;
+void Menu::reload() {
     for (auto &e : this->m_guiElements) {
-        e->reinit(windowWidth, windowHeight);
+        //e->reinit(windowWidth, windowHeight);
     }
 }
 

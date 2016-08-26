@@ -11,18 +11,18 @@
 
 Application::Application()
     : m_context(*this),
-      m_window(std::make_unique<LoadingScreen>()) {
-
-    m_window->context(&m_context);
-
+      m_window(std::make_unique<LoadingScreen>(&m_context))
+#ifndef SIMULATION
+      , m_renderer(m_context)
+#endif
+{
     reinit();
-    resize(1366, 750); // TODO
 }
 
 void Application::reinit() {
 #ifndef SIMULATION
     m_renderer.init();
-    m_renderer.initWindow(*m_window); // TODO
+    m_renderer.switchWindow(*m_window);
 #endif
     m_timer.delta(); //if not called right now, first call in game loop would return a very huge value
     m_inputManager.reload();
@@ -37,17 +37,18 @@ void Application::update() {
     m_window->tick(m_timer.delta());
 
 #ifndef SIMULATION
-    this->m_renderer.render(*m_window);
+    this->m_renderer.render();
 #endif
 
     this->handleEvents();
     m_inputManager.tick(*m_window);
 }
 
-void Application::resize(int width, int height) {
-    m_window->reload(width, height);
+void Application::resize(uint32_t width, uint32_t height) {
 #ifndef SIMULATION
-    this->m_renderer.resize(*m_window, width, height);
+    this->m_renderer.resize(width, height);
+    this->m_renderer.reload();
+    m_window->reload();
 #endif
 }
 
@@ -99,10 +100,9 @@ void Application::switchWindow() {
         m_window.swap(m_newWindow);
         m_newWindow.reset();
 #ifndef SIMULATION
-        m_renderer.initWindow(*m_window);
-
-        auto renderContext = m_renderer.getRenderContext();
-        resize(renderContext->getWindowWidth(), renderContext->getWindowHeight());
+        m_renderer.switchWindow(*m_window);
+        this->m_renderer.reload();
+        m_window->reload();
 #endif
     }
 }

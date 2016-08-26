@@ -33,8 +33,8 @@ MainMenu::MainMenu()
     m_luaState.dofile(m_guiFile);
 }
 
-void MainMenu::reload(unsigned int windowWidth, unsigned int windowHeight) {
-    Menu::reload(windowWidth, windowHeight);
+void MainMenu::reload() {
+    Menu::reload();
 }
 
 void MainMenu::tick(double deltaTime) {
@@ -46,7 +46,7 @@ void MainMenu::handleKeypress(const Input::KeypressTable &keypresses) {
     if (keypresses[SDL_SCANCODE_F5].pressed()) {
         m_guiElements.clear();
         m_luaState.dofile(m_guiFile);
-        reload(m_windowWidth, m_windowHeight);
+        reload();
     }
 #endif
 }

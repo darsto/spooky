@@ -37,11 +37,8 @@ public:
     /**
      * Called on initialization and also on window reload.
      * This is usually caused by screen rotation (on mobile devices), or un-minimizing the application.
-     * Note that the screen rotation changes render dimensions (either A:B or B:A) so these are passed here as arguments.
-     * @param windowWidth new window width
-     * @param windowHeight new window height
      */
-    virtual void reload(unsigned int windowWidth, unsigned int windowHeight) = 0;
+    virtual void reload() = 0;
 
     /**
      * Called every tick.
@@ -79,6 +76,12 @@ public:
      * The destructor.
      */
     virtual ~Window();
+
+    /**
+     * Get the unique identifier of this class
+     * @return unique identifier of this class
+     */
+    virtual const unsigned int type() const = 0;
 
 protected:
     ApplicationContext *m_applicationContext = nullptr;

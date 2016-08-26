@@ -1,34 +1,39 @@
-//
-// Created by dar on 2/15/16.
-//
+/*
+ * Copyright (c) 2016 Dariusz Stojaczyk. All Rights Reserved.
+ * The following source code is released under an MIT-style license,
+ * that can be found in the LICENSE file.
+ */
 
-#include <window/Window.h>
-#include <render/RenderContext.h>
-#include <window/MainMenu.h>
-#include "MenuRender.h"
-#include <window/Menu.h>
 #include <iostream>
+
+#include "MenuRender.h"
+#include "window/Window.h"
+#include "window/MainMenu.h"
+#include "gui/GuiText.h"
 #include "render/opengl.h"
-#include "render/gui/GuiElementRender.h"
 #include "render/RenderContext.h"
+#include "render/gui/GuiElementRender.h"
+#include "render/font/TextRender.h"
 
-MenuRender::MenuRender() : WindowRender() {
+MenuRender::MenuRender(const RenderContext &renderContext)
+    : WindowRender(renderContext) { }
 
-}
+void MenuRender::init() {
+    guiRenders.insert(guiRenders.begin() + GuiElement::TYPE, std::make_unique<GuiElementRender>("gui", "gui"));
+    guiRenders.insert(guiRenders.begin() + GuiText::TYPE, std::make_unique<TextRender>());
 
-void MenuRender::init(const RenderContext &renderContext) {
     glEnable(GL_BLEND);
     glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-    this->resize(renderContext);
+    this->reload();
 }
 
-void MenuRender::render(const Window &window, RenderContext &renderContext) {
+void MenuRender::render(const Window &window) {
     Menu &menu = (Menu &) window;
 
     glClearColor(0.7, 0.7, 0.7, 0.0);
     glClear(GL_COLOR_BUFFER_BIT);
     for (auto &guiElement : menu.guiElements()) {
-        renderContext.getGuiElementRender(*guiElement).render(*guiElement, projectionMatrix, viewMatrix, 1.0f);
+        guiElementRender(*guiElement).render(*guiElement, projectionMatrix, viewMatrix, 1.0f);
     }
 
     GLenum err;
@@ -37,8 +42,14 @@ void MenuRender::render(const Window &window, RenderContext &renderContext) {
     }
 }
 
-void MenuRender::resize(const RenderContext &renderContext) {
+void MenuRender::reload() {
     glm::mat4 tmpViewMatrix = glm::lookAt(glm::vec3(0, 0, 0.0f), glm::vec3(0, 0, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-    viewMatrix = glm::translate(tmpViewMatrix, glm::vec3(0, (signed) renderContext.getWindowHeight(), 0.0f));
-    this->projectionMatrix = glm::ortho(0.0f, float(renderContext.getWindowWidth()), 0.0f, float(renderContext.getWindowHeight()));
+    viewMatrix = glm::translate(tmpViewMatrix, glm::vec3(0, (signed) m_renderContext.windowHeight(), 0.0f));
+    this->projectionMatrix = glm::ortho(0.0f, float(m_renderContext.windowWidth()), 0.0f, float(m_renderContext.windowHeight()));
 }
+
+GuiElementRender &MenuRender::guiElementRender(const GuiElement &element) const {
+    return *guiRenders[element.type()];
+}
+
+MenuRender::~MenuRender() { }

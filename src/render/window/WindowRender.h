@@ -1,24 +1,45 @@
-//
-// Created by dar on 1/25/16.
-//
+/*
+ * Copyright (c) 2016 Dariusz Stojaczyk. All Rights Reserved.
+ * The following source code is released under an MIT-style license,
+ * that can be found in the LICENSE file.
+ */
 
-#ifndef C003_WINDOWRENDER_H
-#define C003_WINDOWRENDER_H
+#ifndef C003_RENDER_WINDOW_WINDOWRENDER_H
+#define C003_RENDER_WINDOW_WINDOWRENDER_H
 
 class Window;
-
 class RenderContext;
 
+/**
+ * Base class for particular window renders.
+ * It is responsible for rendering all elements in the corresponding window.
+ */
 class WindowRender {
-
 public:
-    WindowRender() { }
+    /**
+     * The constructor.
+     * @param renderContext context to use throughout the class' lifetime.
+     */
+    WindowRender(const RenderContext &renderContext);
 
-    virtual void init(const RenderContext &renderContext) = 0; //TODO call on m_window change
-    virtual void render(const Window &window, RenderContext &renderContext) = 0;
-    virtual void resize(const RenderContext &renderContext) = 0;
+    /**
+     * Called on initialization and reloading.
+     */
+    virtual void init() = 0;
+
+    /**
+     * Called every tick.
+     * @param window currently rendered window
+     */
+    virtual void render(const Window &window) = 0;
+
+    /**
+     * Called on screen resize events.
+     */
+    virtual void reload() = 0;
 
 protected:
+    const RenderContext &m_renderContext;
 };
 
-#endif //C003_WINDOWRENDER_H
+#endif //C003_RENDER_WINDOW_WINDOWRENDER_H
