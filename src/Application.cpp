@@ -13,7 +13,7 @@ Application::Application()
     : m_context(*this),
       m_window(std::make_unique<LoadingScreen>(&m_context))
 #ifndef SIMULATION
-      , m_renderer(m_context)
+      , m_renderer(m_context, m_window.get())
 #endif
 {
     reinit();
@@ -21,8 +21,7 @@ Application::Application()
 
 void Application::reinit() {
 #ifndef SIMULATION
-    m_renderer.init();
-    m_renderer.switchWindow(*m_window);
+    m_renderer.reload();
 #endif
     m_timer.delta(); //if not called right now, first call in game loop would return a very huge value
     m_inputManager.reload();

@@ -11,23 +11,25 @@
 #include "window/MainMenu.h"
 #include "render/window/MenuRender.h"
 
-RenderManager::RenderManager(ApplicationContext &applicationContext)
-    : m_applicationContext(applicationContext) {}
-
-bool RenderManager::init() {
+RenderManager::RenderManager(ApplicationContext &applicationContext, Window *window)
+    : m_applicationContext(applicationContext) {
+    
     if (!this->initWindow()) {
         printf("Failed to initialize window!\n");
+        exit(1); // TODO replace with exceptions
     } else if (!this->initGL()) {
         printf("Unable to initialize OpenGL!\n");
+        exit(1);
     } else if (!this->initRenders()) {
         printf("Unable to initialize window renders!\n");
+        exit(1);
     } else {
 #ifdef DEF_ANDROID
         initBindings();
 #endif // DEF_ANDROID
-        return true;
     }
-    return false;
+
+    switchWindow(*window);
 }
 
 bool RenderManager::initWindow() {
@@ -94,10 +96,8 @@ void RenderManager::render() {
 }
 
 void RenderManager::reload() {
-    m_renderContext.resize(m_renderContext.windowWidth(), m_renderContext.windowHeight());
     glViewport(0, 0, m_renderContext.windowWidth(), m_renderContext.windowHeight());
     m_windowRender->reload();
-
 }
 
 RenderManager::~RenderManager() {
@@ -115,4 +115,5 @@ void RenderManager::switchWindow(Window &window) {
 
 void RenderManager::resize(uint32_t width, uint32_t height) {
     m_renderContext.resize(width, height);
+    reload();
 }

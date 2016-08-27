@@ -35,9 +35,9 @@ public:
     /**
      * The constructor.
      * @param applicationContext context to bind to this RenderManager
+     * @param window initial window to load renders for
      */
-    RenderManager(ApplicationContext &applicationContext);
-    bool init();
+    RenderManager(ApplicationContext &applicationContext, Window *window);
     void switchWindow(Window &window);
     void reload();
     void resize(uint32_t width, uint32_t height);
