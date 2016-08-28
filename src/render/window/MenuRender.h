@@ -21,9 +21,8 @@ class MenuRender : public WindowRender {
 
 public:
     MenuRender(const RenderContext &renderContext);
-    virtual void init() override;
-    virtual void render(const Window &window) override;
     virtual void reload() override;
+    virtual void render(const Window &window) override;
     ~MenuRender();
 
 private:

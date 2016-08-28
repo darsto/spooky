@@ -110,7 +110,7 @@ RenderManager::~RenderManager() {
 void RenderManager::switchWindow(Window &window) {
     m_currentWindow = &window;
     m_windowRender = windowRenders[window.type()].get();
-    m_windowRender->init();
+    m_windowRender->reload();
 }
 
 void RenderManager::resize(uint32_t width, uint32_t height) {

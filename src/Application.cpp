@@ -125,14 +125,9 @@ extern "C" {
 JNIEXPORT void JNICALL Java_darsto_spooky_JniBridge_init(JNIEnv *env, jobject obj) {
     if (!application) {
         application = std::make_unique<Application>();
+    } else {
         application->reinit();
     }
-    /*jclass cls = env->GetObjectClass(obj);
-    jmethodID mid = env->GetMethodID(cls, "loadTexture", "()V");
-    if (mid == 0) {
-        return;
-    }
-    env->CallVoidMethod(obj, mid);*/
 }
 
 JNIEXPORT void JNICALL Java_darsto_spooky_JniBridge_resize(JNIEnv *env, jobject obj, jint width, jint height) {

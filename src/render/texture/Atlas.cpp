@@ -21,8 +21,20 @@
 #include "Resampler.h"
 #include "util/Packer.h"
 #include "exceptions.h"
+#include "util/log.h"
 
 using namespace texture;
+
+/**
+ * The following state may not be available on some devices (e.g. OpenGL ES 2.0)
+ */
+#ifdef GL_TEXTURE_MAX_LEVEL
+    #define USES_MANUAL_MIPMAPS
+#endif
+
+#ifndef USES_MANUAL_MIPMAPS
+    #include <SOIL.h>
+#endif
 
 struct Atlas::impl {
     impl(std::vector<std::string> tiles)
@@ -117,16 +129,20 @@ void Atlas::load() {
     m_height = m_impl->m_packer.size().height();
     m_channels = 4;
 
+#ifdef USES_MANUAL_MIPMAPS
     glGenTextures(1, &m_id);
     bindTexture();
 
-    uint32_t mipmapLevels = (uint32_t) (log(std::max(width(), height())) / log(2));
+    uint32_t mipmapLevels = (uint32_t) ceil(log(std::max(width(), height())) / log(2));
 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, mipmapLevels - 1);
 
     for (uint8_t level = 0; level < mipmapLevels; ++level) {
-        uint32_t downsample = 1u << level;
+#else
+    uint8_t level = 0;
+#endif
+
+    uint32_t downsample = 1u << level;
         Data atlas(width() / downsample, height() / downsample, channels());
 
         for (auto &el : m_impl->m_packer.elements()) {
@@ -148,8 +164,14 @@ void Atlas::load() {
                 }
             }
         }
+
+#ifdef USES_MANUAL_MIPMAPS
         m_impl->writeTexToGPU(atlas, level);
     }
+#else
+    m_id = SOIL_create_OGL_texture(atlas.getData().get(), m_width, m_height, m_channels, 0, SOIL_FLAG_MULTIPLY_ALPHA);
+    glGenerateMipmap(GL_TEXTURE_2D);
+#endif
 }
 
 void Atlas::loadTile(const std::string &fileName) {

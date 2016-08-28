@@ -23,20 +23,15 @@ public:
     WindowRender(const RenderContext &renderContext);
 
     /**
-     * Called on initialization and reloading.
+     * Called on initialization and reloading (& screen resize events).
      */
-    virtual void init() = 0;
+    virtual void reload() = 0;
 
     /**
      * Called every tick.
      * @param window currently rendered window
      */
     virtual void render(const Window &window) = 0;
-
-    /**
-     * Called on screen resize events.
-     */
-    virtual void reload() = 0;
 
 protected:
     const RenderContext &m_renderContext;
