@@ -112,19 +112,20 @@ Application::~Application() {}
 
 #include <jni.h>
 
-Application application;
+std::unique_ptr<Application> application;
 bool initialized = false;
 
 extern "C" {
-    JNIEXPORT void JNICALL Java_tk_approach_android_spookytom_JniBridge_init(JNIEnv *env, jobject obj);
-    JNIEXPORT void JNICALL Java_tk_approach_android_spookytom_JniBridge_resize(JNIEnv *env, jobject obj, jint width, jint height);
-    JNIEXPORT void JNICALL Java_tk_approach_android_spookytom_JniBridge_tick(JNIEnv *env, jobject obj);
-    JNIEXPORT void JNICALL Java_tk_approach_android_spookytom_JniBridge_handleTouch(JNIEnv *env, jobject obj, jint i, jint action, jfloat x, jfloat y);
+    JNIEXPORT void JNICALL Java_darsto_spooky_JniBridge_init(JNIEnv *env, jobject obj);
+    JNIEXPORT void JNICALL Java_darsto_spooky_JniBridge_resize(JNIEnv *env, jobject obj, jint width, jint height);
+    JNIEXPORT void JNICALL Java_darsto_spooky_JniBridge_tick(JNIEnv *env, jobject obj);
+    JNIEXPORT void JNICALL Java_darsto_spooky_JniBridge_handleTouch(JNIEnv *env, jobject obj, jint i, jint action, jfloat x, jfloat y);
 };
 
-JNIEXPORT void JNICALL Java_tk_approach_android_spookytom_JniBridge_init(JNIEnv *env, jobject obj) {
-    if (initialized) {
-        application.reinit();
+JNIEXPORT void JNICALL Java_darsto_spooky_JniBridge_init(JNIEnv *env, jobject obj) {
+    if (!application) {
+        application = std::make_unique<Application>();
+        application->reinit();
     }
     /*jclass cls = env->GetObjectClass(obj);
     jmethodID mid = env->GetMethodID(cls, "loadTexture", "()V");
@@ -134,13 +135,13 @@ JNIEXPORT void JNICALL Java_tk_approach_android_spookytom_JniBridge_init(JNIEnv 
     env->CallVoidMethod(obj, mid);*/
 }
 
-JNIEXPORT void JNICALL Java_tk_approach_android_spookytom_JniBridge_resize(JNIEnv *env, jobject obj, jint width, jint height) {
-    application.resize(width, height);
+JNIEXPORT void JNICALL Java_darsto_spooky_JniBridge_resize(JNIEnv *env, jobject obj, jint width, jint height) {
+    application->resize(width, height);
 }
 
-JNIEXPORT void JNICALL Java_tk_approach_android_spookytom_JniBridge_tick(JNIEnv *env, jobject obj) {
-    application.update();
-    if (!application.isRunning()) {
+JNIEXPORT void JNICALL Java_darsto_spooky_JniBridge_tick(JNIEnv *env, jobject obj) {
+    application->update();
+    if (!application->running()) {
         jclass cls = env->GetObjectClass(obj);
         jmethodID mid = env->GetMethodID(cls, "exit", "()V");
         if (mid != 0) {
@@ -149,8 +150,8 @@ JNIEXPORT void JNICALL Java_tk_approach_android_spookytom_JniBridge_tick(JNIEnv 
     }
 }
 
-JNIEXPORT void JNICALL Java_tk_approach_android_spookytom_JniBridge_handleTouch(JNIEnv *env, jobject obj, jint i,  jint action, jfloat x, jfloat y) {
-    application.handleClick(i, action, x, y);
+JNIEXPORT void JNICALL Java_darsto_spooky_JniBridge_handleTouch(JNIEnv *env, jobject obj, jint i,  jint action, jfloat x, jfloat y) {
+    application->handleClick(i, static_cast<Input::TouchPoint::State>(action), x, y);
 }
 
 #endif // DEF_ANDROID

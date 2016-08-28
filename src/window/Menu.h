@@ -20,7 +20,7 @@ public:
     virtual void reload() override;
     virtual void tick(double deltaTime) override;
 
-    virtual void handleKeypress(const Input::KeypressTable &keypresses) override;;
+    virtual void handleKeypress(const Input::KeypressTable &keypresses) override;
     virtual void handleClick(const Input::TouchPoint &touchPoint) override;
     virtual ~Menu() override;
 

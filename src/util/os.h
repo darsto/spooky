@@ -22,6 +22,11 @@
 #undef USES_KEYBOARD
 
 /**
+ * The following macro is being set by the NDK compiler
+ */
+#undef ANDROID
+
+/**
  * Operating systems enum
  */
 enum class OS {

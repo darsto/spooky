@@ -4,6 +4,8 @@
  * that can be found in the LICENSE file.
  */
 
+#include <cstdlib>
+
 #include "Resampler.h"
 
 using namespace texture;

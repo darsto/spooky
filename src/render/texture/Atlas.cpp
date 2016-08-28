@@ -12,6 +12,7 @@
 #include <memory>
 #include <regex>
 #include <unordered_map>
+#include <cstdlib>
 
 #include "Atlas.h"
 #include "Data.h"
@@ -119,7 +120,7 @@ void Atlas::load() {
     glGenTextures(1, &m_id);
     bindTexture();
 
-    uint32_t mipmapLevels = (uint32_t) std::log2(std::max(width(), height()));
+    uint32_t mipmapLevels = (uint32_t) (log(std::max(width(), height())) / log(2));
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, mipmapLevels - 1);
