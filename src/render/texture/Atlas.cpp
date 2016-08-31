@@ -29,11 +29,11 @@ using namespace texture;
  * The following state may not be available on some devices (e.g. OpenGL ES 2.0)
  */
 #ifdef GL_TEXTURE_MAX_LEVEL
-    #define USES_MANUAL_MIPMAPS
+#define USES_MANUAL_MIPMAPS
 #endif
 
 #ifndef USES_MANUAL_MIPMAPS
-    #include <SOIL.h>
+#include <SOIL.h>
 #endif
 
 struct Atlas::impl {
@@ -42,18 +42,23 @@ struct Atlas::impl {
 
     }
 
+    /**
+     * OpenGL uses enum to determine a number (and type) of texture channels.
+     * Since we don't handle different types of texture channels in Atlas class,
+     * just a pure int number of channels is passed between methods.
+     */
     GLenum getTexGLFormat(uint32_t channels) {
         GLenum ret;
 
         switch (channels) {
             case 1:
-                ret = GL_LUMINANCE;
+                ret = GL_LUMINANCE; /**< If L was converted into RGBA, it would be R=L, G=L, B=L, A=1 */
                 break;
             case 2:
-                ret = GL_LUMINANCE_ALPHA;
+                ret = GL_LUMINANCE_ALPHA; /**< If LA' was converted into RGBA, it would be R=L, G=L, B=L, A=A' */
                 break;
             case 3:
-                ret = GL_RGB;
+                ret = GL_RGB; /**< A=1 */
                 break;
             case 4:
                 ret = GL_RGBA;
@@ -139,12 +144,13 @@ void Atlas::load() {
 
     for (uint8_t level = 0; level < mipmapLevels; ++level) {
 #else
-    uint8_t level = 0;
+        uint8_t level = 0;
 #endif
 
-    uint32_t downsample = 1u << level;
+        uint32_t downsample = 1u << level;
         Data atlas(width() / downsample, height() / downsample, channels());
 
+        //TODO it's totally unreadable
         for (auto &el : m_impl->m_packer.elements()) {
             Data &tile = m_impl->m_texData.find(el.first)->second;
             auto resampled = texture::Resampler::downsample(tile.getData().get(), tile.width(), tile.height(), tile.channels(), downsample);
@@ -169,6 +175,7 @@ void Atlas::load() {
         m_impl->writeTexToGPU(atlas, level);
     }
 #else
+    //TODO create additional writeTexToGPU overload (?)
     m_id = SOIL_create_OGL_texture(atlas.getData().get(), m_width, m_height, m_channels, 0, SOIL_FLAG_MULTIPLY_ALPHA);
     glGenerateMipmap(GL_TEXTURE_2D);
 #endif
