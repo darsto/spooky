@@ -22,6 +22,7 @@
 #include "util/Packer.h"
 #include "exceptions.h"
 #include "util/log.h"
+#include "util/prof.h"
 
 using namespace texture;
 
@@ -124,6 +125,7 @@ Atlas::Atlas(const std::string &name)
 }
 
 void Atlas::load() {
+    PROF_START(load);
     for (const std::string &tile : m_impl->m_tiles) {
         loadTile(tile);
     }
@@ -142,6 +144,8 @@ void Atlas::load() {
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, mipmapLevels - 1);
 
+    Log::debug("Preparing the OpenGL texture \"%s\" took %f sec.", m_path.c_str(), PROF_DURATION_PREV(load));
+
     for (uint8_t level = 0; level < mipmapLevels; ++level) {
 #else
         uint8_t level = 0;
@@ -150,11 +154,15 @@ void Atlas::load() {
         uint32_t downsample = 1u << level;
         Data atlas(width() / downsample, height() / downsample, channels());
 
+        Log::debug("Preparing the texture atlas \"%s\" took %f sec.", m_path.c_str(), PROF_DURATION_PREV(load));
+
         //TODO it's totally unreadable
         for (auto &el : m_impl->m_packer.elements()) {
             Data &tile = m_impl->m_texData.find(el.first)->second;
             auto resampled = texture::Resampler::downsample(tile.getData().get(), tile.width(), tile.height(), tile.channels(), downsample);
             util::Rectangle rect(el.second.x() / downsample, el.second.y() / downsample, el.second.width() / downsample, el.second.height() / downsample);
+
+            Log::debug("Resampling of level %d of the texture atlas \"%s\" took %f sec.", level, m_path.c_str(), PROF_DURATION_PREV(load));
 
             uint32_t inWidth = tile.width() / downsample;
             uint32_t inHeight = tile.height() / downsample;
@@ -169,6 +177,8 @@ void Atlas::load() {
                     }
                 }
             }
+
+            Log::debug("Preparing the texture atlas \"%s\" took %f sec.", m_path.c_str(), PROF_DURATION_PREV(load));
         }
 
 #ifdef USES_MANUAL_MIPMAPS
@@ -179,6 +189,8 @@ void Atlas::load() {
     m_id = SOIL_create_OGL_texture(atlas.getData().get(), m_width, m_height, m_channels, 0, SOIL_FLAG_MULTIPLY_ALPHA);
     glGenerateMipmap(GL_TEXTURE_2D);
 #endif
+
+    Log::debug("Generating the texture atlas \"%s\" took %f sec.", m_path.c_str(), PROF_DURATION_START(load));
 }
 
 void Atlas::loadTile(const std::string &fileName) {
