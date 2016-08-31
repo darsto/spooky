@@ -4,6 +4,7 @@
  * that can be found in the LICENSE file.
  */
 
+#include <algorithm>
 #include <kaguya/kaguya.hpp>
 
 #include "LoadingScreen.h"
@@ -15,6 +16,7 @@ LoadingScreen::LoadingScreen(ApplicationContext *applicationContext) : Menu() {
     context(applicationContext);
     kaguya::State initState;
     initState.dofile(util::file::path<util::file::type::script>("init.lua"));
+    step = MAX_STEPS;
 }
 
 void LoadingScreen::reload() {
@@ -25,10 +27,9 @@ void LoadingScreen::reload() {
 }
 
 void LoadingScreen::tick(double deltaTime) {
-    this->progress = 1.0;
-    if (this->progress >= 1.0) {
+    if (step == MAX_STEPS) {
         getApplicationContext().switchWindow(std::make_unique<MainMenu>());
-        progress = 0.0;
+        ++step;
     }
 }
 
@@ -41,4 +42,8 @@ void LoadingScreen::handleKeypress(const Input::KeypressTable &keypresses) {
         getApplicationContext().switchWindow(std::make_unique<MainMenu>());
     }
 #endif
+}
+
+double LoadingScreen::progress() {
+    return std::min(static_cast<double>(step) / MAX_STEPS, 1.0);
 }
