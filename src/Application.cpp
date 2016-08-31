@@ -16,7 +16,7 @@ Application::Application()
       , m_renderer(m_context, m_window.get())
 #endif
 {
-    reinit();
+    m_timer.delta(); //if not called right now, first call in game loop would return a very huge value
 }
 
 void Application::reinit() {
@@ -100,7 +100,6 @@ void Application::switchWindow() {
         m_newWindow.reset();
 #ifndef SIMULATION
         m_renderer.switchWindow(*m_window);
-        this->m_renderer.reload();
         m_window->reload();
 #endif
     }
