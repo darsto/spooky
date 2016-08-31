@@ -16,8 +16,12 @@ ApplicationContext::ApplicationContext(Application &application)
 }
 
 void ApplicationContext::switchWindow(std::unique_ptr<Window> &&window) {
-    window->context(this);
-    m_application.m_newWindow = std::move(window);
+    if (window) {
+        window->context(this);
+        m_application.m_newWindow = std::move(window);
+    } else {
+        m_application.m_running = false;
+    }
 }
 
 const Config &ApplicationContext::config() const {
