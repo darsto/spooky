@@ -30,6 +30,8 @@ SET(SOURCE_FILES
         util/Rectangle.cpp
         util/Rectangle.h
         util/string.cpp
+        util/prof.cpp
+        util/prof.h
         core/Timer.cpp
         core/Timer.h
         core/input/InputManager.cpp
