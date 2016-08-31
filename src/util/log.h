@@ -5,8 +5,7 @@
  */
 
 /**
- * TODO: Custom cross-platform logging system (?)
- * This would require a lot of thread-safety code
+ * TODO: Add log levels to be able to enable/disable particular log entries
  */
 
 #ifndef C003_UTIL_LOG_H
@@ -45,6 +44,7 @@ namespace util {
             __android_log_print(ANDROID_LOG_INFO, LOG_TAG, msg, std::forward<Args>(args)...);
 #else
             printf(msg, std::forward<Args>(args)...);
+            putchar('\n');
 #endif
         };
 
@@ -59,6 +59,7 @@ namespace util {
             __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, msg, std::forward<Args>(args)...);
 #else
             printf(msg, std::forward<Args>(args)...);
+            putchar('\n');
 #endif
 #endif
         };
@@ -72,6 +73,7 @@ namespace util {
             __android_log_print(ANDROID_LOG_WARN, LOG_TAG, msg, std::forward<Args>(args)...);
 #else
             printf(msg, std::forward<Args>(args)...);
+            putchar('\n');
 #endif
         };
 
@@ -84,6 +86,7 @@ namespace util {
             __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, msg, std::forward<Args>(args)...);
 #else
             printf(msg, std::forward<Args>(args)...);
+            putchar('\n');
 #endif
         };
     }
