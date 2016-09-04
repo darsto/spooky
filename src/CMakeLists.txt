@@ -18,6 +18,8 @@ SET(SOURCE_FILES
         Application.h
         ApplicationContext.cpp
         ApplicationContext.h
+        Config.cpp
+        Config.h
         util/os.h
         util/collection.h
         util/collection.cpp
@@ -32,6 +34,8 @@ SET(SOURCE_FILES
         util/string.cpp
         util/prof.cpp
         util/prof.h
+        util/exceptions.cpp
+        util/exceptions.h
         core/Timer.cpp
         core/Timer.h
         core/input/InputManager.cpp
@@ -52,14 +56,14 @@ SET(SOURCE_FILES
         gui/GuiElement.h
         gui/GuiText.cpp
         gui/GuiText.h
-        Config.cpp
-        Config.h
-        util/exceptions.cpp util/exceptions.h)
+        )
 
 IF (NOT SIMULATION)
     SET(SOURCE_RENDER_FILES
             render/opengl.h
             render/opengl.cpp
+            render/exceptions.cpp
+            render/exceptions.h
             render/Shader.cpp
             render/Shader.h
             render/ShaderProgram.cpp
@@ -86,7 +90,9 @@ IF (NOT SIMULATION)
             render/texture/Resampler.h
             render/texture/Texture.cpp
             render/texture/Texture.h
-            render/exceptions.cpp render/exceptions.h)
+            )
+
+    SET(SOURCE_FILES ${SOURCE_FILES} ${SOURCE_RENDER_FILES})
 ENDIF ()
 
 IF (EDITOR)
@@ -95,7 +101,7 @@ ELSE ()
     SET(PROJECT_NAME c003_game_lib)
 ENDIF ()
 
-ADD_LIBRARY(${PROJECT_NAME} ${TYPE} ${SOURCE_FILES} ${SOURCE_RENDER_FILES})
+ADD_LIBRARY(${PROJECT_NAME} ${TYPE} ${SOURCE_FILES})
 
 IF (EDITOR)
     TARGET_COMPILE_DEFINITIONS(${PROJECT_NAME} PRIVATE EDITOR=1)

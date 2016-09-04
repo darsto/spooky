@@ -4,8 +4,8 @@
  * that can be found in the LICENSE file.
  */
 
-#ifndef C003_PROF_H_H
-#define C003_PROF_H_H
+#ifndef C003_PROF_H
+#define C003_PROF_H
 
 #ifdef DEBUG
 
@@ -16,7 +16,7 @@ namespace util {
     /**
      * Practical interface for precise measuring passed time.
      * Note that this class is available only in debug builds.
-     * For simplicity, use functions from the util::prof namespace.
+     * For simplicity, use the PROF_ macros.
      */
     class Profiler {
     private:
@@ -63,10 +63,15 @@ namespace util {
 
 #else
 
+/**
+ * Macros PROF_DURATION_X are defined as 1 (instead of 0),
+ * as we may be dividing by these numbers.
+ */
+
 #define PROF_START(name)
 #define PROF_DURATION_PREV(name) 1
 #define PROF_DURATION_START(name) 1
 
 #endif
 
-#endif //C003_PROF_H_H
+#endif //C003_PROF_H
