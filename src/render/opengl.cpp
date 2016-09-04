@@ -4,6 +4,8 @@
  * that can be found in the LICENSE file.
  */
 
+#include <dlfcn.h>
+
 #include "opengl.h"
 
 #ifdef DEF_ANDROID

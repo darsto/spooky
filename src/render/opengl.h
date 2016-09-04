@@ -4,35 +4,38 @@
  * that can be found in the LICENSE file.
  */
 
-#ifndef C003_OPENGL_H
-#define C003_OPENGL_H
+#ifndef C003_RENDER_OPENGL_H
+#define C003_RENDER_OPENGL_H
 
 #include "util/os.h"
 
+/**
+ * This file provides some global OpenGL-related stuff for the current platform.
+ */
+
 #ifdef DEF_ANDROID
 
-    #include <dlfcn.h>
-    #include <GLES2/gl2.h>
-    #include <GLES2/gl2ext.h>
+#include <GLES2/gl2.h>
+#include <GLES2/gl2ext.h>
 
-    #define glBindVertexArray glBindVertexArrayOES
-    #define glDeleteVertexArrays glDeleteVertexArraysOES
-    #define glGenVertexArrays glGenVertexArraysOES
-    #define glIsVertexArray glIsVertexArrayOES
+#define glBindVertexArray glBindVertexArrayOES
+#define glDeleteVertexArrays glDeleteVertexArraysOES
+#define glGenVertexArrays glGenVertexArraysOES
+#define glIsVertexArray glIsVertexArrayOES
 
-    extern PFNGLGENVERTEXARRAYSOESPROC glGenVertexArraysOES;
-    extern PFNGLBINDVERTEXARRAYOESPROC glBindVertexArrayOES;
-    extern PFNGLDELETEVERTEXARRAYSOESPROC glDeleteVertexArraysOES;
-    extern PFNGLISVERTEXARRAYOESPROC glIsVertexArrayOES;
+extern PFNGLGENVERTEXARRAYSOESPROC glGenVertexArraysOES;
+extern PFNGLBINDVERTEXARRAYOESPROC glBindVertexArrayOES;
+extern PFNGLDELETEVERTEXARRAYSOESPROC glDeleteVertexArraysOES;
+extern PFNGLISVERTEXARRAYOESPROC glIsVertexArrayOES;
 
-    void initBindings();
+void initBindings();
 
 #else
 
-    #define GLEW_STATIC
+#define GLEW_STATIC
 
-    #include <GL/glew.h>
+#include <GL/glew.h>
 
 #endif // DEF_ANDROID
 
-#endif //C003_OPENGL_H
+#endif //C003_RENDER_OPENGL_H

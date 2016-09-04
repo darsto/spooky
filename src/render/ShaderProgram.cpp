@@ -1,141 +1,83 @@
-//
-// Created by dar on 11/20/15.
-//
+/*
+ * Copyright (c) 2016 Dariusz Stojaczyk. All Rights Reserved.
+ * The following source code is released under an MIT-style license,
+ * that can be found in the LICENSE file.
+ */
 
 #include "ShaderProgram.h"
+#include "Shader.h"
+#include "exceptions.h"
+#include "util/log.h"
 
-using namespace std;
-using namespace glm;
+ShaderProgram::ShaderProgram()
+    : m_id(glCreateProgram()) {}
 
-ShaderProgram::ShaderProgram() {
-    linked = false;
+GLuint ShaderProgram::id() {
+    return m_id;
 }
 
-ShaderProgram::~ShaderProgram() {
-    if (!this->linked)return;
-    this->linked = false;
-    glDeleteProgram(uiProgram);
+void ShaderProgram::addShader(Shader *shader) {
+    if (!shader->loaded()) {
+        throw render::unloaded_shader_error("Trying to register an unloaded shader.");
+    }
+
+    GLuint shader_id = shader->id();
+    glAttachShader(m_id, shader_id);
+    m_boundShaders.push_back(shader_id);
 }
 
+void ShaderProgram::linkProgram() {
+    glLinkProgram(m_id);
 
-void ShaderProgram::createProgram() {
-    uiProgram = glCreateProgram();
-}
+    int linked;
+    glGetProgramiv(m_id, GL_LINK_STATUS, &linked);
+    m_linked = linked == GL_TRUE;
 
-bool ShaderProgram::addShaderToProgram(Shader *shader) {
-    if (!shader->isLoaded())return false;
+    for (GLuint shader_id : m_boundShaders) {
+        glDetachShader(m_id, shader_id);
+    }
 
-    glAttachShader(uiProgram, shader->getID());
+    m_boundShaders.clear();
 
-    return true;
-}
-
-bool ShaderProgram::linkProgram() {
-    glLinkProgram(uiProgram);
-    int iLinkStatus;
-    glGetProgramiv(uiProgram, GL_LINK_STATUS, &iLinkStatus);
-    linked = iLinkStatus == GL_TRUE;
-    return linked;
+    if (!m_linked) {
+        char msg[50];
+        snprintf(msg, sizeof(msg), "Failed to link the shader program #%d.", m_id);
+        throw render::unlinked_shader_program_error(msg);
+    }
 }
 
 void ShaderProgram::useProgram() {
-    if (linked) glUseProgram(uiProgram);
+    if (!m_linked) {
+        throw render::unlinked_shader_program_error("Trying to use an unlinked shader program.");
+    }
+
+    glUseProgram(m_id);
 }
 
-
-//TODO uniform caching (?) (is it worth it?)
-void ShaderProgram::setUniform(string sName, float* fValues, int iCount)
-{
-    int iLoc = glGetUniformLocation(uiProgram, sName.c_str());
-    glUniform1fv(iLoc, iCount, fValues);
+void ShaderProgram::setUniform(std::string sName, float fValue) {
+    int loc = glGetUniformLocation(m_id, sName.c_str());
+    glUniform1fv(loc, 1, &fValue);
 }
 
-void ShaderProgram::setUniform(string sName, const float fValue)
-{
-    int iLoc = glGetUniformLocation(uiProgram, sName.c_str());
-    glUniform1fv(iLoc, 1, &fValue);
+void ShaderProgram::setUniform(std::string sName, const glm::vec4 &vVector) {
+    int loc = glGetUniformLocation(m_id, sName.c_str());
+    glUniform4fv(loc, 1, reinterpret_cast<const GLfloat *>(&vVector));
 }
 
-// Setting vectors
-
-void ShaderProgram::setUniform(string sName, glm::vec2* vVectors, int iCount)
-{
-    int iLoc = glGetUniformLocation(uiProgram, sName.c_str());
-    glUniform2fv(iLoc, iCount, (GLfloat*)vVectors);
+void ShaderProgram::setUniform(std::string sName, const glm::mat4 &mMatrix) {
+    int loc = glGetUniformLocation(m_id, sName.c_str());
+    glUniformMatrix4fv(loc, 1, GL_FALSE, reinterpret_cast<const GLfloat *>(&mMatrix));
 }
 
-void ShaderProgram::setUniform(string sName, const glm::vec2 vVector)
-{
-    int iLoc = glGetUniformLocation(uiProgram, sName.c_str());
-    glUniform2fv(iLoc, 1, (GLfloat*)&vVector);
+void ShaderProgram::setUniform(std::string sName, int value) {
+    int loc = glGetUniformLocation(m_id, sName.c_str());
+    glUniform1i(loc, value);
 }
 
-void ShaderProgram::setUniform(string sName, glm::vec3* vVectors, int iCount)
-{
-    int iLoc = glGetUniformLocation(uiProgram, sName.c_str());
-    glUniform3fv(iLoc, iCount, (GLfloat*)vVectors);
-}
-
-void ShaderProgram::setUniform(string sName, const glm::vec3 vVector)
-{
-    int iLoc = glGetUniformLocation(uiProgram, sName.c_str());
-    glUniform3fv(iLoc, 1, (GLfloat*)&vVector);
-}
-
-void ShaderProgram::setUniform(string sName, glm::vec4* vVectors, int iCount)
-{
-    int iLoc = glGetUniformLocation(uiProgram, sName.c_str());
-    glUniform4fv(iLoc, iCount, (GLfloat*)vVectors);
-}
-
-void ShaderProgram::setUniform(string sName, const glm::vec4 vVector)
-{
-    int iLoc = glGetUniformLocation(uiProgram, sName.c_str());
-    glUniform4fv(iLoc, 1, (GLfloat*)&vVector);
-}
-
-// Setting 3x3 matrices
-
-void ShaderProgram::setUniform(string sName, glm::mat3* mMatrices, int iCount)
-{
-    int iLoc = glGetUniformLocation(uiProgram, sName.c_str());
-    glUniformMatrix3fv(iLoc, iCount, false, (GLfloat*)mMatrices);
-}
-
-void ShaderProgram::setUniform(string sName, const glm::mat3 mMatrix)
-{
-    int iLoc = glGetUniformLocation(uiProgram, sName.c_str());
-    glUniformMatrix3fv(iLoc, 1, false, (GLfloat*)&mMatrix);
-}
-
-// Setting 4x4 matrices
-
-void ShaderProgram::setUniform(string sName, glm::mat4* mMatrices, int iCount)
-{
-    int iLoc = glGetUniformLocation(uiProgram, sName.c_str());
-    glUniformMatrix4fv(iLoc, iCount, false, (GLfloat*)mMatrices);
-}
-
-void ShaderProgram::setUniform(string sName, const glm::mat4 mMatrix)
-{
-    int iLoc = glGetUniformLocation(uiProgram, sName.c_str());
-    glUniformMatrix4fv(iLoc, 1, false, (GLfloat*)&mMatrix);
-}
-
-// Setting integers
-
-void ShaderProgram::setUniform(string sName, int* iValues, int iCount)
-{
-    int iLoc = glGetUniformLocation(uiProgram, sName.c_str());
-    glUniform1iv(iLoc, iCount, iValues);
-}
-
-void ShaderProgram::setUniform(string sName, const int iValue)
-{
-    int iLoc = glGetUniformLocation(uiProgram, sName.c_str());
-    glUniform1i(iLoc, iValue);
-}
-
-GLuint ShaderProgram::getProgramID() {
-    return uiProgram;
+ShaderProgram::~ShaderProgram() {
+    if (m_linked) {
+        glDeleteProgram(m_id);
+    } else {
+        Log::warning("Deleting unlinked shader program. (Maybe it shouldn't have been created at all?)");
+    }
 }

@@ -1,22 +1,25 @@
-//
-// Created by dar on 1/27/16.
-//
+/*
+ * Copyright (c) 2016 Dariusz Stojaczyk. All Rights Reserved.
+ * The following source code is released under an MIT-style license,
+ * that can be found in the LICENSE file.
+ */
 
 #include "GuiElementRender.h"
+#include "gui/GuiElement.h"
 
 GuiElementRender::GuiElementRender(const std::string &textureFile, const std::string &shader)
-    : texture(textureFile) {
+    : texture(textureFile),
+    vertShader(shader + ".vert", GL_VERTEX_SHADER),
+    fragShader(shader + ".frag", GL_FRAGMENT_SHADER),
+    shaderProgram() {
+
     texture.load();
     texture.filtering(texture::Atlas::MagFilter::BILINEAR, texture::Atlas::MinFilter::BILINEAR_MIPMAP);
 
     atlasSize = (uint32_t) sqrt(texture.getElementsNum());
 
-    int a = this->vertShader.load(shader + std::string(".vert"), GL_VERTEX_SHADER);
-    int b = this->fragShader.load(shader + std::string(".frag"), GL_FRAGMENT_SHADER);
-
-    this->shaderProgram.createProgram();
-    this->shaderProgram.addShaderToProgram(&this->vertShader);
-    this->shaderProgram.addShaderToProgram(&this->fragShader);
+    this->shaderProgram.addShader(&this->vertShader);
+    this->shaderProgram.addShader(&this->fragShader);
 
     /* initializing square's vertices */
     this->vertices[0] = -1.0f;
@@ -38,7 +41,7 @@ GuiElementRender::GuiElementRender(const std::string &textureFile, const std::st
 
     glBindBuffer(GL_ARRAY_BUFFER, this->vbo[0]); /* vertices vbo */
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-    glBindAttribLocation(this->shaderProgram.getProgramID(), 0, "inPosition");
+    glBindAttribLocation(this->shaderProgram.id(), 0, "inPosition");
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
 
@@ -53,7 +56,7 @@ GuiElementRender::GuiElementRender(const std::string &textureFile, const std::st
 
     glBindBuffer(GL_ARRAY_BUFFER, this->vbo[1]); /* texture coords vbo */
     glBufferData(GL_ARRAY_BUFFER, 4 * 2 * sizeof(float), tCoords, GL_STATIC_DRAW);
-    glBindAttribLocation(this->shaderProgram.getProgramID(), 1, "inCoord");
+    glBindAttribLocation(this->shaderProgram.id(), 1, "inCoord");
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0);
 

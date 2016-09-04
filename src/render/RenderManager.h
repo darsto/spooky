@@ -38,10 +38,37 @@ public:
      * @param window initial window to load renders for
      */
     RenderManager(ApplicationContext &applicationContext, Window *window);
+
+    /**
+     * Switch current window render (and reload it)
+     * @param window window to get render for
+     */
     void switchWindow(Window &window);
+
+    /**
+     * Reload all screen-resolution-depedent stuff etc.
+     * Called on screen rotation and window unminimizing.
+     */
     void reload();
+
+    /**
+     * Updates internally-held window dimensions.
+     * Note that this method does not change the size of the window.
+     * @param width new width of the window
+     * @param height new height of the window
+     */
     void resize(uint32_t width, uint32_t height);
+
+    /**
+     * Render current window render.
+     * This is called every tick.
+     */
     void render();
+
+    /**
+     * The destructor.
+     * If SDL2 is used, this destructor closes the physical window.
+     */
     ~RenderManager();
 
 private:

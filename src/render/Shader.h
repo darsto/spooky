@@ -1,28 +1,54 @@
-//
-// Created by dar on 11/20/15.
-//
+/*
+ * Copyright (c) 2016 Dariusz Stojaczyk. All Rights Reserved.
+ * The following source code is released under an MIT-style license,
+ * that can be found in the LICENSE file.
+ */
 
-#ifndef C003_CSHADER_H
-#define C003_CSHADER_H
+#ifndef C003_RENDER_SHADER_H
+#define C003_RENDER_SHADER_H
 #pragma once
 
-#include "opengl.h"
 #include <string>
-#include <glm/glm.hpp>
 
+#include "opengl.h"
 
+/**
+ * Wrapper of a single GLSL shader of any type.
+ */
 class Shader {
 public:
+
+    /**
+     * The constructor.
+     * Load shader of given type from given path
+     * @param fileName path to the file to load this shader from. relative to data/shaders/
+     * @param type type of this shader. either GL_VERTEX_SHADER or GL_FRAGMENT_SHADER
+     * @return
+     */
+    Shader(const std::string &fileName, int type);
+
+    /**
+     * Check if the shader has been successfully loaded.
+     * @return whether or not the shader has been successfully loaded.
+     */
+    bool loaded();
+
+    /**
+     * Get shader's unique identifier.
+     * @return shader's unique identifier.
+     */
+    GLuint id();
+
+    /**
+     * The destructor.
+     * If loaded, it deletes the shader from the GPU.
+     */
     ~Shader();
-    bool load(const std::string &file, int type);
-    bool isLoaded();
-    GLuint getID();
 
 private:
-    GLuint id;
-    int type; // GL_VERTEX_SHADER, GL_FRAGMENT_SHADER
-    bool loaded = false;
+    GLuint m_id = 0;
+    int m_type = 0;
+    bool m_loaded = false;
 };
 
-
-#endif //C003_CSHADER_H
+#endif //C003_RENDER_SHADER_H

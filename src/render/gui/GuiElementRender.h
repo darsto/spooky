@@ -1,6 +1,8 @@
-//
-// Created by dar on 1/27/16.
-//
+/*
+ * Copyright (c) 2016 Dariusz Stojaczyk. All Rights Reserved.
+ * The following source code is released under an MIT-style license,
+ * that can be found in the LICENSE file.
+ */
 
 #ifndef C003_GUIELEMENTRENDER_H
 #define C003_GUIELEMENTRENDER_H
@@ -8,10 +10,12 @@
 #define GLM_FORCE_RADIANS
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "gui/GuiElement.h"
 #include "render/opengl.h"
+#include "render/Shader.h"
 #include "render/ShaderProgram.h"
 #include "render/texture/Atlas.h"
+
+class GuiElement;
 
 class GuiElementRender {
 public:

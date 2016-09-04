@@ -54,7 +54,7 @@ SET(SOURCE_FILES
         gui/GuiText.h
         Config.cpp
         Config.h
-        )
+        util/exceptions.cpp util/exceptions.h)
 
 IF (NOT SIMULATION)
     SET(SOURCE_RENDER_FILES
@@ -86,7 +86,7 @@ IF (NOT SIMULATION)
             render/texture/Resampler.h
             render/texture/Texture.cpp
             render/texture/Texture.h
-            )
+            render/exceptions.cpp render/exceptions.h)
 ENDIF ()
 
 IF (EDITOR)
