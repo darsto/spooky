@@ -4,3 +4,6 @@
 [submodule "src/ext/kaguya"]
 	path = src/ext/kaguya
 	url = git@github.com:satoren/kaguya.git
+[submodule "src/ext/SOIL2"]
+	path = src/ext/SOIL2
+	url = git@github.com:darsto/SOIL2.git

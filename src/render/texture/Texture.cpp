@@ -5,10 +5,11 @@
  */
 
 #include <type_traits>
-#include <SOIL.h>
+#include <SOIL2.h>
 
 #include "Texture.h"
 #include "Data.h"
+#include "exceptions.h"
 #include "util/file.h"
 
 using namespace texture;
@@ -24,7 +25,11 @@ Texture::Texture(const std::string &filename)
 
 void Texture::load() {
     Data data(m_path);
-    m_id = SOIL_create_OGL_texture(data.getData().get(), m_width, m_height, m_channels, 0, SOIL_FLAG_MULTIPLY_ALPHA);
+
+    m_width = data.width();
+    m_height = data.height();
+
+    m_id = SOIL_create_OGL_texture(data.getData().get(), reinterpret_cast<int32_t *>(&m_width), reinterpret_cast<int32_t *>(&m_height), m_channels, 0, SOIL_FLAG_MULTIPLY_ALPHA);
     glGenerateMipmap(GL_TEXTURE_2D);
 }
 

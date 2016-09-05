@@ -34,7 +34,7 @@ using namespace texture;
 #endif
 
 #ifndef USES_MANUAL_MIPMAPS
-#include <SOIL.h>
+#include <SOIL2.h>
 #endif
 
 struct Atlas::impl {
@@ -186,7 +186,7 @@ void Atlas::load() {
     }
 #else
     //TODO create additional writeTexToGPU overload (?)
-    m_id = SOIL_create_OGL_texture(atlas.getData().get(), m_width, m_height, m_channels, 0, SOIL_FLAG_MULTIPLY_ALPHA);
+    m_id = SOIL_create_OGL_texture(atlas.getData().get(), reinterpret_cast<int32_t *>(&m_width), reinterpret_cast<int32_t *>(&m_height), m_channels, 0, SOIL_FLAG_MULTIPLY_ALPHA);
     glGenerateMipmap(GL_TEXTURE_2D);
 #endif
 

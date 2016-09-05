@@ -8,10 +8,11 @@
  * TODO: Refactor this class using c++ operators
  */
 
+#include <SOIL2.h>
+
 #include "Data.h"
 #include "exceptions.h"
 #include "util/file.h"
-#include <SOIL.h>
 
 using namespace texture;
 
@@ -24,7 +25,8 @@ Data::Data(uint32_t width, uint32_t height, uint32_t channels)
     if (width == 0 || height == 0 || channels == 0) {
         char msg[100];
         snprintf(msg, sizeof(msg), "Trying to create invalid texture (width:%d, height:%d, channels:%d).", width, height, channels);
-        throw invalid_texture_error(msg);    }
+        throw invalid_texture_error(msg);
+    }
 
 }
 
