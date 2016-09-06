@@ -66,11 +66,11 @@ Shader::Shader(const std::string &fileName, int type) {
     }
 }
 
-bool Shader::loaded() {
+bool Shader::loaded() const {
     return m_loaded;
 }
 
-GLuint Shader::id() {
+GLuint Shader::id() const {
     return m_id;
 }
 

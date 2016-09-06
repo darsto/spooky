@@ -39,7 +39,7 @@ public:
      * Until linkProgram() is called, given shader has to remain in the memory and mustn't be deleted.
      * @param shader shader to be added to the container
      */
-    void addShader(Shader *shader);
+    void addShader(const Shader &shader);
 
     /**
      * Upload all the shaders in the internal container to the GPU.

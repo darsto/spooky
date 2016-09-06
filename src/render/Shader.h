@@ -31,13 +31,13 @@ public:
      * Check if the shader has been successfully loaded.
      * @return whether or not the shader has been successfully loaded.
      */
-    bool loaded();
+    bool loaded() const;
 
     /**
      * Get shader's unique identifier.
      * @return shader's unique identifier.
      */
-    GLuint id();
+    GLuint id() const;
 
     /**
      * The destructor.

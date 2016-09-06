@@ -16,12 +16,12 @@ GLuint ShaderProgram::id() {
     return m_id;
 }
 
-void ShaderProgram::addShader(Shader *shader) {
-    if (!shader->loaded()) {
+void ShaderProgram::addShader(const Shader &shader) {
+    if (!shader.loaded()) {
         throw render::unloaded_shader_error("Trying to register an unloaded shader.");
     }
 
-    GLuint shader_id = shader->id();
+    GLuint shader_id = shader.id();
     glAttachShader(m_id, shader_id);
     m_boundShaders.push_back(shader_id);
 }
