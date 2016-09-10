@@ -6,6 +6,8 @@
 
 #include "prof.h"
 
+#ifdef DEBUG
+
 util::Profiler::Profiler()
     : m_startTime(clock::now()),
       m_prevTime(m_startTime) {
@@ -26,3 +28,5 @@ double util::Profiler::timeSince(util::Profiler::time_p since) {
     m_prevTime = clock::now();
     return delta.count();
 }
+
+#endif //DEBUG

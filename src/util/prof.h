@@ -61,7 +61,7 @@ namespace util {
 #define PROF_DURATION_PREV(name) name.timeSincePrev()
 #define PROF_DURATION_START(name) name.timeSinceStart()
 
-#else
+#else //DEBUG
 
 /**
  * Macros PROF_DURATION_X are defined as 1 (instead of 0),
@@ -72,6 +72,6 @@ namespace util {
 #define PROF_DURATION_PREV(name) 1
 #define PROF_DURATION_START(name) 1
 
-#endif
+#endif //DEBUG
 
 #endif //C003_PROF_H
