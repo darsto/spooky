@@ -24,7 +24,7 @@ Texture::Texture(const std::string &filename)
 
 void Texture::load() {
     TexData data(m_path);
-    m_id = SOIL_create_OGL_texture(data.getData(), m_width, m_height, m_channels, 0, SOIL_FLAG_MULTIPLY_ALPHA);
+    m_id = SOIL_create_OGL_texture(data.get(), m_width, m_height, m_channels, 0, SOIL_FLAG_MULTIPLY_ALPHA);
     //TODO validate dimensions
     glGenerateMipmap(GL_TEXTURE_2D);
 }

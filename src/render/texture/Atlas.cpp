@@ -99,13 +99,13 @@ struct Atlas::impl {
         if (channels == 4) {
             // burn alpha into RGB channels
             for (int i = 0; i < tex.width() * tex.height(); ++i) {
-                tex.getData()[channels * i + 0] = (uint8_t) ((tex.getData()[channels * i + 0] * tex.getData()[channels * i + 3] + 128) >> 8);
-                tex.getData()[channels * i + 1] = (uint8_t) ((tex.getData()[channels * i + 1] * tex.getData()[channels * i + 3] + 128) >> 8);
-                tex.getData()[channels * i + 2] = (uint8_t) ((tex.getData()[channels * i + 2] * tex.getData()[channels * i + 3] + 128) >> 8);
+                tex[channels * i + 0] = (uint8_t) ((tex[channels * i + 0] * tex[channels * i + 3] + 128) >> 8);
+                tex[channels * i + 1] = (uint8_t) ((tex[channels * i + 1] * tex[channels * i + 3] + 128) >> 8);
+                tex[channels * i + 2] = (uint8_t) ((tex[channels * i + 2] * tex[channels * i + 3] + 128) >> 8);
             }
         }
 
-        glTexImage2D(GL_TEXTURE_2D, level, tex.channels(), tex.width(), tex.height(), 0, getTexGLFormat(tex.channels()), GL_UNSIGNED_BYTE, tex.getData());
+        glTexImage2D(GL_TEXTURE_2D, level, tex.channels(), tex.width(), tex.height(), 0, getTexGLFormat(tex.channels()), GL_UNSIGNED_BYTE, tex.get());
     }
 
     util::Packer m_packer;
@@ -159,7 +159,7 @@ void Atlas::load() {
         //TODO it's totally unreadable
         for (auto &el : m_impl->m_packer.elements()) {
             TexData &tile = m_impl->m_texData.find(el.first)->second;
-            auto resampled = texture::Resampler::downsample(tile.getData(), tile.width(), tile.height(), tile.channels(), downsample);
+            auto resampled = texture::Resampler::downsample(tile.get(), tile.width(), tile.height(), tile.channels(), downsample);
             util::Rectangle rect(el.second.x() / downsample, el.second.y() / downsample, el.second.width() / downsample, el.second.height() / downsample);
 
             Log::debug("Resampling of level %d of the texture atlas \"%s\" took %f sec.", level, m_path.c_str(), PROF_DURATION_PREV(load));
@@ -173,7 +173,7 @@ void Atlas::load() {
                     uint32_t inPixelPos = xIn + yIn * inWidth;
                     uint32_t outPixelPos = rect.x() + xIn + (rect.y() + yIn) * outWidth;
                     for (int channel = 0; channel < channels(); ++channel) {
-                        atlas.getData()[4 * outPixelPos + channel] = resampled.getData()[channels() * inPixelPos + channel];
+                        atlas[4 * outPixelPos + channel] = resampled[channels() * inPixelPos + channel];
                     }
                 }
             }

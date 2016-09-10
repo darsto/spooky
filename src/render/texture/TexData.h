@@ -8,7 +8,6 @@
 #define C003_RENDER_TEXTURE_TEXTUREDATA_H
 
 #include <cstdint>
-#include <memory>
 
 namespace texture {
 
@@ -32,11 +31,11 @@ namespace texture {
 
     public:
         /**
-         * The constructor. Creates texture with garbage data of given specification.
+         * The constructor. Creates texture with garbage data of given dimensions.
          * @param width width of the texture
          * @param height height of the texture
          * @param channels channels of the texture (preferrably 1-4)
-         * @return plain texture of given specification (all bytes are zeros)
+         * @return texture of given dimensions (all bytes are random)
          */
         TexData(uint32_t width, uint32_t height, uint32_t channels);
 
@@ -98,13 +97,26 @@ namespace texture {
          * Get bytes of this texture in basic BMP RGBA format.
          * @return bytes of this texture in basic BMP RGBA format
          */
-        const uint8_t* getData() const;
+        const uint8_t* get() const;
 
         /**
          * Get bytes of this texture in basic BMP RGBA format.
          * @return bytes of this texture in basic BMP RGBA format
          */
-        uint8_t *getData();
+        uint8_t *get();
+
+        /**
+         * Get image's byte at given index.
+         * To get channel n of pixel at pos x:y, you want to use:
+         * operator[channels_num * (y * texture_width + x) + n]
+         * Note that channel n must be in range [0, channels_num -  1].
+         */
+        uint8_t &operator[] (uint32_t index);
+
+        /**
+         * @overload TexData::operator[] (uint32_t index)
+         */
+        const uint8_t &operator[] (uint32_t index) const;
 
         /**
          * The destructor.

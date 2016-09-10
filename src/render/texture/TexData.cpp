@@ -4,14 +4,12 @@
  * that can be found in the LICENSE file.
  */
 
-/**
- * TODO: Refactor this class using c++ operators
- */
+#include <memory>
+#include <SOIL.h>
 
 #include "TexData.h"
 #include "exceptions.h"
 #include "util/file.h"
-#include <SOIL.h>
 
 using namespace texture;
 
@@ -75,12 +73,20 @@ uint32_t TexData::channels() const {
     return m_channels;
 }
 
-const uint8_t *TexData::getData() const {
+const uint8_t *TexData::get() const {
     return m_data;
 }
 
-uint8_t *TexData::getData() {
+uint8_t *TexData::get() {
     return m_data;
+}
+
+uint8_t &TexData::operator[](uint32_t index) {
+    return m_data[index];
+}
+
+const uint8_t &TexData::operator[](uint32_t index) const{
+    return m_data[index];
 }
 
 TexData::~TexData() {

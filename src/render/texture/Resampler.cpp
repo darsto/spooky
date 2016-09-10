@@ -14,8 +14,7 @@ TexData Resampler::downsample(uint8_t *inPixels, uint32_t inWidth, uint32_t inHe
     uint32_t outWidth = inWidth / downscaleRate;
     uint32_t outHeight = inHeight / downscaleRate;
     TexData outData(outWidth, outHeight, inChannels);
-
-    std::fill_n(outData.getData(), outData.height() * outData.channels(), 0);
+    std::fill_n(outData.get(), outData.height() * outData.channels(), 0);
 
     /** temporary buffer to hold non-normalized pixel data */
     double *tmp = new double[inChannels]();
@@ -38,7 +37,7 @@ TexData Resampler::downsample(uint8_t *inPixels, uint32_t inWidth, uint32_t inHe
             uint32_t outPixelPos = inChannels * (y * outWidth + x);
             for (int curChannel = 0; curChannel < inChannels; ++curChannel) {
                 tmp[curChannel] /= weightSum;
-                outData.getData()[outPixelPos + curChannel] = clamp((uint32_t) tmp[curChannel]);
+                outData[outPixelPos + curChannel] = clamp((uint32_t) tmp[curChannel]);
                 tmp[curChannel] = 0;
             }
         }
