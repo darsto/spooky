@@ -73,7 +73,26 @@ struct Atlas::impl {
         return ret;
     }
 
+    void writeToCanvas(const TexData &inData, TexData &outBuffer, const std::pair<uint32_t, uint32_t> &pos, uint32_t level = 0) {
+        uint32_t inWidth = inData.width();
+        uint32_t inHeight = inData.height();
+        uint32_t outWidth = m_packer.size().width() / (1u << level);
+        uint32_t outChannels = std::min<uint32_t>(outBuffer.channels(), inData.channels());
+
+        for (int yIn = 0; yIn < inHeight; ++yIn) {
+            for (int xIn = 0; xIn < inWidth; ++xIn) {
+                uint32_t inPixelPos = xIn + yIn * inWidth;
+                uint32_t outPixelPos = pos.first + xIn + (pos.second + yIn) * outWidth;
+                for (int channel = 0; channel < outChannels; ++channel) {
+                    outBuffer[outBuffer.channels() * outPixelPos + channel] = inData[inData.channels() * inPixelPos + channel];
+                }
+            }
+        }
+    }
+
     void writeTexToGPU(TexData &tex, uint32_t level) {
+        uint32_t width = tex.width() / (1u << level);
+        uint32_t height = tex.height() / (1u << level);
         uint32_t channels = tex.channels();
 
         if (channels < 1 || channels > 4) {
@@ -98,14 +117,14 @@ struct Atlas::impl {
 
         if (channels == 4) {
             // burn alpha into RGB channels
-            for (int i = 0; i < tex.width() * tex.height(); ++i) {
+            for (int i = 0; i < width * height; ++i) {
                 tex[channels * i + 0] = (uint8_t) ((tex[channels * i + 0] * tex[channels * i + 3] + 128) >> 8);
                 tex[channels * i + 1] = (uint8_t) ((tex[channels * i + 1] * tex[channels * i + 3] + 128) >> 8);
                 tex[channels * i + 2] = (uint8_t) ((tex[channels * i + 2] * tex[channels * i + 3] + 128) >> 8);
             }
         }
 
-        glTexImage2D(GL_TEXTURE_2D, level, tex.channels(), tex.width(), tex.height(), 0, getTexGLFormat(tex.channels()), GL_UNSIGNED_BYTE, tex.get());
+        glTexImage2D(GL_TEXTURE_2D, level, getTexGLFormat(channels), width, height, 0, getTexGLFormat(channels), GL_UNSIGNED_BYTE, tex.get());
     }
 
     util::Packer m_packer;
@@ -138,52 +157,44 @@ void Atlas::load() {
 
     Log::debug("Preparing the texture atlas \"%s\" took %f sec.", m_path.c_str(), PROF_DURATION_PREV(load));
 
-#ifdef USES_MANUAL_MIPMAPS
     glGenTextures(1, &m_id);
     bindTexture();
 
-    uint32_t mipmapLevels = (uint32_t) ceil(log(std::max(width(), height())) / log(2));
 
+    /**
+     * Texture canvas for all mipmap levels of this atlas.
+     * This is a temporary container, since all data gets uploaded to the GPU right away.
+     */
+    TexData buffer(width(), height(), channels());
+
+    for (const util::Packer::Element &el : m_impl->m_packer.elements()) {
+        const TexData &inTile = m_impl->m_texData.find(el.first)->second;
+        m_impl->writeToCanvas(inTile, buffer, std::make_pair<uint32_t, uint32_t>(el.second.x(), el.second.y()));
+    }
+
+    m_impl->writeTexToGPU(buffer, 0);
+
+    Log::debug("\tResampling of level 0 of the texture atlas \"%s\" took %f sec.", m_path.c_str(), PROF_DURATION_PREV(load));
+
+#ifdef USES_MANUAL_MIPMAPS
+    uint32_t mipmapLevels = (uint32_t) ceil(log(std::max(width(), height())) / log(2));
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, mipmapLevels - 1);
 
-    Log::debug("Preparing the OpenGL texture \"%s\" took %f sec.", m_path.c_str(), PROF_DURATION_PREV(load));
-
-    for (uint8_t level = 0; level < mipmapLevels; ++level) {
-#else
-        uint8_t level = 0;
-#endif
+    for (uint8_t level = 1; level < mipmapLevels; ++level) {
         uint32_t downsample = 1u << level;
-        TexData atlas(width() / downsample, height() / downsample, channels());
 
         //TODO it's totally unreadable
-        for (auto &el : m_impl->m_packer.elements()) {
-            TexData &inTile = m_impl->m_texData.find(el.first)->second;
-            TexData outTile = texture::Resampler::downsample(inTile, downsample);
-            util::Rectangle rect(el.second.x() / downsample, el.second.y() / downsample, el.second.width() / downsample, el.second.height() / downsample);
-
-            uint32_t inWidth = inTile.width() / downsample;
-            uint32_t inHeight = inTile.height() / downsample;
-            uint32_t outWidth = m_impl->m_packer.size().width() / downsample;
-
-            for (int yIn = 0; yIn < inHeight; ++yIn) {
-                for (int xIn = 0; xIn < inWidth; ++xIn) {
-                    uint32_t inPixelPos = xIn + yIn * inWidth;
-                    uint32_t outPixelPos = rect.x() + xIn + (rect.y() + yIn) * outWidth;
-                    for (int channel = 0; channel < channels(); ++channel) {
-                        atlas[4 * outPixelPos + channel] = outTile[channels() * inPixelPos + channel];
-                    }
-                }
-            }
+        for (const util::Packer::Element &el : m_impl->m_packer.elements()) {
+            const TexData &inTile = m_impl->m_texData.find(el.first)->second;
+            TexData resampledData = texture::Resampler::downsample(inTile, downsample);
+            auto pos = std::make_pair<uint32_t, uint32_t>(el.second.x() / downsample, el.second.y() / downsample);
+            m_impl->writeToCanvas(resampledData, buffer, pos, level);
         }
 
         Log::debug("\tResampling of level %d of the texture atlas \"%s\" took %f sec.", level, m_path.c_str(), PROF_DURATION_PREV(load));
-
-#ifdef USES_MANUAL_MIPMAPS
-        m_impl->writeTexToGPU(atlas, level);
+        m_impl->writeTexToGPU(buffer, level);
     }
 #else
-    //TODO create additional writeTexToGPU overload (?)
-    m_id = SOIL_create_OGL_texture(atlas.get(), m_width, m_height, m_channels, 0, SOIL_FLAG_MULTIPLY_ALPHA);
     glGenerateMipmap(GL_TEXTURE_2D);
 #endif
 
