@@ -18,7 +18,7 @@ TexData Resampler::downsample(const TexData &inData, uint32_t downscaleRate) {
     std::fill_n(outData.get(), outData.height() * outData.channels(), 0);
 
     /** temporary buffer to hold non-normalized pixel data */
-    double *tmp = new double[outChannels]();
+    double tmp[outChannels]{};
 
     int64_t samplesCount = downscaleRate;
     for (int y = 0; y < outHeight; ++y) {
@@ -43,7 +43,6 @@ TexData Resampler::downsample(const TexData &inData, uint32_t downscaleRate) {
         }
     }
 
-    delete[] tmp;
     return outData;
 }
 
