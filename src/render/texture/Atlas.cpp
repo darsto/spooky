@@ -183,7 +183,7 @@ void Atlas::load() {
     }
 #else
     //TODO create additional writeTexToGPU overload (?)
-    m_id = SOIL_create_OGL_texture(atlas.getData(), m_width, m_height, m_channels, 0, SOIL_FLAG_MULTIPLY_ALPHA);
+    m_id = SOIL_create_OGL_texture(atlas.get(), m_width, m_height, m_channels, 0, SOIL_FLAG_MULTIPLY_ALPHA);
     glGenerateMipmap(GL_TEXTURE_2D);
 #endif
 
