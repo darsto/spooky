@@ -84,8 +84,8 @@ IF (NOT SIMULATION)
             render/texture/Atlas.h
             render/texture/exceptions.cpp
             render/texture/exceptions.h
-            render/texture/Data.cpp
-            render/texture/Data.h
+            render/texture/TexData.cpp
+            render/texture/TexData.h
             render/texture/Resampler.cpp
             render/texture/Resampler.h
             render/texture/Texture.cpp

@@ -10,32 +10,41 @@
 
 using namespace texture;
 
-std::unique_ptr<uint8_t[]> Resampler::downsample(uint8_t *inData, size_t inWidth, size_t inHeight, size_t channels, size_t downscaleRate) {
-    size_t outWidth = inWidth / downscaleRate;
-    size_t outHeight = inHeight / downscaleRate;
-    auto outData = std::make_unique<uint8_t[]>(outWidth * outHeight * channels);
-    for (int i = 0; i < outWidth * outHeight * channels; ++i) {
-        outData[i] = 0;
-    }
+TexData Resampler::downsample(uint8_t *inPixels, uint32_t inWidth, uint32_t inHeight, uint32_t inChannels, uint32_t downscaleRate) {
+    uint32_t outWidth = inWidth / downscaleRate;
+    uint32_t outHeight = inHeight / downscaleRate;
+    TexData outData(outWidth, outHeight, inChannels);
 
-    int64_t samples = downscaleRate;
+    std::fill_n(outData.getData(), outData.height() * outData.channels(), 0);
+
+    /** temporary buffer to hold non-normalized pixel data */
+    double *tmp = new double[inChannels]();
+
+    int64_t samplesCount = downscaleRate;
     for (int y = 0; y < outHeight; ++y) {
         for (int x = 0; x < outWidth; ++x) {
-            double tmp[4]{};
+
             double weightSum = 0.0;
-            for (int s = 0; s < samples; ++s) {
-                double weight = Resampler::weight(s - (downscaleRate - 1) / 2);
-                for (int j = 0; j < 4; ++j) {
-                    tmp[j] += inData[4 * ((y * inWidth + x) * downscaleRate + s) + j] * weight;
+            for (int sampleNum = 0; sampleNum < samplesCount; ++sampleNum) {
+                double weight = Resampler::weight(sampleNum - (downscaleRate - 1) / 2);
+                uint32_t inPixelPos = inChannels * ((y * inWidth + x) * downscaleRate + sampleNum);
+                for (int curChannel = 0; curChannel < inChannels; ++curChannel) {
+                    double val = inPixels[inPixelPos + curChannel] * weight;
+                    tmp[curChannel] += val;
                 }
                 weightSum += weight;
             }
-            for (int j = 0; j < 4; ++j) {
-                tmp[j] /= weightSum;
-                outData[4 * (y * outWidth + x) + j] = clamp((uint32_t) tmp[j]);
+
+            uint32_t outPixelPos = inChannels * (y * outWidth + x);
+            for (int curChannel = 0; curChannel < inChannels; ++curChannel) {
+                tmp[curChannel] /= weightSum;
+                outData.getData()[outPixelPos + curChannel] = clamp((uint32_t) tmp[curChannel]);
+                tmp[curChannel] = 0;
             }
         }
     }
+
+    delete[] tmp;
     return outData;
 }
 

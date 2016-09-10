@@ -16,7 +16,7 @@ namespace texture {
      * Simple wrapper of texture data.
      * Provides simple interface to load image from disk.
      */
-    class Data {
+    class TexData {
     public:
         /**
          * Flags to mark special behaviour during image loading.
@@ -32,13 +32,13 @@ namespace texture {
 
     public:
         /**
-         * The constructor. Creates plain texture of given specification.
+         * The constructor. Creates texture with garbage data of given specification.
          * @param width width of the texture
          * @param height height of the texture
          * @param channels channels of the texture (preferrably 1-4)
          * @return plain texture of given specification (all bytes are zeros)
          */
-        Data(uint32_t width, uint32_t height, uint32_t channels);
+        TexData(uint32_t width, uint32_t height, uint32_t channels);
 
         /**
          * The constructor. Loads texture from image on the physical drive.
@@ -46,7 +46,35 @@ namespace texture {
          * @param flags
          * @return
          */
-        Data(const std::string &fileName, int flags = LoadFlag::LOAD_NORMAL);
+        TexData(const std::string &fileName, int flags = LoadFlag::LOAD_NORMAL);
+
+        /**
+         * Copy operator. Deleted.
+         * Texture data shouldn't be copied.
+         * It contains huge amounts of data, copying would result in major slowdowns.
+         */
+        TexData(const TexData &other) = delete;
+
+        /**
+         * Copy assignment operator. Deleted.
+         * Texture data shouldn't be copied.
+         * It contains huge amounts of data, copying would result in major slowdowns.
+         */
+        TexData& operator=(const TexData &other) = delete;
+
+        /**
+         * Move constructor.
+         * Given texture's dimension variables remain the same,
+         * only the pixel data gets moved.
+         */
+        TexData(TexData &&other);
+
+        /**
+         * Move constructor.
+         * Given texture's dimension variables remain the same,
+         * only the pixel data gets moved.
+         */
+        TexData& operator=(TexData &&other);
 
         /**
          * Get width of the texture.
@@ -70,17 +98,23 @@ namespace texture {
          * Get bytes of this texture in basic BMP RGBA format.
          * @return bytes of this texture in basic BMP RGBA format
          */
-        const std::unique_ptr<uint8_t[]> &getData() const;
+        const uint8_t* getData() const;
 
         /**
          * Get bytes of this texture in basic BMP RGBA format.
          * @return bytes of this texture in basic BMP RGBA format
          */
-        std::unique_ptr<uint8_t[]> &getData();
+        uint8_t *getData();
+
+        /**
+         * The destructor.
+         * Deallocates texture data.
+         */
+        ~TexData();
 
     private:
         uint32_t m_width, m_height, m_channels;
-        std::unique_ptr<uint8_t[]> m_data;
+        uint8_t *m_data;
     };
 
 }

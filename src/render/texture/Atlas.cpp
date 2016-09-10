@@ -15,7 +15,7 @@
 #include <cstdlib>
 
 #include "Atlas.h"
-#include "Data.h"
+#include "TexData.h"
 #include "util/collection.h"
 #include "util/file.h"
 #include "Resampler.h"
@@ -73,7 +73,7 @@ struct Atlas::impl {
         return ret;
     }
 
-    void writeTexToGPU(const Data &tex, uint32_t level) {
+    void writeTexToGPU(TexData &tex, uint32_t level) {
         uint32_t channels = tex.channels();
 
         if (channels < 1 || channels > 4) {
@@ -105,12 +105,12 @@ struct Atlas::impl {
             }
         }
 
-        glTexImage2D(GL_TEXTURE_2D, level, tex.channels(), tex.width(), tex.height(), 0, getTexGLFormat(tex.channels()), GL_UNSIGNED_BYTE, tex.getData().get());
+        glTexImage2D(GL_TEXTURE_2D, level, tex.channels(), tex.width(), tex.height(), 0, getTexGLFormat(tex.channels()), GL_UNSIGNED_BYTE, tex.getData());
     }
 
     util::Packer m_packer;
     std::hash<std::string> m_hash;
-    std::unordered_map<uint64_t, Data> m_texData;
+    std::unordered_map<uint64_t, TexData> m_texData;
 
     std::vector<std::string> m_tiles;
     static const std::regex FILE_EXTENSION_REGEX;
@@ -152,14 +152,14 @@ void Atlas::load() {
 #endif
 
         uint32_t downsample = 1u << level;
-        Data atlas(width() / downsample, height() / downsample, channels());
+        TexData atlas(width() / downsample, height() / downsample, channels());
 
         Log::debug("Preparing the texture atlas \"%s\" took %f sec.", m_path.c_str(), PROF_DURATION_PREV(load));
 
         //TODO it's totally unreadable
         for (auto &el : m_impl->m_packer.elements()) {
-            Data &tile = m_impl->m_texData.find(el.first)->second;
-            auto resampled = texture::Resampler::downsample(tile.getData().get(), tile.width(), tile.height(), tile.channels(), downsample);
+            TexData &tile = m_impl->m_texData.find(el.first)->second;
+            auto resampled = texture::Resampler::downsample(tile.getData(), tile.width(), tile.height(), tile.channels(), downsample);
             util::Rectangle rect(el.second.x() / downsample, el.second.y() / downsample, el.second.width() / downsample, el.second.height() / downsample);
 
             Log::debug("Resampling of level %d of the texture atlas \"%s\" took %f sec.", level, m_path.c_str(), PROF_DURATION_PREV(load));
@@ -173,7 +173,7 @@ void Atlas::load() {
                     uint32_t inPixelPos = xIn + yIn * inWidth;
                     uint32_t outPixelPos = rect.x() + xIn + (rect.y() + yIn) * outWidth;
                     for (int channel = 0; channel < channels(); ++channel) {
-                        atlas.getData()[4 * outPixelPos + channel] = resampled[channels() * inPixelPos + channel];
+                        atlas.getData()[4 * outPixelPos + channel] = resampled.getData()[channels() * inPixelPos + channel];
                     }
                 }
             }
@@ -186,7 +186,7 @@ void Atlas::load() {
     }
 #else
     //TODO create additional writeTexToGPU overload (?)
-    m_id = SOIL_create_OGL_texture(atlas.getData().get(), m_width, m_height, m_channels, 0, SOIL_FLAG_MULTIPLY_ALPHA);
+    m_id = SOIL_create_OGL_texture(atlas.getData(), m_width, m_height, m_channels, 0, SOIL_FLAG_MULTIPLY_ALPHA);
     glGenerateMipmap(GL_TEXTURE_2D);
 #endif
 
@@ -194,7 +194,7 @@ void Atlas::load() {
 }
 
 void Atlas::loadTile(const std::string &fileName) {
-    Data tex(m_path + util::file::file_separator_str + fileName);
+    TexData tex(m_path + util::file::file_separator_str + fileName);
     uint64_t id = m_impl->m_hash(fileName.substr(0, fileName.find_last_of('.')));
 
     m_impl->m_packer.add({id, util::Rectangle(tex.width(), tex.height())});

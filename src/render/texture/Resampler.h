@@ -10,15 +10,16 @@
 #include <cstdint>
 #include <memory>
 
+#include "TexData.h"
+
 namespace texture {
 
     class Resampler {
     public:
-        static std::unique_ptr<uint8_t[]> downsample(uint8_t *inData, size_t inWidth, size_t inHeight, size_t channels, size_t downscaleRate);
+        static TexData downsample(uint8_t *inPixels, uint32_t inWidth, uint32_t inHeight, uint32_t inChannels, uint32_t downscaleRate);
 
     private:
         static double weight(double dist);
-
         static uint8_t clamp(int32_t value);
     };
 
