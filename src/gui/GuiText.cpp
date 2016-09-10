@@ -5,6 +5,7 @@
 #include "GuiText.h"
 
 constexpr const int GuiText::GLYPH_SIZE[];
+constexpr const uint32_t GuiText::TYPE;
 
 GuiText::GuiText(const std::string &string, int x, int y, GuiElement::PositionFlag position, float scale, int color, char flags)
     : GuiElement(position, x, y, 0, 0, "font", color),
@@ -79,26 +80,8 @@ const std::string &GuiText::text() const {
     return m_text;
 }
 
-void GuiText::text(const std::string &string) {
-    this->m_text = string;
-    this->recalculateSize();
-}
-
 float GuiText::scale() const {
     return m_scale;
-}
-
-void GuiText::scale(float scale) {
-    GuiText::m_scale = scale;
-    this->recalculateSize();
-}
-
-char GuiText::flags() const {
-    return m_flags;
-}
-
-void GuiText::flags(char flags) {
-    GuiText::m_flags = flags;
 }
 
 int GuiText::texPos(int i) const {

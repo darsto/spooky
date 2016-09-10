@@ -23,7 +23,6 @@ public:
      * Load shader of given type from given path
      * @param fileName path to the file to load this shader from. relative to data/shaders/
      * @param type type of this shader. either GL_VERTEX_SHADER or GL_FRAGMENT_SHADER
-     * @return
      */
     Shader(const std::string &fileName, int type);
 

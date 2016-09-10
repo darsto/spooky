@@ -28,15 +28,11 @@ public:
 
     GuiText(const std::string &string, int x, int y, PositionFlag position, float scale, int color, char flags);
     const std::string &text() const;
-    void text(const std::string &string);
     float scale() const;
-    void scale(float scale);
-    char flags() const;
-    void flags(char flags);
     char glyphPos(char character) const;
     int texPos(int i) const;
 
-    static const unsigned int TYPE = 1;
+    static constexpr const unsigned int TYPE = 1;
 
     const unsigned int type() const override {
         return TYPE;

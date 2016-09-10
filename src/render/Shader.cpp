@@ -52,9 +52,9 @@ Shader::Shader(const std::string &fileName, int type) {
         std::unique_ptr<GLchar[]> log = std::make_unique<GLchar[]>(length + 1);
         glGetShaderInfoLog(m_id, length, NULL, log.get());
 
-        printf("Log file: ");
+        Log::error("Log file: ");
         if (length > 1)
-            printf("%s\n", log.get());
+            Log::error("%s\n", log.get());
     }
 
     int compilationStatus;

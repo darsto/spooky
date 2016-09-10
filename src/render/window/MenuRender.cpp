@@ -23,8 +23,8 @@ void MenuRender::reload() {
     glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 
     guiRenders.clear();
-    guiRenders.insert(guiRenders.begin() + GuiElement::TYPE, std::make_unique<GuiElementRender>("gui", "gui"));
-    guiRenders.insert(guiRenders.begin() + GuiText::TYPE, std::make_unique<TextRender>());
+    guiRenders.emplace(GuiElement::TYPE, std::make_unique<GuiElementRender>("gui", "gui"));
+    guiRenders.emplace(GuiText::TYPE, std::make_unique<TextRender>());
 
     glm::mat4 tmpViewMatrix = glm::lookAt(glm::vec3(0, 0, 0.0f), glm::vec3(0, 0, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
     viewMatrix = glm::translate(tmpViewMatrix, glm::vec3(0, (signed) m_renderContext.windowHeight(), 0.0f));
@@ -47,7 +47,7 @@ void MenuRender::render(const Window &window) {
 }
 
 GuiElementRender &MenuRender::guiElementRender(const GuiElement &element) const {
-    return *guiRenders[element.type()];
+    return *guiRenders.at(element.type());
 }
 
 MenuRender::~MenuRender() { }

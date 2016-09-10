@@ -2,6 +2,9 @@
 // Created by dar on 2/11/16.
 //
 
+#define GLM_FORCE_RADIANS
+#include <glm/gtc/matrix_transform.hpp>
+
 #include "TextRender.h"
 #include <gui/GuiText.h>
 
@@ -10,20 +13,28 @@ TextRender::TextRender() : GuiElementRender("font", "font") {
 
     // TODO dirty hack, remove
 
-    float tWidth = 1.0f / atlasSize - 1.0f / texture.width();
-    float tHeight = 1.0f / atlasSize - 1.0f / texture.height();
+    float texWidth = 1.0f / atlasSize - 1.0f / texture.width();
+    float texHeight = 1.0f / atlasSize - 1.0f / texture.height();
 
-    float tCoords[] = {
-        tWidth, tHeight,
-        tWidth, 0.0f,
-        0.0f, tHeight,
-        0.0f, 0.0f,
-    };
+    /* square's vertices */
+    float texCoords[8];
 
-    glBindVertexArray(this->vao);
+    /* bottom-left vertex */
+    texCoords[0] = 0.0f, texCoords[1] = texHeight;
 
-    glBindBuffer(GL_ARRAY_BUFFER, this->vbo[1]); /* texture coords vbo */
-    glBufferData(GL_ARRAY_BUFFER, 4 * 2 * sizeof(float), tCoords, GL_STATIC_DRAW);
+    /* bottom-right vertex*/
+    texCoords[2] = texWidth, texCoords[3] = texHeight;
+
+    /* top-left vertex */
+    texCoords[4] = 0.0f, texCoords[5] = 0.0f;
+
+    /* top-right vertex */
+    texCoords[6] = texWidth, texCoords[7] = 0.0f;
+
+    glBindVertexArray(vao);
+
+    glBindBuffer(GL_ARRAY_BUFFER, vbo[1]); /* texture coords vbo */
+    glBufferData(GL_ARRAY_BUFFER, sizeof(texCoords), texCoords, GL_STATIC_DRAW);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
@@ -31,15 +42,16 @@ TextRender::TextRender() : GuiElementRender("font", "font") {
 }
 
 void TextRender::render(const GuiElement &element, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, double scale) {
-    if (element.visible()) {
+    int color = element.color();
+    float ca = (color & 0x000000FF) / 255.0f;
+
+    if (ca > 0.0f) {
         const GuiText &text = (const GuiText &) element;
         texture.bindTexture();
-        this->shaderProgram.useProgram();
-        this->shaderProgram.setUniform("projectionMatrix", projectionMatrix);
-        this->shaderProgram.setUniform("gSampler", texture.activeTex());
+        shaderProgram.useProgram();
+        shaderProgram.setUniform("projectionMatrix", projectionMatrix);
+        shaderProgram.setUniform("gSampler", texture.activeTex());
 
-        int color = element.color();
-        float ca = (color & 0x000000FF) / 255.0f;
         float cr = ((color & 0xFF000000) >> 24) / 255.0f * ca;
         float cg = ((color & 0x00FF0000) >> 16) / 255.0f * ca;
         float cb = ((color & 0x0000FF00) >> 8) / 255.0f * ca;
@@ -61,16 +73,16 @@ void TextRender::render(const GuiElement &element, glm::mat4 projectionMatrix, g
                 x += (text.TEXT_SPACESIZE + text.TEXT_SPACING) * scale;
                 continue;
             }
-            this->tmpModelMatrix = glm::translate(this->modelMatrix, -glm::vec3(x, y, 0.0f));
-            this->tmpModelMatrix = glm::scale(this->tmpModelMatrix, glm::vec3(scale, scale, 1.0f));
+            glm::mat4 tmpModelMatrix = glm::translate(modelMatrix, -glm::vec3(x, y, 0.0f));
+            tmpModelMatrix = glm::scale(tmpModelMatrix, glm::vec3(scale, scale, 1.0f));
 
-            shaderProgram.setUniform("modelViewMatrix", viewMatrix * this->tmpModelMatrix);
+            shaderProgram.setUniform("modelViewMatrix", viewMatrix * tmpModelMatrix);
 
             int texX = texId % atlasSize, texY = texId / atlasSize;
             shaderProgram.setUniform("texPosX", (float) texX / atlasSize);
             shaderProgram.setUniform("texPosY", (float) texY / atlasSize);
 
-            glBindVertexArray(this->vao);
+            glBindVertexArray(vao);
             glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
             x += (text.getGlyphSize(texId) + text.TEXT_SPACING) * scale;

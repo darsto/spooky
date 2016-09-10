@@ -10,7 +10,7 @@
 #define GLM_FORCE_RADIANS
 #include <glm/gtc/matrix_transform.hpp>
 #include <memory>
-#include <vector>
+#include <unordered_map>
 
 #include "WindowRender.h"
 
@@ -32,15 +32,16 @@ private:
     /**
      * Get gui render for the given element.
      * @param element element to get render for
-     * @return render to internally-held render of type of the given element
+     * @return internally-held render of the given element's type
      */
     GuiElementRender &guiElementRender(const GuiElement &element) const;
 
     /**
      * Container of GuiElementRender.
-     * Uses <guiElement>::TYPE as index value.
+     * Maps class types to corresponding GuiElementRender instances.
+     * Uses <guiElement>::TYPE as the key.
      */
-    std::vector<std::unique_ptr<GuiElementRender>> guiRenders;
+    std::unordered_map<uint32_t, std::unique_ptr<GuiElementRender>> guiRenders;
 };
 
 #endif //C003_RENDER_WINDOW_MENURENDER_H

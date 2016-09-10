@@ -25,29 +25,20 @@ public:
     GuiElement(int positionFlag, double x, double y, double width, double height, const std::string &tex, int color = 0xFFFFFFFF);
     bool contains(double x, double y);
     virtual void reinit(unsigned int windowWidth, unsigned int windowHeight);
-    PositionFlag positionFlag() const;
-    void positionFlag(PositionFlag positionFlag);
-    double offsetX() const;
     double x() const;
     void x(double x);
-    double offsetY() const;
     double y() const;
     void y(double y);
     double width() const;
     void width(double width);
     double height() const;
     void height(double height);
-    bool visible() const;
-    void visible(bool visible);
     double angle() const;
-    void angle(double angle);
     virtual const std::string & texPos() const;
-    virtual void texPos(int texturePos);
     int color() const;
-    void color(int color);
     virtual ~GuiElement();
 
-    static const unsigned int TYPE = 0;
+    static constexpr const unsigned int TYPE = 0;
 
     virtual const unsigned int type() const {
         return TYPE;
@@ -59,7 +50,6 @@ protected:
     double m_x, m_y;
     double m_width, m_height;
     double m_angle;
-    bool m_visible = true;
     std::string m_tex;
     int m_color;
 };
