@@ -16,7 +16,7 @@ namespace texture {
 
     class Resampler {
     public:
-        static TexData downsample(uint8_t *inPixels, uint32_t inWidth, uint32_t inHeight, uint32_t inChannels, uint32_t downscaleRate);
+        static TexData downsample(const TexData &inData, uint32_t downscaleRate);
 
     private:
         static double weight(double dist);

@@ -10,14 +10,15 @@
 
 using namespace texture;
 
-TexData Resampler::downsample(uint8_t *inPixels, uint32_t inWidth, uint32_t inHeight, uint32_t inChannels, uint32_t downscaleRate) {
-    uint32_t outWidth = inWidth / downscaleRate;
-    uint32_t outHeight = inHeight / downscaleRate;
-    TexData outData(outWidth, outHeight, inChannels);
+TexData Resampler::downsample(const TexData &inData, uint32_t downscaleRate) {
+    uint32_t outWidth = inData.width() / downscaleRate;
+    uint32_t outHeight = inData.height() / downscaleRate;
+    uint32_t outChannels = inData.channels();
+    TexData outData(outWidth, outHeight, outChannels);
     std::fill_n(outData.get(), outData.height() * outData.channels(), 0);
 
     /** temporary buffer to hold non-normalized pixel data */
-    double *tmp = new double[inChannels]();
+    double *tmp = new double[outChannels]();
 
     int64_t samplesCount = downscaleRate;
     for (int y = 0; y < outHeight; ++y) {
@@ -26,16 +27,15 @@ TexData Resampler::downsample(uint8_t *inPixels, uint32_t inWidth, uint32_t inHe
             double weightSum = 0.0;
             for (int sampleNum = 0; sampleNum < samplesCount; ++sampleNum) {
                 double weight = Resampler::weight(sampleNum - (downscaleRate - 1) / 2);
-                uint32_t inPixelPos = inChannels * ((y * inWidth + x) * downscaleRate + sampleNum);
-                for (int curChannel = 0; curChannel < inChannels; ++curChannel) {
-                    double val = inPixels[inPixelPos + curChannel] * weight;
-                    tmp[curChannel] += val;
+                uint32_t inPixelPos = inData.channels() * ((y * inData.width() + x) * downscaleRate + sampleNum);
+                for (int curChannel = 0; curChannel < outChannels; ++curChannel) {
+                    tmp[curChannel] += inData[inPixelPos + curChannel] * weight;
                 }
                 weightSum += weight;
             }
 
-            uint32_t outPixelPos = inChannels * (y * outWidth + x);
-            for (int curChannel = 0; curChannel < inChannels; ++curChannel) {
+            uint32_t outPixelPos = outChannels * (y * outWidth + x);
+            for (int curChannel = 0; curChannel < outChannels; ++curChannel) {
                 tmp[curChannel] /= weightSum;
                 outData[outPixelPos + curChannel] = clamp((uint32_t) tmp[curChannel]);
                 tmp[curChannel] = 0;

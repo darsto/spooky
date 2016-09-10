@@ -136,6 +136,8 @@ void Atlas::load() {
     m_height = m_impl->m_packer.size().height();
     m_channels = 4;
 
+    Log::debug("Preparing the texture atlas \"%s\" took %f sec.", m_path.c_str(), PROF_DURATION_PREV(load));
+
 #ifdef USES_MANUAL_MIPMAPS
     glGenTextures(1, &m_id);
     bindTexture();
@@ -150,22 +152,17 @@ void Atlas::load() {
 #else
         uint8_t level = 0;
 #endif
-
         uint32_t downsample = 1u << level;
         TexData atlas(width() / downsample, height() / downsample, channels());
 
-        Log::debug("Preparing the texture atlas \"%s\" took %f sec.", m_path.c_str(), PROF_DURATION_PREV(load));
-
         //TODO it's totally unreadable
         for (auto &el : m_impl->m_packer.elements()) {
-            TexData &tile = m_impl->m_texData.find(el.first)->second;
-            auto resampled = texture::Resampler::downsample(tile.get(), tile.width(), tile.height(), tile.channels(), downsample);
+            TexData &inTile = m_impl->m_texData.find(el.first)->second;
+            TexData outTile = texture::Resampler::downsample(inTile, downsample);
             util::Rectangle rect(el.second.x() / downsample, el.second.y() / downsample, el.second.width() / downsample, el.second.height() / downsample);
 
-            Log::debug("Resampling of level %d of the texture atlas \"%s\" took %f sec.", level, m_path.c_str(), PROF_DURATION_PREV(load));
-
-            uint32_t inWidth = tile.width() / downsample;
-            uint32_t inHeight = tile.height() / downsample;
+            uint32_t inWidth = inTile.width() / downsample;
+            uint32_t inHeight = inTile.height() / downsample;
             uint32_t outWidth = m_impl->m_packer.size().width() / downsample;
 
             for (int yIn = 0; yIn < inHeight; ++yIn) {
@@ -173,13 +170,13 @@ void Atlas::load() {
                     uint32_t inPixelPos = xIn + yIn * inWidth;
                     uint32_t outPixelPos = rect.x() + xIn + (rect.y() + yIn) * outWidth;
                     for (int channel = 0; channel < channels(); ++channel) {
-                        atlas[4 * outPixelPos + channel] = resampled[channels() * inPixelPos + channel];
+                        atlas[4 * outPixelPos + channel] = outTile[channels() * inPixelPos + channel];
                     }
                 }
             }
-
-            Log::debug("Preparing the texture atlas \"%s\" took %f sec.", m_path.c_str(), PROF_DURATION_PREV(load));
         }
+
+        Log::debug("\tResampling of level %d of the texture atlas \"%s\" took %f sec.", level, m_path.c_str(), PROF_DURATION_PREV(load));
 
 #ifdef USES_MANUAL_MIPMAPS
         m_impl->writeTexToGPU(atlas, level);
