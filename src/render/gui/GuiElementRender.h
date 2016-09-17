@@ -15,18 +15,20 @@
 #include "render/texture/Atlas.h"
 
 class GuiElement;
+class RenderContext;
 
 class GuiElementRender {
 public:
-    GuiElementRender(const std::string &textureFile, const std::string &shader);
-    virtual void render(const GuiElement &element, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, double scale);
+    GuiElementRender(const RenderContext &context, const std::string &textureFile, const std::string &shader, glm::mat4 projectionMatrix);
+    virtual void render(const GuiElement &element, glm::mat4 viewMatrix, double scale);
     ~GuiElementRender();
 
 protected:
+    std::pair<uint32_t, uint32_t> getAbsolutePos(const GuiElement &element);
     util::Rectangle getTexPos(const GuiElement &element) const;
 
+    const RenderContext &m_renderContext;
     unsigned int atlasSize;
-    float vertices[8];
     GLuint vbo[2];
     GLuint vao;
     ShaderProgram shaderProgram;

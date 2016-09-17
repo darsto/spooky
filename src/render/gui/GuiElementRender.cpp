@@ -9,9 +9,12 @@
 
 #include "GuiElementRender.h"
 #include "gui/GuiElement.h"
+#include "Config.h"
+#include "render/RenderContext.h"
 
-GuiElementRender::GuiElementRender(const std::string &textureFile, const std::string &shader)
-    : texture(textureFile),
+GuiElementRender::GuiElementRender(const RenderContext &context, const std::string &textureFile, const std::string &shader, glm::mat4 projectionMatrix)
+    : m_renderContext(context),
+      texture(textureFile),
       shaderProgram() {
 
     texture.load();
@@ -68,17 +71,18 @@ GuiElementRender::GuiElementRender(const std::string &textureFile, const std::st
     glBindVertexArray(0);
 
     shaderProgram.linkProgram();
+    shaderProgram.useProgram();
+    shaderProgram.setUniform("projectionMatrix", projectionMatrix);
+    shaderProgram.setUniform("gSampler", texture.activeTex());
 }
 
-void GuiElementRender::render(const GuiElement &element, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, double scale) {
+void GuiElementRender::render(const GuiElement &element, glm::mat4 viewMatrix, double scale) {
     int color = element.color();
     float ca = (color & 0x000000FF) / 255.0f;
 
     if (ca > 0.0f) {
         texture.bindTexture();
         shaderProgram.useProgram();
-        shaderProgram.setUniform("projectionMatrix", projectionMatrix);
-        shaderProgram.setUniform("gSampler", texture.activeTex());
 
         float cr = ((color & 0xFF000000) >> 24) / 255.0f * ca;
         float cg = ((color & 0x00FF0000) >> 16) / 255.0f * ca;
@@ -86,7 +90,8 @@ void GuiElementRender::render(const GuiElement &element, glm::mat4 projectionMat
 
         shaderProgram.setUniform("colorMod", glm::vec4(cr, cg, cb, ca));
 
-        glm::mat4 tmpModelMatrix = glm::translate(modelMatrix, -glm::vec3(element.x() * scale, element.y() * scale, 0.0f));
+        auto pos = getAbsolutePos(element);
+        glm::mat4 tmpModelMatrix = glm::translate(modelMatrix, glm::vec3(- (int32_t) pos.first * scale, (int32_t) m_renderContext.windowHeight() - pos.second * scale, 0.0f));
 
         tmpModelMatrix = glm::translate(tmpModelMatrix, glm::vec3(0.5 * element.width() * scale, 0.5 * element.height() * scale, 0.0)); // Translate to the middle of the entity
         tmpModelMatrix = glm::rotate(tmpModelMatrix, (const float) element.angle(), glm::vec3(0.0f, 0.0f, 1.0f)); // Apply rotation
@@ -108,6 +113,36 @@ void GuiElementRender::render(const GuiElement &element, glm::mat4 projectionMat
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
         glBindVertexArray(0);
     }
+}
+
+std::pair<uint32_t, uint32_t> GuiElementRender::getAbsolutePos(const GuiElement &element) {
+    double px = element.x();
+    double py = element.y();
+
+    int windowWidth = m_renderContext.windowWidth();
+    int windowHeight = m_renderContext.windowHeight();
+
+    uint8_t pos = static_cast<uint8_t>(element.pos());
+
+    switch (static_cast<GuiPos>(pos & 0x03)) {
+        case GuiPos::RIGHT:
+            px = windowWidth - px - element.width();
+            break;
+        case GuiPos::CENTER:
+            px += -element.width() / 2 + windowWidth / 2;
+            break;
+    }
+
+    switch (static_cast<GuiPos>(pos & 0x0c)) {
+        case GuiPos::BOTTOM:
+            py = windowHeight - py - element.height();
+            break;
+        case GuiPos::MIDDLE:
+            py += -element.height() / 2 + windowHeight / 2;
+            break;
+    }
+
+    return std::pair<uint32_t, uint32_t>(px, py);
 }
 
 util::Rectangle GuiElementRender::getTexPos(const GuiElement &element) const {

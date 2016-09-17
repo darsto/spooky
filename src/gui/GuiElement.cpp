@@ -1,16 +1,20 @@
-//
-// Created by dar on 2/22/16.
-//
+/*
+ * Copyright (c) 2016 Dariusz Stojaczyk. All Rights Reserved.
+ * The following source code is released under an MIT-style license,
+ * that can be found in the LICENSE file.
+ */
 
 #include "GuiElement.h"
+#include "EmptyGuiElement.h"
 #include <core/input/TouchPoint.h>
 
 constexpr const unsigned int GuiElement::TYPE;
 
-GuiElement::GuiElement(PositionFlag positionFlag, double x, double y, double width, double height, const std::string &tex, int color)
-    : m_positionFlag(positionFlag),
-      m_offsetX(x),
-      m_offsetY(y),
+GuiElement::GuiElement(const GuiElement *parent, GuiPos pos, double x, double y, double width, double height, const std::string &tex, int color)
+    : m_parent(parent),
+      m_pos(pos),
+      m_x(x),
+      m_y(y),
       m_width(width),
       m_height(height),
       m_tex(tex),
@@ -19,66 +23,33 @@ GuiElement::GuiElement(PositionFlag positionFlag, double x, double y, double wid
 
 }
 
-GuiElement::GuiElement(int positionFlag, double x, double y, double width, double height, const std::string &tex, int color)
-    : GuiElement(static_cast<PositionFlag>(positionFlag), x, y, width, height, tex, color) {
+GuiElement::GuiElement(GuiPos pos, double x, double y, double width, double height, const std::string &tex, int color)
+    : GuiElement(&EmptyGuiElement::instance(), pos, x, y, width, height, tex, color) {
 
 }
 
-void GuiElement::reinit(unsigned int windowWidth, unsigned int windowHeight) {
-    double px = m_offsetX;
-    double py = m_offsetY;
-    switch (m_positionFlag) {
-        case PositionFlag::TOP_CENTER:
-            px += -m_width / 2 + windowWidth / 2;
-            break;
-        case PositionFlag::TOP_RIGHT:
-            px = windowWidth - px - m_width;
-            break;
-        case PositionFlag::MIDDLE_LEFT:
-            py += -m_height / 2 + windowHeight / 2;
-            break;
-        case PositionFlag::MIDDLE_CENTER:
-            px += -m_width / 2 + windowWidth / 2;
-            py += -m_height / 2 + windowHeight / 2;
-            break;
-        case PositionFlag::MIDDLE_RIGHT:
-            px = windowWidth - px - m_width;
-            py += -m_height / 2 + windowHeight / 2;
-            break;
-        case PositionFlag::BOTTOM_LEFT:
-            py = windowHeight - py - m_height;
-            break;
-        case PositionFlag::BOTTOM_CENTER:
-            px += -m_width / 2 + windowWidth / 2;
-            py = windowHeight - py - m_height;
-            break;
-        case PositionFlag::BOTTOM_RIGHT:
-            px = windowWidth - px - m_width;
-            py = windowHeight - py - m_height;
-            break;
-    }
-    m_x = px;
-    m_y = py;
+bool GuiElement::contains(double coordX, double coordY) {
+    return coordX >= x() && coordY >= y() && coordX <= x() + width() && coordY < y() + height();
 }
 
-bool GuiElement::contains(double x, double y) {
-    return x >= m_x && y >= m_y && x <= m_x + m_width && y < m_y + m_height;
+GuiPos GuiElement::pos() const {
+    return m_pos;
 }
 
 double GuiElement::x() const {
-    return m_x;
+    return m_parent->x() + m_x;
 }
 
 void GuiElement::x(double x) {
-    m_x = m_offsetX = x;
+    m_x = x;
 }
 
 double GuiElement::y() const {
-    return m_y;
+    return m_parent->y() + m_y;
 }
 
 void GuiElement::y(double y) {
-    m_y = m_offsetY = y;
+    m_y = y;
 }
 
 double GuiElement::width() const {

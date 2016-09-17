@@ -160,10 +160,10 @@ void Atlas::load() {
     glGenTextures(1, &m_id);
     bindTexture();
 
-
     /**
      * Texture canvas for all mipmap levels of this atlas.
-     * This is a temporary container, since all data gets uploaded to the GPU right away.
+     * This is a temporary container.
+     * All data gets uploaded to the GPU right away.
      */
     TexData buffer(width(), height(), channels());
 
@@ -183,7 +183,6 @@ void Atlas::load() {
     for (uint8_t level = 1; level < mipmapLevels; ++level) {
         uint32_t downsample = 1u << level;
 
-        //TODO it's totally unreadable
         for (const util::Packer::Element &el : m_impl->m_packer.elements()) {
             const TexData &inTile = m_impl->m_texData.find(el.first)->second;
             TexData resampledData = texture::Resampler::downsample(inTile, downsample);
@@ -191,8 +190,8 @@ void Atlas::load() {
             m_impl->writeToCanvas(resampledData, buffer, pos, level);
         }
 
-        Log::debug("\tResampling of level %d of the texture atlas \"%s\" took %f sec.", level, m_path.c_str(), PROF_DURATION_PREV(load));
         m_impl->writeTexToGPU(buffer, level);
+        Log::debug("\tResampling of level %d of the texture atlas \"%s\" took %f sec.", level, m_path.c_str(), PROF_DURATION_PREV(load));
     }
 #else
     glGenerateMipmap(GL_TEXTURE_2D);

@@ -1,14 +1,19 @@
-//
-// Created by dar on 2/11/16.
-//
+/*
+ * Copyright (c) 2016 Dariusz Stojaczyk. All Rights Reserved.
+ * The following source code is released under an MIT-style license,
+ * that can be found in the LICENSE file.
+ */
 
 #define GLM_FORCE_RADIANS
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "TextRender.h"
-#include <gui/GuiText.h>
+#include "gui/GuiText.h"
+#include "render/RenderContext.h"
 
-TextRender::TextRender() : GuiElementRender("font", "font") {
+TextRender::TextRender(const RenderContext &context, glm::mat4 projectionMatrix)
+    : GuiElementRender(context, "font", "font", projectionMatrix) {
+
     atlasSize = 8;
 
     // TODO dirty hack, remove
@@ -41,7 +46,7 @@ TextRender::TextRender() : GuiElementRender("font", "font") {
 
 }
 
-void TextRender::render(const GuiElement &element, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, double scale) {
+void TextRender::render(const GuiElement &element, glm::mat4 viewMatrix, double scale) {
     int color = element.color();
     float ca = (color & 0x000000FF) / 255.0f;
 
@@ -49,8 +54,6 @@ void TextRender::render(const GuiElement &element, glm::mat4 projectionMatrix, g
         const GuiText &text = (const GuiText &) element;
         texture.bindTexture();
         shaderProgram.useProgram();
-        shaderProgram.setUniform("projectionMatrix", projectionMatrix);
-        shaderProgram.setUniform("gSampler", texture.activeTex());
 
         float cr = ((color & 0xFF000000) >> 24) / 255.0f * ca;
         float cg = ((color & 0x00FF0000) >> 16) / 255.0f * ca;
@@ -60,8 +63,9 @@ void TextRender::render(const GuiElement &element, glm::mat4 projectionMatrix, g
 
         scale *= text.scale();
 
-        double x = text.x();
-        double y = text.y();
+        auto pos = getAbsolutePos(element);
+        double x = pos.first;
+        double y = pos.second;
         for (int i = 0; i < text.text().length(); i++) {
             if (text.text().at(i) == '\n') {
                 x = text.x();
@@ -73,7 +77,7 @@ void TextRender::render(const GuiElement &element, glm::mat4 projectionMatrix, g
                 x += (text.TEXT_SPACESIZE + text.TEXT_SPACING) * scale;
                 continue;
             }
-            glm::mat4 tmpModelMatrix = glm::translate(modelMatrix, -glm::vec3(x, y, 0.0f));
+            glm::mat4 tmpModelMatrix = glm::translate(modelMatrix, glm::vec3(-x, (int32_t) m_renderContext.windowHeight() - y, 0.0f));
             tmpModelMatrix = glm::scale(tmpModelMatrix, glm::vec3(scale, scale, 1.0f));
 
             shaderProgram.setUniform("modelViewMatrix", viewMatrix * tmpModelMatrix);

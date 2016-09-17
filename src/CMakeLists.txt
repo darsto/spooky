@@ -56,7 +56,7 @@ SET(SOURCE_FILES
         gui/GuiElement.h
         gui/GuiText.cpp
         gui/GuiText.h
-        )
+        gui/EmptyGuiElement.cpp gui/EmptyGuiElement.h)
 
 IF (NOT SIMULATION)
     SET(SOURCE_RENDER_FILES
