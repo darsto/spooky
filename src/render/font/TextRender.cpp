@@ -14,12 +14,13 @@
 TextRender::TextRender(const RenderContext &context, glm::mat4 projectionMatrix)
     : GuiElementRender(context, "font", "font", projectionMatrix) {
 
-    atlasSize = 8;
+    m_atlasSize = 8;
 
     // TODO dirty hack, remove
 
-    float texWidth = 1.0f / atlasSize - 1.0f / texture.width();
-    float texHeight = 1.0f / atlasSize - 1.0f / texture.height();
+    const texture::TexData &texData = m_atlas.atlasData()[0];
+    float texWidth = 1.0f / m_atlasSize - 1.0f / texData.width();
+    float texHeight = 1.0f / m_atlasSize - 1.0f / texData.height();
 
     /* square's vertices */
     float texCoords[8];
@@ -36,9 +37,9 @@ TextRender::TextRender(const RenderContext &context, glm::mat4 projectionMatrix)
     /* top-right vertex */
     texCoords[6] = texWidth, texCoords[7] = 0.0f;
 
-    glBindVertexArray(vao);
+    glBindVertexArray(m_vao);
 
-    glBindBuffer(GL_ARRAY_BUFFER, vbo[1]); /* texture coords vbo */
+    glBindBuffer(GL_ARRAY_BUFFER, m_vbo[1]); /* texture coords vbo */
     glBufferData(GL_ARRAY_BUFFER, sizeof(texCoords), texCoords, GL_STATIC_DRAW);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -52,14 +53,14 @@ void TextRender::render(const GuiElement &element, glm::mat4 viewMatrix, double 
 
     if (ca > 0.0f) {
         const GuiText &text = (const GuiText &) element;
-        texture.bindTexture();
-        shaderProgram.useProgram();
+        m_texture.bindTexture();
+        m_shaderProgram.useProgram();
 
         float cr = ((color & 0xFF000000) >> 24) / 255.0f * ca;
         float cg = ((color & 0x00FF0000) >> 16) / 255.0f * ca;
         float cb = ((color & 0x0000FF00) >> 8) / 255.0f * ca;
 
-        shaderProgram.setUniform("colorMod", glm::vec4(cr, cg, cb, ca));
+        m_shaderProgram.setUniform("colorMod", glm::vec4(cr, cg, cb, ca));
 
         scale *= text.scale();
 
@@ -77,16 +78,16 @@ void TextRender::render(const GuiElement &element, glm::mat4 viewMatrix, double 
                 x += (text.TEXT_SPACESIZE + text.TEXT_SPACING) * scale;
                 continue;
             }
-            glm::mat4 tmpModelMatrix = glm::translate(modelMatrix, glm::vec3(-x, (int32_t) m_renderContext.windowHeight() - y, 0.0f));
+            glm::mat4 tmpModelMatrix = glm::translate(m_modelMatrix, glm::vec3(-x, (int32_t) m_renderContext.windowHeight() - y, 0.0f));
             tmpModelMatrix = glm::scale(tmpModelMatrix, glm::vec3(scale, scale, 1.0f));
 
-            shaderProgram.setUniform("modelViewMatrix", viewMatrix * tmpModelMatrix);
+            m_shaderProgram.setUniform("modelViewMatrix", viewMatrix * tmpModelMatrix);
 
-            int texX = texId % atlasSize, texY = texId / atlasSize;
-            shaderProgram.setUniform("texPosX", (float) texX / atlasSize);
-            shaderProgram.setUniform("texPosY", (float) texY / atlasSize);
+            int texX = texId % m_atlasSize, texY = texId / m_atlasSize;
+            m_shaderProgram.setUniform("texPosX", (float) texX / m_atlasSize);
+            m_shaderProgram.setUniform("texPosY", (float) texY / m_atlasSize);
 
-            glBindVertexArray(vao);
+            glBindVertexArray(m_vao);
             glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
             x += (text.getGlyphSize(texId) + text.TEXT_SPACING) * scale;

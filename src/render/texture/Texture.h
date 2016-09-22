@@ -10,6 +10,7 @@
 #include <string>
 
 #include "render/opengl.h"
+#include "TexData.h"
 
 namespace texture {
 
@@ -47,12 +48,12 @@ namespace texture {
          * Actual loading happens inside the load() method.
          * @param filename name of the file to load texture from
          */
-        Texture(const std::string &filename);
+        Texture();
 
         /**
-         * Actual texture loading.
+         * Writing given texture to the GPU.
          */
-        virtual void load();
+        void loadTex(texture::TexData &tex, uint32_t level);
 
         /**
          * Bind this texture as OpenGL texture.
@@ -117,14 +118,16 @@ namespace texture {
 
     protected:
         /**
+         * OpenGL uses enum to determine a number (and type) of texture channels.
+         * Since we don't handle different types of texture channels in Atlas class,
+         * just a pure int number of channels is passed between methods.
+         */
+        GLenum getTexGLFormat(uint32_t channels);
+
+        /**
          * Unique texture identifier assigned by OpenGL.
          */
         GLuint m_id;
-
-        /**
-         * Filename (without any directory prefix).
-         */
-        std::string m_path;
 
         /**
          * Dimensions of the texture.

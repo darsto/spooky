@@ -48,7 +48,7 @@ public:
     }
 
 protected:
-    const GuiElement *m_parent;
+    const GuiElement *const m_parent;
     GuiPos m_pos;
     double m_x, m_y;
     double m_width, m_height;

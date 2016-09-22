@@ -13,6 +13,7 @@
 #include "render/Shader.h"
 #include "render/ShaderProgram.h"
 #include "render/texture/Atlas.h"
+#include "render/texture/Texture.h"
 
 class GuiElement;
 class RenderContext;
@@ -28,12 +29,13 @@ protected:
     util::Rectangle getTexPos(const GuiElement &element) const;
 
     const RenderContext &m_renderContext;
-    unsigned int atlasSize;
-    GLuint vbo[2];
-    GLuint vao;
-    ShaderProgram shaderProgram;
-    texture::Atlas texture;
-    glm::mat4 modelMatrix = glm::mat4(1.0);
+    unsigned int m_atlasSize;
+    GLuint m_vbo[2];
+    GLuint m_vao;
+    ShaderProgram m_shaderProgram;
+    texture::Atlas m_atlas;
+    texture::Texture m_texture;
+    glm::mat4 m_modelMatrix = glm::mat4(1.0);
 };
 
 #endif //C003_RENDER_GUI_GUIELEMENTRENDER_H

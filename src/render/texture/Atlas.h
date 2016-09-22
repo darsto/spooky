@@ -10,34 +10,30 @@
 
 #include <string>
 #include <memory>
+#include <unordered_map>
+#include <regex>
 
-#include "Texture.h"
+#include "TexData.h"
 #include "util/Rectangle.h"
+#include "util/Packer.h"
 
 namespace texture {
 
     /**
      * Set of texture tiles packed together.
-     * Provides easy integration with OpenGL textures.
-     * Use with caution, this class has direct access to the GPU.
+     * It doesn't provide integration with OpenGL textures,
+     * for that, use the Texture class.
      * A slightest defect in input data will cause an invalid_texture_error.
      */
-    class Atlas : public Texture {
+    class Atlas {
     public:
         /**
          * The constructor.
          * Creates texture atlas out of given directory relative to data/textures/ path.
          * All image files in that directory will be put in the atlas.
-         * Note that due to OpenGL general-state context creation, this class requires two-step initialization.
-         * Actual loading happens inside the load() method.
          * @param name name of the directory in data/textures/ containing texture tiles
          */
-        Atlas(const std::string &name);
-
-        /**
-         * Actual texture loading.
-         */
-        virtual void load() override;
+        Atlas(const std::string &name, uint32_t channels, bool mipmaps);
 
         /**
          * Get subelement of this atlas with given filename.
@@ -53,7 +49,22 @@ namespace texture {
         const uint64_t getElementsNum() const;
 
         /**
-         * The destructor. Deletes OpenGL texture.
+         * Get a container of particular texture levels.
+         * If mipmaps are disabled, there will be only a single level.
+         * Mipmaps are indexed as the following:
+         * atlasData()[n] is n'th mipmap level.
+         * @return container of particular texture levels
+         */
+        const std::vector<TexData> &atlasData() const;
+
+        /**
+         * @overload Atlas::atlasData()
+         */
+        std::vector<TexData> &atlasData();
+
+        /**
+         * The destructor.
+         * Frees texture memory.
          */
         virtual ~Atlas();
 
@@ -64,17 +75,32 @@ namespace texture {
          */
         void loadTile(const std::string &fileName);
 
-        /**
-         * PIMPL. Actual atlas creation doesn't need any external API.
-         */
-        struct impl;
+        void writeToCanvas(const TexData &inData, TexData &outBuffer, const std::pair<uint32_t, uint32_t> &pos, uint32_t level = 0) {
+            uint32_t inWidth = inData.width();
+            uint32_t inHeight = inData.height();
+            uint32_t outWidth = m_packer.size().width() / (1u << level);
+            uint32_t outChannels = std::min<uint32_t>(outBuffer.channels(), inData.channels());
 
-        /**
-         * PIMPL. Actual atlas creation doesn't need any external API.
-         */
-        std::unique_ptr<impl> m_impl;
+            for (int yIn = 0; yIn < inHeight; ++yIn) {
+                for (int xIn = 0; xIn < inWidth; ++xIn) {
+                    uint32_t inPixelPos = xIn + yIn * inWidth;
+                    uint32_t outPixelPos = pos.first + xIn + (pos.second + yIn) * outWidth;
+                    for (int channel = 0; channel < outChannels; ++channel) {
+                        outBuffer[outBuffer.channels() * outPixelPos + channel] = inData[inData.channels() * inPixelPos + channel];
+                    }
+                }
+            }
+        }
+
+        std::string m_path;
+        util::Packer m_packer;
+        std::hash<std::string> m_hash;
+        std::unordered_map<uint64_t, TexData> m_texData;
+        std::vector<std::string> m_tileNames;
+        std::vector<TexData> m_atlasData;
+
+        static const std::regex FILE_EXTENSION_REGEX;
     };
-
 }
 
 #endif //C003_RENDER_TEXTURE_ATLAS_H

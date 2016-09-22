@@ -5,28 +5,60 @@
  */
 
 #include <type_traits>
-#include <SOIL.h>
 
 #include "Texture.h"
-#include "TexData.h"
 #include "util/file.h"
+#include "exceptions.h"
 
 using namespace texture;
 
 int Texture::s_boundTexId = 0;
 
-Texture::Texture(const std::string &filename)
-    : m_path(filename),
-      m_minFilter(MinFilter::NEAREST),
+Texture::Texture()
+    : m_minFilter(MinFilter::NEAREST),
       m_magFilter(MagFilter::NEAREST) {
 
+    glGenTextures(1, &m_id);
 }
 
-void Texture::load() {
-    TexData data(m_path);
-    m_id = SOIL_create_OGL_texture(data.get(), m_width, m_height, m_channels, 0, SOIL_FLAG_MULTIPLY_ALPHA);
-    //TODO validate dimensions
-    glGenerateMipmap(GL_TEXTURE_2D);
+void Texture::loadTex(TexData &tex, uint32_t level) {
+    if (level == 0) {
+        m_width = tex.width();
+        m_height = tex.height();
+    }
+    
+    uint32_t channels = tex.channels();
+
+    if (channels < 1 || channels > 4) {
+        char msg[90];
+        snprintf(msg, sizeof(msg), "Trying to write to GPU texture with invalid amount of channels (channels:%d).", channels);
+        throw invalid_texture_error(msg);
+    }
+
+#ifdef DBG_COLORMIPMAPS
+    // color mipmaps in scheme: red (biggest) -> yellow (smallest)
+        if (channels >= 3) {
+            for (int i = 0; i < tex.width() * tex.height(); ++i) {
+                resampled[channels * i + 0] = 255 - level * 40;
+                resampled[channels * i + 1] = level * 40;
+                resampled[channels * i + 2] = 0;
+                if (channels >= 4) {
+                    resampled[channels * i + 3] = 255;
+                }
+            }
+        }
+#endif // DBG_COLORMIPMAPS
+
+    if (channels == 4) {
+        // burn alpha into RGB channels
+        for (int i = 0; i < tex.width() * tex.height(); ++i) {
+            tex[channels * i + 0] = (uint8_t) ((tex[channels * i + 0] * tex[channels * i + 3] + 128) >> 8);
+            tex[channels * i + 1] = (uint8_t) ((tex[channels * i + 1] * tex[channels * i + 3] + 128) >> 8);
+            tex[channels * i + 2] = (uint8_t) ((tex[channels * i + 2] * tex[channels * i + 3] + 128) >> 8);
+        }
+    }
+
+    glTexImage2D(GL_TEXTURE_2D, level, getTexGLFormat(channels), tex.width(), tex.height(), 0, getTexGLFormat(channels), GL_UNSIGNED_BYTE, tex.get());
 }
 
 void Texture::samplerParameter(GLenum parameter, GLint value) {
@@ -71,6 +103,31 @@ int Texture::channels() const {
 
 int Texture::activeTex() const {
     return 0; // TODO currently unused, we always set GL_TEXTURE0 as active texture
+}
+
+GLenum Texture::getTexGLFormat(uint32_t channels) {
+    GLenum ret;
+
+    switch (channels) {
+        case 1:
+            ret = GL_LUMINANCE; /**< If L was converted into RGBA, it would be R=L, G=L, B=L, A=1 */
+            break;
+        case 2:
+            ret = GL_LUMINANCE_ALPHA; /**< If LA' was converted into RGBA, it would be R=L, G=L, B=L, A=A' */
+            break;
+        case 3:
+            ret = GL_RGB; /**< A=1 */
+            break;
+        case 4:
+            ret = GL_RGBA;
+            break;
+        default:
+            char msg[100];
+            snprintf(msg, sizeof(msg), "Trying to convert invalid channel number into an OpenGL texture format (channels:%d).", channels);
+            throw invalid_texture_error(msg);
+    }
+
+    return ret;
 }
 
 Texture::~Texture() {
