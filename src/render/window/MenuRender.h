@@ -18,17 +18,14 @@ class GuiElementRender;
 class GuiElement;
 
 class MenuRender : public WindowRender {
-
 public:
     MenuRender(const RenderContext &renderContext);
+    virtual void reinit() override;
     virtual void reload() override;
     virtual void render(const Window &window) override;
     ~MenuRender();
 
-private:
-    glm::mat4 viewMatrix;
-    glm::mat4 projectionMatrix;
-
+protected:
     /**
      * Get gui render for the given element.
      * @param element element to get render for
@@ -36,12 +33,15 @@ private:
      */
     GuiElementRender &guiElementRender(const GuiElement &element) const;
 
+protected:
     /**
      * Container of GuiElementRender.
      * Maps class types to corresponding GuiElementRender instances.
      * Uses <guiElement>::TYPE as the key.
      */
     std::unordered_map<uint32_t, std::unique_ptr<GuiElementRender>> guiRenders;
+    glm::mat4 m_viewMatrix;
+    glm::mat4 m_projectionMatrix;
 };
 
 #endif //C003_RENDER_WINDOW_MENURENDER_H

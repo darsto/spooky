@@ -11,8 +11,8 @@
 #include "gui/GuiText.h"
 #include "render/RenderContext.h"
 
-TextRender::TextRender(const RenderContext &context, glm::mat4 projectionMatrix)
-    : GuiElementRender(context, "font", "font", projectionMatrix) {
+TextRender::TextRender(const RenderContext &context)
+    : GuiElementRender(context, "font", "font") {
 
     m_atlasSize = 8;
 
@@ -47,7 +47,7 @@ TextRender::TextRender(const RenderContext &context, glm::mat4 projectionMatrix)
 
 }
 
-void TextRender::render(const GuiElement &element, glm::mat4 viewMatrix, double scale) {
+void TextRender::render(const GuiElement &element, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, double scale) {
     int color = element.color();
     float ca = (color & 0x000000FF) / 255.0f;
 
@@ -82,6 +82,7 @@ void TextRender::render(const GuiElement &element, glm::mat4 viewMatrix, double 
             tmpModelMatrix = glm::scale(tmpModelMatrix, glm::vec3(scale, scale, 1.0f));
 
             m_shaderProgram.setUniform("modelViewMatrix", viewMatrix * tmpModelMatrix);
+            m_shaderProgram.setUniform("projectionMatrix", projectionMatrix);
 
             int texX = texId % m_atlasSize, texY = texId / m_atlasSize;
             m_shaderProgram.setUniform("texPosX", (float) texX / m_atlasSize);

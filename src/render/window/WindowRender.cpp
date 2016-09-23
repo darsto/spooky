@@ -5,9 +5,3 @@
  */
 
 #include "WindowRender.h"
-#include "render/RenderContext.h"
-
-WindowRender::WindowRender(const RenderContext &renderContext)
-    : m_renderContext(renderContext) {
-
-}

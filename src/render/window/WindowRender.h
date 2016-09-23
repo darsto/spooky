@@ -7,8 +7,9 @@
 #ifndef C003_RENDER_WINDOW_WINDOWRENDER_H
 #define C003_RENDER_WINDOW_WINDOWRENDER_H
 
+#include "render/RenderContext.h"
+
 class Window;
-class RenderContext;
 
 /**
  * Base class for particular window renders.
@@ -20,10 +21,18 @@ public:
      * The constructor.
      * @param renderContext context to use throughout the class' lifetime.
      */
-    WindowRender(const RenderContext &renderContext);
+    WindowRender(const RenderContext &renderContext)
+        : m_renderContext(renderContext) {}
 
     /**
-     * Called on initialization and reloading (& screen resize events).
+     * Called on initialization and context reloading (e.g. context unminimizing on Android)
+     * Usually, this is a computationally expensive operation.
+     */
+    virtual void reinit() = 0;
+
+    /**
+     * Called on reloading (& screen resize events).
+     * Usually, this is a computationally cheap operation.
      */
     virtual void reload() = 0;
 

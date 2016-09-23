@@ -12,7 +12,7 @@
 #include "Config.h"
 #include "render/RenderContext.h"
 
-GuiElementRender::GuiElementRender(const RenderContext &context, const std::string &textureFile, const std::string &shader, glm::mat4 projectionMatrix)
+GuiElementRender::GuiElementRender(const RenderContext &context, const std::string &textureFile, const std::string &shader)
     : m_renderContext(context),
       m_atlas(textureFile, 4, true),
       m_shaderProgram() {
@@ -27,7 +27,7 @@ GuiElementRender::GuiElementRender(const RenderContext &context, const std::stri
     }
 
     m_texture.filtering(texture::Texture::MagFilter::BILINEAR, texture::Texture::MinFilter::BILINEAR_MIPMAP);
-    m_atlasSize = std::sqrt<uint32_t>(m_atlas.getElementsNum());
+    m_atlasSize = std::sqrt<uint64_t>(m_atlas.getElementsNum());
 
     Shader vertShader(shader + ".vert", GL_VERTEX_SHADER);
     Shader fragShader(shader + ".frag", GL_FRAGMENT_SHADER);
@@ -80,11 +80,10 @@ GuiElementRender::GuiElementRender(const RenderContext &context, const std::stri
 
     m_shaderProgram.linkProgram();
     m_shaderProgram.useProgram();
-    m_shaderProgram.setUniform("projectionMatrix", projectionMatrix);
     m_shaderProgram.setUniform("gSampler", m_texture.activeTex());
 }
 
-void GuiElementRender::render(const GuiElement &element, glm::mat4 viewMatrix, double scale) {
+void GuiElementRender::render(const GuiElement &element, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, double scale) {
     int color = element.color();
     float ca = (color & 0x000000FF) / 255.0f;
 
@@ -108,6 +107,7 @@ void GuiElementRender::render(const GuiElement &element, glm::mat4 viewMatrix, d
         tmpModelMatrix = glm::scale(tmpModelMatrix, glm::vec3(element.width() * scale, element.height() * scale, 1.0f));
 
         m_shaderProgram.setUniform("modelViewMatrix", viewMatrix * tmpModelMatrix);
+        m_shaderProgram.setUniform("projectionMatrix", projectionMatrix);
 
         util::Rectangle tex = getTexPos(element);
 

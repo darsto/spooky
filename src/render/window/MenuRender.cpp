@@ -16,18 +16,22 @@
 #include "render/font/TextRender.h"
 
 MenuRender::MenuRender(const RenderContext &renderContext)
-    : WindowRender(renderContext) {}
+    : WindowRender(renderContext),
+      m_viewMatrix(glm::lookAt(glm::vec3(0, 0, 0.0f), glm::vec3(0, 0, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f))) {}
+
+void MenuRender::reinit() {
+    m_projectionMatrix = glm::ortho(0.0f, static_cast<float>(m_renderContext.windowWidth()), 0.0f, static_cast<float>(m_renderContext.windowHeight()));
+
+    guiRenders.clear();
+    guiRenders.emplace(GuiElement::TYPE, std::make_unique<GuiElementRender>(m_renderContext, "gui", "gui"));
+    guiRenders.emplace(GuiText::TYPE, std::make_unique<TextRender>(m_renderContext));
+}
 
 void MenuRender::reload() {
     glEnable(GL_BLEND);
     glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 
-    viewMatrix = glm::lookAt(glm::vec3(0, 0, 0.0f), glm::vec3(0, 0, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-    projectionMatrix = glm::ortho(0.0f, float(m_renderContext.windowWidth()), 0.0f, float(m_renderContext.windowHeight()));
-
-    guiRenders.clear();
-    guiRenders.emplace(GuiElement::TYPE, std::make_unique<GuiElementRender>(m_renderContext, "gui", "gui", projectionMatrix));
-    guiRenders.emplace(GuiText::TYPE, std::make_unique<TextRender>(m_renderContext, projectionMatrix));
+    m_projectionMatrix = glm::ortho(0.0f, static_cast<float>(m_renderContext.windowWidth()), 0.0f, static_cast<float>(m_renderContext.windowHeight()));
 }
 
 void MenuRender::render(const Window &window) {
@@ -36,7 +40,7 @@ void MenuRender::render(const Window &window) {
     glClearColor(0.7, 0.7, 0.7, 0.0);
     glClear(GL_COLOR_BUFFER_BIT);
     for (auto &guiElement : menu.guiElements()) {
-        guiElementRender(*guiElement).render(*guiElement, viewMatrix, 1.0f);
+        guiElementRender(*guiElement).render(*guiElement, m_projectionMatrix, m_viewMatrix, 1.0f);
     }
 
     GLenum err;

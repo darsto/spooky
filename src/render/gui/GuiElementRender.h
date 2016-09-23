@@ -20,8 +20,8 @@ class RenderContext;
 
 class GuiElementRender {
 public:
-    GuiElementRender(const RenderContext &context, const std::string &textureFile, const std::string &shader, glm::mat4 projectionMatrix);
-    virtual void render(const GuiElement &element, glm::mat4 viewMatrix, double scale);
+    GuiElementRender(const RenderContext &context, const std::string &textureFile, const std::string &shader);
+    virtual void render(const GuiElement &element, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, double scale);
     ~GuiElementRender();
 
 protected:

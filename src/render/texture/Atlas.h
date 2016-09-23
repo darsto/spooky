@@ -46,7 +46,7 @@ namespace texture {
          * Get number of tiles in this atlas.
          * @return number of tiles in this atlas
          */
-        const uint64_t getElementsNum() const;
+        const uint32_t getElementsNum() const;
 
         /**
          * Get a container of particular texture levels.

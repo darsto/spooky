@@ -11,8 +11,8 @@
 
 class TextRender : public GuiElementRender {
 public:
-    TextRender(const RenderContext &context, glm::mat4 projectionMatrix);
-    virtual void render(const GuiElement &element, glm::mat4 viewMatrix, double scale) override;
+    TextRender(const RenderContext &context);
+    virtual void render(const GuiElement &element, glm::mat4 projectionMatrix, glm::mat4 viewMatrix, double scale) override;
 };
 
 #endif //C003_RENDER_FONT_TEXTRENDER_H
