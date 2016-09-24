@@ -5,10 +5,11 @@
  */
 
 #include <type_traits>
+#include <SOIL2.h>
 
 #include "Texture.h"
-#include "util/file.h"
 #include "exceptions.h"
+#include "util/file.h"
 
 using namespace texture;
 
