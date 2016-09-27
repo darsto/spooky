@@ -5,7 +5,7 @@
  */
 
 #include <memory>
-#include <SOIL.h>
+#include <SOIL2.h>
 
 #include "TexData.h"
 #include "exceptions.h"

@@ -9,8 +9,8 @@
 
 Menu::Menu() : Window() {
 #ifdef DEBUG
-    m_guiElements.push_back(std::make_unique<GuiElement>(GuiPos::BOTTOM | GuiPos::LEFT, 6, 8, 35, 35, "logo1"));
-    m_guiElements.push_back(std::make_unique<GuiText>(std::string("Dev Build: ") + __DATE__ + " " + __TIME__, 48, 15, GuiPos::BOTTOM | GuiPos::LEFT, 24, 0xffffffff, 0));
+    m_guiElements.push_back(std::make_unique<GuiElement>(6, 8, 35, 35, "logo1"));
+    m_guiElements.push_back(std::make_unique<GuiText>(std::string("Dev Build: ") + __DATE__ + " " + __TIME__, 48, 15, 24, 0xffffffff, 0));
 #endif
 }
 

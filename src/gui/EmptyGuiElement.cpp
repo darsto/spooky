@@ -7,7 +7,7 @@
 #include "EmptyGuiElement.h"
 
 EmptyGuiElement::EmptyGuiElement()
-    : GuiElement(nullptr, GuiPos::LEFT, 0, 0, 0, 0, "", 0) {
+    : GuiElement(nullptr, 0, 0, 0, 0, "", 0) {
 
 }
 

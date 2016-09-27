@@ -42,8 +42,7 @@ namespace texture {
         /**
          * The constructor. Loads texture from image on the physical drive.
          * @param fileName to the file, relative to data/textures/
-         * @param flags
-         * @return
+         * @param flags flags to use during image read
          */
         TexData(const std::string &fileName, int flags = LoadFlag::LOAD_NORMAL);
 

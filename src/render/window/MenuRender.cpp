@@ -13,7 +13,7 @@
 #include "render/opengl.h"
 #include "render/RenderContext.h"
 #include "render/gui/GuiElementRender.h"
-#include "render/font/TextRender.h"
+#include "render/gui/TextRender.h"
 
 MenuRender::MenuRender(const RenderContext &renderContext)
     : WindowRender(renderContext),
@@ -23,7 +23,7 @@ void MenuRender::reinit() {
     m_projectionMatrix = glm::ortho(0.0f, static_cast<float>(m_renderContext.windowWidth()), 0.0f, static_cast<float>(m_renderContext.windowHeight()));
 
     guiRenders.clear();
-    guiRenders.emplace(GuiElement::TYPE, std::make_unique<GuiElementRender>(m_renderContext, "gui", "gui"));
+    guiRenders.emplace(GuiElement::TYPE, std::make_unique<GuiElementRender>(m_renderContext));
     guiRenders.emplace(GuiText::TYPE, std::make_unique<TextRender>(m_renderContext));
 }
 
@@ -40,7 +40,7 @@ void MenuRender::render(const Window &window) {
     glClearColor(0.7, 0.7, 0.7, 0.0);
     glClear(GL_COLOR_BUFFER_BIT);
     for (auto &guiElement : menu.guiElements()) {
-        guiElementRender(*guiElement).render(*guiElement, m_projectionMatrix, m_viewMatrix, 1.0f);
+        guiElementRender(*guiElement).render(*guiElement, m_projectionMatrix, m_viewMatrix);
     }
 
     GLenum err;
@@ -49,7 +49,7 @@ void MenuRender::render(const Window &window) {
     }
 }
 
-GuiElementRender &MenuRender::guiElementRender(const GuiElement &element) const {
+GuiRenderable &MenuRender::guiElementRender(const GuiElement &element) const {
     return *guiRenders.at(element.type());
 }
 

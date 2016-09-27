@@ -10,6 +10,7 @@
  */
 
 #include <memory>
+#include <regex>
 #include <cstdlib>
 
 #include "Atlas.h"
@@ -22,11 +23,9 @@
 
 using namespace texture;
 
-const std::regex Atlas::FILE_EXTENSION_REGEX = std::regex("(.*)(\\.(jpg|png|gif))", std::regex::ECMAScript | std::regex::icase);
-
-Atlas::Atlas(const std::string &name, uint32_t channels, bool mipmaps)
+Atlas::Atlas(const std::string &name, uint32_t channels, bool mipmaps, const std::string &extensions)
     : m_path(name),
-      m_tileNames(util::collection::filter(util::file::list(util::file::path<util::file::type::texture>(name).c_str()), FILE_EXTENSION_REGEX)) {
+      m_tileNames(util::collection::filter(util::file::list(util::file::path<util::file::type::texture>(name).c_str()), std::regex("(.*)(\\.(" + extensions + "))", std::regex::ECMAScript | std::regex::icase))) {
 
     PROF_START(load);
     for (const std::string &tile : m_tileNames) {
@@ -107,5 +106,3 @@ const std::vector<TexData> &Atlas::atlasData() const {
 std::vector<TexData> &Atlas::atlasData() {
     return m_atlasData;
 }
-
-Atlas::~Atlas() = default;

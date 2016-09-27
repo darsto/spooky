@@ -80,8 +80,8 @@ IF (NOT SIMULATION)
             render/window/MenuRender.h
             render/gui/GuiElementRender.cpp
             render/gui/GuiElementRender.h
-            render/font/TextRender.cpp
-            render/font/TextRender.h
+            render/gui/TextRender.cpp
+            render/gui/TextRender.h
             render/texture/Atlas.cpp
             render/texture/Atlas.h
             render/texture/exceptions.cpp
@@ -92,7 +92,7 @@ IF (NOT SIMULATION)
             render/texture/Resampler.h
             render/texture/Texture.cpp
             render/texture/Texture.h
-            )
+            render/gui/GuiRenderable.h)
 
     SET(SOURCE_FILES ${SOURCE_FILES} ${SOURCE_RENDER_FILES})
 ENDIF ()

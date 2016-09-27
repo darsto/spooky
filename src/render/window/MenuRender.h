@@ -13,6 +13,7 @@
 #include <unordered_map>
 
 #include "WindowRender.h"
+#include "render/gui/GuiRenderable.h"
 
 class GuiElementRender;
 class GuiElement;
@@ -31,7 +32,7 @@ protected:
      * @param element element to get render for
      * @return internally-held render of the given element's type
      */
-    GuiElementRender &guiElementRender(const GuiElement &element) const;
+    GuiRenderable &guiElementRender(const GuiElement &element) const;
 
 protected:
     /**
@@ -39,7 +40,7 @@ protected:
      * Maps class types to corresponding GuiElementRender instances.
      * Uses <guiElement>::TYPE as the key.
      */
-    std::unordered_map<uint32_t, std::unique_ptr<GuiElementRender>> guiRenders;
+    std::unordered_map<uint32_t, std::unique_ptr<GuiRenderable>> guiRenders;
     glm::mat4 m_viewMatrix;
     glm::mat4 m_projectionMatrix;
 };

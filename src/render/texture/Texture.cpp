@@ -5,11 +5,10 @@
  */
 
 #include <type_traits>
-#include <SOIL2.h>
 
 #include "Texture.h"
-#include "exceptions.h"
 #include "util/file.h"
+#include "exceptions.h"
 
 using namespace texture;
 
@@ -26,6 +25,7 @@ void Texture::loadTex(TexData &tex, uint32_t level) {
     if (level == 0) {
         m_width = tex.width();
         m_height = tex.height();
+        m_channels = tex.channels();
     }
     
     uint32_t channels = tex.channels();

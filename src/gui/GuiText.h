@@ -26,7 +26,7 @@ public:
         return (character >= 0 && character < 64) ? (double) (GLYPH_SIZE[character] % 64) / 64 : TEXT_SPACESIZE;
     }
 
-    GuiText(const std::string &string, int x, int y, GuiPos position, float scale, int color, char flags);
+    GuiText(const std::string &string, int x, int y, float scale, int color, char flags);
     const std::string &text() const;
     float scale() const;
     char glyphPos(char character) const;

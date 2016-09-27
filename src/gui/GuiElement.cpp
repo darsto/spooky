@@ -10,9 +10,8 @@
 
 constexpr const unsigned int GuiElement::TYPE;
 
-GuiElement::GuiElement(const GuiElement *parent, GuiPos pos, double x, double y, double width, double height, const std::string &tex, int color)
+GuiElement::GuiElement(const GuiElement *parent, double x, double y, double width, double height, const std::string &tex, int color)
     : m_parent(parent),
-      m_pos(pos),
       m_x(x),
       m_y(y),
       m_width(width),
@@ -23,17 +22,13 @@ GuiElement::GuiElement(const GuiElement *parent, GuiPos pos, double x, double y,
 
 }
 
-GuiElement::GuiElement(GuiPos pos, double x, double y, double width, double height, const std::string &tex, int color)
-    : GuiElement(&EmptyGuiElement::instance(), pos, x, y, width, height, tex, color) {
+GuiElement::GuiElement(double x, double y, double width, double height, const std::string &tex, int color)
+    : GuiElement(&EmptyGuiElement::instance(), x, y, width, height, tex, color) {
 
 }
 
 bool GuiElement::contains(double coordX, double coordY) {
     return coordX >= x() && coordY >= y() && coordX <= x() + width() && coordY < y() + height();
-}
-
-GuiPos GuiElement::pos() const {
-    return m_pos;
 }
 
 double GuiElement::x() const {

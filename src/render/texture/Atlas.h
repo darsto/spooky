@@ -11,7 +11,6 @@
 #include <string>
 #include <memory>
 #include <unordered_map>
-#include <regex>
 
 #include "TexData.h"
 #include "util/Rectangle.h"
@@ -32,8 +31,9 @@ namespace texture {
          * Creates texture atlas out of given directory relative to data/textures/ path.
          * All image files in that directory will be put in the atlas.
          * @param name name of the directory in data/textures/ containing texture tiles
+         * @param extensions file extensions to filter files in given dir with, separated by | sign, by default "jpg|png|gif"
          */
-        Atlas(const std::string &name, uint32_t channels, bool mipmaps);
+        Atlas(const std::string &name, uint32_t channels, bool mipmaps, const std::string &extensions = "jpg|png|gif");
 
         /**
          * Get subelement of this atlas with given filename.
@@ -61,12 +61,6 @@ namespace texture {
          * @overload Atlas::atlasData()
          */
         std::vector<TexData> &atlasData();
-
-        /**
-         * The destructor.
-         * Frees texture memory.
-         */
-        virtual ~Atlas();
 
     private:
         /**
@@ -98,8 +92,6 @@ namespace texture {
         std::unordered_map<uint64_t, TexData> m_texData;
         std::vector<std::string> m_tileNames;
         std::vector<TexData> m_atlasData;
-
-        static const std::regex FILE_EXTENSION_REGEX;
     };
 }
 

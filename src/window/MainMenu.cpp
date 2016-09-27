@@ -23,7 +23,7 @@ MainMenu::MainMenu()
       m_guiFile(util::file::path<util::file::type::script>("mainmenu.gui")) {
 
     m_luaState["GuiElement"].setClass(kaguya::UserdataMetatable<GuiElement>()
-                                          .setConstructors<GuiElement(GuiPos, int, int, int, int, const std::string&, int)>()
+                                          .setConstructors<GuiElement(int, int, int, int, const std::string&, int)>()
     );
 
     m_luaState["registerGuiElement"] = kaguya::function([this](GuiElement &element) {
