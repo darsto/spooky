@@ -21,8 +21,9 @@ Application::Application()
 
 void Application::reinit() {
 #ifndef SIMULATION
-    m_renderer.reload();
+    m_renderer.switchWindow(*m_window);
 #endif
+    m_window->reload();
     m_timer.delta(); //if not called right now, first call in game loop would return a very huge value
     m_inputManager.reload();
 }
