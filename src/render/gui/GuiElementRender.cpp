@@ -12,7 +12,14 @@
 #include "Config.h"
 #include "render/RenderContext.h"
 
-texture::Atlas GuiElementRender::m_atlas("gui", 4, true);
+constexpr const bool MANUAL_MIPMAPS_ENABLED =
+#ifdef GL_TEXTURE_MAX_LEVEL
+    true;
+#else
+    false;
+#endif
+
+texture::Atlas GuiElementRender::m_atlas("gui", 4, MANUAL_MIPMAPS_ENABLED);
 
 GuiElementRender::GuiElementRender(const RenderContext &context)
     : GuiRenderable(context) {
@@ -20,11 +27,17 @@ GuiElementRender::GuiElementRender(const RenderContext &context)
     std::vector<texture::TexData> &texMipmaps = m_atlas.atlasData();
 
     m_texture.bindTexture();
+#ifdef GL_TEXTURE_MAX_LEVEL
     m_texture.samplerParameter(GL_TEXTURE_MAX_LEVEL, texMipmaps.size() - 1);
+#endif
 
     for (int level = 0; level < texMipmaps.size(); ++level) {
         m_texture.loadTex(texMipmaps[level], level);
     }
+
+#ifndef GL_TEXTURE_MAX_LEVEL
+    glGenerateMipmap(GL_TEXTURE_2D);
+#endif
 
     m_texture.filtering(texture::Texture::MagFilter::BILINEAR, texture::Texture::MinFilter::BILINEAR_MIPMAP);
     m_atlasSize = (uint32_t) std::sqrt<uint64_t>(m_atlas.getElementsNum());
