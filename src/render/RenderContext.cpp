@@ -7,16 +7,3 @@
 #include "RenderContext.h"
 
 RenderContext::RenderContext() {}
-
-void RenderContext::resize(uint32_t width, uint32_t height) {
-    m_windowWidth = width;
-    m_windowHeight = height;
-}
-
-uint32_t RenderContext::windowWidth() const {
-    return m_windowWidth;
-}
-
-uint32_t RenderContext::windowHeight() const {
-    return m_windowHeight;
-}

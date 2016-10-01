@@ -13,9 +13,7 @@ Menu::Menu()
 }
 
 void Menu::reload() {
-    for (auto &e : this->m_guiElements) {
-        //e->reinit(windowWidth, windowHeight);
-    }
+
 }
 
 void Menu::tick(double deltaTime) {

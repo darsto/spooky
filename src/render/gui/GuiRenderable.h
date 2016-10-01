@@ -8,8 +8,9 @@
 #define C003_RENDER_GUI_GUIRENDERABLE_H
 
 #include <glm/glm.hpp>
+#include "ApplicationContext.h"
+#include "render/RenderContext.h"
 
-class RenderContext;
 class GuiElement;
 
 /**
@@ -22,8 +23,9 @@ public:
      * Binds given context to this renderable.
      * @param context context to be bound with this renderable
      */
-    GuiRenderable(const RenderContext &context)
-        : m_renderContext(context) {}
+    GuiRenderable(const ApplicationContext &applicationContext, const RenderContext &context)
+        : m_applicationContext(applicationContext),
+          m_renderContext(context) {}
 
     /**
      * Render given element at its (x,y) position.
@@ -34,9 +36,7 @@ public:
     virtual void render(const GuiElement &element, glm::mat4 projectionMatrix, glm::mat4 viewMatrix) = 0;
     
 protected:
-    /**
-     * RenderContext reference used to retrieve e.g. window dimensions.
-     */
+    const ApplicationContext &m_applicationContext;
     const RenderContext &m_renderContext;
 };
 

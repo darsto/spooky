@@ -21,8 +21,8 @@ constexpr const bool MANUAL_MIPMAPS_ENABLED =
 
 texture::Atlas GuiElementRender::m_atlas("gui", 4, MANUAL_MIPMAPS_ENABLED);
 
-GuiElementRender::GuiElementRender(const RenderContext &context)
-    : GuiRenderable(context) {
+GuiElementRender::GuiElementRender(const ApplicationContext &applicationContext, const RenderContext &context)
+    : GuiRenderable(applicationContext, context) {
 
     std::vector<texture::TexData> &texMipmaps = m_atlas.atlasData();
 
@@ -112,7 +112,7 @@ void GuiElementRender::render(const GuiElement &element, glm::mat4 projectionMat
 
         double scale = 1.0;
 
-        glm::mat4 tmpModelMatrix = glm::translate(m_modelMatrix, glm::vec3(- (int32_t) (element.x() * scale), (int32_t) (m_renderContext.windowHeight() - element.y() * scale), 0.0f));
+        glm::mat4 tmpModelMatrix = glm::translate(m_modelMatrix, glm::vec3(- (int32_t) (element.x() * scale), (int32_t) (m_applicationContext.windowHeight() - element.y() * scale), 0.0f));
 
         tmpModelMatrix = glm::translate(tmpModelMatrix, glm::vec3(0.5 * element.width() * scale, 0.5 * element.height() * scale, 0.0)); // Translate to the middle of the entity
         tmpModelMatrix = glm::rotate(tmpModelMatrix, (const float) element.angle(), glm::vec3(0.0f, 0.0f, 1.0f)); // Apply rotation

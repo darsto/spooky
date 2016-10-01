@@ -18,6 +18,8 @@
 
 #endif // USES_SDL && USES_KEYBOARD
 
+constexpr const unsigned int MainMenu::TYPE;
+
 MainMenu::MainMenu()
     : Menu(),
       m_guiFile(util::file::path<util::file::type::script>("mainmenu.gui")) {
@@ -29,12 +31,14 @@ MainMenu::MainMenu()
     m_luaState["registerGuiElement"] = kaguya::function([this](GuiElement &element) {
         m_guiElements.push_back(std::make_unique<GuiElement>(element));
     });
-
-    m_luaState.dofile(m_guiFile);
 }
 
 void MainMenu::reload() {
-    Menu::reload();
+    m_luaState["windowWidth"] = m_applicationContext->windowWidth();
+    m_luaState["windowHeight"] = m_applicationContext->windowHeight();
+
+    m_guiElements.clear();
+    m_luaState.dofile(m_guiFile);
 }
 
 void MainMenu::tick(double deltaTime) {
@@ -46,7 +50,6 @@ void MainMenu::handleKeypress(const Input::KeypressTable &keypresses) {
     if (keypresses[SDL_SCANCODE_F5].pressed()) {
         m_guiElements.clear();
         m_luaState.dofile(m_guiFile);
-        reload();
     }
 #endif
 }

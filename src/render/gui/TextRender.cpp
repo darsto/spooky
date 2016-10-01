@@ -14,8 +14,8 @@
 
 texture::TexData TextRender::m_texData("font.png");
 
-TextRender::TextRender(const RenderContext &context)
-    : GuiRenderable(context) {
+TextRender::TextRender(const ApplicationContext &applicationContext, const RenderContext &context)
+    : GuiRenderable(applicationContext, context) {
 
     m_texture.bindTexture();
     m_texture.loadTex(m_texData, 0);
@@ -107,7 +107,7 @@ void TextRender::render(const GuiElement &element, glm::mat4 projectionMatrix, g
                 x += (text.TEXT_SPACESIZE + text.TEXT_SPACING) * scale;
                 continue;
             }
-            glm::mat4 tmpModelMatrix = glm::translate(m_modelMatrix, glm::vec3(-x, (int32_t) m_renderContext.windowHeight() - y, 0.0f));
+            glm::mat4 tmpModelMatrix = glm::translate(m_modelMatrix, glm::vec3(-x, (int32_t) m_applicationContext.windowHeight() - y, 0.0f));
             tmpModelMatrix = glm::scale(tmpModelMatrix, glm::vec3(scale, scale, 1.0f));
 
             m_shaderProgram.setUniform("modelViewMatrix", viewMatrix * tmpModelMatrix);

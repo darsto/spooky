@@ -23,37 +23,6 @@ public:
      * The constructor.
      */
     RenderContext();
-
-    /**
-     * Updates internally-held window dimensions.
-     * Note that this method does not change the size of the window.
-     * @param width new width of the window
-     * @param height new height of the window
-     */
-    void resize(uint32_t width, uint32_t height);
-
-    /**
-     * Get the window's width.
-     * @return windows's width
-     */
-    uint32_t windowWidth() const;
-
-    /**
-     * Get the window's height.
-     * @return windows's height
-     */
-    uint32_t windowHeight() const;
-
-private:
-    /**
-     * Current window's width.
-     */
-    uint32_t m_windowWidth = 0;
-
-    /**
-     * Current windows' height.
-     */
-    uint32_t m_windowHeight = 0;
 };
 
 #endif //C003_RENDER_RENDERCONTEXT_H

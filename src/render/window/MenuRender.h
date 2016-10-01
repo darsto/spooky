@@ -20,7 +20,7 @@ class GuiElement;
 
 class MenuRender : public WindowRender {
 public:
-    MenuRender(const RenderContext &renderContext);
+    MenuRender(const ApplicationContext &applicationContext, const RenderContext &renderContext);
     virtual void reinit() override;
     virtual void reload() override;
     virtual void render(const Window &window) override;

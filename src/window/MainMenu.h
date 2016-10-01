@@ -24,7 +24,7 @@ public:
     virtual void handleClick(const Input::TouchPoint &p) override;
     virtual ~MainMenu() override;
 
-    static const unsigned int TYPE = 1;
+    static constexpr const unsigned int TYPE = 1;
 
     const unsigned int type() const override {
         return TYPE;

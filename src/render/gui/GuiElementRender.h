@@ -21,7 +21,7 @@ class RenderContext;
 
 class GuiElementRender : public GuiRenderable {
 public:
-    GuiElementRender(const RenderContext &context);
+    GuiElementRender(const ApplicationContext &applicationContext, const RenderContext &context);
     virtual void render(const GuiElement &element, glm::mat4 projectionMatrix, glm::mat4 viewMatrix) override;
     ~GuiElementRender();
 

@@ -28,4 +28,18 @@ const Config &ApplicationContext::config() const {
     return m_config;
 }
 
+void ApplicationContext::resize(uint32_t width, uint32_t height) {
+    m_windowWidth = width;
+    m_windowHeight = height;
+}
+
+uint32_t ApplicationContext::windowWidth() const {
+    return m_windowWidth;
+}
+
+uint32_t ApplicationContext::windowHeight() const {
+    return m_windowHeight;
+}
+
+
 ApplicationContext::~ApplicationContext() = default;

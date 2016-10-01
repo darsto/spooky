@@ -39,13 +39,51 @@ public:
     const Config &config() const;
 
     /**
+     * Updates internally-held window dimensions.
+     * Note that this method does not change the size of the window.
+     * @param width new width of the window
+     * @param height new height of the window
+     */
+    void resize(uint32_t width, uint32_t height);
+
+    /**
+     * Get the window's width.
+     * @return windows's width
+     */
+    uint32_t windowWidth() const;
+
+    /**
+     * Get the window's height.
+     * @return windows's height
+     */
+    uint32_t windowHeight() const;
+
+    /**
      * The destructor.
      */
     ~ApplicationContext();
 
 private:
+    /**
+     * Private reference to the application object.
+     * This should not be directly exposed.
+     */
     Application &m_application;
+
+    /**
+     * Global config instance.
+     */
     Config m_config;
+
+    /**
+     * Current window's width.
+     */
+    uint32_t m_windowWidth = 0;
+
+    /**
+     * Current windows' height.
+     */
+    uint32_t m_windowHeight = 0;
 };
 
 #endif //C003_APPLICATIONCONTEXT_H

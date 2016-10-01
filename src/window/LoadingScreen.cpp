@@ -47,3 +47,7 @@ void LoadingScreen::handleKeypress(const Input::KeypressTable &keypresses) {
 double LoadingScreen::progress() {
     return std::min(static_cast<double>(step) / MAX_STEPS, 1.0);
 }
+
+const unsigned int LoadingScreen::type() const {
+    return MainMenu::TYPE;
+}

@@ -87,7 +87,7 @@ private:
     ApplicationContext &m_applicationContext;
     RenderContext m_renderContext;
 
-    std::vector<std::unique_ptr<WindowRender>> windowRenders;
+    std::unordered_map<uint32_t, std::unique_ptr<WindowRender>> windowRenders;
 };
 
 #endif //C003_RENDER_RENDERMANAGER_H

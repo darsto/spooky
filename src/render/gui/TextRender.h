@@ -12,7 +12,7 @@
 
 class TextRender : public GuiRenderable {
 public:
-    TextRender(const RenderContext &context);
+    TextRender(const ApplicationContext &applicationContext, const RenderContext &context);
     virtual void render(const GuiElement &element, glm::mat4 projectionMatrix, glm::mat4 viewMatrix) override;
     ~TextRender();
 

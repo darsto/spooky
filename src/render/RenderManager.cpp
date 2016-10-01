@@ -63,7 +63,7 @@ bool RenderManager::initWindow() {
                 }
             }
         }
-        m_renderContext.resize(windowWidth, windowHeight);
+        m_applicationContext.resize(windowWidth, windowHeight);
     }
 #endif // USES_SDL
     return success;
@@ -83,8 +83,7 @@ bool RenderManager::initGL() {
 }
 
 bool RenderManager::initRenders() {
-    windowRenders.insert(windowRenders.begin() + LoadingScreen::TYPE, std::make_unique<MenuRender>(m_renderContext));
-    windowRenders.insert(windowRenders.begin() + MainMenu::TYPE, std::make_unique<MenuRender>(m_renderContext));
+    windowRenders.emplace(MainMenu::TYPE, std::make_unique<MenuRender>(m_applicationContext, m_renderContext));
     return true;
 }
 
@@ -96,7 +95,7 @@ void RenderManager::render() {
 }
 
 void RenderManager::reload() {
-    glViewport(0, 0, m_renderContext.windowWidth(), m_renderContext.windowHeight());
+    glViewport(0, 0, m_applicationContext.windowWidth(), m_applicationContext.windowHeight());
     m_windowRender->reload();
 }
 
@@ -108,13 +107,18 @@ RenderManager::~RenderManager() {
 }
 
 void RenderManager::switchWindow(Window &window) {
+    auto render = windowRenders.find(window.type());
+    if (render == windowRenders.end()) {
+        throw std::runtime_error("Trying to init window without any bound render.");
+    }
+
     m_currentWindow = &window;
-    m_windowRender = windowRenders[window.type()].get();
+    m_windowRender = render->second.get();
     m_windowRender->reinit();
     m_windowRender->reload();
 }
 
 void RenderManager::resize(uint32_t width, uint32_t height) {
-    m_renderContext.resize(width, height);
+    m_applicationContext.resize(width, height);
     reload();
 }
