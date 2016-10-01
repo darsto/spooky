@@ -1,7 +1,10 @@
 # Installation
 Note that building requires a linux machine.
 
-[TOC]
+##### Table of Contents
+[Linux builds](#linux-builds)  
+[Windows builds](#windows-builds)  
+[Android builds](#android-builds)  
 
 ## Linux builds
 Linux builds depend on Lua, SDL2, GLEW, glm and OpenGL 2.1. Also they require [kaguya][1] and [SOIL2][2] libraries, but these are included as Spooky's git submodules.
@@ -21,7 +24,7 @@ cmake ../.. && make
 If everything goes well, an executable file should appear in spooky/bin directory.
 
 ## Windows builds
-Library dependencies are the same as in linux builds. Spooky is known to compile Windows builds via [MXE][3].
+Library dependencies are the same as in linux builds. Spooky is known to compile Windows builds via [MXE][3].  
 Follow the installation instructions on the [mxe website][4], then install the following mxe packages:
 ```
 make gcc lua sdl2 glew cmake glm
@@ -37,10 +40,10 @@ i686-w64-mingw32.static-cmake ../.. && make
 Exe file should appear in spooky/bin directory.
 
 ## Android builds
-Android builds consist of 2 parts: C++ cores (shared librarier) and a Java wrapper. C++ core will need to be compiled multiple times for different CPU architectures.
+Android builds consist of 2 parts: C++ cores (shared libraries) and a Java wrapper. C++ core will need to be compiled multiple times for different CPU architectures.
 
-First of all, install Android [NDK][5] & [SDK][6] (scroll to the bottom of the page for just an SDK)
-C++ core is known to build with a [standalone toolchain][7].
+First of all, install Android [NDK][5] & [SDK][6] (scroll to the bottom of the page for just an SDK).  
+C++ cores are known to build with a [standalone toolchain][7].
 
 The following three ABIs should cover most of the CPU architectures used by Android devices:
 * armeabi (ARMv5, ARMv6)
