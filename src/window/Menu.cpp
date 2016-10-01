@@ -7,11 +7,9 @@
 #include "Menu.h"
 #include "gui/GuiText.h"
 
-Menu::Menu() : Window() {
-#ifdef DEBUG
-    m_guiElements.push_back(std::make_unique<GuiElement>(6, 8, 35, 35, "logo1"));
-    m_guiElements.push_back(std::make_unique<GuiText>(std::string("Dev Build: ") + __DATE__ + " " + __TIME__, 48, 15, 24, 0xffffffff, 0));
-#endif
+Menu::Menu()
+    : Window() {
+
 }
 
 void Menu::reload() {

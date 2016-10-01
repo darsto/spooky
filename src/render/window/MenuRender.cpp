@@ -17,7 +17,13 @@
 
 MenuRender::MenuRender(const RenderContext &renderContext)
     : WindowRender(renderContext),
-      m_viewMatrix(glm::lookAt(glm::vec3(0, 0, 0.0f), glm::vec3(0, 0, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f))) {}
+      m_viewMatrix(glm::lookAt(glm::vec3(0, 0, 0.0f), glm::vec3(0, 0, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f))) {
+
+#ifdef DEBUG
+    m_debugOverlayElements.push_back(std::make_unique<GuiElement>(6, 8, 35, 35, "logo1"));
+    m_debugOverlayElements.push_back(std::make_unique<GuiText>(std::string("Dev Build: ") + __DATE__ + " " + __TIME__, 48, 15, 24, 0xffffffff, 0));
+#endif
+}
 
 void MenuRender::reinit() {
     m_projectionMatrix = glm::ortho(0.0f, static_cast<float>(m_renderContext.windowWidth()), 0.0f, static_cast<float>(m_renderContext.windowHeight()));
@@ -39,7 +45,12 @@ void MenuRender::render(const Window &window) {
 
     glClearColor(0.7, 0.7, 0.7, 0.0);
     glClear(GL_COLOR_BUFFER_BIT);
+
     for (auto &guiElement : menu.guiElements()) {
+        guiElementRender(*guiElement).render(*guiElement, m_projectionMatrix, m_viewMatrix);
+    }
+
+    for (auto &guiElement : m_debugOverlayElements) {
         guiElementRender(*guiElement).render(*guiElement, m_projectionMatrix, m_viewMatrix);
     }
 

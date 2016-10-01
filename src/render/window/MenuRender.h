@@ -43,6 +43,7 @@ protected:
     std::unordered_map<uint32_t, std::unique_ptr<GuiRenderable>> guiRenders;
     glm::mat4 m_viewMatrix;
     glm::mat4 m_projectionMatrix;
+    std::vector<std::unique_ptr<GuiElement>> m_debugOverlayElements;
 };
 
 #endif //C003_RENDER_WINDOW_MENURENDER_H
