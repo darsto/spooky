@@ -56,7 +56,6 @@ SET(SOURCE_FILES
         gui/GuiElement.h
         gui/GuiText.cpp
         gui/GuiText.h
-        gui/EmptyGuiElement.cpp
         gui/EmptyGuiElement.h
         )
 

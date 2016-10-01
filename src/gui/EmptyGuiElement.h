@@ -25,18 +25,33 @@ public:
     /**
      * Returns 0
      */
-    double x() const override;
+    double x() const override {
+        return 0;
+    }
 
     /**
      * Returns 0
      */
-    double y() const override;
+    double y() const override {
+        return 0;
+    }
 
 private:
     /**
      * The constructor.
      */
-    EmptyGuiElement();
+    EmptyGuiElement()
+        : GuiElement(nullptr, 0, 0, 0, 0, "", 0) {}
+
+    /**
+     * Copy operator. Deleted.
+     */
+    EmptyGuiElement(const EmptyGuiElement& other) = delete;
+
+    /**
+     * Copy assignment operator. Deleted.
+     */
+    EmptyGuiElement& operator=(const EmptyGuiElement& other) = delete;
 };
 
 #endif //C003_GUI_EMPTYGUIELEMENT_H
