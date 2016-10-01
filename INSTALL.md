@@ -45,7 +45,7 @@ Android builds consist of 2 parts: C++ cores (shared libraries) and a Java wrapp
 First of all, install Android [NDK][5] & [SDK][6] (scroll to the bottom of the page for just an SDK).  
 C++ cores are known to build with a [standalone toolchain][7].
 
-The following three ABIs should cover most of the CPU architectures used by Android devices:
+The following four ABIs should cover most of the CPU architectures used by Android devices:
 * armeabi (ARMv5, ARMv6)
 * armeabi-v7a (ARMv7)
 * x86
@@ -56,7 +56,8 @@ In the following instructions armeabi ABI will be used as an example.
 After downloading all the development kits and the toolchain, download and install the following libraries inside Android environment:
 * [Lua][8] 5.3 (you can use projects like [LuaDist][9], as they use cmake build system)
 * [glm][10] (it's header-only library, just copy files to the include dir)
-They should be placed inside toolchain's *CMAKE_FIND_ROOT_PATH*, e.g *CMAKE_INSTALL_PREFIX*
+
+These should be placed inside toolchain's *CMAKE_FIND_ROOT_PATH*, e.g *CMAKE_INSTALL_PREFIX*
 
 LuaDist can be built using standard cmake provided with mentioned before toolchain file:
 ```
@@ -79,12 +80,12 @@ git clone -b android-wrapper --single-branch https://github.com/darsto/spooky.gi
 ```
 Copy (or symlink) the just compiled c++ shared library into *spooky-android/app/src/main/jniLibs/armeabi/* (create any missing folders if they're missing). If you've compiled multiple c++ cores for different CPU architectures, you can copy (or symlink) all of them.
 
-And build the apk:
+Lastly, build the apk:
 ```
 cd spooky-android
 ./gradlew assembleDev
 ```
-Apk file should appear in *spooky-android/app/build/outputs/apk/* directory
+It should appear in *spooky-android/app/build/outputs/apk/* directory
 
 [1]: https://github.com/satoren/kaguya
 [2]: https://github.com/darsto/SOIL2
