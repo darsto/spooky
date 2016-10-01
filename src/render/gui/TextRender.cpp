@@ -99,7 +99,7 @@ void TextRender::render(const GuiElement &element, glm::mat4 projectionMatrix, g
         for (int i = 0; i < text.text().length(); i++) {
             if (text.text().at(i) == '\n') {
                 x = text.x();
-                y += (0.61 + 2 * text.TEXT_SPACING) * scale;
+                y += (0.9 + text.TEXT_SPACING) * scale;
                 continue;
             }
             int texId = text.texPos(i);

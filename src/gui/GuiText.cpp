@@ -10,7 +10,7 @@ constexpr const uint32_t GuiText::TYPE;
 GuiText::GuiText(const std::string &string, int x, int y, float scale, int color, char flags)
     : GuiElement(x, y, 0, 0, "font", color),
       m_text(string),
-      m_scale(scale),
+      m_scale(scale * 1.64f),
       m_flags(flags) {
 
     this->recalculateSize();
@@ -66,7 +66,7 @@ void GuiText::recalculateSize() {
         if (i == this->text().length() || this->text().at(i) == '\n') {
             if (tmp_width > this->m_width) this->m_width = tmp_width;
             tmp_width = 0;
-            this->m_height += (0.61 + 2 * TEXT_SPACING) * this->scale();
+            this->m_height += (0.9 + TEXT_SPACING) * this->scale();
             continue;
         }
         char pos = this->glyphPos(this->text().at(i));
