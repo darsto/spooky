@@ -19,10 +19,6 @@ MenuRender::MenuRender(const RenderContext &renderContext)
     : WindowRender(renderContext),
       m_viewMatrix(glm::lookAt(glm::vec3(0, 0, 0.0f), glm::vec3(0, 0, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f))) {
 
-#ifdef DEBUG
-    m_debugOverlayElements.push_back(std::make_unique<GuiElement>(6, 8, 35, 35, "logo1"));
-    m_debugOverlayElements.push_back(std::make_unique<GuiText>(std::string("Dev Build: ") + __DATE__ + " " + __TIME__, 48, 15, 24, 0xffffffff, 0));
-#endif
 }
 
 void MenuRender::reinit() {
@@ -38,6 +34,12 @@ void MenuRender::reload() {
     glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 
     m_projectionMatrix = glm::ortho(0.0f, static_cast<float>(m_renderContext.windowWidth()), 0.0f, static_cast<float>(m_renderContext.windowHeight()));
+
+#ifdef DEBUG
+    m_debugOverlayElements.clear();
+    m_debugOverlayElements.push_back(std::make_unique<GuiElement>(6, m_renderContext.windowHeight() - 35 - 8, 35, 35, "logo1"));
+    m_debugOverlayElements.push_back(std::make_unique<GuiText>(std::string("Dev Build: ") + __DATE__ + " " + __TIME__, 48, m_renderContext.windowHeight() - 17 - 16, 17, 0xffffffff, 0));
+#endif
 }
 
 void MenuRender::render(const Window &window) {
