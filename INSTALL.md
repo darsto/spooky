@@ -78,7 +78,7 @@ Now, get the Java wrapper:
 ```
 git clone -b android-wrapper --single-branch https://github.com/darsto/spooky.git spooky-android
 ```
-Copy (or symlink) the just compiled c++ shared library into *spooky-android/app/src/main/jniLibs/armeabi/* (create any missing folders if they're missing). If you've compiled multiple c++ cores for different CPU architectures, you can copy (or symlink) all of them.
+Copy (or symlink) the just compiled c++ shared library into *spooky-android/app/src/main/jniLibs/armeabi/* (create any missing folders). If you've compiled multiple c++ cores for different CPU architectures, you can copy (or symlink) all of them.
 
 Lastly, build the apk:
 ```
