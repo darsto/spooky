@@ -30,7 +30,7 @@
  * Operating systems enum
  */
 enum class OS {
-    WIN32 = 0,
+    WIN32,
     UNIX,
     ANDROID,
     IOS,
@@ -48,7 +48,7 @@ enum class OS {
     #define USES_KEYBOARD
 
 
-#elif __APPLE__
+#elif defined(__APPLE__)
 #define DEF_APPLE
 //------------APPLE--------------
 #include "TargetConditionals.h"
@@ -71,7 +71,7 @@ enum class OS {
 #else
     #error "Unknown Apple platform"
 #endif
-#elif __ANDROID__
+#elif defined(__ANDROID__)
 #define DEF_ANDROID
 //------------ANDROID------------
     #define OPERATING_SYSTEM OS::ANDROID

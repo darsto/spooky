@@ -2,15 +2,15 @@
 // Created by dar on 2/15/16.
 //
 
-#include <gui/GuiElement.h>
-#include <gui/GuiText.h>
+#include "gui/GuiElement.h"
+#include "gui/GuiText.h"
 #include "MainMenu.h"
 #include "LoadingScreen.h"
 #include "util/file.h"
 #include <string>
-#include <core/input/InputManager.h>
-#include <util/log.h>
-#include <ApplicationContext.h>
+#include "core/input/InputManager.h"
+#include "util/log.h"
+#include "ApplicationContext.h"
 
 #if defined(USES_SDL) && defined(USES_KEYBOARD)
 

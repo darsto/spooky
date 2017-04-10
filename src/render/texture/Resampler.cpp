@@ -18,26 +18,26 @@ TexData Resampler::downsample(const TexData &inData, uint32_t downscaleRate) {
     std::fill_n(outData.get(), outData.height() * outData.channels(), 0);
 
     /** temporary buffer to hold non-normalized pixel data */
-    double tmp[outChannels]{};
+    double tmp[4]{}; //TODO assert(?)
 
-    int64_t samplesCount = downscaleRate;
-    for (int y = 0; y < outHeight; ++y) {
-        for (int x = 0; x < outWidth; ++x) {
+    uint32_t samplesCount = downscaleRate;
+    for (uint32_t y = 0; y < outHeight; ++y) {
+        for (uint32_t x = 0; x < outWidth; ++x) {
 
             double weightSum = 0.0;
-            for (int sampleNum = 0; sampleNum < samplesCount; ++sampleNum) {
+            for (uint32_t sampleNum = 0; sampleNum < samplesCount; ++sampleNum) {
                 double weight = Resampler::weight(sampleNum - (downscaleRate - 1) / 2);
                 uint32_t inPixelPos = inData.channels() * ((y * inData.width() + x) * downscaleRate + sampleNum);
-                for (int curChannel = 0; curChannel < outChannels; ++curChannel) {
+                for (uint32_t curChannel = 0; curChannel < outChannels; ++curChannel) {
                     tmp[curChannel] += inData[inPixelPos + curChannel] * weight;
                 }
                 weightSum += weight;
             }
 
             uint32_t outPixelPos = outChannels * (y * outWidth + x);
-            for (int curChannel = 0; curChannel < outChannels; ++curChannel) {
+            for (uint32_t curChannel = 0; curChannel < outChannels; ++curChannel) {
                 tmp[curChannel] /= weightSum;
-                outData[outPixelPos + curChannel] = clamp((uint32_t) tmp[curChannel]);
+                outData[outPixelPos + curChannel] = clamp((int32_t) tmp[curChannel]);
                 tmp[curChannel] = 0;
             }
         }

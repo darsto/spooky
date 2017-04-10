@@ -22,19 +22,19 @@ public:
     static constexpr const double TEXT_SPACESIZE = 0.2;
     static constexpr const double TEXT_SPACING = 0.1; //space between letters
 
-    static constexpr const double getGlyphSize(char character) {
-        return (character >= 0 && character < 64) ? (double) (GLYPH_SIZE[character] % 64) / 64 : TEXT_SPACESIZE;
+    static constexpr double getGlyphSize(char character) {
+        return (character >= 0 && character < 64) ? (double) (GLYPH_SIZE[(int) character] % 64) / 64 : TEXT_SPACESIZE;
     }
 
-    GuiText(const std::string &string, int x, int y, float scale, int color, char flags);
+    GuiText(const std::string &string, int x, int y, float scale, uint32_t color, char flags);
     const std::string &text() const;
     float scale() const;
     char glyphPos(char character) const;
-    int texPos(int i) const;
+    int texPos(size_t i) const;
 
     static constexpr const unsigned int TYPE = 1;
 
-    const unsigned int type() const override {
+    unsigned int type() const override {
         return TYPE;
     }
 

@@ -24,23 +24,23 @@ Rectangle::Rectangle(const uint32_t width, const uint32_t height)
 
 }
 
-const uint32_t Rectangle::x() const {
+uint32_t Rectangle::x() const {
     return m_x;
 }
 
-const uint32_t Rectangle::y() const {
+uint32_t Rectangle::y() const {
     return m_y;
 }
 
-const uint32_t Rectangle::width() const {
+uint32_t Rectangle::width() const {
     return m_width;
 }
 
-const uint32_t Rectangle::height() const {
+uint32_t Rectangle::height() const {
     return m_height;
 }
 
-const uint32_t Rectangle::field() const {
+uint32_t Rectangle::field() const {
     return m_width * m_height;
 }
 

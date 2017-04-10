@@ -31,7 +31,7 @@ public:
      */
     double progress();
 
-    const unsigned int type() const override;
+    unsigned int type() const override;
 
 private:
     /*

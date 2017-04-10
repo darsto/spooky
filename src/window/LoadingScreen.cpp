@@ -48,6 +48,6 @@ double LoadingScreen::progress() {
     return std::min(static_cast<double>(step) / MAX_STEPS, 1.0);
 }
 
-const unsigned int LoadingScreen::type() const {
+unsigned int LoadingScreen::type() const {
     return MainMenu::TYPE;
 }

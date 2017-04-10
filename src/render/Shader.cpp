@@ -35,11 +35,11 @@ Shader::Shader(const std::string &fileName, int type) {
     fclose(fp);
 
     std::unique_ptr<const char *[]> program_str = std::make_unique<const char *[]>(program_vec.size());
-    for (int i = 0; i < program_vec.size(); i++)
+    for (size_t i = 0; i < program_vec.size(); i++)
         program_str[i] = program_vec.at(i).c_str();
 
-    m_id = glCreateShader(m_type);
-    glShaderSource(m_id, program_vec.size(), program_str.get(), NULL);
+    m_id = glCreateShader((GLenum) m_type);
+    glShaderSource(m_id, (GLsizei) program_vec.size(), program_str.get(), NULL);
     glCompileShader(m_id);
 
     GLint isCompiled = 0;
@@ -49,7 +49,7 @@ Shader::Shader(const std::string &fileName, int type) {
         GLint length;
         glGetShaderiv(m_id, GL_INFO_LOG_LENGTH, &length);
 
-        std::unique_ptr<GLchar[]> log = std::make_unique<GLchar[]>(length + 1);
+        std::unique_ptr<GLchar[]> log = std::make_unique<GLchar[]>((size_t) (length + 1));
         glGetShaderInfoLog(m_id, length, NULL, log.get());
 
         Log::error("Log file: ");

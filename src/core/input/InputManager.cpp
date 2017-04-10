@@ -52,7 +52,7 @@ void InputManager::handleKeyboard(Window &window) {
 #ifdef USES_KEYBOARD
     window.handleKeypress(m_keypresses);
 
-    for (int i = 0; i < m_keypresses.size(); i++) {
+    for (size_t i = 0; i < m_keypresses.size(); i++) {
         if (m_keypresses[i].m_state == Keypress::State::PRESS) {
             m_keypresses[i].m_state = Keypress::State::REPEAT;
         }
@@ -75,7 +75,7 @@ void InputManager::reload() {
     m_touchPoints.clear();
     
 #if defined(USES_SDL) && defined(USES_KEYBOARD)
-    for (int i = 0; i < m_keypresses.size(); i++) {
+    for (size_t i = 0; i < m_keypresses.size(); i++) {
         Keypress *key = &m_keypresses[i];
         key->m_state = Keypress::State::NONE;
         key->m_pressDelay = key->m_pressCounter = 0;

@@ -75,7 +75,7 @@ void Application::handleEvents() {
                 break;
             case SDL_MOUSEBUTTONDOWN:
             case SDL_MOUSEBUTTONUP:
-            Log::debug("%s button with id %d\n", event.type == SDL_MOUSEBUTTONDOWN ? "Pressed" : "Unpressed", event.button.button);
+                Log::debug("%s button with id %d\n", event.type == SDL_MOUSEBUTTONDOWN ? "Pressed" : "Unpressed", event.button.button);
             case SDL_MOUSEMOTION: {
                 int button = (int) round(log((double) event.button.button) / log(2.0)) + 1;
                 if (button < 0 || button >= 5) break;
@@ -84,6 +84,8 @@ void Application::handleEvents() {
                 this->handleClick(button, event.type == SDL_MOUSEBUTTONDOWN ? Input::TouchPoint::State::PRESS : (event.type == SDL_MOUSEBUTTONUP ? Input::TouchPoint::State::RELEASE : Input::TouchPoint::State::REPEAT), x, y);
                 break;
             }
+            default:
+                break;
         }
     }
 #endif // USES_SDL

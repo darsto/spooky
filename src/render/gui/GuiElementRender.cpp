@@ -31,8 +31,8 @@ GuiElementRender::GuiElementRender(const ApplicationContext &applicationContext,
     m_texture.samplerParameter(GL_TEXTURE_MAX_LEVEL, texMipmaps.size() - 1);
 #endif
 
-    for (int level = 0; level < texMipmaps.size(); ++level) {
-        m_texture.loadTex(texMipmaps[level], level);
+    for (size_t level = 0; level < texMipmaps.size(); ++level) {
+        m_texture.loadTex(texMipmaps[level], (uint32_t) level);
     }
 
 #ifndef GL_TEXTURE_MAX_LEVEL
@@ -97,7 +97,7 @@ GuiElementRender::GuiElementRender(const ApplicationContext &applicationContext,
 }
 
 void GuiElementRender::render(const GuiElement &element, glm::mat4 projectionMatrix, glm::mat4 viewMatrix) {
-    int color = element.color();
+    uint32_t color = element.color();
     float ca = (color & 0x000000FF) / 255.0f;
 
     if (ca > 0.0f) {

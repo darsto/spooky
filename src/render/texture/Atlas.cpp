@@ -96,7 +96,7 @@ const util::Rectangle Atlas::element(const std::string &name) const {
     return it->second;
 }
 
-const uint32_t Atlas::getElementsNum() const {
+uint32_t Atlas::getElementsNum() const {
     return m_texData.size();
 }
 

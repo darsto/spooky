@@ -81,7 +81,7 @@ public:
      * Get the unique identifier of this class
      * @return unique identifier of this class
      */
-    virtual const unsigned int type() const = 0;
+    virtual unsigned int type() const = 0;
 
 protected:
     ApplicationContext *m_applicationContext = nullptr;

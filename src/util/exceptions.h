@@ -23,6 +23,6 @@ namespace util {
         file_not_found_error(const char *msg);
     };
 
-};
+}
 
 #endif //SPOOKY_UTIL_EXCEPTIONS_H

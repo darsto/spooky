@@ -26,7 +26,7 @@ public:
 
     static constexpr const unsigned int TYPE = 1;
 
-    const unsigned int type() const override {
+    unsigned int type() const override {
         return TYPE;
     }
 

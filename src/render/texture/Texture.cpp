@@ -52,14 +52,14 @@ void Texture::loadTex(TexData &tex, uint32_t level) {
 
     if (channels == 4) {
         // burn alpha into RGB channels
-        for (int i = 0; i < tex.width() * tex.height(); ++i) {
+        for (uint32_t i = 0; i < tex.width() * tex.height(); ++i) {
             tex[channels * i + 0] = (uint8_t) ((tex[channels * i + 0] * tex[channels * i + 3] + 128) >> 8);
             tex[channels * i + 1] = (uint8_t) ((tex[channels * i + 1] * tex[channels * i + 3] + 128) >> 8);
             tex[channels * i + 2] = (uint8_t) ((tex[channels * i + 2] * tex[channels * i + 3] + 128) >> 8);
         }
     }
 
-    glTexImage2D(GL_TEXTURE_2D, level, getTexGLFormat(channels), tex.width(), tex.height(), 0, getTexGLFormat(channels), GL_UNSIGNED_BYTE, tex.get());
+    glTexImage2D((GLenum) GL_TEXTURE_2D, (GLint) level, (GLint) getTexGLFormat(channels), (GLint) tex.width(), (GLint) tex.height(), 0, (GLenum) getTexGLFormat(channels), (GLenum) GL_UNSIGNED_BYTE, tex.get());
 }
 
 void Texture::samplerParameter(GLenum parameter, GLint value) {
@@ -67,18 +67,18 @@ void Texture::samplerParameter(GLenum parameter, GLint value) {
 }
 
 void Texture::filtering(MagFilter filterMag, MinFilter filterMin) {
-    samplerParameter(GL_TEXTURE_MAG_FILTER, static_cast<std::underlying_type_t<MagFilter>>(filterMag));
-    samplerParameter(GL_TEXTURE_MIN_FILTER, static_cast<std::underlying_type_t<MinFilter>>(filterMin));
+    samplerParameter(GL_TEXTURE_MAG_FILTER, static_cast<GLint>(filterMag));
+    samplerParameter(GL_TEXTURE_MIN_FILTER, static_cast<GLint>(filterMin));
 
     m_minFilter = filterMin;
     m_magFilter = filterMag;
 }
 
 void Texture::bindTexture() {
-    if (Texture::s_boundTexId != m_id) {
+    if (Texture::s_boundTexId != (int) m_id) {
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, m_id);
-        Texture::s_boundTexId = m_id;
+        Texture::s_boundTexId = (int) m_id;
     }
 }
 
@@ -91,15 +91,15 @@ Texture::MagFilter Texture::magFilter() const {
 }
 
 int Texture::width() const {
-    return m_width;
+    return (int) m_width;
 }
 
 int Texture::height() const {
-    return m_height;
+    return (int) m_height;
 }
 
 int Texture::channels() const {
-    return m_channels;
+    return (int) m_channels;
 }
 
 int Texture::activeTex() const {

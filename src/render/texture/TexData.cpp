@@ -59,6 +59,8 @@ TexData &TexData::operator=(TexData &&other) {
     m_channels = other.m_channels;
     m_data = other.m_data;
     other.m_data = nullptr;
+    
+    return *this;
 }
 
 uint32_t TexData::width() const {

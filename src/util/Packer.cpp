@@ -97,6 +97,8 @@ bool Packer::positionObject(Element obj, Packer::Node *node) {
                 node->down(std::make_unique<Node>(obj.first, obj.second.position(node->rectDown()), node->rectDown()));
                 return true;
             }
+
+            return false;
         }
     }
 }
@@ -117,7 +119,7 @@ Packer::Node::Node(uint64_t id, Rectangle rect, Rectangle unused)
       m_rectDown(Rectangle(unused.x(), unused.y() + rect.height(), unused.width(), unused.height() - rect.height())) {
 }
 
-const uint64_t Packer::Node::id() const {
+uint64_t Packer::Node::id() const {
     return m_id;
 }
 

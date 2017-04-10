@@ -78,7 +78,7 @@ TextRender::TextRender(const ApplicationContext &applicationContext, const Rende
 }
 
 void TextRender::render(const GuiElement &element, glm::mat4 projectionMatrix, glm::mat4 viewMatrix) {
-    int color = element.color();
+    uint32_t color = element.color();
     float ca = (color & 0x000000FF) / 255.0f;
 
     if (ca > 0.0f) {
@@ -96,7 +96,7 @@ void TextRender::render(const GuiElement &element, glm::mat4 projectionMatrix, g
 
         double x = element.x();
         double y = element.y();
-        for (int i = 0; i < text.text().length(); i++) {
+        for (size_t i = 0; i < text.text().length(); i++) {
             if (text.text().at(i) == '\n') {
                 x = text.x();
                 y += (0.9 + text.TEXT_SPACING) * scale;
@@ -113,9 +113,9 @@ void TextRender::render(const GuiElement &element, glm::mat4 projectionMatrix, g
             m_shaderProgram.setUniform("modelViewMatrix", viewMatrix * tmpModelMatrix);
             m_shaderProgram.setUniform("projectionMatrix", projectionMatrix);
 
-            int texX = texId % m_atlasSize, texY = texId / m_atlasSize;
-            m_shaderProgram.setUniform("texPosX", (float) texX / m_atlasSize);
-            m_shaderProgram.setUniform("texPosY", (float) texY / m_atlasSize);
+            int texX = texId % (int) m_atlasSize, texY = texId / (int) m_atlasSize;
+            m_shaderProgram.setUniform("texPosX", (float) texX / (int) m_atlasSize);
+            m_shaderProgram.setUniform("texPosY", (float) texY / (int) m_atlasSize);
 
             glBindVertexArray(m_vao);
             glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);

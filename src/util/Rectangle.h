@@ -40,32 +40,32 @@ namespace util {
          * Get X coordinate of the starting point.
          * @return x coord of the starting point
          */
-        const uint32_t x() const;
+        uint32_t x() const;
 
         /**
          * Get Y coordinate of the starting point.
          * @return y coord of the starting point
          */
-        const uint32_t y() const;
+        uint32_t y() const;
 
         /**
          * Get width of the rectangle.
          * @return width of the rectangle
          */
-        const uint32_t width() const;
+        uint32_t width() const;
 
         /**
          * Get height of the rectangle.
          * @return height of the rectangle
          */
-        const uint32_t height() const;
+        uint32_t height() const;
 
         /**
          * Get field of this rectangle.
          * This is equivalent to width() * height()
          * @return field of this rectangle
          */
-        const uint32_t field() const;
+        uint32_t field() const;
 
         /**
          * Check if given rectangle is fully contained inside current one.

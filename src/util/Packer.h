@@ -43,7 +43,7 @@ namespace util {
              * Get the unique id associated with this node
              * @return unique id associated with this node
              */
-            const uint64_t id() const;
+            uint64_t id() const;
 
             /**
              * Get the area of this node.

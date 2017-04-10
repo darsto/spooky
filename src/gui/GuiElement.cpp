@@ -10,19 +10,19 @@
 
 constexpr const unsigned int GuiElement::TYPE;
 
-GuiElement::GuiElement(const GuiElement *parent, double x, double y, double width, double height, const std::string &tex, int color)
+GuiElement::GuiElement(const GuiElement *parent, double x, double y, double width, double height, const std::string &tex, uint32_t color)
     : m_parent(parent),
       m_x(x),
       m_y(y),
       m_width(width),
       m_height(height),
+      m_angle(0),
       m_tex(tex),
-      m_color(color),
-      m_angle(0) {
+      m_color(color) {
 
 }
 
-GuiElement::GuiElement(double x, double y, double width, double height, const std::string &tex, int color)
+GuiElement::GuiElement(double x, double y, double width, double height, const std::string &tex, uint32_t color)
     : GuiElement(&EmptyGuiElement::instance(), x, y, width, height, tex, color) {
 
 }
@@ -71,7 +71,7 @@ const std::string & GuiElement::texPos() const {
     return m_tex;
 }
 
-int GuiElement::color() const {
+uint32_t GuiElement::color() const {
     return m_color;
 }
 

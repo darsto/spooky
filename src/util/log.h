@@ -19,6 +19,7 @@
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wformat-security"
+#pragma GCC diagnostic ignored "-Wformat-nonliteral"
 // disables "format not a string literal and no format arguments" warning at printf(...) lines
 
 namespace util {
@@ -39,21 +40,21 @@ namespace util {
          * Standard log message, lowest priority.
          */
         template<typename... Args>
-        constexpr const void info(const char *msg, Args &&...args) {
+        constexpr void info(const char *msg, Args &&...args) {
 #ifdef DEF_ANDROID
             __android_log_print(ANDROID_LOG_INFO, LOG_TAG, msg, std::forward<Args>(args)...);
 #else
             printf(msg, std::forward<Args>(args)...);
             putchar('\n');
 #endif
-        };
+        }
 
         /**
          * Debug log message, lowest priority.
          * Enabled only in debug builds
          */
         template<typename... Args>
-        constexpr const void debug(const char *msg, Args &&...args) {
+        constexpr void debug(const char *msg, Args &&...args) {
 #ifdef DEBUG
 #ifdef DEF_ANDROID
             __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, msg, std::forward<Args>(args)...);
@@ -62,33 +63,33 @@ namespace util {
             putchar('\n');
 #endif
 #endif
-        };
+        }
 
         /**
          * Warning log message, medium priority.
          */
         template<typename... Args>
-        constexpr const void warning(const char *msg, Args &&...args) {
+        constexpr void warning(const char *msg, Args &&...args) {
 #ifdef DEF_ANDROID
             __android_log_print(ANDROID_LOG_WARN, LOG_TAG, msg, std::forward<Args>(args)...);
 #else
             printf(msg, std::forward<Args>(args)...);
             putchar('\n');
 #endif
-        };
+        }
 
         /**
          * Error log message, highest priority.
          */
         template<typename... Args>
-        constexpr const void error(const char *msg, Args &&...args) {
+        constexpr void error(const char *msg, Args &&...args) {
 #ifdef DEF_ANDROID
             __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, msg, std::forward<Args>(args)...);
 #else
             printf(msg, std::forward<Args>(args)...);
             putchar('\n');
 #endif
-        };
+        }
     }
 }
 

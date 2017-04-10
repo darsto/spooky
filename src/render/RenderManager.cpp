@@ -37,7 +37,7 @@ bool RenderManager::initWindow() {
 
 #ifdef USES_SDL
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-        printf("SDL could not initialize! SDL Error: %d\n", SDL_GetError());
+        printf("SDL could not initialize! SDL Error: %s\n", SDL_GetError());
         success = false;
     } else {
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
@@ -63,7 +63,7 @@ bool RenderManager::initWindow() {
                 }
             }
         }
-        m_applicationContext.resize(windowWidth, windowHeight);
+        m_applicationContext.resize((uint32_t) windowWidth, (uint32_t) windowHeight);
     }
 #endif // USES_SDL
     return success;
@@ -95,7 +95,7 @@ void RenderManager::render() {
 }
 
 void RenderManager::reload() {
-    glViewport(0, 0, m_applicationContext.windowWidth(), m_applicationContext.windowHeight());
+    glViewport(0, 0, (GLsizei) m_applicationContext.windowWidth(), (GLsizei) m_applicationContext.windowHeight());
     m_windowRender->reload();
 }
 

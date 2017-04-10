@@ -11,8 +11,8 @@
 
 class GuiElement {
 public:
-    GuiElement(const GuiElement *parent, double x, double y, double width, double height, const std::string &tex, int color = 0xFFFFFFFF);
-    GuiElement(double x, double y, double width, double height, const std::string &tex, int color = 0xFFFFFFFF);
+    GuiElement(const GuiElement *parent, double x, double y, double width, double height, const std::string &tex, uint32_t color = 0xFFFFFFFF);
+    GuiElement(double x, double y, double width, double height, const std::string &tex, uint32_t color = 0xFFFFFFFF);
     bool contains(double coordX, double coordY);
     virtual double x() const;
     void x(double x);
@@ -23,13 +23,13 @@ public:
     double height() const;
     void height(double height);
     double angle() const;
-    virtual const std::string &texPos() const;
-    int color() const;
+    const std::string &texPos() const;
+    uint32_t color() const;
     virtual ~GuiElement();
 
     static constexpr const unsigned int TYPE = 0;
 
-    virtual const unsigned int type() const {
+    virtual unsigned int type() const {
         return TYPE;
     }
 
@@ -39,7 +39,7 @@ protected:
     double m_width, m_height;
     double m_angle;
     std::string m_tex;
-    int m_color;
+    uint32_t m_color;
 };
 
 #endif //SPOOKY_GUI_GUIELEMENT_H

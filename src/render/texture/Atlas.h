@@ -46,7 +46,7 @@ namespace texture {
          * Get number of tiles in this atlas.
          * @return number of tiles in this atlas
          */
-        const uint32_t getElementsNum() const;
+        uint32_t getElementsNum() const;
 
         /**
          * Get a container of particular texture levels.
@@ -75,11 +75,11 @@ namespace texture {
             uint32_t outWidth = m_packer.size().width() / (1u << level);
             uint32_t outChannels = std::min<uint32_t>(outBuffer.channels(), inData.channels());
 
-            for (int yIn = 0; yIn < inHeight; ++yIn) {
-                for (int xIn = 0; xIn < inWidth; ++xIn) {
+            for (uint32_t yIn = 0; yIn < inHeight; ++yIn) {
+                for (uint32_t xIn = 0; xIn < inWidth; ++xIn) {
                     uint32_t inPixelPos = xIn + yIn * inWidth;
                     uint32_t outPixelPos = pos.first + xIn + (pos.second + yIn) * outWidth;
-                    for (int channel = 0; channel < outChannels; ++channel) {
+                    for (uint32_t channel = 0; channel < outChannels; ++channel) {
                         outBuffer[outBuffer.channels() * outPixelPos + channel] = inData[inData.channels() * inPixelPos + channel];
                     }
                 }
