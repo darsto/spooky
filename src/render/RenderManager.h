@@ -4,8 +4,8 @@
  * that can be found in the LICENSE file.
  */
 
-#ifndef C003_RENDER_RENDERMANAGER_H
-#define C003_RENDER_RENDERMANAGER_H
+#ifndef SPOOKY_RENDER_RENDERMANAGER_H
+#define SPOOKY_RENDER_RENDERMANAGER_H
 #pragma once
 
 #define GLM_FORCE_RADIANS
@@ -90,4 +90,4 @@ private:
     std::unordered_map<uint32_t, std::unique_ptr<WindowRender>> windowRenders;
 };
 
-#endif //C003_RENDER_RENDERMANAGER_H
+#endif //SPOOKY_RENDER_RENDERMANAGER_H

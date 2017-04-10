@@ -4,8 +4,8 @@
  * that can be found in the LICENSE file.
  */
 
-#ifndef C003_RENDER_GUI_GUIRENDERABLE_H
-#define C003_RENDER_GUI_GUIRENDERABLE_H
+#ifndef SPOOKY_RENDER_GUI_GUIRENDERABLE_H
+#define SPOOKY_RENDER_GUI_GUIRENDERABLE_H
 
 #include <glm/glm.hpp>
 #include "ApplicationContext.h"
@@ -40,4 +40,4 @@ protected:
     const RenderContext &m_renderContext;
 };
 
-#endif //C003_RENDER_GUI_GUIRENDERABLE_H
+#endif //SPOOKY_RENDER_GUI_GUIRENDERABLE_H

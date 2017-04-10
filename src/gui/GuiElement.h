@@ -4,8 +4,8 @@
  * that can be found in the LICENSE file.
  */
 
-#ifndef C003_GUI_GUIELEMENT_H
-#define C003_GUI_GUIELEMENT_H
+#ifndef SPOOKY_GUI_GUIELEMENT_H
+#define SPOOKY_GUI_GUIELEMENT_H
 
 #include <string>
 
@@ -42,4 +42,4 @@ protected:
     int m_color;
 };
 
-#endif //C003_GUI_GUIELEMENT_H
+#endif //SPOOKY_GUI_GUIELEMENT_H

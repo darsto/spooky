@@ -4,8 +4,8 @@
  * that can be found in the LICENSE file.
  */
 
-#ifndef C003_UTIL_EXCEPTIONS_H
-#define C003_UTIL_EXCEPTIONS_H
+#ifndef SPOOKY_UTIL_EXCEPTIONS_H
+#define SPOOKY_UTIL_EXCEPTIONS_H
 
 #include <stdexcept>
 
@@ -25,4 +25,4 @@ namespace util {
 
 };
 
-#endif //C003_UTIL_EXCEPTIONS_H
+#endif //SPOOKY_UTIL_EXCEPTIONS_H

@@ -2,8 +2,8 @@
 // Created by dar on 2/13/16.
 //
 
-#ifndef C003_GUITEXT_H
-#define C003_GUITEXT_H
+#ifndef SPOOKY_GUITEXT_H
+#define SPOOKY_GUITEXT_H
 
 #include "GuiElement.h"
 #include <string>
@@ -46,4 +46,4 @@ private:
     void recalculateSize();
 };
 
-#endif //C003_GUITEXT_H
+#endif //SPOOKY_GUITEXT_H

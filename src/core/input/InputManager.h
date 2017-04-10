@@ -4,8 +4,8 @@
  * that can be found in the LICENSE file.
  */
 
-#ifndef C003_INPUT_INPUTMANAGER_H
-#define C003_INPUT_INPUTMANAGER_H
+#ifndef SPOOKY_INPUT_INPUTMANAGER_H
+#define SPOOKY_INPUT_INPUTMANAGER_H
 
 #include <unordered_map>
 
@@ -74,4 +74,4 @@ namespace Input {
     };
 }
 
-#endif //C003_INPUT_INPUTMANAGER_H
+#endif //SPOOKY_INPUT_INPUTMANAGER_H

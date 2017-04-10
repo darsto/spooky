@@ -4,8 +4,8 @@
  * that can be found in the LICENSE file.
  */
 
-#ifndef C003_RENDER_EXCEPTIONS_H
-#define C003_RENDER_EXCEPTIONS_H
+#ifndef SPOOKY_RENDER_EXCEPTIONS_H
+#define SPOOKY_RENDER_EXCEPTIONS_H
 
 #include <stdexcept>
 
@@ -37,4 +37,4 @@ namespace render {
 
 }
 
-#endif //C003_RENDER_EXCEPTIONS_H
+#endif //SPOOKY_RENDER_EXCEPTIONS_H

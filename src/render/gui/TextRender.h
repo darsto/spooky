@@ -4,8 +4,8 @@
  * that can be found in the LICENSE file.
  */
 
-#ifndef C003_RENDER_FONT_TEXTRENDER_H
-#define C003_RENDER_FONT_TEXTRENDER_H
+#ifndef SPOOKY_RENDER_FONT_TEXTRENDER_H
+#define SPOOKY_RENDER_FONT_TEXTRENDER_H
 
 #include "render/gui/GuiElementRender.h"
 #include "render/gui/GuiRenderable.h"
@@ -27,4 +27,4 @@ private:
     static texture::TexData m_texData;
 };
 
-#endif //C003_RENDER_FONT_TEXTRENDER_H
+#endif //SPOOKY_RENDER_FONT_TEXTRENDER_H

@@ -4,8 +4,8 @@
  * that can be found in the LICENSE file.
  */
 
-#ifndef C003_APPLICATIONCONTEXT_H
-#define C003_APPLICATIONCONTEXT_H
+#ifndef SPOOKY_APPLICATIONCONTEXT_H
+#define SPOOKY_APPLICATIONCONTEXT_H
 
 #include <memory>
 
@@ -86,4 +86,4 @@ private:
     uint32_t m_windowHeight = 0;
 };
 
-#endif //C003_APPLICATIONCONTEXT_H
+#endif //SPOOKY_APPLICATIONCONTEXT_H

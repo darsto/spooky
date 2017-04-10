@@ -4,8 +4,8 @@
  * that can be found in the LICENSE file.
  */
 
-#ifndef C003_PROF_H
-#define C003_PROF_H
+#ifndef SPOOKY_PROF_H
+#define SPOOKY_PROF_H
 
 #ifdef DEBUG
 
@@ -74,4 +74,4 @@ namespace util {
 
 #endif //DEBUG
 
-#endif //C003_PROF_H
+#endif //SPOOKY_PROF_H

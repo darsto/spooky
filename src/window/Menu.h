@@ -4,8 +4,8 @@
  * that can be found in the LICENSE file.
  */
 
-#ifndef C003_WINDOW_MENU_H
-#define C003_WINDOW_MENU_H
+#ifndef SPOOKY_WINDOW_MENU_H
+#define SPOOKY_WINDOW_MENU_H
 
 #include <vector>
 #include <memory>
@@ -30,4 +30,4 @@ protected:
     std::vector<std::unique_ptr<GuiElement>> m_guiElements;
 };
 
-#endif //C003_WINDOW_MENU_H
+#endif //SPOOKY_WINDOW_MENU_H

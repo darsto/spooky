@@ -4,8 +4,8 @@
  * that can be found in the LICENSE file.
  */
 
-#ifndef C003_RENDER_TEXTURE_ATLAS_H
-#define C003_RENDER_TEXTURE_ATLAS_H
+#ifndef SPOOKY_RENDER_TEXTURE_ATLAS_H
+#define SPOOKY_RENDER_TEXTURE_ATLAS_H
 #pragma once
 
 #include <string>
@@ -95,4 +95,4 @@ namespace texture {
     };
 }
 
-#endif //C003_RENDER_TEXTURE_ATLAS_H
+#endif //SPOOKY_RENDER_TEXTURE_ATLAS_H

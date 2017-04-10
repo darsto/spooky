@@ -4,8 +4,8 @@
  * that can be found in the LICENSE file.
  */
 
-#ifndef C003_RENDER_GUI_GUIELEMENTRENDER_H
-#define C003_RENDER_GUI_GUIELEMENTRENDER_H
+#ifndef SPOOKY_RENDER_GUI_GUIELEMENTRENDER_H
+#define SPOOKY_RENDER_GUI_GUIELEMENTRENDER_H
 
 #include <glm/glm.hpp>
 
@@ -38,4 +38,4 @@ private:
     static texture::Atlas m_atlas;
 };
 
-#endif //C003_RENDER_GUI_GUIELEMENTRENDER_H
+#endif //SPOOKY_RENDER_GUI_GUIELEMENTRENDER_H

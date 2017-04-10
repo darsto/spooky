@@ -4,8 +4,8 @@
  * that can be found in the LICENSE file.
  */
 
-#ifndef C003_RENDER_TEXTURE_RESAMPLER_H
-#define C003_RENDER_TEXTURE_RESAMPLER_H
+#ifndef SPOOKY_RENDER_TEXTURE_RESAMPLER_H
+#define SPOOKY_RENDER_TEXTURE_RESAMPLER_H
 
 #include <cstdint>
 #include <memory>
@@ -25,4 +25,4 @@ namespace texture {
 
 }
 
-#endif //C003_RENDER_TEXTURE_RESAMPLER_H
+#endif //SPOOKY_RENDER_TEXTURE_RESAMPLER_H

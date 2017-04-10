@@ -8,8 +8,8 @@
  * TODO: Add log levels to be able to enable/disable particular log entries
  */
 
-#ifndef C003_UTIL_LOG_H
-#define C003_UTIL_LOG_H
+#ifndef SPOOKY_UTIL_LOG_H
+#define SPOOKY_UTIL_LOG_H
 
 #include "util/os.h"
 
@@ -99,4 +99,4 @@ namespace util {
  */
 namespace Log = util::log;
 
-#endif //C003_UTIL_LOG_H
+#endif //SPOOKY_UTIL_LOG_H

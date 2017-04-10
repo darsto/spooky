@@ -4,8 +4,8 @@
  * that can be found in the LICENSE file.
  */
 
-#ifndef C003_WINDOW_LOADINGSCREEN_H
-#define C003_WINDOW_LOADINGSCREEN_H
+#ifndef SPOOKY_WINDOW_LOADINGSCREEN_H
+#define SPOOKY_WINDOW_LOADINGSCREEN_H
 
 #include <vector>
 
@@ -46,4 +46,4 @@ private:
     static constexpr const uint32_t MAX_STEPS = 1;
 };
 
-#endif //C003_WINDOW_LOADINGSCREEN_H
+#endif //SPOOKY_WINDOW_LOADINGSCREEN_H

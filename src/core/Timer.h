@@ -4,8 +4,8 @@
  * that can be found in the LICENSE file.
  */
 
-#ifndef C003_CORE_TIMER_H
-#define C003_CORE_TIMER_H
+#ifndef SPOOKY_CORE_TIMER_H
+#define SPOOKY_CORE_TIMER_H
 #pragma once
 
 #include <chrono>
@@ -27,4 +27,4 @@ private:
     std::chrono::time_point<std::chrono::high_resolution_clock> lastTime;
 };
 
-#endif //C003_CORE_TIMER_H
+#endif //SPOOKY_CORE_TIMER_H

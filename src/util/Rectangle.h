@@ -8,8 +8,8 @@
  * TODO: refactor this class using c++ operators (?)
  */
 
-#ifndef C003_UTIL_RECTANGLE_H
-#define C003_UTIL_RECTANGLE_H
+#ifndef SPOOKY_UTIL_RECTANGLE_H
+#define SPOOKY_UTIL_RECTANGLE_H
 
 #include <cstdint>
 
@@ -216,4 +216,4 @@ namespace util {
     };
 }
 
-#endif //C003_UTIL_RECTANGLE_H
+#endif //SPOOKY_UTIL_RECTANGLE_H

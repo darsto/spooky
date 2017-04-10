@@ -4,8 +4,8 @@
  * that can be found in the LICENSE file.
  */
 
-#ifndef C003_CONFIG_H
-#define C003_CONFIG_H
+#ifndef SPOOKY_CONFIG_H
+#define SPOOKY_CONFIG_H
 
 #include <kaguya/kaguya.hpp>
 #include <mutex>
@@ -23,4 +23,4 @@ private:
     mutable kaguya::State m_config;
 };
 
-#endif //C003_CONFIG_H
+#endif //SPOOKY_CONFIG_H

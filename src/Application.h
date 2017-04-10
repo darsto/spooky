@@ -4,8 +4,8 @@
  * that can be found in the LICENSE file.
  */
 
-#ifndef C003_APPLICATION_H
-#define C003_APPLICATION_H
+#ifndef SPOOKY_APPLICATION_H
+#define SPOOKY_APPLICATION_H
 
 #include <memory>
 
@@ -89,4 +89,4 @@ private:
     friend class ApplicationContext;
 };
 
-#endif //C003_APPLICATION_H
+#endif //SPOOKY_APPLICATION_H

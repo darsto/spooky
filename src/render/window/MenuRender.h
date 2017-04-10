@@ -4,8 +4,8 @@
  * that can be found in the LICENSE file.
  */
 
-#ifndef C003_RENDER_WINDOW_MENURENDER_H
-#define C003_RENDER_WINDOW_MENURENDER_H
+#ifndef SPOOKY_RENDER_WINDOW_MENURENDER_H
+#define SPOOKY_RENDER_WINDOW_MENURENDER_H
 
 #define GLM_FORCE_RADIANS
 #include <glm/gtc/matrix_transform.hpp>
@@ -46,4 +46,4 @@ protected:
     std::vector<std::unique_ptr<GuiElement>> m_debugOverlayElements;
 };
 
-#endif //C003_RENDER_WINDOW_MENURENDER_H
+#endif //SPOOKY_RENDER_WINDOW_MENURENDER_H

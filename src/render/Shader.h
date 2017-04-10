@@ -4,8 +4,8 @@
  * that can be found in the LICENSE file.
  */
 
-#ifndef C003_RENDER_SHADER_H
-#define C003_RENDER_SHADER_H
+#ifndef SPOOKY_RENDER_SHADER_H
+#define SPOOKY_RENDER_SHADER_H
 #pragma once
 
 #include <string>
@@ -50,4 +50,4 @@ private:
     bool m_loaded = false;
 };
 
-#endif //C003_RENDER_SHADER_H
+#endif //SPOOKY_RENDER_SHADER_H

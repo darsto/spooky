@@ -4,8 +4,8 @@
  * that can be found in the LICENSE file.
  */
 
-#ifndef C003_RENDER_OPENGL_H
-#define C003_RENDER_OPENGL_H
+#ifndef SPOOKY_RENDER_OPENGL_H
+#define SPOOKY_RENDER_OPENGL_H
 
 #include "util/os.h"
 
@@ -38,4 +38,4 @@ void initBindings();
 
 #endif // DEF_ANDROID
 
-#endif //C003_RENDER_OPENGL_H
+#endif //SPOOKY_RENDER_OPENGL_H

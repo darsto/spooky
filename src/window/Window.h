@@ -4,8 +4,8 @@
  * that can be found in the LICENSE file.
  */
 
-#ifndef C003_WINDOW_H
-#define C003_WINDOW_H
+#ifndef SPOOKY_WINDOW_H
+#define SPOOKY_WINDOW_H
 #pragma once
 
 #include "core/input/Keypress.h"
@@ -87,4 +87,4 @@ protected:
     ApplicationContext *m_applicationContext = nullptr;
 };
 
-#endif //C003_WINDOW_H
+#endif //SPOOKY_WINDOW_H

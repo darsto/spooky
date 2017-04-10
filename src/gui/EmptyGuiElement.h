@@ -4,8 +4,8 @@
  * that can be found in the LICENSE file.
  */
 
-#ifndef C003_GUI_EMPTYGUIELEMENT_H
-#define C003_GUI_EMPTYGUIELEMENT_H
+#ifndef SPOOKY_GUI_EMPTYGUIELEMENT_H
+#define SPOOKY_GUI_EMPTYGUIELEMENT_H
 
 #include "GuiElement.h"
 
@@ -54,4 +54,4 @@ private:
     EmptyGuiElement& operator=(const EmptyGuiElement& other) = delete;
 };
 
-#endif //C003_GUI_EMPTYGUIELEMENT_H
+#endif //SPOOKY_GUI_EMPTYGUIELEMENT_H

@@ -4,8 +4,8 @@
  * that can be found in the LICENSE file.
  */
 
-#ifndef C003_RENDER_WINDOW_WINDOWRENDER_H
-#define C003_RENDER_WINDOW_WINDOWRENDER_H
+#ifndef SPOOKY_RENDER_WINDOW_WINDOWRENDER_H
+#define SPOOKY_RENDER_WINDOW_WINDOWRENDER_H
 
 #include "render/RenderContext.h"
 #include "ApplicationContext.h"
@@ -49,4 +49,4 @@ protected:
     const RenderContext &m_renderContext;
 };
 
-#endif //C003_RENDER_WINDOW_WINDOWRENDER_H
+#endif //SPOOKY_RENDER_WINDOW_WINDOWRENDER_H

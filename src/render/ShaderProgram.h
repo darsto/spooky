@@ -4,8 +4,8 @@
  * that can be found in the LICENSE file.
  */
 
-#ifndef C003_RENDER_SHADERPROGRAM_H
-#define C003_RENDER_SHADERPROGRAM_H
+#ifndef SPOOKY_RENDER_SHADERPROGRAM_H
+#define SPOOKY_RENDER_SHADERPROGRAM_H
 #pragma once
 
 #include <glm/glm.hpp>
@@ -88,4 +88,4 @@ private:
     std::vector<GLuint> m_boundShaders;
 };
 
-#endif //C003_RENDER_SHADERPROGRAM_H
+#endif //SPOOKY_RENDER_SHADERPROGRAM_H

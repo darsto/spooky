@@ -4,8 +4,8 @@
  * that can be found in the LICENSE file.
  */
 
-#ifndef C003_UTIL_STRING_H
-#define C003_UTIL_STRING_H
+#ifndef SPOOKY_UTIL_STRING_H
+#define SPOOKY_UTIL_STRING_H
 
 #include <string>
 #include <vector>
@@ -36,4 +36,4 @@ namespace util {
     }
 }
 
-#endif //C003_UTIL_STRING_H
+#endif //SPOOKY_UTIL_STRING_H

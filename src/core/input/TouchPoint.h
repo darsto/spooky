@@ -4,8 +4,8 @@
  * that can be found in the LICENSE file.
  */
 
-#ifndef C003_TOUCHPOINT_H
-#define C003_TOUCHPOINT_H
+#ifndef SPOOKY_TOUCHPOINT_H
+#define SPOOKY_TOUCHPOINT_H
 
 namespace Input {
 
@@ -85,4 +85,4 @@ namespace Input {
     };
 }
 
-#endif //C003_TOUCHPOINT_H
+#endif //SPOOKY_TOUCHPOINT_H

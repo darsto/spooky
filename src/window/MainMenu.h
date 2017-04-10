@@ -2,8 +2,8 @@
 // Created by dar on 2/15/16.
 //
 
-#ifndef C003_MAINMENU_H
-#define C003_MAINMENU_H
+#ifndef SPOOKY_MAINMENU_H
+#define SPOOKY_MAINMENU_H
 
 #include <vector>
 #include "Window.h"
@@ -35,4 +35,4 @@ private:
     std::string m_guiFile;
 };
 
-#endif //C003_MAINMENU_H
+#endif //SPOOKY_MAINMENU_H

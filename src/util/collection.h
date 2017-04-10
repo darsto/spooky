@@ -4,8 +4,8 @@
  * that can be found in the LICENSE file.
  */
 
-#ifndef C003_UTIL_COLLECTION_H
-#define C003_UTIL_COLLECTION_H
+#ifndef SPOOKY_UTIL_COLLECTION_H
+#define SPOOKY_UTIL_COLLECTION_H
 
 #include <vector>
 #include <string>
@@ -29,4 +29,4 @@ namespace util {
     }
 }
 
-#endif //C003_UTIL_COLLECTION_H
+#endif //SPOOKY_UTIL_COLLECTION_H

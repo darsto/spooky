@@ -4,8 +4,8 @@
  * that can be found in the LICENSE file.
  */
 
-#ifndef C003_RENDER_TEXTURE_TEXTUREDATA_H
-#define C003_RENDER_TEXTURE_TEXTUREDATA_H
+#ifndef SPOOKY_RENDER_TEXTURE_TEXTUREDATA_H
+#define SPOOKY_RENDER_TEXTURE_TEXTUREDATA_H
 
 #include <cstdint>
 
@@ -130,4 +130,4 @@ namespace texture {
 
 }
 
-#endif //C003_RENDER_TEXTURE_TEXTUREDATA_H
+#endif //SPOOKY_RENDER_TEXTURE_TEXTUREDATA_H

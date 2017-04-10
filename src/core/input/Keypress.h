@@ -4,8 +4,8 @@
  * that can be found in the LICENSE file.
  */
 
-#ifndef C003_KEYPRESS_H
-#define C003_KEYPRESS_H
+#ifndef SPOOKY_KEYPRESS_H
+#define SPOOKY_KEYPRESS_H
 
 #include "util/os.h"
 
@@ -65,4 +65,4 @@ namespace Input {
     };
 }
 
-#endif //C003_KEYPRESS_H
+#endif //SPOOKY_KEYPRESS_H

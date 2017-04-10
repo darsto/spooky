@@ -8,8 +8,8 @@
  * TODO: implement iterator for the binary tree
  */
 
-#ifndef C003_UTIL_PACKER_H
-#define C003_UTIL_PACKER_H
+#ifndef SPOOKY_UTIL_PACKER_H
+#define SPOOKY_UTIL_PACKER_H
 
 #include <cstdint>
 #include <memory>
@@ -246,4 +246,4 @@ namespace util {
 
 }
 
-#endif //C003_UTIL_PACKER_H
+#endif //SPOOKY_UTIL_PACKER_H

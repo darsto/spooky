@@ -4,8 +4,8 @@
  * that can be found in the LICENSE file.
  */
 
-#ifndef C003_UTIL_OS_H
-#define C003_UTIL_OS_H
+#ifndef SPOOKY_UTIL_OS_H
+#define SPOOKY_UTIL_OS_H
 
 /**
  * Variables which are conditionally defined by this header
@@ -97,4 +97,4 @@ enum class OS {
     #undef USES_KEYBOARD
 #endif // SIMULATION
 
-#endif //C003_UTIL_OS_H
+#endif //SPOOKY_UTIL_OS_H

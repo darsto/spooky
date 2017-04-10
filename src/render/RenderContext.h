@@ -4,8 +4,8 @@
  * that can be found in the LICENSE file.
  */
 
-#ifndef C003_RENDER_RENDERCONTEXT_H
-#define C003_RENDER_RENDERCONTEXT_H
+#ifndef SPOOKY_RENDER_RENDERCONTEXT_H
+#define SPOOKY_RENDER_RENDERCONTEXT_H
 
 #include <vector>
 #include <memory>
@@ -25,4 +25,4 @@ public:
     RenderContext();
 };
 
-#endif //C003_RENDER_RENDERCONTEXT_H
+#endif //SPOOKY_RENDER_RENDERCONTEXT_H
