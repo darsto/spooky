@@ -1,3 +1,6 @@
+src/ext/SOIL2
+src/ext/kaguya
+test/src/ext/googletest
 bin/c003
 bin/c003_tests
 bin/c003.exe
