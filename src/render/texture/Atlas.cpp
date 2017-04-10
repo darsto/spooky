@@ -12,6 +12,7 @@
 #include <memory>
 #include <regex>
 #include <cstdlib>
+#include <cmath>
 
 #include "Atlas.h"
 #include "util/collection.h"
@@ -48,7 +49,7 @@ Atlas::Atlas(const std::string &name, uint32_t channels, bool mipmaps, const std
     Log::debug("\tResampling level 0 of the texture atlas \"%s\" took %f sec.", name.c_str(), PROF_DURATION_PREV(load));
 
     if (mipmaps) {
-        uint32_t mipmapLevels = (uint32_t) ceil(log(std::max<uint32_t>(m_packer.size().width(), m_packer.size().height())) / log(2));
+        uint32_t mipmapLevels = (uint32_t) std::ceil(std::log(std::max<uint32_t>(m_packer.size().width(), m_packer.size().height())) / std::log(2));
 
         for (uint8_t level = 1; level < mipmapLevels; ++level) {
             uint32_t downsample = 1u << level;
