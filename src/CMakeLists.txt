@@ -1,4 +1,4 @@
-PROJECT(c003_src)
+PROJECT(spooky_src)
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8.12)
 
 option(PROFILER "Link with -lprofiler to use with google-perftools" OFF)
@@ -97,9 +97,9 @@ IF (NOT SIMULATION)
 ENDIF ()
 
 IF (EDITOR)
-    SET(PROJECT_NAME c003_editor_lib)
+    SET(PROJECT_NAME spooky_editor_lib)
 ELSE ()
-    SET(PROJECT_NAME c003_game_lib)
+    SET(PROJECT_NAME spooky_game_lib)
 ENDIF ()
 
 ADD_LIBRARY(${PROJECT_NAME} ${TYPE} ${SOURCE_FILES})
