@@ -1,10 +1,11 @@
-PROJECT(spooky_lib)
+PROJECT(spooky)
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
 option(BUILD_SHARED "Build as shared library" OFF)
 option(SIMULATION "Build without rendering support" OFF)
 
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -iquote ${CMAKE_CURRENT_SOURCE_DIR}")
+set(CMAKE_CXX_STANDARD 14)
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -iquote ${CMAKE_CURRENT_SOURCE_DIR}")
 SET(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/../cmake)
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_C_FLAGS} -pedantic -Wall -Wextra -Wcast-align -Wcast-qual \
     -Wctor-dtor-privacy -Wdisabled-optimization -Wformat=2 -Winit-self -Wlogical-op \
@@ -18,7 +19,7 @@ ELSE ()
     SET(TYPE STATIC)
 ENDIF ()
 
-IF (CMAKE_BUILD_TYPE EQUAL "Debug")
+IF (CMAKE_BUILD_TYPE MATCHES "Debug")
     SET(DEBUG 1)
 ENDIF ()
 
