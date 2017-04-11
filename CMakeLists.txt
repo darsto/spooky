@@ -1,5 +1,5 @@
 PROJECT(spooky)
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
 
 OPTION(BUILD_TESTS "Build google-tests" ON)
 OPTION(BUILD_EXAMPLES "Build tests (requires all dependencies, including OpenGL)" ON)
