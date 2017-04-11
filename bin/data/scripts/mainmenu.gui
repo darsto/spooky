@@ -1,5 +1,5 @@
 print 'File: mainmenu.gui'
 e = GuiElement.new(0, 0, 30, 30, "info_button", 0xFFFFFF77)
 registerGuiElement(e)
-e = GuiElement.new(windowWidth / 2 - 15, windowHeight / 2 - 15, 30, 30, "washmachine", 0xFFBBBBFF)
+e = GuiElement.new(math.floor(windowWidth / 2) - 15, math.floor(windowHeight / 2) - 15, 30, 30, "washmachine", 0xFFBBBBFF)
 registerGuiElement(e)
