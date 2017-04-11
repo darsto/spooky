@@ -19,10 +19,10 @@ dependencies:
       ; fi
     - cd "$HOME/.local/cache/debs" && sudo dpkg --force-all -i *.deb
   override:
-    - mkdir build; cd build; cmake .. -DCMAKE_BUILD_TYPE=Simulation; make c003_tests
+    - mkdir build; cd build; cmake .. -DSIMULATION=ON -DBUILD_EXAMPLES=ON; make spooky_tests
 test:
   override:
-    - cd tests/bin; ./c003_tests --gtest_output=xml:$CIRCLE_TEST_REPORTS/gtest/test-results.xml
+    - cd tests/bin; ./spooky_tests --gtest_output=xml:$CIRCLE_TEST_REPORTS/gtest/test-results.xml
 checkout:
   post:
     - git submodule init
