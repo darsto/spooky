@@ -18,13 +18,8 @@ class Window;
  */
 class WindowRender {
 public:
-    /**
-     * The constructor.
-     * @param renderContext context to use throughout the class' lifetime.
-     */
-    WindowRender(const ApplicationContext &applicationContext, const RenderContext &renderContext)
-        : m_applicationContext(applicationContext),
-          m_renderContext(renderContext) {}
+    //TODO
+    void bind(const ApplicationContext *applicationContext, const RenderContext *renderContext);
 
     /**
      * Called on initialization and context reloading (e.g. context unminimizing on Android)
@@ -45,8 +40,8 @@ public:
     virtual void render(const Window &window) = 0;
 
 protected:
-    const ApplicationContext &m_applicationContext;
-    const RenderContext &m_renderContext;
+    const ApplicationContext *m_applicationContext;
+    const RenderContext *m_renderContext;
 };
 
 #endif //SPOOKY_RENDER_WINDOW_WINDOWRENDER_H

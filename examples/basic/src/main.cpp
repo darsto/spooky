@@ -1,6 +1,7 @@
 #include "Application.h"
-#include "src/window/LoadingScreen.h"
-#include "src/window/MainMenu.h"
+#include "window/LoadingScreen.h"
+#include "window/MainMenu.h"
+#include "render/window/MenuRender.h"
 
 class MyWindowManager : public WindowManager {
 public:
@@ -14,10 +15,18 @@ public:
                 throw std::runtime_error("Trying to get window with unknown id");
         }
     }
-    
+
+    WindowRender *getWindowRender(int index) override {
+        return &menuRender;
+        //TODO
+    }
+
 private:
     LoadingScreen screen;
     MainMenu menu;
+
+    MenuRender menuRender;
+    
 };
 
 int main(int argc, char *args[]) {

@@ -5,3 +5,8 @@
  */
 
 #include "WindowRender.h"
+
+void WindowRender::bind(const ApplicationContext *applicationContext, const RenderContext *renderContext) {
+    m_applicationContext = applicationContext;
+    m_renderContext = renderContext;
+}

@@ -14,7 +14,7 @@ Application::Application(WindowManager &windowManager)
       m_context(*this),
       m_newWindow(m_windowManager.getWindow(0))
 #ifndef SIMULATION
-      , m_renderer(m_context, m_newWindow)
+      , m_renderer(m_context, m_windowManager, m_newWindow)
 #endif
 {
     switchWindow();

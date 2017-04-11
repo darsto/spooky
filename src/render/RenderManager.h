@@ -17,6 +17,7 @@
 #include "opengl.h"
 #include "util/os.h"
 #include "ApplicationContext.h"
+#include "window/WindowManager.h"
 #include "render/RenderContext.h"
 #include "render/texture/Atlas.h"
 #include "render/window/WindowRender.h"
@@ -33,14 +34,15 @@
 class RenderManager {
 public:
     /**
+     * TODO
      * The constructor.
      * @param applicationContext context to bind to this RenderManager
      * @param window initial window to load renders for
      */
-    RenderManager(ApplicationContext &applicationContext, Window *window);
+    RenderManager(ApplicationContext &applicationContext, WindowManager &windowManager, Window *window);
 
     /**
-     * Switch current window render (and reload it)
+     * Switch current window render (and reload it)O
      * @param window window to get render for
      */
     void switchWindow(Window &window);
@@ -85,9 +87,8 @@ private:
     WindowRender *m_windowRender = nullptr;
 
     ApplicationContext &m_applicationContext;
+    WindowManager &m_windowManager;
     RenderContext m_renderContext;
-
-    std::unordered_map<uint32_t, std::unique_ptr<WindowRender>> windowRenders;
 };
 
 #endif //SPOOKY_RENDER_RENDERMANAGER_H

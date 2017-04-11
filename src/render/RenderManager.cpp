@@ -7,21 +7,16 @@
 #include "RenderManager.h"
 #include "Application.h"
 #include "window/Window.h"
-#include "../../examples/basic/src/window/LoadingScreen.h"
-#include "../../examples/basic/src/window/MainMenu.h"
-#include "../../examples/basic/src/render/window/MenuRender.h"
 
-RenderManager::RenderManager(ApplicationContext &applicationContext, Window *window)
-    : m_applicationContext(applicationContext) {
+RenderManager::RenderManager(ApplicationContext &applicationContext, WindowManager &windowManager, Window *window)
+    : m_applicationContext(applicationContext),
+      m_windowManager(windowManager) {
     
     if (!this->initWindow()) {
         printf("Failed to initialize window!\n");
         exit(1); // TODO replace with exceptions
     } else if (!this->initGL()) {
         printf("Unable to initialize OpenGL!\n");
-        exit(1);
-    } else if (!this->initRenders()) {
-        printf("Unable to initialize window renders!\n");
         exit(1);
     } else {
 #ifdef DEF_ANDROID
@@ -83,7 +78,6 @@ bool RenderManager::initGL() {
 }
 
 bool RenderManager::initRenders() {
-    windowRenders.emplace(MainMenu::TYPE, std::make_unique<MenuRender>(m_applicationContext, m_renderContext));
     return true;
 }
 
@@ -107,13 +101,14 @@ RenderManager::~RenderManager() {
 }
 
 void RenderManager::switchWindow(Window &window) {
-    auto render = windowRenders.find(window.type());
-    if (render == windowRenders.end()) {
+    WindowRender *render = m_windowManager.getWindowRender((int) window.type());
+    if (!render) {
         throw std::runtime_error("Trying to init window without any bound render.");
     }
 
     m_currentWindow = &window;
-    m_windowRender = render->second.get();
+    m_windowRender = render;
+    m_windowRender->bind(&m_applicationContext, &m_renderContext);
     m_windowRender->reinit();
     m_windowRender->reload();
 }
