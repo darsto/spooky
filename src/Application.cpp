@@ -7,15 +7,17 @@
 #include "Application.h"
 #include "util/os.h"
 #include "util/log.h"
-#include "window/LoadingScreen.h"
+#include "window/Window.h"
 
-Application::Application()
-    : m_context(*this),
-      m_window(std::make_unique<LoadingScreen>(&m_context))
+Application::Application(WindowManager &windowManager)
+    : m_windowManager(windowManager),
+      m_context(*this),
+      m_newWindow(m_windowManager.getWindow(0))
 #ifndef SIMULATION
-      , m_renderer(m_context, m_window.get())
+      , m_renderer(m_context, m_newWindow)
 #endif
 {
+    switchWindow();
     m_timer.delta(); //if not called right now, first call in game loop would return a very huge value
 }
 
@@ -99,8 +101,9 @@ void Application::switchWindow() {
     if (m_newWindow == nullptr) {
         m_running = false;
     } else {
-        m_window.swap(m_newWindow);
-        m_newWindow.reset();
+        m_window = m_newWindow;
+        m_newWindow = nullptr;
+        m_window->context(&m_context);
 #ifndef SIMULATION
         m_renderer.switchWindow(*m_window);
         m_window->reload();

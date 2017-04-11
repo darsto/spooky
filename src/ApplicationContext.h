@@ -27,10 +27,11 @@ public:
     ApplicationContext(Application &application);
 
     /**
+     * TODO
      * Switch current window to the given one.
      * @param window window to switch to
      */
-    void switchWindow(std::unique_ptr<Window> &&window);
+    void switchWindow(int index);
 
     /**
      * Get the global config.

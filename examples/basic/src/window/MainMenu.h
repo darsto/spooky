@@ -6,7 +6,7 @@
 #define SPOOKY_MAINMENU_H
 
 #include <vector>
-#include "Window.h"
+#include "window/Window.h"
 #include "Menu.h"
 #include "kaguya/state.hpp"
 

@@ -8,7 +8,7 @@
 
 #include "MenuRender.h"
 #include "window/Window.h"
-#include "window/MainMenu.h"
+#include "../../window/MainMenu.h"
 #include "gui/GuiText.h"
 #include "render/opengl.h"
 #include "render/RenderContext.h"

@@ -56,17 +56,13 @@ SET(SOURCE_FILES
         core/input/Keypress.h
         window/Window.cpp
         window/Window.h
-        window/MainMenu.cpp
-        window/MainMenu.h
-        window/Menu.cpp
-        window/Menu.h
-        window/LoadingScreen.cpp
-        window/LoadingScreen.h
         gui/GuiElement.cpp
         gui/GuiElement.h
         gui/GuiText.cpp
         gui/GuiText.h
         gui/EmptyGuiElement.h
+        window/WindowManager.cpp
+        window/WindowManager.h
         )
 
 IF (NOT SIMULATION)
@@ -85,8 +81,6 @@ IF (NOT SIMULATION)
             render/RenderContext.h
             render/window/WindowRender.cpp
             render/window/WindowRender.h
-            render/window/MenuRender.cpp
-            render/window/MenuRender.h
             render/gui/GuiElementRender.cpp
             render/gui/GuiElementRender.h
             render/gui/TextRender.cpp

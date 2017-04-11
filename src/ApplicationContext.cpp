@@ -7,7 +7,7 @@
 #include "ApplicationContext.h"
 #include "Application.h"
 #include "window/Window.h"
-#include "window/LoadingScreen.h"
+#include "../examples/basic/src/window/LoadingScreen.h"
 
 ApplicationContext::ApplicationContext(Application &application)
     : m_application(application),
@@ -15,10 +15,11 @@ ApplicationContext::ApplicationContext(Application &application)
 
 }
 
-void ApplicationContext::switchWindow(std::unique_ptr<Window> &&window) {
-    if (window) {
+void ApplicationContext::switchWindow(int index) {
+    if (index >= 0) {
+        Window *window = m_application.m_windowManager.getWindow(index);
         window->context(this);
-        m_application.m_newWindow = std::move(window);
+        m_application.m_newWindow = window;
     } else {
         m_application.m_running = false;
     }

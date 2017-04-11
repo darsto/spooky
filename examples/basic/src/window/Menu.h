@@ -10,7 +10,7 @@
 #include <vector>
 #include <memory>
 
-#include "Window.h"
+#include "window/Window.h"
 #include "gui/GuiElement.h"
 
 class Menu : public Window {

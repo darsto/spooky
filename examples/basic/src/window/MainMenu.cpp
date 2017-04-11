@@ -11,10 +11,11 @@
 #include "core/input/InputManager.h"
 #include "util/log.h"
 #include "ApplicationContext.h"
+#include "kaguya/metatable.hpp"
 
 #if defined(USES_SDL) && defined(USES_KEYBOARD)
 
-#include <SDL_keyboard.h>
+// #include <SDL_keyboard.h>
 
 #endif // USES_SDL && USES_KEYBOARD
 
@@ -47,7 +48,7 @@ void MainMenu::tick(double deltaTime) {
 
 void MainMenu::handleKeypress(const Input::KeypressTable &keypresses) {
 #if defined(USES_KEYBOARD) && defined(USES_SDL)
-    if (keypresses[SDL_SCANCODE_F5].pressed()) {
+    if (keypresses[62].pressed()) { //SDL_SCANCODE_F5
         m_guiElements.clear();
         m_luaState.dofile(m_guiFile);
     }

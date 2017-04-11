@@ -12,7 +12,7 @@
 #include <memory>
 #include <unordered_map>
 
-#include "WindowRender.h"
+#include "render/window/WindowRender.h"
 #include "render/gui/GuiRenderable.h"
 
 class GuiElementRender;

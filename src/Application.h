@@ -9,6 +9,7 @@
 
 #include <memory>
 
+#include "window/WindowManager.h"
 #include "ApplicationContext.h"
 #include "util/os.h"
 #include "core/Timer.h"
@@ -30,7 +31,7 @@ public:
      * The constructor.
      * @return initialized application
      */
-    Application();
+    Application(WindowManager &windowManager);
 
     /**
      * Reinitializes rendering, input capture, etc.
@@ -76,11 +77,12 @@ private:
     void switchWindow();
 
     bool m_running = true;
+    WindowManager &m_windowManager;
     ApplicationContext m_context;
-    std::unique_ptr<Window> m_window;
+    Window *m_window = nullptr;
     Input::InputManager m_inputManager;
     Timer m_timer;
-    std::unique_ptr<Window> m_newWindow;
+    Window *m_newWindow = nullptr;
 
 #ifndef SIMULATION
     RenderManager m_renderer;

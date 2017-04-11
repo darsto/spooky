@@ -9,7 +9,7 @@
 
 #include <vector>
 
-#include "Window.h"
+#include "window/Window.h"
 #include "Menu.h"
 
 class GuiElement;
@@ -19,7 +19,7 @@ class GuiButton;
 class LoadingScreen : public Menu {
 
 public:
-    LoadingScreen(ApplicationContext *applicationContext);
+    LoadingScreen();
     virtual void reload() override;
     virtual void tick(double deltaTime) override;
     virtual void handleKeypress(const Input::KeypressTable &keypresses) override;

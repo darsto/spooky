@@ -12,8 +12,7 @@
 #include "ApplicationContext.h"
 #include "MainMenu.h"
 
-LoadingScreen::LoadingScreen(ApplicationContext *applicationContext) : Menu() {
-    context(applicationContext);
+LoadingScreen::LoadingScreen() : Menu() {
     kaguya::State initState;
     initState.dofile(util::file::path<util::file::type::script>("init.lua"));
     step = MAX_STEPS;
@@ -28,7 +27,7 @@ void LoadingScreen::reload() {
 
 void LoadingScreen::tick(double deltaTime) {
     if (step == MAX_STEPS) {
-        getApplicationContext().switchWindow(std::make_unique<MainMenu>());
+        getApplicationContext().switchWindow(1);
         ++step;
     }
 }
@@ -39,7 +38,7 @@ void LoadingScreen::handleClick(const Input::TouchPoint &p) {
 void LoadingScreen::handleKeypress(const Input::KeypressTable &keypresses) {
 #if defined(USES_SDL) && defined(USES_KEYBOARD)
     if (keypresses[SDL_SCANCODE_W].pressed()) {
-        getApplicationContext().switchWindow(std::make_unique<MainMenu>());
+        getApplicationContext().switchWindow(1);
     }
 #endif
 }

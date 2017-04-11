@@ -7,9 +7,9 @@
 #include "RenderManager.h"
 #include "Application.h"
 #include "window/Window.h"
-#include "window/LoadingScreen.h"
-#include "window/MainMenu.h"
-#include "render/window/MenuRender.h"
+#include "../../examples/basic/src/window/LoadingScreen.h"
+#include "../../examples/basic/src/window/MainMenu.h"
+#include "../../examples/basic/src/render/window/MenuRender.h"
 
 RenderManager::RenderManager(ApplicationContext &applicationContext, Window *window)
     : m_applicationContext(applicationContext) {
