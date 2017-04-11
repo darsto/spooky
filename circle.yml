@@ -11,6 +11,7 @@ dependencies:
       if [[ ! -d "$HOME/.local/cache" ]]; then \
         mkdir "$HOME/.local/cache" && cd "$HOME/.local/cache" \
         && mkdir "debs" && cd "debs" \
+        && sudo add-apt-repository -y ppa:george-edison55/precise-backports \
         && sudo apt-get update \
         && sudo apt-get --print-uris --yes -d --reinstall install \
             cmake liblua5.2-dev \
