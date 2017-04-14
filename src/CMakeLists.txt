@@ -11,7 +11,7 @@ SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -pedantic -Wall -Wextra -Wca
     -Wctor-dtor-privacy -Wdisabled-optimization -Wformat=2 -Winit-self -Wlogical-op \
     -Wmissing-declarations -Wnoexcept -Woverloaded-virtual -Wredundant-decls \
     -Wshadow -Wsign-conversion -Wsign-promo -Wstrict-null-sentinel -Wstrict-overflow=5 \
-    -Wswitch-default -Wundef -Werror -Wno-unused")
+    -Wswitch-default -Wundef -Werror")
 
 IF (BUILD_SHARED)
     SET(TYPE SHARED)
