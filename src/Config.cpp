@@ -13,13 +13,23 @@ Config::Config(const std::string &fileName) {
 std::string Config::stringValue(const std::string &key, const std::string &defValue) const {
     std::lock_guard<std::mutex> lock_guard(m_mutex);
 
-    m_config("tmp = " + key);
-    return m_config["tmp"];
+    m_config(
+        "__tmp = " + key + "\n"
+        "if __tmp == nil then\n"
+        "    __tmp = '" + defValue + "'\n"
+        "end"
+    );
+    return m_config["__tmp"];
 }
 
 int Config::intValue(const std::string &key, int defValue) const {
     std::lock_guard<std::mutex> lock_guard(m_mutex);
 
-    m_config("tmp = " + key);
-    return m_config["tmp"];
+    m_config(
+        "__tmp = " + key + "\n"
+        "if __tmp == nil then\n"
+        "    __tmp = " + std::to_string(defValue) + "\n"
+        "end"
+    );
+    return m_config["__tmp"];
 }
