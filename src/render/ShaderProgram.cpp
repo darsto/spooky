@@ -6,7 +6,6 @@
 
 #include "ShaderProgram.h"
 #include "Shader.h"
-#include "util/log.h"
 
 ShaderProgram::ShaderProgram()
     : m_id(glCreateProgram()) {}
@@ -23,7 +22,7 @@ int ShaderProgram::addShader(const Shader &shader) {
     GLuint shader_id = shader.id();
     glAttachShader(m_id, shader_id);
     m_boundShaders.push_back(shader_id);
-    
+
     return 0;
 }
 
@@ -52,30 +51,50 @@ int ShaderProgram::useProgram() {
     return 0;
 }
 
-void ShaderProgram::setUniform(std::string sName, float fValue) {
-    int loc = glGetUniformLocation(m_id, sName.c_str());
-    glUniform1fv(loc, 1, &fValue);
+int ShaderProgram::setUniform(const std::string &name, float val) {
+    int loc = glGetUniformLocation(m_id, name.c_str());
+    
+    if (loc >= 0) {
+        glUniform1fv(loc, 1, &val);
+        return 0;
+    } else {
+        return -1;
+    }
 }
 
-void ShaderProgram::setUniform(std::string sName, const glm::vec4 &vVector) {
-    int loc = glGetUniformLocation(m_id, sName.c_str());
-    glUniform4fv(loc, 1, reinterpret_cast<const GLfloat *>(&vVector));
+int ShaderProgram::setUniform(const std::string &name, const glm::vec4 &val) {
+    int loc = glGetUniformLocation(m_id, name.c_str());
+    
+    if (loc >= 0) {
+        glUniform4fv(loc, 1, reinterpret_cast<const GLfloat *>(&val));
+        return 0;
+    } else {
+        return -1;
+    }
 }
 
-void ShaderProgram::setUniform(std::string sName, const glm::mat4 &mMatrix) {
-    int loc = glGetUniformLocation(m_id, sName.c_str());
-    glUniformMatrix4fv(loc, 1, GL_FALSE, reinterpret_cast<const GLfloat *>(&mMatrix));
+int ShaderProgram::setUniform(const std::string &name, const glm::mat4 &val) {
+    int loc = glGetUniformLocation(m_id, name.c_str());
+
+    if (loc >= 0) {
+        glUniformMatrix4fv(loc, 1, GL_FALSE, reinterpret_cast<const GLfloat *>(&val));
+        return 0;
+    } else {
+        return -1;
+    }
 }
 
-void ShaderProgram::setUniform(std::string sName, int value) {
-    int loc = glGetUniformLocation(m_id, sName.c_str());
-    glUniform1i(loc, value);
+int ShaderProgram::setUniform(const std::string &name, int val) {
+    int loc = glGetUniformLocation(m_id, name.c_str());
+
+    if (loc >= 0) {
+        glUniform1i(loc, val);
+        return 0;
+    } else {
+        return -1;
+    }
 }
 
 ShaderProgram::~ShaderProgram() {
-    if (m_linked) {
-        glDeleteProgram(m_id);
-    } else {
-        Log::warning("Deleting unlinked shader program. (Maybe it shouldn't have been created at all?)");
-    }
+    glDeleteProgram(m_id);
 }

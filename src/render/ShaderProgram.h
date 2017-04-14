@@ -60,24 +60,25 @@ public:
     /**
      * Set uniform variable in the GLSL program on the GPU.
      * @param name name of the variable to set
-     * @param value value to set
+     * @param val value to set
+     * @return return code. 0 on success, -1 on error
      */
-    void setUniform(const std::string name, float value);
+    int setUniform(const std::string &name, float val);
 
     /**
-     * @overload ShaderProgram::setUniform(std::string name, float value)
+     * @overload ShaderProgram::setUniform(const std::string &name, float value)
      */
-    void setUniform(std::string name, const glm::vec4 &value);
+    int setUniform(const std::string &name, const glm::vec4 &val);
 
     /**
-     * @overload ShaderProgram::setUniform(std::string name, float value)
+     * @overload ShaderProgram::setUniform(sconst td::string &name, float value)
      */
-    void setUniform(std::string name, const glm::mat4 &value);
+    int setUniform(const std::string &name, const glm::mat4 &val);
 
     /**
-     * @overload ShaderProgram::setUniform(std::string name, float value)
+     * @overload ShaderProgram::setUniform(conststd::string &name, float value)
      */
-    void setUniform(std::string name, int value);
+    int setUniform(const std::string &name, int val);
 
     /**
      * The destructor.
