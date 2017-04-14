@@ -52,8 +52,9 @@ namespace texture {
 
         /**
          * Writing given texture to the GPU.
+         * @return return code. 0 on success, -1 on error
          */
-        void loadTex(texture::TexData &tex, uint32_t level);
+        int loadTex(texture::TexData &tex, uint32_t level);
 
         /**
          * Bind this texture as OpenGL texture.

@@ -8,11 +8,15 @@
 
 #include "Texture.h"
 #include "util/file.h"
-#include "exceptions.h"
+#include "util/log.h"
 
 using namespace texture;
 
 int Texture::s_boundTexId = 0;
+
+static bool validateChannelNum(uint32_t channels) {
+    return channels > 0 && channels < 5;
+}
 
 Texture::Texture()
     : m_minFilter(MinFilter::NEAREST),
@@ -21,7 +25,7 @@ Texture::Texture()
     glGenTextures(1, &m_id);
 }
 
-void Texture::loadTex(TexData &tex, uint32_t level) {
+int Texture::loadTex(TexData &tex, uint32_t level) {
     if (level == 0) {
         m_width = tex.width();
         m_height = tex.height();
@@ -29,11 +33,9 @@ void Texture::loadTex(TexData &tex, uint32_t level) {
     }
     
     uint32_t channels = tex.channels();
-
-    if (channels < 1 || channels > 4) {
-        char msg[90];
-        snprintf(msg, sizeof(msg), "Trying to write to GPU texture with invalid amount of channels (channels:%d).", channels);
-        throw invalid_texture_error(msg);
+    if (!validateChannelNum(channels)) {
+        Log::error("Trying to write to GPU a texture with invalid amount of channels (%d).", channels);
+        return -1;
     }
 
 #ifdef DBG_COLORMIPMAPS
@@ -60,6 +62,7 @@ void Texture::loadTex(TexData &tex, uint32_t level) {
     }
 
     glTexImage2D((GLenum) GL_TEXTURE_2D, (GLint) level, (GLint) getTexGLFormat(channels), (GLint) tex.width(), (GLint) tex.height(), 0, (GLenum) getTexGLFormat(channels), (GLenum) GL_UNSIGNED_BYTE, tex.get());
+    return 0;
 }
 
 void Texture::samplerParameter(GLenum parameter, GLint value) {
@@ -123,9 +126,8 @@ GLenum Texture::getTexGLFormat(uint32_t channels) {
             ret = GL_RGBA;
             break;
         default:
-            char msg[100];
-            snprintf(msg, sizeof(msg), "Trying to convert invalid channel number into an OpenGL texture format (channels:%d).", channels);
-            throw invalid_texture_error(msg);
+            ret = GL_INVALID_ENUM;
+            break;
     }
 
     return ret;

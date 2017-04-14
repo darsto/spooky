@@ -18,7 +18,6 @@
 #include "util/collection.h"
 #include "util/file.h"
 #include "Resampler.h"
-#include "exceptions.h"
 #include "util/log.h"
 #include "util/prof.h"
 
@@ -88,9 +87,7 @@ const util::Rectangle Atlas::element(const std::string &name) const {
     });
 
     if (it == elements.end()) {
-        char msg[100];
-        snprintf(msg, sizeof(msg), "Trying to get inexistent element (\"%s\") from texture atlas.", name.c_str());
-        throw invalid_texture_error(msg);
+        throw std::runtime_error("Trying to get inexistent element \"" + name + "\" from texture atlas \"" + m_path + "\".");
     }
 
     return it->second;

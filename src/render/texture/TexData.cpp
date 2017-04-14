@@ -8,8 +8,8 @@
 #include <SOIL2.h>
 
 #include "TexData.h"
-#include "exceptions.h"
 #include "util/file.h"
+#include "util/log.h"
 
 using namespace texture;
 
@@ -20,27 +20,25 @@ TexData::TexData(uint32_t width, uint32_t height, uint32_t channels)
       m_data(new uint8_t[width * height * channels]()) {
 
     if (width == 0 || height == 0 || channels == 0) {
-        delete[] m_data;
-        char msg[100];
-        snprintf(msg, sizeof(msg), "Trying to create invalid texture (width:%d, height:%d, channels:%d).", width, height, channels);
-        throw invalid_texture_error(msg);
+        Log::error("Trying to create invalid texture (width:%d, height:%d, channels:%d).", width, height, channels);
     }
 }
 
 TexData::TexData(const std::string &fileName, int flags) {
     int width, height, channels;
     std::string path = util::file::path<util::file::type::texture>(fileName).c_str();
-    std::unique_ptr<uint8_t[]> data(SOIL_load_image(path.c_str(), &width, &height, &channels, flags & 0x7)); // use mask of 3 LSB
-    if (width > 0 && height > 0 && channels > 0) {
-        m_width = (uint32_t) width;
-        m_height = (uint32_t) height;
-        m_channels = (uint32_t) channels;
-        m_data = data.release();
-    } else {
-        char msg[150];
-        snprintf(msg, sizeof(msg), "Trying to load invalid texture (path: %s, width:%d, height:%d, channels:%d).", path.c_str(), width, height, channels);
-        throw invalid_texture_error(msg);
+    uint8_t* data = SOIL_load_image(path.c_str(), &width, &height, &channels, flags & 0x7); // use mask of 3 LSB
+    
+    if (width <= 0 || height <= 0 || channels <= 0) {
+        SOIL_free_image_data(data);
+        Log::error("Trying to load invalid texture (path: %s, width:%d, height:%d, channels:%d).", path.c_str(), width, height, channels);
+        return;
     }
+
+    m_width = (uint32_t) width;
+    m_height = (uint32_t) height;
+    m_channels = (uint32_t) channels;
+    m_data = data;
 }
 
 TexData::TexData(TexData &&other)
@@ -59,7 +57,7 @@ TexData &TexData::operator=(TexData &&other) {
     m_channels = other.m_channels;
     m_data = other.m_data;
     other.m_data = nullptr;
-    
+
     return *this;
 }
 
@@ -87,10 +85,10 @@ uint8_t &TexData::operator[](uint32_t index) {
     return m_data[index];
 }
 
-const uint8_t &TexData::operator[](uint32_t index) const{
+const uint8_t &TexData::operator[](uint32_t index) const {
     return m_data[index];
 }
 
 TexData::~TexData() {
-    delete[] m_data;
+    SOIL_free_image_data(m_data);
 }

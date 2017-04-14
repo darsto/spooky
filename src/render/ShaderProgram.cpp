@@ -6,7 +6,6 @@
 
 #include "ShaderProgram.h"
 #include "Shader.h"
-#include "exceptions.h"
 #include "util/log.h"
 
 ShaderProgram::ShaderProgram()
@@ -16,22 +15,24 @@ GLuint ShaderProgram::id() {
     return m_id;
 }
 
-void ShaderProgram::addShader(const Shader &shader) {
+int ShaderProgram::addShader(const Shader &shader) {
     if (!shader.compiled()) {
-        throw render::unloaded_shader_error("Trying to register an unloaded shader.");
+        return -1;
     }
 
     GLuint shader_id = shader.id();
     glAttachShader(m_id, shader_id);
     m_boundShaders.push_back(shader_id);
+    
+    return 0;
 }
 
-void ShaderProgram::linkProgram() {
+int ShaderProgram::linkProgram() {
     glLinkProgram(m_id);
 
     int linked;
     glGetProgramiv(m_id, GL_LINK_STATUS, &linked);
-    m_linked = linked == GL_TRUE;
+    m_linked = (linked == GL_TRUE);
 
     for (GLuint shader_id : m_boundShaders) {
         glDetachShader(m_id, shader_id);
@@ -39,19 +40,16 @@ void ShaderProgram::linkProgram() {
 
     m_boundShaders.clear();
 
-    if (!m_linked) {
-        char msg[50];
-        snprintf(msg, sizeof(msg), "Failed to link the shader program #%d.", m_id);
-        throw render::unlinked_shader_program_error(msg);
-    }
+    return m_linked ? 0 : -1;
 }
 
-void ShaderProgram::useProgram() {
+int ShaderProgram::useProgram() {
     if (!m_linked) {
-        throw render::unlinked_shader_program_error("Trying to use an unlinked shader program.");
+        return -1;
     }
 
     glUseProgram(m_id);
+    return 0;
 }
 
 void ShaderProgram::setUniform(std::string sName, float fValue) {

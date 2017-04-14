@@ -11,7 +11,6 @@
 #include "Shader.h"
 #include "util/os.h"
 #include "util/file.h"
-#include "util/exceptions.h"
 #include "util/log.h"
 
 Shader::Shader(const std::string &fileName, GLenum type)

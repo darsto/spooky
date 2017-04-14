@@ -38,21 +38,24 @@ public:
      * The ShaderProgram does not copy, nor keep the reference of the shader.
      * Until linkProgram() is called, given shader has to remain in the memory and mustn't be deleted.
      * @param shader shader to be added to the container
+     * @return return code. 0 on success, -1 on error
      */
-    void addShader(const Shader &shader);
+    int addShader(const Shader &shader);
 
     /**
      * Upload all the shaders in the internal container to the GPU.
      * The internal container is emptied upon calling this method.
      * The shaders are accessed via global state,
      * their corresponding Shader objects can be safely deleted after calling this method.
+     * @return return code. 0 on success, -1 on error
      */
-    void linkProgram();
+    int linkProgram();
 
     /**
      * Set this program as the currently used one.
+     * @return return code. 0 on success, -1 on error
      */
-    void useProgram();
+    int useProgram();
 
     /**
      * Set uniform variable in the GLSL program on the GPU.

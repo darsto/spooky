@@ -44,8 +44,6 @@ SET(SOURCE_FILES
         util/string.cpp
         util/prof.cpp
         util/prof.h
-        util/exceptions.cpp
-        util/exceptions.h
         core/Timer.cpp
         core/Timer.h
         core/input/InputManager.cpp
@@ -69,8 +67,6 @@ IF (NOT SIMULATION)
     SET(SOURCE_RENDER_FILES
             render/opengl.h
             render/opengl.cpp
-            render/exceptions.cpp
-            render/exceptions.h
             render/Shader.cpp
             render/Shader.h
             render/ShaderProgram.cpp
@@ -87,8 +83,6 @@ IF (NOT SIMULATION)
             render/gui/TextRender.h
             render/texture/Atlas.cpp
             render/texture/Atlas.h
-            render/texture/exceptions.cpp
-            render/texture/exceptions.h
             render/texture/TexData.cpp
             render/texture/TexData.h
             render/texture/Resampler.cpp
