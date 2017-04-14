@@ -13,10 +13,20 @@ Config::Config(const std::string &fileName) {
 std::string Config::stringValue(const std::string &key, const std::string &defValue) const {
     std::lock_guard<std::mutex> lock_guard(m_mutex);
 
+    std::string safeDefValue;
+    safeDefValue.reserve(defValue.size());
+    std::for_each(defValue.begin(), defValue.end(), [&safeDefValue] (const char &c) {
+        if (c == '\"' || c == '\\') {
+            safeDefValue.push_back('\\');
+        }
+        
+        safeDefValue.push_back(c);
+    });
+    
     m_config(
         "__tmp = " + key + "\n"
         "if __tmp == nil then\n"
-        "    __tmp = '" + defValue + "'\n"
+        "    __tmp = \"" + safeDefValue + "\"\n"
         "end"
     );
     return m_config["__tmp"];
