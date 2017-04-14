@@ -17,7 +17,7 @@ GLuint ShaderProgram::id() {
 }
 
 void ShaderProgram::addShader(const Shader &shader) {
-    if (!shader.loaded()) {
+    if (!shader.compiled()) {
         throw render::unloaded_shader_error("Trying to register an unloaded shader.");
     }
 

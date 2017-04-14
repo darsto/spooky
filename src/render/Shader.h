@@ -14,23 +14,46 @@
 
 /**
  * Wrapper of a single GLSL shader of any type.
+ * It will get loaded and compiled in contructor,
+ * and deleted in destructor.
  */
 class Shader {
 public:
 
     /**
      * The constructor.
-     * Load shader of given type from given path
-     * @param fileName path to the file to load this shader from. relative to data/shaders/
-     * @param type type of this shader. either GL_VERTEX_SHADER or GL_FRAGMENT_SHADER
+     * The shader from given path should be immediately compiled. 
+     * Use compiled() method to ensure that everything went ok.
+     * @param fileName path to the file to load this shader from. relative to shaders dir
+     * @param type type of this shader. e.g. GL_VERTEX_SHADER or GL_FRAGMENT_SHADER
      */
-    Shader(const std::string &fileName, int type);
+    Shader(const std::string &fileName, GLenum type);
+
+    /**
+     * Copy constructor. Deleted.
+     */
+    Shader(const Shader &) = delete;
+
+    /**
+     * Move constructor. Deleted
+     */
+    Shader(Shader &&) = delete;
+    
+    /**
+     * Copy assignment operator. Deleted.
+     */
+    Shader &operator=(const Shader &) = delete;
+    
+    /**
+     * Move assignment operator. Deleted
+     */
+    Shader &operator=(Shader &&) = delete;
 
     /**
      * Check if the shader has been successfully loaded.
      * @return whether or not the shader has been successfully loaded.
      */
-    bool loaded() const;
+    bool compiled() const;
 
     /**
      * Get shader's unique identifier.
@@ -43,11 +66,11 @@ public:
      * If loaded, it deletes the shader from the GPU.
      */
     ~Shader();
-
+    
 private:
-    GLuint m_id = 0;
-    int m_type = 0;
-    bool m_loaded = false;
+    GLuint m_id;
+    GLenum m_type;
+    bool m_compiled = false;
 };
 
 #endif //SPOOKY_RENDER_SHADER_H

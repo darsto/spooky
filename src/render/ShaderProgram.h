@@ -34,7 +34,7 @@ public:
     GLuint id();
 
     /**
-     * Bind given shader's id to with this program.
+     * Bind given shader's id to to this program.
      * The ShaderProgram does not copy, nor keep the reference of the shader.
      * Until linkProgram() is called, given shader has to remain in the memory and mustn't be deleted.
      * @param shader shader to be added to the container
@@ -59,7 +59,7 @@ public:
      * @param name name of the variable to set
      * @param value value to set
      */
-    void setUniform(std::string name, float value);
+    void setUniform(const std::string name, float value);
 
     /**
      * @overload ShaderProgram::setUniform(std::string name, float value)

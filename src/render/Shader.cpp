@@ -6,6 +6,7 @@
 
 #include <vector>
 #include <memory>
+#include <fstream>
 
 #include "Shader.h"
 #include "util/os.h"
@@ -13,61 +14,59 @@
 #include "util/exceptions.h"
 #include "util/log.h"
 
-Shader::Shader(const std::string &fileName, int type) {
-    std::string file = util::file::path<util::file::type::shader>(fileName);
-    FILE *fp = fopen(file.c_str(), "rt");
-    if (!fp) {
-        char msg[100];
-        snprintf(msg, sizeof(msg), "Trying to read inexistent shader file: \"%s\".", fileName.c_str());
-        throw util::file_not_found_error(msg);
+Shader::Shader(const std::string &fileName, GLenum type)
+    : m_type(type) {
+
+    std::string fullPath = util::file::path<util::file::type::shader>(fileName);
+    std::ifstream shaderFile(fullPath);
+
+    if (!shaderFile.is_open()) {
+        throw std::runtime_error("Trying to read inexistent shader file: \"" + fileName + "\".");
     }
-    m_type = type;
-    std::vector<std::string> program_vec;
+
+    std::vector<std::string> shaderLines(1);
+    while (std::getline(shaderFile, shaderLines.back())) {
+        shaderLines.emplace_back();
+    }
+    shaderLines.pop_back();
 
 #ifdef DEF_ANDROID
     if (type == GL_FRAGMENT_SHADER) {
-        program_vec.push_back("precision mediump float;");
+        program_vec.emplace_back("precision mediump float;");
     }
 #endif // DEF_ANDROID
 
-    char sLine[255];
-    while (fgets(sLine, 255, fp))program_vec.push_back(sLine);
-    fclose(fp);
+    std::vector<const char *> program_str(shaderLines.size());
+    for (size_t i = 0; i < shaderLines.size(); i++) {
+        program_str[i] = shaderLines[i].c_str();
+    }
 
-    std::unique_ptr<const char *[]> program_str = std::make_unique<const char *[]>(program_vec.size());
-    for (size_t i = 0; i < program_vec.size(); i++)
-        program_str[i] = program_vec.at(i).c_str();
-
-    m_id = glCreateShader((GLenum) m_type);
-    glShaderSource(m_id, (GLsizei) program_vec.size(), program_str.get(), NULL);
+    m_id = glCreateShader(m_type);
+    glShaderSource(m_id, (GLsizei) shaderLines.size(), program_str.data(), NULL);
     glCompileShader(m_id);
 
-    GLint isCompiled = 0;
-    glGetShaderiv(m_id, GL_COMPILE_STATUS, &isCompiled);
-    if (isCompiled == GL_FALSE) {
-
+    GLint compiled = 0;
+    glGetShaderiv(m_id, GL_COMPILE_STATUS, &compiled);
+    if (!compiled) {
         GLint length;
         glGetShaderiv(m_id, GL_INFO_LOG_LENGTH, &length);
 
-        std::unique_ptr<GLchar[]> log = std::make_unique<GLchar[]>((size_t) (length + 1));
-        glGetShaderInfoLog(m_id, length, NULL, log.get());
+        if (length > 1) {
+            std::vector<GLchar> log((size_t) length + 1);
+            glGetShaderInfoLog(m_id, length, NULL, log.data());
+            log[(size_t) length] = 0;
 
-        Log::error("Log file: ");
-        if (length > 1)
-            Log::error("%s\n", log.get());
+            Log::error("Shader compilation failed with error: %s", log.data());
+        } else {
+            Log::error("Shader compilation failed with unknown error!");
+        }
     }
 
-    int compilationStatus;
-    glGetShaderiv(m_id, GL_COMPILE_STATUS, &compilationStatus);
-    m_loaded = compilationStatus == GL_TRUE;
-
-    if (m_loaded) {
-
-    }
+    m_compiled = (compiled == GL_TRUE);
 }
 
-bool Shader::loaded() const {
-    return m_loaded;
+bool Shader::compiled() const {
+    return m_compiled;
 }
 
 GLuint Shader::id() const {
@@ -75,10 +74,6 @@ GLuint Shader::id() const {
 }
 
 Shader::~Shader() {
-    if (loaded()) {
-        glDeleteShader(m_id);
-    } else {
-        Log::warning("Deleting unloaded shader. (Maybe it shouldn't have been created at all?)");
-    }
+    glDeleteShader(m_id);
 }
 
