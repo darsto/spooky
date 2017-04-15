@@ -18,17 +18,20 @@ class Shader;
 
 /**
  * Container of GLSL shaders. Wraps OpenGL shader program API.
- * Provides simple interface to link all the contained shaders with a single call.
+ * Provides simple interface to link all the contained shaders
+ * with a single call.
  */
 class ShaderProgram {
 public:
     /**
      * The constructor.
+     * Use id() method to check if the program has been successfully created.
      */
     ShaderProgram();
 
     /**
      * Get unique program identifier.
+     * If equals 0, the program is invalid and should not be used.
      * @return unique program identifier
      */
     GLuint id();
@@ -36,7 +39,9 @@ public:
     /**
      * Bind given shader's id to to this program.
      * The ShaderProgram does not copy, nor keep the reference of the shader.
-     * Until linkProgram() is called, given shader has to remain in the memory and mustn't be deleted.
+     * Given shader object can be safely deleted even before the shader program
+     * has been linked. Internal OpenGL implementation will defer that deletion
+     * until after the whole program is deleted
      * @param shader shader to be added to the container
      * @return return code. 0 on success, -1 on error
      */
@@ -45,14 +50,15 @@ public:
     /**
      * Upload all the shaders in the internal container to the GPU.
      * The internal container is emptied upon calling this method.
-     * The shaders are accessed via global state,
-     * their corresponding Shader objects can be safely deleted after calling this method.
+     * The shaders are accessed via global state, their corresponding
+     * Shader objects can be safely deleted after calling this method.
      * @return return code. 0 on success, -1 on error
      */
     int linkProgram();
 
     /**
      * Set this program as the currently used one.
+     * Note that it must be already linked.
      * @return return code. 0 on success, -1 on error
      */
     int useProgram();
@@ -82,7 +88,7 @@ public:
 
     /**
      * The destructor.
-     * If program has been linked, it will be deleted now.
+     * If program will be deleted now.
      */
     ~ShaderProgram();
 
