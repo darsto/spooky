@@ -30,6 +30,26 @@ public:
     ShaderProgram();
 
     /**
+     * Copy constructor. Deleted.
+     */
+    ShaderProgram(const ShaderProgram &) = delete;
+
+    /**
+     * Move constructor. Deleted
+     */
+    ShaderProgram(ShaderProgram &&) = delete;
+
+    /**
+     * Copy assignment operator. Deleted.
+     */
+    ShaderProgram &operator=(const ShaderProgram &) = delete;
+
+    /**
+     * Move assignment operator. Deleted
+     */
+    ShaderProgram &operator=(ShaderProgram &&) = delete;
+    
+    /**
      * Get unique program identifier.
      * If equals 0, the program is invalid and should not be used.
      * @return unique program identifier
