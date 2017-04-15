@@ -14,13 +14,20 @@
 #include "util/log.h"
 
 Shader::Shader(const std::string &fileName, GLenum type)
-    : m_type(type) {
+    : m_id(glCreateShader(type)),
+      m_type(type) {
 
+    if (m_id == 0) {
+        Log::error("Created shader of invalid type: %u", type);
+        return;
+    } 
+    
     std::string fullPath = util::file::path<util::file::type::shader>(fileName);
     std::ifstream shaderFile(fullPath);
 
     if (!shaderFile.is_open()) {
-        throw std::runtime_error("Trying to read inexistent shader file: \"" + fileName + "\".");
+        Log::error("Trying to read inexistent shader file: \"%s\".", fileName.c_str());
+        return;
     }
 
     std::vector<std::string> shaderLines(1);
@@ -40,7 +47,6 @@ Shader::Shader(const std::string &fileName, GLenum type)
         program_str[i] = shaderLines[i].c_str();
     }
 
-    m_id = glCreateShader(m_type);
     glShaderSource(m_id, (GLsizei) shaderLines.size(), program_str.data(), NULL);
     glCompileShader(m_id);
 
