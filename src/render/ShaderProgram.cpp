@@ -6,6 +6,7 @@
 
 #include "ShaderProgram.h"
 #include "Shader.h"
+#include "util/log.h"
 
 ShaderProgram::ShaderProgram()
     : m_id(glCreateProgram()) {}
@@ -27,6 +28,11 @@ int ShaderProgram::addShader(const Shader &shader) {
 }
 
 int ShaderProgram::linkProgram() {
+    if (m_linked) {
+        Log::error("Trying to link the same ShaderProgram twice.");
+        return -1;
+    }
+    
     glLinkProgram(m_id);
 
     int linked;
