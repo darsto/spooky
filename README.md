@@ -1,6 +1,6 @@
 # SPOOKY
 
-[![Status](https://img.shields.io/badge/status-stable-blue.svg)](../../releases/latest) [![License](https://img.shields.io/github/license/darsto/spooky.svg)](LICENSE.md)
+[![Status](https://img.shields.io/badge/status-unstable-orange.svg)](../../releases/latest) [![License](https://img.shields.io/github/license/darsto/spooky.svg)](LICENSE.md)
 
 Spooky is a C++14 **cross-platform** OpenGL 2.1/OpenGL ES 2.0 application/game engine.  
 It features a common interface for writing application for different platforms while trying to give the developer as much maintainability as possible. Simply saying, it provides simple cross-platform support and a **low-level access** to the engine at the same time.
@@ -37,4 +37,4 @@ Please note that this project is still under construction. For updates, follow m
 
 # COPYRIGHT
 
-Copyright 2015-2016 Dariusz Stojaczyk
+Copyright 2015-2017 Dariusz Stojaczyk
