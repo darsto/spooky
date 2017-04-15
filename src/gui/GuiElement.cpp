@@ -5,14 +5,11 @@
  */
 
 #include "GuiElement.h"
-#include "EmptyGuiElement.h"
-#include <core/input/TouchPoint.h>
 
 constexpr const unsigned int GuiElement::TYPE;
 
-GuiElement::GuiElement(const GuiElement *parent, double x, double y, double width, double height, const std::string &tex, uint32_t color)
-    : m_parent(parent),
-      m_x(x),
+GuiElement::GuiElement(double x, double y, double width, double height, const std::string &tex, uint32_t color)
+    : m_x(x),
       m_y(y),
       m_width(width),
       m_height(height),
@@ -22,17 +19,12 @@ GuiElement::GuiElement(const GuiElement *parent, double x, double y, double widt
 
 }
 
-GuiElement::GuiElement(double x, double y, double width, double height, const std::string &tex, uint32_t color)
-    : GuiElement(&EmptyGuiElement::instance(), x, y, width, height, tex, color) {
-
-}
-
 bool GuiElement::contains(double coordX, double coordY) {
     return coordX >= x() && coordY >= y() && coordX <= x() + width() && coordY < y() + height();
 }
 
 double GuiElement::x() const {
-    return m_parent->x() + m_x;
+    return m_x;
 }
 
 void GuiElement::x(double x) {
@@ -40,7 +32,7 @@ void GuiElement::x(double x) {
 }
 
 double GuiElement::y() const {
-    return m_parent->y() + m_y;
+    return m_y;
 }
 
 void GuiElement::y(double y) {

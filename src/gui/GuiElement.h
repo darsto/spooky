@@ -11,7 +11,6 @@
 
 class GuiElement {
 public:
-    GuiElement(const GuiElement *parent, double x, double y, double width, double height, const std::string &tex, uint32_t color = 0xFFFFFFFF);
     GuiElement(double x, double y, double width, double height, const std::string &tex, uint32_t color = 0xFFFFFFFF);
     bool contains(double coordX, double coordY);
     virtual double x() const;
@@ -34,7 +33,6 @@ public:
     }
 
 protected:
-    const GuiElement *const m_parent;
     double m_x, m_y;
     double m_width, m_height;
     double m_angle;

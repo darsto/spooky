@@ -58,7 +58,6 @@ SET(SOURCE_FILES
         gui/GuiElement.h
         gui/GuiText.cpp
         gui/GuiText.h
-        gui/EmptyGuiElement.h
         window/WindowManager.cpp
         window/WindowManager.h
         )
@@ -89,7 +88,8 @@ IF (NOT SIMULATION)
             render/texture/Resampler.h
             render/texture/Texture.cpp
             render/texture/Texture.h
-            render/gui/GuiRenderable.h)
+            render/gui/GuiRenderable.h
+            )
 
     SET(SOURCE_FILES ${SOURCE_FILES} ${SOURCE_RENDER_FILES})
 ENDIF ()
