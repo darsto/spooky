@@ -102,5 +102,7 @@ int ShaderProgram::setUniform(const std::string &name, int val) {
 }
 
 ShaderProgram::~ShaderProgram() {
-    glDeleteProgram(m_id);
+    if (m_id) {
+        glDeleteProgram(m_id);
+    }
 }
