@@ -20,8 +20,8 @@ Shader::Shader(const std::string &fileName, GLenum type)
     if (m_id == 0) {
         Log::error("Created shader of invalid type: %u", type);
         return;
-    } 
-    
+    }
+
     std::string fullPath = util::file::path<util::file::type::shader>(fileName);
     std::ifstream shaderFile(fullPath);
 
@@ -79,6 +79,8 @@ GLuint Shader::id() const {
 }
 
 Shader::~Shader() {
-    glDeleteShader(m_id);
+    if (m_id) {
+        glDeleteShader(m_id);
+    }
 }
 
