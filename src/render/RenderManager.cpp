@@ -10,12 +10,10 @@
 
 #include "RenderManager.h"
 #include "ApplicationContext.h"
-#include "window/Window.h"
 #include "window/WindowManager.h"
 #include "util/log.h"
 
 #include "opengl.h"
-#include "window/WindowRender.h"
 
 RenderManager::RenderManager(ApplicationContext &applicationContext,
                              WindowManager &windowManager)
@@ -38,6 +36,40 @@ RenderManager::RenderManager(ApplicationContext &applicationContext,
 
 bool RenderManager::initialized() {
     return m_initialized;
+}
+
+void RenderManager::switchWindow(Window &window) {
+    WindowRender *render = m_windowManager.getWindowRender((int) window.type());
+    if (!render) {
+        throw std::runtime_error(
+            "Trying to init window without any bound render.");
+    }
+
+    m_currentWindow = &window;
+    m_windowRender = render;
+    m_windowRender->bind(&m_applicationContext, &m_renderContext);
+    m_windowRender->reinit();
+    m_windowRender->reload();
+}
+
+void RenderManager::resize(uint32_t width, uint32_t height) {
+    m_applicationContext.resize(width, height);
+    m_windowRender->reload();
+}
+
+void RenderManager::render() {
+    m_windowRender->render(*m_currentWindow);
+#ifdef USES_SDL
+    SDL_GL_SwapWindow(m_sdlWindow);
+#endif // USES_SDL
+}
+
+RenderManager::~RenderManager() {
+#ifdef USES_SDL
+    SDL_GL_DeleteContext(m_sdlContext);
+    SDL_DestroyWindow(m_sdlWindow);
+    SDL_Quit();
+#endif // USES_SDL
 }
 
 int RenderManager::initWindow() {
@@ -95,38 +127,4 @@ int RenderManager::initGL() {
 #endif // USES_SDL
 
     return 0;
-}
-
-void RenderManager::render() {
-    m_windowRender->render(*m_currentWindow);
-#ifdef USES_SDL
-    SDL_GL_SwapWindow(m_sdlWindow);
-#endif // USES_SDL
-}
-
-RenderManager::~RenderManager() {
-#ifdef USES_SDL
-    SDL_GL_DeleteContext(m_sdlContext);
-    SDL_DestroyWindow(m_sdlWindow);
-    SDL_Quit();
-#endif // USES_SDL
-}
-
-void RenderManager::switchWindow(Window &window) {
-    WindowRender *render = m_windowManager.getWindowRender((int) window.type());
-    if (!render) {
-        throw std::runtime_error(
-            "Trying to init window without any bound render.");
-    }
-
-    m_currentWindow = &window;
-    m_windowRender = render;
-    m_windowRender->bind(&m_applicationContext, &m_renderContext);
-    m_windowRender->reinit();
-    m_windowRender->reload();
-}
-
-void RenderManager::resize(uint32_t width, uint32_t height) {
-    m_applicationContext.resize(width, height);
-    m_windowRender->reload();
 }
