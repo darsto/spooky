@@ -14,7 +14,7 @@
 namespace util {
 
     /**
-     * Practical interface for precise measuring passed time.
+     * Practical interface to measure time precisely.
      * Note that this class is available only in debug builds.
      * For simplicity, use the PROF_ macros.
      */
