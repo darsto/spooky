@@ -8,7 +8,7 @@
 #include "Application.h"
 #include "window/Window.h"
 
-RenderManager::RenderManager(ApplicationContext &applicationContext, WindowManager &windowManager, Window *window)
+RenderManager::RenderManager(ApplicationContext &applicationContext, WindowManager &windowManager)
     : m_applicationContext(applicationContext),
       m_windowManager(windowManager) {
     
@@ -23,8 +23,6 @@ RenderManager::RenderManager(ApplicationContext &applicationContext, WindowManag
         initBindings();
 #endif // DEF_ANDROID
     }
-
-    switchWindow(*window);
 }
 
 bool RenderManager::initWindow() {

@@ -39,7 +39,7 @@ public:
      * @param applicationContext context to bind to this RenderManager
      * @param window initial window to load renders for
      */
-    RenderManager(ApplicationContext &applicationContext, WindowManager &windowManager, Window *window);
+    RenderManager(ApplicationContext &applicationContext, WindowManager &windowManager);
 
     /**
      * Switch current window render (and reload it)O
