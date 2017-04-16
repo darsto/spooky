@@ -76,7 +76,7 @@ private:
     void handleEvents();
     void switchWindow();
 
-    bool m_running = true;
+    bool m_running = false;
     WindowManager &m_windowManager;
     ApplicationContext m_context;
     Window *m_window = nullptr;

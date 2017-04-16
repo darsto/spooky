@@ -17,8 +17,15 @@ Application::Application(WindowManager &windowManager)
       , m_renderer(m_context, m_windowManager)
 #endif
 {
+    
+    if (!m_renderer.initialized()) {
+        Log::error("Couldn't initialize RenderManager.");
+        return;
+    }
+    
     switchWindow();
     m_timer.delta(); //if not called right now, first call in game loop would return a very huge value
+    m_running = true;
 }
 
 void Application::reinit() {
