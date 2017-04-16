@@ -10,17 +10,11 @@
 #include <string>
 
 struct GuiElement {
-    GuiElement(int _x, int _y, int _width, int _height,
-               int _tex, uint32_t _color = 0xFFFFFFFF);
-
-    uint32_t type;
     int x, y;
     int width, height;
     double angle;
     int tex;
     uint32_t color;
-
-    static constexpr const uint32_t TYPE = 0;
 };
 
 #endif //SPOOKY_GUI_GUIELEMENT_H

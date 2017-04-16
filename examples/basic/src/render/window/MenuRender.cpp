@@ -12,6 +12,7 @@
 #include "render/opengl.h"
 #include "render/RenderContext.h"
 #include "render/gui/GuiElementRender.h"
+#include "util/log.h"
 
 MenuRender::MenuRender()
     : m_viewMatrix(glm::lookAt(glm::vec3(0, 0, 0.0f), glm::vec3(0, 0, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f))) {
@@ -21,8 +22,7 @@ MenuRender::MenuRender()
 void MenuRender::reinit() {
     m_projectionMatrix = glm::ortho(0.0f, static_cast<float>(m_applicationContext->windowWidth()), 0.0f, static_cast<float>(m_applicationContext->windowHeight()));
 
-    guiRenders.clear();
-    guiRenders.emplace(GuiElement::TYPE, std::make_unique<GuiElementRender>(*m_applicationContext, *m_renderContext));
+    m_guiRender = std::make_unique<GuiElementRender>(*m_applicationContext, *m_renderContext);
 }
 
 void MenuRender::reload() {
@@ -35,8 +35,7 @@ void MenuRender::reload() {
     
     m_projectionMatrix = glm::ortho(0.0f, static_cast<float>(m_applicationContext->windowWidth()), 0.0f, static_cast<float>(m_applicationContext->windowHeight()));
 
-    m_debugOverlayElements.clear();
-    m_debugOverlayElements.push_back(std::make_unique<GuiElement>(6, m_applicationContext->windowHeight() - 35 - 8, 35, 35, 0));
+    m_debugOverlayElements.emplace_back((GuiElement) {6, (int)m_applicationContext->windowHeight() - 35 - 8, 35, 35, 0.0, 0, 0xFFFFFFFF});
 }
 
 void MenuRender::render(const Window &window) {
@@ -46,21 +45,17 @@ void MenuRender::render(const Window &window) {
     glClear(GL_COLOR_BUFFER_BIT);
     
     for (auto &guiElement : menu.guiElements()) {
-        guiElementRender(*guiElement).render(*guiElement, m_projectionMatrix, m_viewMatrix);
+        m_guiRender->render(*guiElement, m_projectionMatrix, m_viewMatrix);
     }
 
     for (auto &guiElement : m_debugOverlayElements) {
-        guiElementRender(*guiElement).render(*guiElement, m_projectionMatrix, m_viewMatrix);
+        m_guiRender->render(guiElement, m_projectionMatrix, m_viewMatrix);
     }
 
     GLenum err;
     while ((err = glGetError()) != GL_NO_ERROR) {
-        std::cerr << "OpenGL error: " << err << std::endl;
+        Log::error("OpenGL error: %d", err);
     }
-}
-
-GuiElementRender &MenuRender::guiElementRender(const GuiElement &element) const {
-    return *guiRenders.at(element.type);
 }
 
 MenuRender::~MenuRender() = default;

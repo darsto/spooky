@@ -26,23 +26,10 @@ public:
     ~MenuRender();
 
 protected:
-    /**
-     * Get gui render for the given element.
-     * @param element element to get render for
-     * @return internally-held render of the given element's type
-     */
-    GuiElementRender &guiElementRender(const GuiElement &element) const;
-
-protected:
-    /**
-     * Container of GuiElementRender.
-     * Maps class types to corresponding GuiElementRender instances.
-     * Uses <guiElement>::TYPE as the key.
-     */
-    std::unordered_map<uint32_t, std::unique_ptr<GuiElementRender>> guiRenders;
+    std::unique_ptr<GuiElementRender> m_guiRender;
     glm::mat4 m_viewMatrix;
     glm::mat4 m_projectionMatrix;
-    std::vector<std::unique_ptr<GuiElement>> m_debugOverlayElements;
+    std::vector<GuiElement> m_debugOverlayElements;
 };
 
 #endif //SPOOKY_RENDER_WINDOW_MENURENDER_H
