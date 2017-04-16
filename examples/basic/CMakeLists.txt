@@ -13,6 +13,8 @@ SET(SOURCE_FILES
         src/window/Menu.h
         src/window/LoadingScreen.cpp
         src/window/LoadingScreen.h
+        src/gui/GuiElement.cpp
+        src/gui/GuiElement.h
         )
 
 IF (NOT SIMULATION)
@@ -20,6 +22,8 @@ IF (NOT SIMULATION)
             ${SOURCE_FILES}
             src/render/window/MenuRender.cpp
             src/render/window/MenuRender.h
+            src/render/gui/GuiElementRender.cpp
+            src/render/gui/GuiElementRender.h
             )
 ENDIF ()
 

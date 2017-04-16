@@ -44,8 +44,6 @@ SET(SOURCE_FILES
         core/input/Keypress.h
         window/Window.cpp
         window/Window.h
-        gui/GuiElement.cpp
-        gui/GuiElement.h
         window/WindowManager.cpp
         window/WindowManager.h
         )
@@ -64,8 +62,6 @@ IF (NOT SIMULATION)
             render/RenderContext.h
             render/window/WindowRender.cpp
             render/window/WindowRender.h
-            render/gui/GuiElementRender.cpp
-            render/gui/GuiElementRender.h
             render/texture/TexData.cpp
             render/texture/TexData.h
             render/texture/Texture.cpp
