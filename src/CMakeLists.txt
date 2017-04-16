@@ -62,10 +62,6 @@ IF (NOT SIMULATION)
             render/RenderContext.h
             render/window/WindowRender.cpp
             render/window/WindowRender.h
-            render/texture/TexData.cpp
-            render/texture/TexData.h
-            render/texture/Texture.cpp
-            render/texture/Texture.h
             )
 
     SET(SOURCE_FILES ${SOURCE_FILES} ${SOURCE_RENDER_FILES})
@@ -105,13 +101,6 @@ IF (NOT SIMULATION)
 
         TARGET_LINK_LIBRARIES(${PROJECT_NAME} ${SDL2_LIBRARY} ${GLEW_LIBRARY} ${OPENGL_LIBRARIES})
     ENDIF ()
-        
-    OPTION(DISABLE_EGL "" ON)
-    ADD_SUBDIRECTORY(ext/SOIL2)
-
-    INCLUDE_DIRECTORIES(SYSTEM ${SOIL2_INCLUDE_DIR})
-
-    TARGET_LINK_LIBRARIES(${PROJECT_NAME} SOIL2)
 ENDIF ()
 
 IF (MINGW)

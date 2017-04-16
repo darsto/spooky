@@ -1,9 +1,6 @@
 [submodule "tests/src/ext/googletest"]
 	path = tests/src/ext/googletest
 	url = git@github.com:google/googletest.git
-[submodule "src/ext/kaguya"]
-	path = src/ext/kaguya
-	url = git@github.com:satoren/kaguya.git
-[submodule "src/ext/SOIL2"]
-	path = src/ext/SOIL2
+[submodule "examples/basic/src/ext/SOIL2"]
+	path = examples/basic/src/ext/SOIL2
 	url = git@github.com:darsto/SOIL2.git

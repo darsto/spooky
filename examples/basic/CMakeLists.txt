@@ -24,8 +24,19 @@ IF (NOT SIMULATION)
             src/render/window/MenuRender.h
             src/render/gui/GuiElementRender.cpp
             src/render/gui/GuiElementRender.h
+            src/render/texture/TexData.cpp
+            src/render/texture/TexData.h
+            src/render/texture/Texture.cpp
+            src/render/texture/Texture.h
             )
 ENDIF ()
 
 ADD_EXECUTABLE(${PROJECT_NAME} ${SOURCE_FILES})
 TARGET_LINK_LIBRARIES(${PROJECT_NAME} spooky)
+
+OPTION(DISABLE_EGL "" ON)
+ADD_SUBDIRECTORY(src/ext/SOIL2)
+
+INCLUDE_DIRECTORIES(SYSTEM ${SOIL2_INCLUDE_DIR})
+
+TARGET_LINK_LIBRARIES(${PROJECT_NAME} SOIL2)
