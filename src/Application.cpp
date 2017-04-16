@@ -49,7 +49,6 @@ void Application::update() {
 void Application::resize(uint32_t width, uint32_t height) {
 #ifndef SIMULATION
     this->m_renderer.resize(width, height);
-    this->m_renderer.reload();
     m_window->reload();
 #endif
 }

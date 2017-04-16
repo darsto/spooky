@@ -8,12 +8,6 @@
 #define SPOOKY_RENDER_RENDERMANAGER_H
 #pragma once
 
-#define GLM_FORCE_RADIANS
-#define _USE_MATH_DEFINES
-#include <glm/gtc/matrix_transform.hpp>
-#include <sstream>
-#include <map>
-
 #include "opengl.h"
 #include "util/os.h"
 #include "ApplicationContext.h"
@@ -22,9 +16,8 @@
 #include "render/texture/Atlas.h"
 #include "render/window/WindowRender.h"
 
-#ifdef USES_SDL
-#include <SDL2/SDL.h>
-#endif // USES_SDL
+struct SDL_Window;
+using SDL_GL_Context = void;
 
 /**
  * Main entry point of the rendering.
@@ -34,27 +27,22 @@
 class RenderManager {
 public:
     /**
-     * TODO
      * The constructor.
      * @param applicationContext context to bind to this RenderManager
-     * @param window initial window to load renders for
+     * @param windowManager user provided manager used for getting window render
      */
-    RenderManager(ApplicationContext &applicationContext, WindowManager &windowManager);
+    RenderManager(ApplicationContext &applicationContext,
+                  WindowManager &windowManager);
 
     /**
-     * Switch current window render (and reload it)O
+     * Switch current window render (and reload it)
      * @param window window to get render for
      */
     void switchWindow(Window &window);
 
     /**
-     * Reload all screen-resolution-depedent stuff etc.
-     * Called on screen rotation and window unminimizing.
-     */
-    void reload();
-
-    /**
      * Updates internally-held window dimensions.
+     * On mobile devices this method is triggered by screen rotation.
      * Note that this method does not change the size of the window.
      * @param width new width of the window
      * @param height new height of the window
@@ -69,26 +57,26 @@ public:
 
     /**
      * The destructor.
-     * If SDL2 is used, this destructor closes the physical window.
+     * If SDL2 is used, this destructor destroys the physical window.
      */
     ~RenderManager();
 
 private:
-    bool initWindow();
-    bool initGL();
-    bool initRenders();
+    int initWindow();
+    int initGL();
+
+private:
+    ApplicationContext &m_applicationContext;
+    WindowManager &m_windowManager;
+    RenderContext m_renderContext;
 
 #ifdef USES_SDL
-    SDL_Window *gWindow = nullptr;
-    SDL_GLContext gContext;
+    SDL_Window *m_sdlWindow = nullptr;
+    SDL_GL_Context *m_sdlContext = nullptr;
 #endif // USES_SDL
 
     Window *m_currentWindow = nullptr;
     WindowRender *m_windowRender = nullptr;
-
-    ApplicationContext &m_applicationContext;
-    WindowManager &m_windowManager;
-    RenderContext m_renderContext;
 };
 
 #endif //SPOOKY_RENDER_RENDERMANAGER_H
