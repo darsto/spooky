@@ -34,11 +34,13 @@ Application::Application(WindowManager &windowManager)
 #endif
       m_newWindow(m_windowManager.getWindow(0)) {
 
+#ifndef SIMULATION
     if (!m_renderer.initialized()) {
         Log::error("Couldn't initialize RenderManager.");
         return;
     }
-
+#endif
+    
     switchWindow();
 
     /* if not called right now, first call in
