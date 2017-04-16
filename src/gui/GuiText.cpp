@@ -8,7 +8,7 @@ constexpr const int GuiText::GLYPH_SIZE[];
 constexpr const uint32_t GuiText::TYPE;
 
 GuiText::GuiText(const std::string &string, int px, int py, float scale, uint32_t pcolor, char flags)
-    : GuiElement(px, py, 0, 0, "font", pcolor),
+    : GuiElement(px, py, 0, 0, 0, pcolor),
       m_text(string),
       m_scale(scale * 1.64f),
       m_flags(flags) {

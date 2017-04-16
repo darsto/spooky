@@ -35,10 +35,6 @@ SET(SOURCE_FILES
         util/file.h
         util/file.cpp
         util/string.h
-        util/Packer.cpp
-        util/Packer.h
-        util/Rectangle.cpp
-        util/Rectangle.h
         util/string.cpp
         util/prof.cpp
         util/prof.h
@@ -78,12 +74,8 @@ IF (NOT SIMULATION)
             render/gui/GuiElementRender.h
             render/gui/TextRender.cpp
             render/gui/TextRender.h
-            render/texture/Atlas.cpp
-            render/texture/Atlas.h
             render/texture/TexData.cpp
             render/texture/TexData.h
-            render/texture/Resampler.cpp
-            render/texture/Resampler.h
             render/texture/Texture.cpp
             render/texture/Texture.h
             render/gui/GuiRenderable.h

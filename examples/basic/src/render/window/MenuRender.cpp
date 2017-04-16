@@ -36,7 +36,7 @@ void MenuRender::reload() {
 
     m_debugOverlayElements.clear();
     m_debugOverlayElements.push_back(std::make_unique<GuiText>(std::string("<window>"), 48, 17, 17, 0xffffffff, 0));
-    m_debugOverlayElements.push_back(std::make_unique<GuiElement>(6, m_applicationContext->windowHeight() - 35 - 8, 35, 35, "logo1"));
+    m_debugOverlayElements.push_back(std::make_unique<GuiElement>(6, m_applicationContext->windowHeight() - 35 - 8, 35, 35, 0));
     m_debugOverlayElements.push_back(std::make_unique<GuiText>(std::string("Dev Build: ") + __DATE__ + " " + __TIME__, 48, m_applicationContext->windowHeight() - 17 - 16, 17, 0xffffffff, 0));
 }
 

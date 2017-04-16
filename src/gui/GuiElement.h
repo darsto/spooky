@@ -11,13 +11,13 @@
 
 struct GuiElement {
     GuiElement(int _x, int _y, int _width, int _height,
-               const std::string &_tex, uint32_t _color = 0xFFFFFFFF);
+               int _tex, uint32_t _color = 0xFFFFFFFF);
 
     uint32_t type;
     int x, y;
     int width, height;
     double angle;
-    std::string tex;
+    int tex;
     uint32_t color;
 
     static constexpr const uint32_t TYPE = 0;

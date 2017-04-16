@@ -11,35 +11,17 @@
 #include "gui/GuiElement.h"
 #include "render/RenderContext.h"
 
-constexpr const bool MANUAL_MIPMAPS_ENABLED =
-#ifdef GL_TEXTURE_MAX_LEVEL
-    true;
-#else
-    false;
-#endif
-
-texture::Atlas GuiElementRender::m_atlas("gui", 4, MANUAL_MIPMAPS_ENABLED, texture::TexData::LOAD_BURN_ALPHA);
+texture::TexData GuiElementRender::m_texData("font.png", texture::TexData::LOAD_BURN_ALPHA);
 
 GuiElementRender::GuiElementRender(const ApplicationContext &applicationContext, const RenderContext &context)
     : GuiRenderable(applicationContext, context) {
-
-    std::vector<texture::TexData> &texMipmaps = m_atlas.atlasData();
-
+    
     m_texture.bindTexture();
-#ifdef GL_TEXTURE_MAX_LEVEL
-    m_texture.samplerParameter(GL_TEXTURE_MAX_LEVEL, texMipmaps.size() - 1);
-#endif
-
-    for (size_t level = 0; level < texMipmaps.size(); ++level) {
-        m_texture.loadTex(texMipmaps[level], (uint32_t) level);
-    }
-
-#ifndef GL_TEXTURE_MAX_LEVEL
+    m_texture.loadTex(m_texData, 0);
     glGenerateMipmap(GL_TEXTURE_2D);
-#endif
 
     m_texture.filtering(texture::Texture::MagFilter::BILINEAR, texture::Texture::MinFilter::BILINEAR_MIPMAP);
-    m_atlasSize = (uint32_t) std::sqrt<uint64_t>(m_atlas.getElementsNum());
+    m_atlasSize = 8;
 
     Shader vertShader("gui.vert", GL_VERTEX_SHADER);
     Shader fragShader("gui.frag", GL_FRAGMENT_SHADER);
@@ -51,8 +33,8 @@ GuiElementRender::GuiElementRender(const ApplicationContext &applicationContext,
     float vertices[8];
     float texCoords[8];
 
-    float texWidth = 1.0f / m_atlasSize - 1.0f / texMipmaps[0].width();
-    float texHeight = 1.0f / m_atlasSize - 1.0f / texMipmaps[0].height();
+    float texWidth = 1.0f / m_atlasSize - 1.0f / m_texData.width();
+    float texHeight = 1.0f / m_atlasSize - 1.0f / m_texData.height();
 
     /** bottom-left vertex */
     vertices[0] = 0.0f, vertices[1] = -1.0f;
@@ -122,10 +104,10 @@ void GuiElementRender::render(const GuiElement &element, glm::mat4 projectionMat
         m_shaderProgram.setUniform("modelViewMatrix", viewMatrix * tmpModelMatrix);
         m_shaderProgram.setUniform("projectionMatrix", projectionMatrix);
 
-        util::Rectangle tex = getTexPos(element);
+        int texX = element.tex % (int) m_atlasSize, texY = element.tex / (int) m_atlasSize;
 
-        float x = (float) tex.x() / m_texture.width();
-        float y = (float) tex.y() / m_texture.height();
+        float x = (float) texX / m_texture.width();
+        float y = (float) texY / m_texture.height();
 
         m_shaderProgram.setUniform("texPosX", x + 0.5f / m_texture.width());
         m_shaderProgram.setUniform("texPosY", y + 0.5f / m_texture.height());
@@ -134,10 +116,6 @@ void GuiElementRender::render(const GuiElement &element, glm::mat4 projectionMat
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
         glBindVertexArray(0);
     }
-}
-
-util::Rectangle GuiElementRender::getTexPos(const GuiElement &element) const {
-    return m_atlas.element(element.tex);
 }
 
 GuiElementRender::~GuiElementRender() {

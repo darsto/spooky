@@ -7,7 +7,7 @@
 #include "GuiElement.h"
 
 GuiElement::GuiElement(int _x, int _y, int _width, int _height,
-                       const std::string &_tex, uint32_t _color)
+                       int _tex, uint32_t _color)
     : type(GuiElement::TYPE),
       x(_x),
       y(_y),

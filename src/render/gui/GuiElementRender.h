@@ -12,7 +12,6 @@
 #include "render/opengl.h"
 #include "render/Shader.h"
 #include "render/ShaderProgram.h"
-#include "render/texture/Atlas.h"
 #include "render/texture/Texture.h"
 #include "GuiRenderable.h"
 
@@ -26,8 +25,6 @@ public:
     ~GuiElementRender();
 
 private:
-    util::Rectangle getTexPos(const GuiElement &element) const;
-
     uint32_t m_atlasSize;
     GLuint m_vbo[2];
     GLuint m_vao;
@@ -35,7 +32,7 @@ private:
     texture::Texture m_texture;
     glm::mat4 m_modelMatrix = glm::mat4(1.0);
 
-    static texture::Atlas m_atlas;
+    static texture::TexData m_texData;
 };
 
 #endif //SPOOKY_RENDER_GUI_GUIELEMENTRENDER_H
