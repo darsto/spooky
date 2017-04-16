@@ -67,26 +67,24 @@ public:
      */
     bool running() const;
 
-    /**
-     * The destructor.
-     */
-    ~Application();
-
 private:
     void handleEvents();
     void switchWindow();
 
+private:
     bool m_running = false;
     WindowManager &m_windowManager;
     ApplicationContext m_context;
-    Window *m_window = nullptr;
-    Input::InputManager m_inputManager;
-    Timer m_timer;
-    Window *m_newWindow = nullptr;
-
+    
 #ifndef SIMULATION
     RenderManager m_renderer;
 #endif
+    
+    Input::InputManager m_inputManager;
+    Timer m_timer;
+
+    Window *m_window = nullptr;
+    Window *m_newWindow = nullptr;
 
     friend class ApplicationContext;
 };

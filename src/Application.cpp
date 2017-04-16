@@ -4,37 +4,60 @@
  * that can be found in the LICENSE file.
  */
 
+#include <cmath>
+
 #include "Application.h"
 #include "util/os.h"
 #include "util/log.h"
 #include "window/Window.h"
 
+static int convertSDLButtonId(int id) {
+    return (int) std::round(std::log((double) id) / std::log(2.0)) + 1;
+}
+
+static Input::TouchPoint::State convertSDLEventId(uint32_t id) {
+    switch (id) {
+        case SDL_MOUSEBUTTONDOWN:
+            return Input::TouchPoint::State::PRESS;
+        case SDL_MOUSEBUTTONUP:
+            return Input::TouchPoint::State::RELEASE;
+        default:
+            return Input::TouchPoint::State::REPEAT;
+    }
+}
+
 Application::Application(WindowManager &windowManager)
     : m_windowManager(windowManager),
       m_context(*this),
-      m_newWindow(m_windowManager.getWindow(0))
 #ifndef SIMULATION
-      , m_renderer(m_context, m_windowManager)
+      m_renderer(m_context, m_windowManager),
 #endif
-{
-    
+      m_newWindow(m_windowManager.getWindow(0)) {
+
     if (!m_renderer.initialized()) {
         Log::error("Couldn't initialize RenderManager.");
         return;
     }
-    
+
     switchWindow();
-    m_timer.delta(); //if not called right now, first call in game loop would return a very huge value
+
+    /* if not called right now, first call in
+     game loop would return a very huge value */
+    m_timer.delta();
     m_running = true;
 }
 
 void Application::reinit() {
+    m_inputManager.reload();
+    m_window->reload();
+
 #ifndef SIMULATION
     m_renderer.switchWindow(*m_window);
 #endif
-    m_window->reload();
-    m_timer.delta(); //if not called right now, first call in game loop would return a very huge value
-    m_inputManager.reload();
+
+    /* if not called right now, first call in
+     game loop would return a very huge value */
+    m_timer.delta();
 }
 
 void Application::update() {
@@ -46,21 +69,23 @@ void Application::update() {
     m_window->tick(m_timer.delta());
 
 #ifndef SIMULATION
-    this->m_renderer.render();
+    m_renderer.render();
 #endif
 
-    this->handleEvents();
+    handleEvents();
     m_inputManager.tick(*m_window);
 }
 
 void Application::resize(uint32_t width, uint32_t height) {
 #ifndef SIMULATION
-    this->m_renderer.resize(width, height);
-    m_window->reload();
+    m_renderer.resize(width, height);
 #endif
+
+    m_window->reload();
 }
 
-void Application::handleClick(int button, Input::TouchPoint::State state, float x, float y) {
+void Application::handleClick(int button, Input::TouchPoint::State state,
+                              float x, float y) {
     m_inputManager.handleClick(button, state, x, y);
 }
 
@@ -70,11 +95,13 @@ void Application::handleEvents() {
     while (SDL_PollEvent(&event) != 0) {
         switch (event.type) {
             case SDL_QUIT:
-                this->m_running = false;
+                m_running = false;
                 break;
             case SDL_WINDOWEVENT:
-                if (event.window.event == SDL_WINDOWEVENT_RESIZED || event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
-                    this->resize((unsigned int) event.window.data1, (unsigned int) event.window.data2);
+                if (event.window.event == SDL_WINDOWEVENT_RESIZED ||
+                    event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
+                    resize((uint32_t) event.window.data1,
+                           (uint32_t) event.window.data2);
                 }
                 break;
             case SDL_KEYDOWN:
@@ -83,13 +110,13 @@ void Application::handleEvents() {
                 break;
             case SDL_MOUSEBUTTONDOWN:
             case SDL_MOUSEBUTTONUP:
-                Log::debug("%s button with id %d\n", event.type == SDL_MOUSEBUTTONDOWN ? "Pressed" : "Unpressed", event.button.button);
             case SDL_MOUSEMOTION: {
-                int button = (int) round(log((double) event.button.button) / log(2.0)) + 1;
-                if (button < 0 || button >= 5) break;
-                int x, y;
-                SDL_GetMouseState(&x, &y);
-                this->handleClick(button, event.type == SDL_MOUSEBUTTONDOWN ? Input::TouchPoint::State::PRESS : (event.type == SDL_MOUSEBUTTONUP ? Input::TouchPoint::State::RELEASE : Input::TouchPoint::State::REPEAT), x, y);
+                int button = convertSDLButtonId(event.button.button);
+                if (button >= 0 && button < 5) {
+                    int x, y;
+                    SDL_GetMouseState(&x, &y);
+                    handleClick(button, convertSDLEventId(event.type), x, y);
+                }
                 break;
             }
             default:
@@ -110,14 +137,13 @@ void Application::switchWindow() {
         m_window = m_newWindow;
         m_newWindow = nullptr;
         m_window->context(&m_context);
+        m_window->reload();
+
 #ifndef SIMULATION
         m_renderer.switchWindow(*m_window);
-        m_window->reload();
 #endif
     }
 }
-
-Application::~Application() {}
 
 #ifdef DEF_ANDROID
 
