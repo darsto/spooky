@@ -8,8 +8,7 @@
 #include "GuiElement.h"
 #include <string>
 
-class GuiText : public GuiElement {
-public:
+struct GuiText : public GuiElement {
     static constexpr const int GLYPH_SIZE[] = {39, 103, 166, 231, 295, 359, 423, 487,
                                                9, 96, 167, 231, 310, 359, 423, 488,
                                                39, 103, 167, 231, 295, 359, 438, 487,
@@ -34,7 +33,7 @@ public:
 
     static constexpr const unsigned int TYPE = 1;
 
-private:
+
     std::string m_text;
     float m_scale;
     char m_flags;

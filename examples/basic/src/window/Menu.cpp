@@ -5,30 +5,14 @@
  */
 
 #include "Menu.h"
-#include "gui/GuiText.h"
 
-Menu::Menu()
-    : Window() {
+void Menu::reload() {}
 
-}
+void Menu::tick(double deltaTime) {}
 
-void Menu::reload() {
+void Menu::handleClick(const Input::TouchPoint &p) {}
 
-}
-
-void Menu::tick(double deltaTime) {
-
-}
-
-void Menu::handleClick(const Input::TouchPoint &p) {
-
-}
-
-void Menu::handleKeypress(const Input::KeypressTable &keypresses) {
-
-}
-
-Menu::~Menu() = default;
+void Menu::handleKeypress(const Input::KeypressTable &keypresses) {}
 
 const std::vector<std::unique_ptr<GuiElement>> &Menu::guiElements() const {
     return m_guiElements;

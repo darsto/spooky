@@ -15,14 +15,11 @@
 
 class Menu : public Window {
 public:
-    Menu();
-
     virtual void reload() override;
     virtual void tick(double deltaTime) override;
 
     virtual void handleKeypress(const Input::KeypressTable &keypresses) override;
     virtual void handleClick(const Input::TouchPoint &touchPoint) override;
-    virtual ~Menu() override;
 
     const std::vector<std::unique_ptr<GuiElement>> &guiElements() const;
 

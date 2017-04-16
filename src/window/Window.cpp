@@ -7,8 +7,6 @@
 #include "Window.h"
 #include "ApplicationContext.h"
 
-Window::Window() { }
-
 void Window::context(ApplicationContext *applicationContext) {
     m_applicationContext = applicationContext;
 }
@@ -21,4 +19,4 @@ ApplicationContext &Window::getApplicationContext() {
     return *m_applicationContext;
 }
 
-Window::~Window() { }
+Window::~Window() = default;

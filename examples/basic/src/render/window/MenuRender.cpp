@@ -31,10 +31,11 @@ void MenuRender::reinit() {
 void MenuRender::reload() {
     glEnable(GL_BLEND);
     glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-
+    
     m_projectionMatrix = glm::ortho(0.0f, static_cast<float>(m_applicationContext->windowWidth()), 0.0f, static_cast<float>(m_applicationContext->windowHeight()));
 
     m_debugOverlayElements.clear();
+    m_debugOverlayElements.push_back(std::make_unique<GuiText>(std::string("<window>"), 48, 17, 17, 0xffffffff, 0));
     m_debugOverlayElements.push_back(std::make_unique<GuiElement>(6, m_applicationContext->windowHeight() - 35 - 8, 35, 35, "logo1"));
     m_debugOverlayElements.push_back(std::make_unique<GuiText>(std::string("Dev Build: ") + __DATE__ + " " + __TIME__, 48, m_applicationContext->windowHeight() - 17 - 16, 17, 0xffffffff, 0));
 }
@@ -45,6 +46,8 @@ void MenuRender::render(const Window &window) {
     glClearColor(0.7, 0.7, 0.7, 0.0);
     glClear(GL_COLOR_BUFFER_BIT);
 
+    static_cast<GuiText &>(*m_debugOverlayElements[0]).m_text = "Window " + std::to_string(window.type());
+    
     for (auto &guiElement : menu.guiElements()) {
         guiElementRender(*guiElement).render(*guiElement, m_projectionMatrix, m_viewMatrix);
     }
