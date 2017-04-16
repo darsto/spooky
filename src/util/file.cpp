@@ -28,7 +28,7 @@ const char util::file::file_separator_str[] =
 
 std::string util::file::path(const std::string &file) {
 #ifdef DEF_ANDROID
-    return "/sdcard/c003/data/" + file;
+    return "/sdcard/spooky/data/" + file;
 #else
     return "data/" + file;
 #endif
@@ -48,7 +48,7 @@ std::vector<std::string> util::file::list(const char *path) {
 
     try {
         while ((entry = readdir(dp))) {
-            ret.push_back(entry->d_name);
+            ret.emplace_back(entry->d_name);
         }
     } catch (std::exception e) {
         closedir(dp);
