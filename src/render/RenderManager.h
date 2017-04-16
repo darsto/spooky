@@ -44,8 +44,9 @@ public:
     /**
      * Switch current window render (and reload it)
      * @param window window to get render for
+     * @return return code. 0 on success, -1 on error
      */
-    void switchWindow(Window &window);
+    int switchWindow(Window &window);
 
     /**
      * Updates internally-held window dimensions.

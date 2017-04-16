@@ -34,7 +34,8 @@ static Input::TouchPoint::State convertSDLEventId(uint32_t id) {
 }
 #endif // USES_SDL
 
-Application::Application(ApplicationContext &context, WindowManager &windowManager)
+Application::Application(ApplicationContext &context,
+                         WindowManager &windowManager)
     : m_windowManager(windowManager),
 #ifndef SIMULATION
       m_renderer(context, m_windowManager),
@@ -42,13 +43,13 @@ Application::Application(ApplicationContext &context, WindowManager &windowManag
       m_newWindow(m_windowManager.getWindow(0)) {
 
     context.init(this);
-    
-    RENDER_CALL(
-        if (!m_renderer.initialized()) {
-            Log::error("Couldn't initialize RenderManager.");
-            return;
-        }
-    )
+
+#ifndef SIMULATION
+    if (!m_renderer.initialized()) {
+        Log::error("Couldn't initialize RenderManager.");
+        return;
+    }
+#endif
 
     switchWindow();
 
@@ -61,7 +62,11 @@ Application::Application(ApplicationContext &context, WindowManager &windowManag
 void Application::reinit() {
     m_inputManager.reload();
     m_window->reload();
-    RENDER_CALL(m_renderer.switchWindow(*m_window));
+    RENDER_CALL(
+        if (m_renderer.switchWindow(*m_window) != 0) {
+            Log::error("Couldn't reinit window.");
+            m_running = false;            
+        });
 
     /* if not called right now, first call in
      game loop would return a very huge value */
@@ -138,7 +143,10 @@ void Application::switchWindow() {
         m_window = m_newWindow;
         m_newWindow = nullptr;
         m_window->reload();
-        RENDER_CALL(m_renderer.switchWindow(*m_window));
+        RENDER_CALL(
+            if (m_renderer.switchWindow(*m_window) != 0) {
+                m_running = false;
+            });
     }
 }
 

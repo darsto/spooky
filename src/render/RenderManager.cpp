@@ -38,11 +38,11 @@ bool RenderManager::initialized() {
     return m_initialized;
 }
 
-void RenderManager::switchWindow(Window &window) {
+int RenderManager::switchWindow(Window &window) {
     WindowRender *render = m_windowManager.getWindowRender((int) window.type());
     if (!render) {
-        throw std::runtime_error(
-            "Trying to init window without any bound render.");
+        Log::error("Trying to init window without any bound render.");
+        return -1;
     }
 
     m_currentWindow = &window;
@@ -50,6 +50,8 @@ void RenderManager::switchWindow(Window &window) {
     m_windowRender->bind(&m_applicationContext, &m_renderContext);
     m_windowRender->reinit();
     m_windowRender->reload();
+    
+    return 0;
 }
 
 void RenderManager::resize(uint32_t width, uint32_t height) {
