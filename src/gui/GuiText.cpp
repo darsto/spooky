@@ -7,13 +7,14 @@
 constexpr const int GuiText::GLYPH_SIZE[];
 constexpr const uint32_t GuiText::TYPE;
 
-GuiText::GuiText(const std::string &string, int x, int y, float scale, uint32_t color, char flags)
-    : GuiElement(x, y, 0, 0, "font", color),
+GuiText::GuiText(const std::string &string, int px, int py, float scale, uint32_t pcolor, char flags)
+    : GuiElement(px, py, 0, 0, "font", pcolor),
       m_text(string),
       m_scale(scale * 1.64f),
       m_flags(flags) {
 
-    this->recalculateSize();
+    type = GuiText::TYPE;
+    recalculateSize();
 }
 
 char GuiText::glyphPos(char character) const {
@@ -60,20 +61,20 @@ char GuiText::glyphPos(char character) const {
 
 void GuiText::recalculateSize() {
     double tmp_width = 0; //incrementing with each iteration
-    m_width = 0; //maximum of all tmp_width(s)
-    m_height = 0;
+    width = 0; //maximum of all tmp_width(s)
+    height = 0;
     for (size_t i = 0; i <= text().length(); i++) {
         if (i == text().length() || text().at(i) == '\n') {
-            if (tmp_width > m_width) m_width = tmp_width;
+            if (tmp_width > width) width = tmp_width;
             tmp_width = 0;
-            m_height += (0.9 + TEXT_SPACING) * scale();
+            height += (0.9 + TEXT_SPACING) * scale();
             continue;
         }
         char pos = glyphPos(text().at(i));
         tmp_width += (getGlyphSize(pos) + TEXT_SPACING) * scale();
     }
-    m_width -= TEXT_SPACING * scale();
-    m_height -= 2 * TEXT_SPACING * scale();
+    width -= TEXT_SPACING * scale();
+    height -= 2 * TEXT_SPACING * scale();
 }
 
 const std::string &GuiText::text() const {

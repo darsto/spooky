@@ -9,35 +9,18 @@
 
 #include <string>
 
-class GuiElement {
-public:
-    GuiElement(double x, double y, double width, double height, const std::string &tex, uint32_t color = 0xFFFFFFFF);
-    bool contains(double coordX, double coordY);
-    virtual double x() const;
-    void x(double x);
-    virtual double y() const;
-    void y(double y);
-    double width() const;
-    void width(double width);
-    double height() const;
-    void height(double height);
-    double angle() const;
-    const std::string &texPos() const;
-    uint32_t color() const;
-    virtual ~GuiElement();
+struct GuiElement {
+    GuiElement(int _x, int _y, int _width, int _height,
+               const std::string &_tex, uint32_t _color = 0xFFFFFFFF);
 
-    static constexpr const unsigned int TYPE = 0;
+    uint32_t type;
+    int x, y;
+    int width, height;
+    double angle;
+    std::string tex;
+    uint32_t color;
 
-    virtual unsigned int type() const {
-        return TYPE;
-    }
-
-protected:
-    double m_x, m_y;
-    double m_width, m_height;
-    double m_angle;
-    std::string m_tex;
-    uint32_t m_color;
+    static constexpr const uint32_t TYPE = 0;
 };
 
 #endif //SPOOKY_GUI_GUIELEMENT_H

@@ -78,7 +78,7 @@ TextRender::TextRender(const ApplicationContext &applicationContext, const Rende
 }
 
 void TextRender::render(const GuiElement &element, glm::mat4 projectionMatrix, glm::mat4 viewMatrix) {
-    uint32_t color = element.color();
+    uint32_t color = element.color;
     float ca = (color & 0x000000FF) / 255.0f;
 
     if (ca > 0.0f) {
@@ -94,11 +94,11 @@ void TextRender::render(const GuiElement &element, glm::mat4 projectionMatrix, g
 
         double scale = text.scale();
 
-        double x = element.x();
-        double y = element.y();
+        double x = element.x;
+        double y = element.y;
         for (size_t i = 0; i < text.text().length(); i++) {
             if (text.text().at(i) == '\n') {
-                x = text.x();
+                x = text.x;
                 y += (0.9 + text.TEXT_SPACING) * scale;
                 continue;
             }

@@ -60,7 +60,7 @@ void MenuRender::render(const Window &window) {
 }
 
 GuiRenderable &MenuRender::guiElementRender(const GuiElement &element) const {
-    return *guiRenders.at(element.type());
+    return *guiRenders.at(element.type);
 }
 
 MenuRender::~MenuRender() = default;

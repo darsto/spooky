@@ -6,65 +6,17 @@
 
 #include "GuiElement.h"
 
-constexpr const unsigned int GuiElement::TYPE;
-
-GuiElement::GuiElement(double x, double y, double width, double height, const std::string &tex, uint32_t color)
-    : m_x(x),
-      m_y(y),
-      m_width(width),
-      m_height(height),
-      m_angle(0),
-      m_tex(tex),
-      m_color(color) {
+GuiElement::GuiElement(int _x, int _y, int _width, int _height,
+                       const std::string &_tex, uint32_t _color)
+    : type(GuiElement::TYPE),
+      x(_x),
+      y(_y),
+      width(_width),
+      height(_height),
+      angle(0),
+      tex(_tex),
+      color(_color) {
 
 }
 
-bool GuiElement::contains(double coordX, double coordY) {
-    return coordX >= x() && coordY >= y() && coordX <= x() + width() && coordY < y() + height();
-}
-
-double GuiElement::x() const {
-    return m_x;
-}
-
-void GuiElement::x(double x) {
-    m_x = x;
-}
-
-double GuiElement::y() const {
-    return m_y;
-}
-
-void GuiElement::y(double y) {
-    m_y = y;
-}
-
-double GuiElement::width() const {
-    return m_width;
-}
-
-void GuiElement::width(double width) {
-    GuiElement::m_width = width;
-}
-
-double GuiElement::height() const {
-    return m_height;
-}
-
-void GuiElement::height(double height) {
-    GuiElement::m_height = height;
-}
-
-double GuiElement::angle() const {
-    return m_angle;
-}
-
-const std::string & GuiElement::texPos() const {
-    return m_tex;
-}
-
-uint32_t GuiElement::color() const {
-    return m_color;
-}
-
-GuiElement::~GuiElement() {}
+constexpr const uint32_t GuiElement::TYPE;

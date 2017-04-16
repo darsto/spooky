@@ -9,7 +9,6 @@
 
 #include "GuiElementRender.h"
 #include "gui/GuiElement.h"
-#include "Config.h"
 #include "render/RenderContext.h"
 
 constexpr const bool MANUAL_MIPMAPS_ENABLED =
@@ -97,7 +96,7 @@ GuiElementRender::GuiElementRender(const ApplicationContext &applicationContext,
 }
 
 void GuiElementRender::render(const GuiElement &element, glm::mat4 projectionMatrix, glm::mat4 viewMatrix) {
-    uint32_t color = element.color();
+    uint32_t color = element.color;
     float ca = (color & 0x000000FF) / 255.0f;
 
     if (ca > 0.0f) {
@@ -112,13 +111,13 @@ void GuiElementRender::render(const GuiElement &element, glm::mat4 projectionMat
 
         double scale = 1.0;
 
-        glm::mat4 tmpModelMatrix = glm::translate(m_modelMatrix, glm::vec3(- (int32_t) (element.x() * scale), (int32_t) (m_applicationContext.windowHeight() - element.y() * scale), 0.0f));
+        glm::mat4 tmpModelMatrix = glm::translate(m_modelMatrix, glm::vec3(- (int32_t) (element.x * scale), (int32_t) (m_applicationContext.windowHeight() - element.y * scale), 0.0f));
 
-        tmpModelMatrix = glm::translate(tmpModelMatrix, glm::vec3(0.5 * element.width() * scale, 0.5 * element.height() * scale, 0.0)); // Translate to the middle of the entity
-        tmpModelMatrix = glm::rotate(tmpModelMatrix, (const float) element.angle(), glm::vec3(0.0f, 0.0f, 1.0f)); // Apply rotation
-        tmpModelMatrix = glm::translate(tmpModelMatrix, glm::vec3(-0.5 * element.width() * scale, -0.5 * element.height() * scale, 0.0)); // Translate back to the origin
+        tmpModelMatrix = glm::translate(tmpModelMatrix, glm::vec3(0.5 * element.width * scale, 0.5 * element.height * scale, 0.0)); // Translate to the middle of the entity
+        tmpModelMatrix = glm::rotate(tmpModelMatrix, (const float) element.angle, glm::vec3(0.0f, 0.0f, 1.0f)); // Apply rotation
+        tmpModelMatrix = glm::translate(tmpModelMatrix, glm::vec3(-0.5 * element.width * scale, -0.5 * element.height * scale, 0.0)); // Translate back to the origin
 
-        tmpModelMatrix = glm::scale(tmpModelMatrix, glm::vec3(element.width() * scale, element.height() * scale, 1.0f));
+        tmpModelMatrix = glm::scale(tmpModelMatrix, glm::vec3(element.width * scale, element.height * scale, 1.0f));
 
         m_shaderProgram.setUniform("modelViewMatrix", viewMatrix * tmpModelMatrix);
         m_shaderProgram.setUniform("projectionMatrix", projectionMatrix);
@@ -138,7 +137,7 @@ void GuiElementRender::render(const GuiElement &element, glm::mat4 projectionMat
 }
 
 util::Rectangle GuiElementRender::getTexPos(const GuiElement &element) const {
-    return m_atlas.element(element.texPos());
+    return m_atlas.element(element.tex);
 }
 
 GuiElementRender::~GuiElementRender() {
