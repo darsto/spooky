@@ -17,21 +17,18 @@ class ApplicationContext;
 /**
  * Main wrapper of the game-specific logic.
  * This can be compared to Android's Activity.
- * Note that this class requires two-step initialization.
- * See the context(ApplicationContext *) for more details
  */
 class Window {
 public:
     /**
-     * Set the ApplicationContext.
-     * This is done during window switching, in ApplicationContext class itself.
+     * The constructor.
      * @param applicationContext context to be set
      */
     Window(ApplicationContext &applicationContext);
 
     /**
-     * Called on initialization and also on window reload.
-     * This is usually caused by screen rotation (on mobile devices),
+     * Called on initialization and window resizing.
+     * Note that it will be called on screen rotation on mobile devices,
      * or un-minimizing the application.
      */
     virtual void reload() = 0;

@@ -28,6 +28,10 @@ IF (NOT SIMULATION)
             src/render/texture/TexData.h
             src/render/texture/Texture.cpp
             src/render/texture/Texture.h
+            src/render/Shader.cpp
+            src/render/Shader.h
+            src/render/ShaderProgram.cpp
+            src/render/ShaderProgram.h
             )
 ENDIF ()
 

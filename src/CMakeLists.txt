@@ -52,10 +52,6 @@ IF (NOT SIMULATION)
     SET(SOURCE_RENDER_FILES
             render/opengl.h
             render/opengl.cpp
-            render/Shader.cpp
-            render/Shader.h
-            render/ShaderProgram.cpp
-            render/ShaderProgram.h
             render/RenderManager.cpp
             render/RenderManager.h
             render/RenderContext.cpp

@@ -12,7 +12,7 @@
 #include <string>
 #include <vector>
 
-#include "opengl.h"
+#include "render/opengl.h"
 
 class Shader;
 

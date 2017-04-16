@@ -10,7 +10,7 @@
 
 #include <string>
 
-#include "opengl.h"
+#include "render/opengl.h"
 
 /**
  * Wrapper of a single GLSL shader of any type.
