@@ -4,24 +4,28 @@
  * that can be found in the LICENSE file.
  */
 
-#include <dlfcn.h>
-
 #include "opengl.h"
 
 #ifdef DEF_ANDROID
 
-    PFNGLGENVERTEXARRAYSOESPROC glGenVertexArraysOES;
-    PFNGLBINDVERTEXARRAYOESPROC glBindVertexArrayOES;
-    PFNGLDELETEVERTEXARRAYSOESPROC glDeleteVertexArraysOES;
-    PFNGLISVERTEXARRAYOESPROC glIsVertexArrayOES;
+#include <dlfcn.h>
 
-    void initBindings() {
-        void *libhandle = dlopen("libGLESv2.so", RTLD_LAZY);
+PFNGLGENVERTEXARRAYSOESPROC glGenVertexArraysOES;
+PFNGLBINDVERTEXARRAYOESPROC glBindVertexArrayOES;
+PFNGLDELETEVERTEXARRAYSOESPROC glDeleteVertexArraysOES;
+PFNGLISVERTEXARRAYOESPROC glIsVertexArrayOES;
 
-        glGenVertexArraysOES = (PFNGLGENVERTEXARRAYSOESPROC) dlsym(libhandle, "glGenVertexArraysOES");
-        glBindVertexArrayOES = (PFNGLBINDVERTEXARRAYOESPROC) dlsym(libhandle, "glBindVertexArrayOES");
-        glDeleteVertexArraysOES = (PFNGLDELETEVERTEXARRAYSOESPROC) dlsym(libhandle, "glDeleteVertexArraysOES");
-        glIsVertexArrayOES = (PFNGLISVERTEXARRAYOESPROC) dlsym(libhandle, "glIsVertexArrayOES");
-    }
+void opengl::initBindings() {
+    void *libhandle = dlopen("libGLESv2.so", RTLD_LAZY);
+
+    glGenVertexArraysOES = (PFNGLGENVERTEXARRAYSOESPROC) dlsym(libhandle, "glGenVertexArraysOES");
+    glBindVertexArrayOES = (PFNGLBINDVERTEXARRAYOESPROC) dlsym(libhandle, "glBindVertexArrayOES");
+    glDeleteVertexArraysOES = (PFNGLDELETEVERTEXARRAYSOESPROC) dlsym(libhandle, "glDeleteVertexArraysOES");
+    glIsVertexArrayOES = (PFNGLISVERTEXARRAYOESPROC) dlsym(libhandle, "glIsVertexArrayOES");
+}
+
+#else
+
+void opengl::initBindings() {}
 
 #endif // DEF_ANDROID

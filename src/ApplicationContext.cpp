@@ -6,6 +6,7 @@
 
 #include "ApplicationContext.h"
 #include "Application.h"
+
 #include "window/Window.h"
 
 ApplicationContext::ApplicationContext(Application &application)

@@ -13,6 +13,10 @@
  * This file provides some global OpenGL-related stuff for the current platform.
  */
 
+namespace opengl {
+    void initBindings();
+}
+
 #ifdef DEF_ANDROID
 
 #include <GLES2/gl2.h>
@@ -28,14 +32,11 @@ extern PFNGLBINDVERTEXARRAYOESPROC glBindVertexArrayOES;
 extern PFNGLDELETEVERTEXARRAYSOESPROC glDeleteVertexArraysOES;
 extern PFNGLISVERTEXARRAYOESPROC glIsVertexArrayOES;
 
-void initBindings();
-
-#else
+#else // DEF_ANDROID
 
 #define GLEW_STATIC
-
 #include <GL/glew.h>
 
-#endif // DEF_ANDROID
+#endif // NOT DEF_ANDROID
 
 #endif //SPOOKY_RENDER_OPENGL_H

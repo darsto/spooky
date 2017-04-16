@@ -6,12 +6,16 @@
 
 #ifdef USES_SDL
 #include <SDL2/SDL.h>
-#endif // USES_SDL
+#endif
 
 #include "RenderManager.h"
-#include "Application.h"
+#include "ApplicationContext.h"
 #include "window/Window.h"
+#include "window/WindowManager.h"
 #include "util/log.h"
+
+#include "opengl.h"
+#include "window/WindowRender.h"
 
 RenderManager::RenderManager(ApplicationContext &applicationContext,
                              WindowManager &windowManager)
@@ -21,14 +25,19 @@ RenderManager::RenderManager(ApplicationContext &applicationContext,
     if (initWindow() != 0) {
         Log::error("Failed to initialize window!");
         return;
-    } else if (initGL() != 0) {
+    }
+
+    if (initGL() != 0) {
         Log::error("Unable to initialize OpenGL!");
         return;
-    } else {
-#ifdef DEF_ANDROID
-        initBindings();
-#endif // DEF_ANDROID
     }
+
+    opengl::initBindings();
+    m_initialized = true;
+}
+
+bool RenderManager::initialized() {
+    return m_initialized;
 }
 
 int RenderManager::initWindow() {

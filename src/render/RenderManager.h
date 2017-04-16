@@ -8,13 +8,13 @@
 #define SPOOKY_RENDER_RENDERMANAGER_H
 #pragma once
 
-#include "opengl.h"
 #include "util/os.h"
-#include "ApplicationContext.h"
-#include "window/WindowManager.h"
 #include "render/RenderContext.h"
-#include "render/texture/Atlas.h"
-#include "render/window/WindowRender.h"
+
+class ApplicationContext;
+class WindowManager;
+class Window;
+class WindowRender;
 
 struct SDL_Window;
 using SDL_GL_Context = void;
@@ -34,6 +34,13 @@ public:
     RenderManager(ApplicationContext &applicationContext,
                   WindowManager &windowManager);
 
+    /**
+     * Check if RenderManager has been successfully initialized.
+     * This usually means if the window has been successfully created.
+     * @return whether the constructor failed or not
+     */
+    bool initialized();
+    
     /**
      * Switch current window render (and reload it)
      * @param window window to get render for
@@ -66,6 +73,7 @@ private:
     int initGL();
 
 private:
+    bool m_initialized = false;
     ApplicationContext &m_applicationContext;
     WindowManager &m_windowManager;
     RenderContext m_renderContext;
