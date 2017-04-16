@@ -9,8 +9,6 @@
 
 #include <memory>
 
-#include "Config.h"
-
 class Application;
 class Window;
 
@@ -32,12 +30,6 @@ public:
      * @param window window to switch to
      */
     void switchWindow(int index);
-
-    /**
-     * Get the global config.
-     * @return global config
-     */
-    const Config &config() const;
 
     /**
      * Updates internally-held window dimensions.
@@ -70,11 +62,6 @@ private:
      * This should not be directly exposed.
      */
     Application &m_application;
-
-    /**
-     * Global config instance.
-     */
-    Config m_config;
 
     /**
      * Current window's width.

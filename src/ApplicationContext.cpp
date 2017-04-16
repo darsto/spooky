@@ -7,11 +7,9 @@
 #include "ApplicationContext.h"
 #include "Application.h"
 #include "window/Window.h"
-#include "../examples/basic/src/window/LoadingScreen.h"
 
 ApplicationContext::ApplicationContext(Application &application)
-    : m_application(application),
-      m_config("global.conf") {
+    : m_application(application) {
 
 }
 
@@ -23,10 +21,6 @@ void ApplicationContext::switchWindow(int index) {
     } else {
         m_application.m_running = false;
     }
-}
-
-const Config &ApplicationContext::config() const {
-    return m_config;
 }
 
 void ApplicationContext::resize(uint32_t width, uint32_t height) {

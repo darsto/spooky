@@ -28,8 +28,6 @@ SET(SOURCE_FILES
         Application.h
         ApplicationContext.cpp
         ApplicationContext.h
-        Config.cpp
-        Config.h
         util/os.h
         util/collection.h
         util/collection.cpp

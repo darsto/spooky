@@ -36,10 +36,10 @@ bool RenderManager::initWindow() {
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 
-        std::string windowName = m_applicationContext.config().stringValue("window.title", "Spooky - unnamed project");
+        std::string windowName = "Spooky";
 
-        int windowWidth = m_applicationContext.config().intValue("window.width", 1366);
-        int windowHeight = m_applicationContext.config().intValue("window.height", 750);
+        int windowWidth = 800;
+        int windowHeight = 480;
         gWindow = SDL_CreateWindow(windowName.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, windowWidth, windowHeight, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
         if (gWindow == NULL) {
             printf("Window could not be created! SDL Error: %s\n", SDL_GetError());
