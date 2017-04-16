@@ -7,16 +7,15 @@
 #include "Window.h"
 #include "ApplicationContext.h"
 
-void Window::context(ApplicationContext *applicationContext) {
-    m_applicationContext = applicationContext;
-}
+Window::Window(ApplicationContext &applicationContext)
+    : m_applicationContext(applicationContext) {}
 
 const ApplicationContext &Window::getApplicationContext() const {
-    return *m_applicationContext;
+    return m_applicationContext;
 }
 
 ApplicationContext &Window::getApplicationContext() {
-    return *m_applicationContext;
+    return m_applicationContext;
 }
 
 Window::~Window() = default;

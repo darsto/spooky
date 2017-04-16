@@ -6,6 +6,8 @@
 
 #include "Menu.h"
 
+Menu::Menu(ApplicationContext &context) : Window(context) {}
+
 void Menu::reload() {}
 
 void Menu::tick(double deltaTime) {}

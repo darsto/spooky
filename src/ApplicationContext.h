@@ -19,10 +19,10 @@ class Window;
 class ApplicationContext {
 public:
     /**
-     * The constructor.
+     * Link Application to use with this context.
      * @param application application to create this context for
      */
-    ApplicationContext(Application &application);
+    void init(Application *application);
 
     /**
      * TODO
@@ -58,10 +58,10 @@ public:
 
 private:
     /**
-     * Private reference to the application object.
+     * Private pointer to the application object.
      * This should not be directly exposed.
      */
-    Application &m_application;
+    Application *m_application = nullptr;
 
     /**
      * Current window's width.

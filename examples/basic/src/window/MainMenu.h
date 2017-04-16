@@ -14,9 +14,8 @@ class GuiElement;
 class GuiButton;
 
 class MainMenu : public Menu {
-
 public:
-    MainMenu();
+    using Menu::Menu;
     virtual void reload() override;
     virtual void tick(double deltaTime) override;
     virtual void handleKeypress(const Input::KeypressTable &keypresses) override;

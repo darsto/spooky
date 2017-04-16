@@ -27,7 +27,7 @@ public:
      * This is done during window switching, in ApplicationContext class itself.
      * @param applicationContext context to be set
      */
-    void context(ApplicationContext *applicationContext);
+    Window(ApplicationContext &applicationContext);
 
     /**
      * Called on initialization and also on window reload.
@@ -80,7 +80,7 @@ public:
     virtual unsigned int type() const = 0;
 
 protected:
-    ApplicationContext *m_applicationContext = nullptr;
+    ApplicationContext &m_applicationContext;
 };
 
 #endif //SPOOKY_WINDOW_H

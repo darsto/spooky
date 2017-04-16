@@ -34,14 +34,15 @@ static Input::TouchPoint::State convertSDLEventId(uint32_t id) {
 }
 #endif // USES_SDL
 
-Application::Application(WindowManager &windowManager)
+Application::Application(ApplicationContext &context, WindowManager &windowManager)
     : m_windowManager(windowManager),
-      m_context(*this),
 #ifndef SIMULATION
-      m_renderer(m_context, m_windowManager),
+      m_renderer(context, m_windowManager),
 #endif
       m_newWindow(m_windowManager.getWindow(0)) {
 
+    context.init(this);
+    
     RENDER_CALL(
         if (!m_renderer.initialized()) {
             Log::error("Couldn't initialize RenderManager.");
@@ -136,7 +137,6 @@ void Application::switchWindow() {
     } else {
         m_window = m_newWindow;
         m_newWindow = nullptr;
-        m_window->context(&m_context);
         m_window->reload();
         RENDER_CALL(m_renderer.switchWindow(*m_window));
     }

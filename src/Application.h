@@ -31,7 +31,7 @@ public:
      * The constructor.
      * @return initialized application
      */
-    Application(WindowManager &windowManager);
+    Application(ApplicationContext &context, WindowManager &windowManager);
 
     /**
      * Reinitializes rendering, input capture, etc.
@@ -74,7 +74,6 @@ private:
 private:
     bool m_running = false;
     WindowManager &m_windowManager;
-    ApplicationContext m_context;
     
 #ifndef SIMULATION
     RenderManager m_renderer;

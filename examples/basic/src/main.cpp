@@ -5,6 +5,10 @@
 
 class MyWindowManager : public WindowManager {
 public:
+    MyWindowManager(ApplicationContext &context)
+        : screen(context),
+          menu(context) {}
+
     Window *getWindow(int index) override {
         switch (index) {
             case 0:
@@ -12,7 +16,8 @@ public:
             case 1:
                 return &menu;
             default:
-                throw std::runtime_error("Trying to get window with unknown id");
+                throw std::runtime_error(
+                    "Trying to get window with unknown id");
         }
     }
 
@@ -26,12 +31,13 @@ private:
     MainMenu menu;
 
     MenuRender menuRender;
-    
+
 };
 
 int main(int argc, char *args[]) {
-    MyWindowManager m;
-    Application app(m);
+    ApplicationContext context;
+    MyWindowManager m(context);
+    Application app(context, m);
 
     while (app.running()) {
         app.update();

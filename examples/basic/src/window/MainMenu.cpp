@@ -6,10 +6,6 @@
 
 constexpr const unsigned int MainMenu::TYPE;
 
-MainMenu::MainMenu() {
-    
-}
-
 void MainMenu::reload() {
     m_guiElements.clear();
 }

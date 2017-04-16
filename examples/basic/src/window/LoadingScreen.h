@@ -18,6 +18,8 @@ class GuiButton;
 
 class LoadingScreen : public Menu {
 public:
+    using Menu::Menu;
+
     virtual void reload() override;
     virtual void tick(double deltaTime) override;
 

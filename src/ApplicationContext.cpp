@@ -9,18 +9,15 @@
 
 #include "window/Window.h"
 
-ApplicationContext::ApplicationContext(Application &application)
-    : m_application(application) {
-
+void ApplicationContext::init(Application *application) {
+    m_application = application;
 }
 
 void ApplicationContext::switchWindow(int index) {
     if (index >= 0) {
-        Window *window = m_application.m_windowManager.getWindow(index);
-        window->context(this);
-        m_application.m_newWindow = window;
+        m_application->m_newWindow = m_application->m_windowManager.getWindow(index);
     } else {
-        m_application.m_running = false;
+        m_application->m_running = false;
     }
 }
 
