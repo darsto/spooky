@@ -30,15 +30,21 @@ TexData::TexData(const std::string &fileName, int flags) {
     uint8_t* data = SOIL_load_image(path.c_str(), &width, &height, &channels, flags & 0x7); // use mask of 3 LSB
     
     if (width <= 0 || height <= 0 || channels <= 0) {
-        SOIL_free_image_data(data);
         Log::error("Trying to load invalid texture (path: %s, width:%d, height:%d, channels:%d).", path.c_str(), width, height, channels);
-        return;
     }
 
     m_width = (uint32_t) width;
     m_height = (uint32_t) height;
     m_channels = (uint32_t) channels;
     m_data = data;
+
+    if (flags & LOAD_BURN_ALPHA) {
+        for (uint32_t i = 0; i < m_width * m_height; ++i) {
+            for (uint32_t channel = 0; channel < m_channels - 1; ++channel) {
+                m_data[m_channels * i + channel] = (uint8_t) ((m_data[m_channels * i + channel] * m_data[m_channels * i + m_channels - 1] + 128) >> 8);
+            }
+        }
+    }
 }
 
 TexData::TexData(TexData &&other)

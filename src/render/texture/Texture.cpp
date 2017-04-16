@@ -38,29 +38,6 @@ int Texture::loadTex(TexData &tex, uint32_t level) {
         return -1;
     }
 
-#ifdef DBG_COLORMIPMAPS
-    // color mipmaps in scheme: red (biggest) -> yellow (smallest)
-        if (channels >= 3) {
-            for (int i = 0; i < tex.width() * tex.height(); ++i) {
-                resampled[channels * i + 0] = 255 - level * 40;
-                resampled[channels * i + 1] = level * 40;
-                resampled[channels * i + 2] = 0;
-                if (channels >= 4) {
-                    resampled[channels * i + 3] = 255;
-                }
-            }
-        }
-#endif // DBG_COLORMIPMAPS
-
-    if (channels == 4) {
-        // burn alpha into RGB channels
-        for (uint32_t i = 0; i < tex.width() * tex.height(); ++i) {
-            tex[channels * i + 0] = (uint8_t) ((tex[channels * i + 0] * tex[channels * i + 3] + 128) >> 8);
-            tex[channels * i + 1] = (uint8_t) ((tex[channels * i + 1] * tex[channels * i + 3] + 128) >> 8);
-            tex[channels * i + 2] = (uint8_t) ((tex[channels * i + 2] * tex[channels * i + 3] + 128) >> 8);
-        }
-    }
-
     glTexImage2D((GLenum) GL_TEXTURE_2D, (GLint) level, (GLint) getTexGLFormat(channels), (GLint) tex.width(), (GLint) tex.height(), 0, (GLenum) getTexGLFormat(channels), (GLenum) GL_UNSIGNED_BYTE, tex.get());
     return 0;
 }

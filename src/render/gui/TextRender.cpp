@@ -12,7 +12,7 @@
 #include "gui/GuiText.h"
 #include "render/RenderContext.h"
 
-texture::TexData TextRender::m_texData("font.png");
+texture::TexData TextRender::m_texData("font.png", texture::TexData::LOAD_BURN_ALPHA);
 
 TextRender::TextRender(const ApplicationContext &applicationContext, const RenderContext &context)
     : GuiRenderable(applicationContext, context) {

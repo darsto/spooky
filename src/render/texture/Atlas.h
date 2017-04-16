@@ -33,7 +33,7 @@ namespace texture {
          * @param name name of the directory in data/textures/ containing texture tiles
          * @param extensions file extensions to filter files in given dir with, separated by | sign, by default "jpg|png|gif"
          */
-        Atlas(const std::string &name, uint32_t channels, bool mipmaps, const std::string &extensions = "jpg|png|gif");
+        Atlas(const std::string &name, uint32_t channels, bool mipmaps, int loadFlags = 0, const std::string &extensions = "jpg|png|gif");
 
         /**
          * Get subelement of this atlas with given filename.
@@ -65,9 +65,8 @@ namespace texture {
     private:
         /**
          * Load a single tile with given fileName (without any directory prefix).
-         * @param fileName name of the file to load (without any directory prefix)
          */
-        void loadTile(const std::string &fileName);
+        void loadTile(const std::string &fileName, int loadFlags);
 
         void writeToCanvas(const TexData &inData, TexData &outBuffer, const std::pair<uint32_t, uint32_t> &pos, uint32_t level = 0) {
             uint32_t inWidth = inData.width();

@@ -18,7 +18,7 @@ constexpr const bool MANUAL_MIPMAPS_ENABLED =
     false;
 #endif
 
-texture::Atlas GuiElementRender::m_atlas("gui", 4, MANUAL_MIPMAPS_ENABLED);
+texture::Atlas GuiElementRender::m_atlas("gui", 4, MANUAL_MIPMAPS_ENABLED, texture::TexData::LOAD_BURN_ALPHA);
 
 GuiElementRender::GuiElementRender(const ApplicationContext &applicationContext, const RenderContext &context)
     : GuiRenderable(applicationContext, context) {

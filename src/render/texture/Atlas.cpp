@@ -23,13 +23,13 @@
 
 using namespace texture;
 
-Atlas::Atlas(const std::string &name, uint32_t channels, bool mipmaps, const std::string &extensions)
+Atlas::Atlas(const std::string &name, uint32_t channels, bool mipmaps, int loadFlags, const std::string &extensions)
     : m_path(name),
       m_tileNames(util::collection::filter(util::file::list(util::file::path<util::file::type::texture>(name).c_str()), std::regex("(.*)(\\.(" + extensions + "))", std::regex::ECMAScript | std::regex::icase))) {
 
     PROF_START(load);
     for (const std::string &tile : m_tileNames) {
-        loadTile(tile);
+        loadTile(tile, loadFlags);
     }
 
     m_packer.pack();
@@ -69,8 +69,8 @@ Atlas::Atlas(const std::string &name, uint32_t channels, bool mipmaps, const std
     Log::debug("Generating the texture atlas \"%s\" took %f sec.", name.c_str(), PROF_DURATION_START(load));
 }
 
-void Atlas::loadTile(const std::string &fileName) {
-    TexData tex(m_path + util::file::file_separator_str + fileName);
+void Atlas::loadTile(const std::string &fileName, int loadFlags) {
+    TexData tex(m_path + util::file::file_separator_str + fileName, loadFlags);
     //TODO check for channels num mismatch
     uint64_t id = m_hash(fileName.substr(0, fileName.find_last_of('.')));
 

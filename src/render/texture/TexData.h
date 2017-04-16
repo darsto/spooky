@@ -26,7 +26,8 @@ namespace texture {
             LOAD_FORCE_L = 1,    /**< forces the image to load as Luminous (greyscale) */
             LOAD_FORCE_LA = 2,   /**< forces the image to load as Luminous with Alpha */
             LOAD_FORCE_RGB = 3,  /**< forces the image to load as Red Green Blue */
-            LOAD_FORCE_RGBA = 4  /**< forces the image to load as Red Green Blue Alpha */
+            LOAD_FORCE_RGBA = 4, /**< forces the image to load as Red Green Blue Alpha */
+            LOAD_BURN_ALPHA = 8  /**< burns Alpha channels onto all other channels */
         };
 
     public:
