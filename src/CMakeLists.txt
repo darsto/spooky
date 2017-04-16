@@ -29,13 +29,9 @@ SET(SOURCE_FILES
         ApplicationContext.cpp
         ApplicationContext.h
         util/os.h
-        util/collection.h
-        util/collection.cpp
         util/log.h
         util/file.h
         util/file.cpp
-        util/string.h
-        util/string.cpp
         util/prof.cpp
         util/prof.h
         core/Timer.cpp
