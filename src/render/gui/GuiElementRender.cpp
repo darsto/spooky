@@ -11,7 +11,7 @@
 #include "gui/GuiElement.h"
 #include "render/RenderContext.h"
 
-texture::TexData GuiElementRender::m_texData("font.png", texture::TexData::LOAD_BURN_ALPHA);
+texture::TexData GuiElementRender::m_texData("gui.png", texture::TexData::LOAD_BURN_ALPHA);
 
 GuiElementRender::GuiElementRender(const ApplicationContext &applicationContext, const RenderContext &context)
     : GuiRenderable(applicationContext, context) {
@@ -21,7 +21,7 @@ GuiElementRender::GuiElementRender(const ApplicationContext &applicationContext,
     glGenerateMipmap(GL_TEXTURE_2D);
 
     m_texture.filtering(texture::Texture::MagFilter::BILINEAR, texture::Texture::MinFilter::BILINEAR_MIPMAP);
-    m_atlasSize = 8;
+    m_atlasSize = 2;
 
     Shader vertShader("gui.vert", GL_VERTEX_SHADER);
     Shader fragShader("gui.frag", GL_FRAGMENT_SHADER);

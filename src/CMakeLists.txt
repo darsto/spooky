@@ -50,8 +50,6 @@ SET(SOURCE_FILES
         window/Window.h
         gui/GuiElement.cpp
         gui/GuiElement.h
-        gui/GuiText.cpp
-        gui/GuiText.h
         window/WindowManager.cpp
         window/WindowManager.h
         )
@@ -72,8 +70,6 @@ IF (NOT SIMULATION)
             render/window/WindowRender.h
             render/gui/GuiElementRender.cpp
             render/gui/GuiElementRender.h
-            render/gui/TextRender.cpp
-            render/gui/TextRender.h
             render/texture/TexData.cpp
             render/texture/TexData.h
             render/texture/Texture.cpp
