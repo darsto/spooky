@@ -55,7 +55,7 @@ void MenuRender::render(const Window &window) {
     }
 }
 
-GuiRenderable &MenuRender::guiElementRender(const GuiElement &element) const {
+GuiElementRender &MenuRender::guiElementRender(const GuiElement &element) const {
     return *guiRenders.at(element.type);
 }
 

@@ -14,7 +14,8 @@
 texture::TexData GuiElementRender::m_texData("gui.png", texture::TexData::LOAD_BURN_ALPHA);
 
 GuiElementRender::GuiElementRender(const ApplicationContext &applicationContext, const RenderContext &context)
-    : GuiRenderable(applicationContext, context) {
+    : m_applicationContext(applicationContext),
+      m_renderContext(context) {
     
     m_texture.bindTexture();
     m_texture.loadTex(m_texData, 0);

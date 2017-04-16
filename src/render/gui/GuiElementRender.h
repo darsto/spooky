@@ -13,18 +13,21 @@
 #include "render/Shader.h"
 #include "render/ShaderProgram.h"
 #include "render/texture/Texture.h"
-#include "GuiRenderable.h"
+#include "ApplicationContext.h"
 
 class GuiElement;
 class RenderContext;
 
-class GuiElementRender : public GuiRenderable {
+class GuiElementRender {
 public:
     GuiElementRender(const ApplicationContext &applicationContext, const RenderContext &context);
-    virtual void render(const GuiElement &element, glm::mat4 projectionMatrix, glm::mat4 viewMatrix) override;
+    void render(const GuiElement &element, glm::mat4 projectionMatrix, glm::mat4 viewMatrix);
     ~GuiElementRender();
 
 private:
+    const ApplicationContext &m_applicationContext;
+    const RenderContext &m_renderContext;
+    
     uint32_t m_atlasSize;
     GLuint m_vbo[2];
     GLuint m_vao;
