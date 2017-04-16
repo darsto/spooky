@@ -8,11 +8,10 @@
 #define SPOOKY_WINDOW_H
 #pragma once
 
+#include "ApplicationContext.h"
 #include "core/input/Keypress.h"
 #include "core/input/TouchPoint.h"
 #include "core/input/InputManager.h"
-
-class ApplicationContext;
 
 /**
  * Main wrapper of the game-specific logic.

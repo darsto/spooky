@@ -5,7 +5,6 @@
  */
 
 #include "Window.h"
-#include "ApplicationContext.h"
 
 Window::Window(ApplicationContext &applicationContext)
     : m_applicationContext(applicationContext) {}
