@@ -26,6 +26,10 @@ void MenuRender::reinit() {
 }
 
 void MenuRender::reload() {
+    glViewport(0, 0,
+               (GLsizei) m_applicationContext->windowWidth(),
+               (GLsizei) m_applicationContext->windowHeight());
+    
     glEnable(GL_BLEND);
     glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
     

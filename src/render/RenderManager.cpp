@@ -128,7 +128,5 @@ void RenderManager::switchWindow(Window &window) {
 
 void RenderManager::resize(uint32_t width, uint32_t height) {
     m_applicationContext.resize(width, height);
-    glViewport(0, 0, (GLsizei) m_applicationContext.windowWidth(),
-               (GLsizei) m_applicationContext.windowHeight());
     m_windowRender->reload();
 }
