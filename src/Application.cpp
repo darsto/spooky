@@ -40,7 +40,7 @@ Application::Application(ApplicationContext &context,
 #ifndef SIMULATION
       m_renderer(context, m_windowManager),
 #endif
-      m_newWindow(m_windowManager.getWindow(0)) {
+      m_window(m_windowManager.getWindow(0)) {
 
     context.init(this);
 
@@ -50,12 +50,7 @@ Application::Application(ApplicationContext &context,
         return;
     }
 #endif
-
-    switchWindow();
-
-    /* if not called right now, first call in
-     game loop would return a very huge value */
-    m_timer.delta();
+    
     m_running = true;
 }
 

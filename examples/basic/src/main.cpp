@@ -39,6 +39,7 @@ MyWindowManager m(context);
 Application app(context, m);
 
 int main(int argc, char *args[]) {
+    app.reinit();
     
     while (app.running()) {
         app.update();
@@ -51,8 +52,6 @@ int main(int argc, char *args[]) {
 
 #include <jni.h>
 
-bool initialized = false;
-
 extern "C" {
     JNIEXPORT void JNICALL Java_darsto_spooky_JniBridge_init(JNIEnv *env, jobject obj);
     JNIEXPORT void JNICALL Java_darsto_spooky_JniBridge_resize(JNIEnv *env, jobject obj, jint width, jint height);
@@ -61,11 +60,7 @@ extern "C" {
 }
 
 JNIEXPORT void JNICALL Java_darsto_spooky_JniBridge_init(JNIEnv *, jobject) {
-    if (initialized) {
-        app.reinit();
-    }
-    
-    initialized = true;
+    app.reinit();
 }
 
 JNIEXPORT void JNICALL Java_darsto_spooky_JniBridge_resize(JNIEnv *, jobject, jint width, jint height) {
