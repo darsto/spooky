@@ -7,15 +7,9 @@
 #ifndef SPOOKY_RENDER_RENDERCONTEXT_H
 #define SPOOKY_RENDER_RENDERCONTEXT_H
 
-#include <vector>
-#include <memory>
-
-class GuiElement;
-class GuiElementRender;
-
 /**
  * Publicly exposed part of the RenderManager's interface.
- * WindowRender contains a reference to constant of this class.
+ * Can be used to modify RenderManager from any WindowRender.
  */
 class RenderContext {
 public:
