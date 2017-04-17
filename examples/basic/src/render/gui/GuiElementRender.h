@@ -34,8 +34,6 @@ private:
     ShaderProgram m_shaderProgram;
     texture::Texture m_texture;
     glm::mat4 m_modelMatrix = glm::mat4(1.0);
-
-    static texture::TexData m_texData;
 };
 
 #endif //SPOOKY_RENDER_GUI_GUIELEMENTRENDER_H

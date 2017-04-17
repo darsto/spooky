@@ -11,14 +11,14 @@
 #include "gui/GuiElement.h"
 #include "render/RenderContext.h"
 
-texture::TexData GuiElementRender::m_texData("gui.png", texture::TexData::LOAD_BURN_ALPHA);
-
 GuiElementRender::GuiElementRender(const ApplicationContext &applicationContext, const RenderContext &context)
     : m_applicationContext(applicationContext),
       m_renderContext(context) {
     
+    static texture::TexData texData("gui.png", texture::TexData::LOAD_BURN_ALPHA);
+    
     m_texture.bindTexture();
-    m_texture.loadTex(m_texData, 0);
+    m_texture.loadTex(texData, 0);
     glGenerateMipmap(GL_TEXTURE_2D);
 
     m_texture.filtering(texture::Texture::MagFilter::BILINEAR, texture::Texture::MinFilter::BILINEAR_MIPMAP);
@@ -34,8 +34,8 @@ GuiElementRender::GuiElementRender(const ApplicationContext &applicationContext,
     float vertices[8];
     float texCoords[8];
 
-    float texWidth = 1.0f / m_atlasSize - 1.0f / m_texData.width();
-    float texHeight = 1.0f / m_atlasSize - 1.0f / m_texData.height();
+    float texWidth = 1.0f / m_atlasSize - 1.0f / texData.width();
+    float texHeight = 1.0f / m_atlasSize - 1.0f / texData.height();
 
     /** bottom-left vertex */
     vertices[0] = 0.0f, vertices[1] = -1.0f;
