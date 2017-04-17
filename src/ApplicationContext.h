@@ -15,6 +15,7 @@ class Window;
 /**
  * The supplement of the Application class.
  * It features the publicly available part of the application's interface.
+ * Can be used to modify Application from any Window.
  */
 class ApplicationContext {
 public:
@@ -25,7 +26,6 @@ public:
     void init(Application *application);
 
     /**
-     * TODO
      * Switch current window to the given one.
      * @param window window to switch to
      */
@@ -34,6 +34,8 @@ public:
     /**
      * Updates internally-held window dimensions.
      * Note that this method does not change the size of the window.
+     * Window dimensions are held here to let any Window to use them
+     * to position it's gui elements.
      * @param width new width of the window
      * @param height new height of the window
      */
