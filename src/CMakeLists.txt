@@ -13,6 +13,16 @@ SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -pedantic -Wall -Wextra -Wca
     -Wshadow -Wsign-conversion -Wsign-promo -Wstrict-null-sentinel -Wstrict-overflow=5 \
     -Wswitch-default -Wundef -Werror")
 
+IF (ANDROID)
+    SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wno-shadow")
+    # Apparently Android's g++ is outdated and doesn't allow method params to be named just like class fields
+ENDIF ()
+
+IF (ANDROID OR SIMULATION)
+    SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wno-unused-parameter")
+    # Some Application/RenderManager code is filled with SDL ifdefs, so we will encounter unused parameter errors on these builds
+ENDIF ()
+
 IF (BUILD_SHARED)
     SET(TYPE SHARED)
 ELSE ()
