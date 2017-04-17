@@ -7,7 +7,8 @@ class MyWindowManager : public WindowManager {
 public:
     MyWindowManager(ApplicationContext &context)
         : screen(context),
-          menu(context) {}
+          menu(context),
+          menuRender(context) {}
 
     Window *getWindow(int index) override {
         switch (index) {
@@ -39,7 +40,7 @@ Application app(context, m);
 
 int main(int argc, char *args[]) {
     app.reinit();
-    
+
     while (app.running()) {
         app.update();
     }

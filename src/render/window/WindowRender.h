@@ -18,30 +18,39 @@ class Window;
  */
 class WindowRender {
 public:
-    //TODO
-    void bind(const ApplicationContext *applicationContext, const RenderContext *renderContext);
+    /**
+     * The constructor.
+     * @param applicationContext context to bind with this render
+     */
+    WindowRender(ApplicationContext &applicationContext);
+    
+    /**
+     * Bind given render context to use with this render.
+     * @param renderContext context to be bound
+     */
+    void bind(RenderContext *renderContext);
 
     /**
-     * Called on initialization and context reloading (e.g. context unminimizing on Android)
+     * Called on initialization and context reloading (e.g. app unminimizing on Android)
      * Usually, this is a computationally expensive operation.
      */
     virtual void reinit() = 0;
 
     /**
-     * Called on reloading (& screen resize events).
+     * Called on reloading and screen resize events.
      * Usually, this is a computationally cheap operation.
      */
     virtual void reload() = 0;
 
     /**
-     * Called every tick.
+     * Render single frame. Called every tick.
      * @param window currently rendered window
      */
     virtual void render(const Window &window) = 0;
 
 protected:
-    const ApplicationContext *m_applicationContext;
-    const RenderContext *m_renderContext;
+    ApplicationContext &m_applicationContext;
+    RenderContext *m_renderContext;
 };
 
 #endif //SPOOKY_RENDER_WINDOW_WINDOWRENDER_H

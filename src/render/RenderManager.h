@@ -8,6 +8,8 @@
 #define SPOOKY_RENDER_RENDERMANAGER_H
 #pragma once
 
+#include <cstdint>
+
 #include "util/os.h"
 #include "render/RenderContext.h"
 

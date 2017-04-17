@@ -11,6 +11,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <memory>
 #include <unordered_map>
+#include <vector>
 
 #include "render/window/WindowRender.h"
 
@@ -19,7 +20,7 @@ class GuiElement;
 
 class MenuRender : public WindowRender {
 public:
-    MenuRender();
+    MenuRender(ApplicationContext &applicationContext);
     virtual void reinit() override;
     virtual void reload() override;
     virtual void render(const Window &window) override;

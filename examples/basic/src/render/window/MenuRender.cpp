@@ -14,30 +14,31 @@
 #include "render/gui/GuiElementRender.h"
 #include "util/log.h"
 
-MenuRender::MenuRender()
-    : m_viewMatrix(glm::lookAt(glm::vec3(0, 0, 0.0f), glm::vec3(0, 0, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f))) {
+MenuRender::MenuRender(ApplicationContext &applicationContext)
+    : WindowRender(applicationContext),
+      m_viewMatrix(glm::lookAt(glm::vec3(0, 0, 0.0f), glm::vec3(0, 0, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f))) {
 
 }
 
 void MenuRender::reinit() {
-    m_projectionMatrix = glm::ortho(0.0f, static_cast<float>(m_applicationContext->windowWidth()), 0.0f, static_cast<float>(m_applicationContext->windowHeight()));
+    m_projectionMatrix = glm::ortho(0.0f, static_cast<float>(m_applicationContext.windowWidth()), 0.0f, static_cast<float>(m_applicationContext.windowHeight()));
 
-    m_guiRender = std::make_unique<GuiElementRender>(*m_applicationContext, *m_renderContext);
+    m_guiRender = std::make_unique<GuiElementRender>(m_applicationContext, *m_renderContext);
 }
 
 void MenuRender::reload() {
     glViewport(0, 0,
-               (GLsizei) m_applicationContext->windowWidth(),
-               (GLsizei) m_applicationContext->windowHeight());
+               (GLsizei) m_applicationContext.windowWidth(),
+               (GLsizei) m_applicationContext.windowHeight());
     
     glEnable(GL_BLEND);
     glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
     
-    m_projectionMatrix = glm::ortho(0.0f, static_cast<float>(m_applicationContext->windowWidth()), 0.0f, static_cast<float>(m_applicationContext->windowHeight()));
+    m_projectionMatrix = glm::ortho(0.0f, static_cast<float>(m_applicationContext.windowWidth()), 0.0f, static_cast<float>(m_applicationContext.windowHeight()));
 
     m_debugOverlayElements.clear();
     m_debugOverlayElements.emplace_back((GuiElement) {6, 6, 35, 35, 0.0, 0, 0xFFFFFFFF});
-    m_debugOverlayElements.emplace_back((GuiElement) {6, (int)m_applicationContext->windowHeight() - 35 - 8, 35, 35, 0.0, 0, 0xFFFFFFFF});
+    m_debugOverlayElements.emplace_back((GuiElement) {6, (int)m_applicationContext.windowHeight() - 35 - 8, 35, 35, 0.0, 0, 0xFFFFFFFF});
 }
 
 void MenuRender::render(const Window &window) {

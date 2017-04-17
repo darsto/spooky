@@ -47,7 +47,7 @@ int RenderManager::switchWindow(Window &window) {
 
     m_currentWindow = &window;
     m_windowRender = render;
-    m_windowRender->bind(&m_applicationContext, &m_renderContext);
+    m_windowRender->bind(&m_renderContext);
     m_windowRender->reinit();
     m_windowRender->reload();
     
