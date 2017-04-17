@@ -38,7 +38,7 @@ Shader::Shader(const std::string &fileName, GLenum type)
 
 #ifdef DEF_ANDROID
     if (type == GL_FRAGMENT_SHADER) {
-        program_vec.emplace_back("precision mediump float;");
+        shaderLines.emplace_back("precision mediump float;");
     }
 #endif // DEF_ANDROID
 
