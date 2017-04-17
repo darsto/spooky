@@ -13,6 +13,10 @@
 #include "TouchPoint.h"
 #include "util/os.h"
 
+#ifdef USES_SDL
+#include <SDL2/SDL.h>
+#endif // USES_SDL
+
 union SDL_Event;
 class Window;
 
