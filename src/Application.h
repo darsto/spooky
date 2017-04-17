@@ -7,8 +7,6 @@
 #ifndef SPOOKY_APPLICATION_H
 #define SPOOKY_APPLICATION_H
 
-#include <memory>
-
 #include "window/WindowManager.h"
 #include "ApplicationContext.h"
 #include "util/os.h"
@@ -29,7 +27,11 @@ class Application {
 public:
     /**
      * The constructor.
-     * @return initialized application
+     * The returned Application won't be fully initialized.
+     * However, a preliminary initialization will be performed, and
+     * running() method should be called to check if it succeeded.
+     * A reinit() method must be called first before any other method non-const.
+     * @return uninitialized application
      */
     Application(ApplicationContext &context, WindowManager &windowManager);
 
@@ -62,8 +64,11 @@ public:
     void handleClick(int button, Input::TouchPoint::State state, float x, float y);
 
     /**
-     * Check if application is still running.
-     * @return whether or not application is still running
+     * Check if application is running.
+     * It can return false either when it hasn't been initialized
+     * (see Application(ApplicationContext &, WindowManager &)
+     * or when it has been user-exited.
+     * @return whether or not the application is running
      */
     bool running() const;
 
