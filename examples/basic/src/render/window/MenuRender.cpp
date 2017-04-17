@@ -35,6 +35,8 @@ void MenuRender::reload() {
     
     m_projectionMatrix = glm::ortho(0.0f, static_cast<float>(m_applicationContext->windowWidth()), 0.0f, static_cast<float>(m_applicationContext->windowHeight()));
 
+    m_debugOverlayElements.clear();
+    m_debugOverlayElements.emplace_back((GuiElement) {6, 6, 35, 35, 0.0, 0, 0xFFFFFFFF});
     m_debugOverlayElements.emplace_back((GuiElement) {6, (int)m_applicationContext->windowHeight() - 35 - 8, 35, 35, 0.0, 0, 0xFFFFFFFF});
 }
 
