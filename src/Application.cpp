@@ -150,47 +150,4 @@ void Application::switchWindow() {
     }
 }
 
-#ifdef DEF_ANDROID
-
-#include <jni.h>
-
-std::unique_ptr<Application> application;
-bool initialized = false;
-
-extern "C" {
-    JNIEXPORT void JNICALL Java_darsto_spooky_JniBridge_init(JNIEnv *env, jobject obj);
-    JNIEXPORT void JNICALL Java_darsto_spooky_JniBridge_resize(JNIEnv *env, jobject obj, jint width, jint height);
-    JNIEXPORT void JNICALL Java_darsto_spooky_JniBridge_tick(JNIEnv *env, jobject obj);
-    JNIEXPORT void JNICALL Java_darsto_spooky_JniBridge_handleTouch(JNIEnv *env, jobject obj, jint i, jint action, jfloat x, jfloat y);
-}
-
-JNIEXPORT void JNICALL Java_darsto_spooky_JniBridge_init(JNIEnv *, jobject) {
-    if (!application) {
-        application = std::make_unique<Application>();
-    } else {
-        application->reinit();
-    }
-}
-
-JNIEXPORT void JNICALL Java_darsto_spooky_JniBridge_resize(JNIEnv *, jobject, jint width, jint height) {
-    application->resize((uint32_t) width, (uint32_t) height);
-}
-
-JNIEXPORT void JNICALL Java_darsto_spooky_JniBridge_tick(JNIEnv *env, jobject obj) {
-    application->update();
-    if (!application->running()) {
-        jclass cls = env->GetObjectClass(obj);
-        jmethodID mid = env->GetMethodID(cls, "exit", "()V");
-        if (mid != 0) {
-            env->CallVoidMethod(obj, mid);
-        }
-    }
-}
-
-JNIEXPORT void JNICALL Java_darsto_spooky_JniBridge_handleTouch(JNIEnv *, jobject, jint i,  jint action, jfloat x, jfloat y) {
-    application->handleClick(i, static_cast<Input::TouchPoint::State>(action), x, y);
-}
-
-#endif // DEF_ANDROID
-
 #undef RENDER_CALL
