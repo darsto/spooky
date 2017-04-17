@@ -7,7 +7,7 @@
 #ifndef SPOOKY_APPLICATIONCONTEXT_H
 #define SPOOKY_APPLICATIONCONTEXT_H
 
-#include <memory>
+#include <cstdint>
 
 class Application;
 class Window;
