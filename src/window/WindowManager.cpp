@@ -5,3 +5,5 @@
  */
 
 #include "WindowManager.h"
+
+constexpr const int WindowManager::INITIAL_WINDOW_ID;
