@@ -10,7 +10,6 @@
 #include <cstdint>
 
 class Application;
-class Window;
 
 /**
  * The supplement of the Application class.

@@ -7,8 +7,6 @@
 #include "ApplicationContext.h"
 #include "Application.h"
 
-#include "window/Window.h"
-
 void ApplicationContext::init(Application *application) {
     m_application = application;
 }
