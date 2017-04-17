@@ -26,6 +26,7 @@ public:
     
     /**
      * Get WindowRender of given id.
+     * The id a window.type().
      * @param index unique identifier of a window to get
      * @return pointer to the WindowRender.
      * Cannot be nullptr.
@@ -33,7 +34,7 @@ public:
     virtual WindowRender *getWindowRender(int index) = 0;
     
     /**
-     * Identifier used in above methods on initialization.
+     * Identifier used in getWindow(int) on initialization.
      */
     static constexpr const int INITIAL_WINDOW_ID = 0;
 };

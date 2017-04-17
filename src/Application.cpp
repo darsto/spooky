@@ -40,7 +40,7 @@ Application::Application(ApplicationContext &context,
 #ifndef SIMULATION
       m_renderer(context, m_windowManager),
 #endif
-      m_window(m_windowManager.getWindow(0)) {
+      m_window(m_windowManager.getWindow(WindowManager::INITIAL_WINDOW_ID)) {
 
     context.init(this);
 
