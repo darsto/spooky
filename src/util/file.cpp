@@ -12,6 +12,8 @@
 #include "file.h"
 #include "os.h"
 
+static std::string resourcePath = "data";
+
 const char util::file::file_separator =
 #ifdef DEF_WINDOWS
     '\\';
@@ -27,11 +29,7 @@ const char util::file::file_separator_str[] =
 #endif
 
 std::string util::file::path(const std::string &file) {
-#ifdef DEF_ANDROID
-    return "/sdcard/spooky/data/" + file;
-#else
-    return "data/" + file;
-#endif
+    return getResourcePath() + file_separator_str + file;
 }
 
 std::vector<std::string> util::file::list(const char *path) {
@@ -57,4 +55,16 @@ std::vector<std::string> util::file::list(const char *path) {
 
     closedir(dp);
     return ret;
+}
+
+void util::file::setResourcePath(const std::string &path) {
+    resourcePath = path;
+    
+    if (resourcePath.back() == '/' || resourcePath.back() == '\\') {
+        resourcePath.pop_back();
+    }
+}
+
+std::string util::file::getResourcePath() {
+    return resourcePath;
 }

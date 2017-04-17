@@ -65,6 +65,10 @@ namespace util {
          * @return vector of filenames inside given dir
          */
         std::vector<std::string> list(const char *path);
+        
+        void setResourcePath(const std::string &path);
+        
+        std::string getResourcePath();
     }
 }
 

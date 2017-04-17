@@ -23,7 +23,6 @@ public:
 
     WindowRender *getWindowRender(int index) override {
         return &menuRender;
-        //TODO
     }
 
 private:
@@ -52,14 +51,19 @@ int main(int argc, char *args[]) {
 
 #include <jni.h>
 
+#include "util/file.h"
+
 extern "C" {
-    JNIEXPORT void JNICALL Java_darsto_spooky_JniBridge_init(JNIEnv *env, jobject obj);
+    JNIEXPORT void JNICALL Java_darsto_spooky_JniBridge_init(JNIEnv *env, jobject obj, jstring resourcePath);
     JNIEXPORT void JNICALL Java_darsto_spooky_JniBridge_resize(JNIEnv *env, jobject obj, jint width, jint height);
     JNIEXPORT void JNICALL Java_darsto_spooky_JniBridge_tick(JNIEnv *env, jobject obj);
     JNIEXPORT void JNICALL Java_darsto_spooky_JniBridge_handleTouch(JNIEnv *env, jobject obj, jint i, jint action, jfloat x, jfloat y);
 }
 
-JNIEXPORT void JNICALL Java_darsto_spooky_JniBridge_init(JNIEnv *, jobject) {
+JNIEXPORT void JNICALL Java_darsto_spooky_JniBridge_init(JNIEnv *env, jobject, jstring resourcePath) {
+    const char *resourcePath_c = env->GetStringUTFChars(resourcePath ,NULL);
+    util::file::setResourcePath(resourcePath_c);
+    
     app.reinit();
 }
 
