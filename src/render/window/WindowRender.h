@@ -15,6 +15,7 @@ class Window;
 /**
  * Base class for particular window renders.
  * It is responsible for rendering all elements in the corresponding window.
+ * This is a pure virtual class meant to be implemented by the user.
  */
 class WindowRender {
 public:

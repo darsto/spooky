@@ -16,6 +16,7 @@
 /**
  * Main wrapper of the game-specific logic.
  * This can be compared to Android's Activity.
+ * This is a pure virtual class meant to be implemented by the user.
  */
 class Window {
 public:
