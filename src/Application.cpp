@@ -162,9 +162,9 @@ extern "C" {
     JNIEXPORT void JNICALL Java_darsto_spooky_JniBridge_resize(JNIEnv *env, jobject obj, jint width, jint height);
     JNIEXPORT void JNICALL Java_darsto_spooky_JniBridge_tick(JNIEnv *env, jobject obj);
     JNIEXPORT void JNICALL Java_darsto_spooky_JniBridge_handleTouch(JNIEnv *env, jobject obj, jint i, jint action, jfloat x, jfloat y);
-};
+}
 
-JNIEXPORT void JNICALL Java_darsto_spooky_JniBridge_init(JNIEnv *env, jobject obj) {
+JNIEXPORT void JNICALL Java_darsto_spooky_JniBridge_init(JNIEnv *, jobject) {
     if (!application) {
         application = std::make_unique<Application>();
     } else {
@@ -172,8 +172,8 @@ JNIEXPORT void JNICALL Java_darsto_spooky_JniBridge_init(JNIEnv *env, jobject ob
     }
 }
 
-JNIEXPORT void JNICALL Java_darsto_spooky_JniBridge_resize(JNIEnv *env, jobject obj, jint width, jint height) {
-    application->resize(width, height);
+JNIEXPORT void JNICALL Java_darsto_spooky_JniBridge_resize(JNIEnv *, jobject, jint width, jint height) {
+    application->resize((uint32_t) width, (uint32_t) height);
 }
 
 JNIEXPORT void JNICALL Java_darsto_spooky_JniBridge_tick(JNIEnv *env, jobject obj) {
@@ -187,7 +187,7 @@ JNIEXPORT void JNICALL Java_darsto_spooky_JniBridge_tick(JNIEnv *env, jobject ob
     }
 }
 
-JNIEXPORT void JNICALL Java_darsto_spooky_JniBridge_handleTouch(JNIEnv *env, jobject obj, jint i,  jint action, jfloat x, jfloat y) {
+JNIEXPORT void JNICALL Java_darsto_spooky_JniBridge_handleTouch(JNIEnv *, jobject, jint i,  jint action, jfloat x, jfloat y) {
     application->handleClick(i, static_cast<Input::TouchPoint::State>(action), x, y);
 }
 
