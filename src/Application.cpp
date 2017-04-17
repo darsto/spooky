@@ -17,11 +17,11 @@
 #define RENDER_CALL(X)
 #endif
 
+#ifdef USES_SDL
 static int convertSDLButtonId(int id) {
     return (int) std::round(std::log((double) id) / std::log(2.0)) + 1;
 }
 
-#ifdef USES_SDL
 static Input::TouchPoint::State convertSDLEventId(uint32_t id) {
     switch (id) {
         case SDL_MOUSEBUTTONDOWN:
