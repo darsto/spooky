@@ -4,6 +4,8 @@
 [![License](https://img.shields.io/github/license/darsto/spooky.svg)](LICENSE.md)
 [![CircleCI](https://img.shields.io/circleci/project/darsto/spooky/master.svg)](https://circleci.com/gh/darsto/spooky)
 
+#### Please note that this project is outdated. Modern embedded hardware no longer requires reuploading any GPU memory. 
+
 Spooky is a C++14 **cross-platform** OpenGL 2.1/OpenGL ES 2.0 application runtime.  
 It features a unified interface for writing application for different platforms,
 also giving the developer as much maintainability as possible.
